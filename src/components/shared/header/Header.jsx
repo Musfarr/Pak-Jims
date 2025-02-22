@@ -175,8 +175,8 @@ const Header = () => {
                         </div>
                         {/* <!--! [Start] nxl-lavel-mega-menu-wrapper !--> */}
                         <div className="nxl-lavel-mega-menu-wrapper d-flex gap-3">
-                            <HeaderDropDownModal />
-                            <MegaMenu />
+                            {/* <HeaderDropDownModal /> */}
+                            {/* <MegaMenu /> */}
                         </div>
                     </div>
                 </div>
@@ -185,7 +185,7 @@ const Header = () => {
                 <div className="header-right ms-auto">
                     <div className="d-flex align-items-center">
                         <SearchModal />
-                        <LanguagesModal />
+                        {/* <LanguagesModal /> */}
                         <div className="nxl-h-item d-none d-sm-flex" >
                             <div className="full-screen-switcher">
                                 <span className="nxl-head-link me-0">

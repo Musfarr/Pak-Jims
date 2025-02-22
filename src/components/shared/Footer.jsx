@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className="footer">
             <p className="fs-11 text-muted fw-medium text-uppercase mb-0 copyright">
-                <span>Copyright ©</span>
+                <span>Copyright PAQSJIMS ©</span>
                 {new Date().getFullYear()}
             </p>
             <div className="d-flex align-items-center gap-4">

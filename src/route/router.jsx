@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import RootLayout from "../layout/root";
 import Home from "../pages/home";
 import Analytics from "../pages/analytics";
@@ -68,14 +68,23 @@ import WidgetsTables from "../pages/widgets-tables";
 import WidgetsCharts from "../pages/widgets-charts";
 import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <RootLayout />,
+        element: (
+            <ProtectedRoute>
+                <RootLayout />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 path: "/",
+                element: <Navigate to="/dashboard" replace />
+            },
+            {
+                path: "/dashboard",
                 element: <Home />
             },
             {
@@ -186,12 +195,15 @@ export const router = createBrowserRouter([
                 path: "/help/knowledgebase",
                 element: <HelpKnowledgebase />
             },
-
         ]
     },
     {
-        path: "/",
-        element: <LayoutApplications />,
+        path: "/applications",
+        element: (
+            <ProtectedRoute>
+                <LayoutApplications />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 path: "/applications/chat",
@@ -220,8 +232,12 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/",
-        element: <LayoutSetting />,
+        path: "/settings",
+        element: (
+            <ProtectedRoute>
+                <LayoutSetting />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 path: "/settings/ganeral",
@@ -278,9 +294,13 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/",
+        path: "/authentication",
         element: <LayoutAuth />,
         children: [
+            {
+                path: "/authentication",
+                element: <Navigate to="/authentication/login/cover" replace />
+            },
             {
                 path: "/authentication/login/cover",
                 element: <LoginCover />
@@ -355,4 +375,4 @@ export const router = createBrowserRouter([
             },
         ]
     }
-])
+]);
