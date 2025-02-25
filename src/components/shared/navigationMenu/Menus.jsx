@@ -1,8 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
-import { menuList } from "@/utils/fackData/menuList";
+// import { menuList } from "@/utils/fackData/menuList";
 import getIcon from "@/utils/getIcon";
+import { StudentMenuList } from "@/utils/Newdata/StudentMenuList";
+
 
 const Menus = () => {
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -43,7 +45,7 @@ const Menus = () => {
 
     return (
         <>
-            {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
+            {StudentMenuList.map(({ dropdownMenu, id, name, path, icon }) => {
                 return (
                     <li
                         key={id}

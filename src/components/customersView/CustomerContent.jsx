@@ -14,8 +14,7 @@ const CustomerContent = () => {
         <>
             <div className="col-xxl-4 col-xl-6">
                 <Profile />
-                <CustomerSocalMedia />
-                <CustomerSocalFlower />
+                
             </div>
             <div className="col-xxl-8 col-xl-6">
                 <div className="card border-top-0">
@@ -30,15 +29,6 @@ const CustomerContent = () => {
                             <li className="nav-item flex-fill border-top" role="presentation">
                                 <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#activityTab" role="tab">Activity</a>
                             </li>
-                            <li className="nav-item flex-fill border-top" role="presentation">
-                                <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#notificationsTab" role="tab">Notifications</a>
-                            </li>
-                            <li className="nav-item flex-fill border-top" role="presentation">
-                                <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#connectionTab" role="tab">Connection</a>
-                            </li>
-                            <li className="nav-item flex-fill border-top" role="presentation">
-                                <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#securityTab" role="tab">Security</a>
-                            </li>
                         </ul>
                     </div>
                     <div className="tab-content">
@@ -47,9 +37,6 @@ const CustomerContent = () => {
                             <TabBillingContent billingHistoryshow={true} />
                         </div>
                         <TabActivityContent />
-                        <TabNotificationsContent />
-                        <TabConnections />
-                        <TabSecurity />
                     </div>
                 </div>
             </div>

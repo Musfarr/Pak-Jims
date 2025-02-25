@@ -39,7 +39,7 @@ const TabBillingContent = ({billingHistoryshow}) => {
                     />
                 </div>
             </div>
-            <div className="subscription-plan px-4 pt-4">
+            {/* <div className="subscription-plan px-4 pt-4">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                     <h5 className="fw-bold mb-0">Subscription &amp; Plan:</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">
@@ -81,9 +81,9 @@ const TabBillingContent = ({billingHistoryshow}) => {
                         isActive={false}
                     />
                 </div>
-            </div>
+            </div> */}
             <hr className="mt-2" />
-            <div className="payment-methord px-4">
+            {/* <div className="payment-methord px-4">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                     <h5 className="fw-bold mb-0">Payment Methods:</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">Add Method</a>
@@ -123,7 +123,7 @@ const TabBillingContent = ({billingHistoryshow}) => {
                         />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <hr className="mt-2" />
             {billingHistoryshow && <BillingHistory history={billingHistory} />}
@@ -214,7 +214,7 @@ const BillingHistory = ({ history }) => {
         <div className="payment-history">
             <div className="mb-4 px-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Billing History:</h5>
-                <a href="#" className="btn btn-sm btn-light-brand">All History</a>
+                {/* <a href="#" className="btn btn-sm btn-light-brand">All History</a> */}
             </div>
             <div className="table-responsive">
                 <table className="table mb-0">
@@ -224,7 +224,7 @@ const BillingHistory = ({ history }) => {
                             <th>Date</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th className="text-end">Actions</th>
+                            {/* <th className="text-end">Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -234,11 +234,11 @@ const BillingHistory = ({ history }) => {
                                 <td>{item.date}</td>
                                 <td>{item.amount}</td>
                                 <td><span className={`badge bg-soft-${item.statusColor} text-${item.statusColor}`}>{item.status}</span></td>
-                                <td className="hstack justify-content-end gap-4 text-end">
+                                {/* <td className="hstack justify-content-end gap-4 text-end">
                                     <a href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Sent Mail"><FiSend className='fs-12' /></a>
                                     <a href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Invoice Details"><FiEye className='fs-12' /></a>
                                     <a href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" title="More Options"><FiMoreVertical className='fs-12' /></a>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
