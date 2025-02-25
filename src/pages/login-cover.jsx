@@ -6,9 +6,9 @@ const LoginCover = () => {
     <main className="auth-cover-wrapper">
 
       <div className="auth-cover-content-inner w-100 h-100 ">
+            <img src="/images/auth/2.jpg" alt="img" className="img-fluid" />
         <div className="auth-cover-content-wraper   ">
           <div className="auth-img">
-            <img src="/images/auth/2.jpg" alt="img" className="img-fluid" />
           </div>
         </div>
       </div>
