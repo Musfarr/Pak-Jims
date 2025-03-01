@@ -69,14 +69,32 @@ import WidgetsCharts from "../pages/widgets-charts";
 import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Unauthorized from "../pages/unauthorized";
+import MasterAdminDashboard from "../pages/master-admin-dashboard";
+import SuperAdminDashboard from "../pages/super-admin-dashboard";
+import AdminDashboard from "../pages/admin-dashboard";
+import FacultyDashboard from "../pages/faculty-dashboard";
+import StudentDashboard from "../pages/student-dashboard";
+import { AuthProvider } from '../context/AuthContext';
+
+// Create a layout component that wraps children with AuthProvider
+const AuthLayout = ({ children }) => {
+    return (
+        <AuthProvider>
+            {children}
+        </AuthProvider>
+    );
+};
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <ProtectedRoute>
-                <RootLayout />
-            </ProtectedRoute>
+            <AuthLayout>
+                <ProtectedRoute>
+                    <RootLayout />
+                </ProtectedRoute>
+            </AuthLayout>
         ),
         children: [
             {
@@ -86,6 +104,61 @@ export const router = createBrowserRouter([
             {
                 path: "/dashboard",
                 element: <Home />
+            },
+            // Role-specific dashboards
+            {
+                path: "/master-admin-dashboard",
+                element: (
+                    <ProtectedRoute requiredRole="masteradmin">
+                        <MasterAdminDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/super-admin-dashboard",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <SuperAdminDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/admin-dashboard",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/faculty-dashboard",
+                element: (
+                    <ProtectedRoute requiredRole="faculty">
+                        <FacultyDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/student-dashboard",
+                element: (
+                    <ProtectedRoute requiredRole="student">
+                        <StudentDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            // Example of a route that requires minimum role level
+            {
+                path: "/admin-area",
+                element: (
+                    <ProtectedRoute minimumRole="admin">
+                        <Analytics />
+                    </ProtectedRoute>
+                )
+            },
+            // Unauthorized page
+            {
+                path: "/unauthorized",
+                element: <Unauthorized />
             },
             {
                 path: "/dashboards/analytics",
@@ -200,9 +273,11 @@ export const router = createBrowserRouter([
     {
         path: "/applications",
         element: (
-            <ProtectedRoute>
-                <LayoutApplications />
-            </ProtectedRoute>
+            <AuthLayout>
+                <ProtectedRoute>
+                    <LayoutApplications />
+                </ProtectedRoute>
+            </AuthLayout>
         ),
         children: [
             {
@@ -234,9 +309,11 @@ export const router = createBrowserRouter([
     {
         path: "/settings",
         element: (
-            <ProtectedRoute>
-                <LayoutSetting />
-            </ProtectedRoute>
+            <AuthLayout>
+                <ProtectedRoute>
+                    <LayoutSetting />
+                </ProtectedRoute>
+            </AuthLayout>
         ),
         children: [
             {
@@ -295,7 +372,11 @@ export const router = createBrowserRouter([
     },
     {
         path: "/authentication",
-        element: <LayoutAuth />,
+        element: (
+            <AuthLayout>
+                <LayoutAuth />
+            </AuthLayout>
+        ),
         children: [
             {
                 path: "/authentication",

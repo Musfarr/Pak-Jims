@@ -3,8 +3,15 @@ import { FiChevronRight } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 // import { menuList } from "@/utils/fackData/menuList";
 import getIcon from "@/utils/getIcon";
-import { StudentMenuList } from "@/utils/Newdata/StudentMenuList";
 
+import { 
+    MasterAdminMenuList, 
+    SuperAdminMenuList, 
+    AdminMenuList, 
+    FacultyMenuList, 
+    StudentMenuList 
+} from "@/utils/Newdata/RoleMenus";
+import { useAuth } from "../../../context/AuthContext";
 
 const Menus = () => {
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -12,6 +19,41 @@ const Menus = () => {
     const [activeParent, setActiveParent] = useState("");
     const [activeChild, setActiveChild] = useState("");
     const pathName = useLocation().pathname;
+    const { role } = useAuth();
+    
+    console.log("Current user role:", role);
+
+    // Get the appropriate menu list based on user role
+    const getMenuListByRole = () => {
+        console.log("Getting menu list for role:", role);
+        
+        // Convert role to lowercase for case-insensitive comparison
+        const roleLC = role ? role.toLowerCase() : '';
+        
+        switch(roleLC) {
+            case "masteradmin":
+                console.log("Using Master Admin menu list");
+                return MasterAdminMenuList;
+            case "superadmin":
+                console.log("Using Super Admin menu list");
+                return SuperAdminMenuList;
+            case "admin":
+                console.log("Using Admin menu list");
+                return AdminMenuList;
+            case "faculty":
+                console.log("Using Faculty menu list");
+                return FacultyMenuList;
+            case "student":
+                console.log("Using Student menu list");
+                return StudentMenuList;
+            default:
+                console.log("Using default Student menu list, role not recognized:", roleLC);
+                return StudentMenuList; // Default to student menu if role not recognized
+        }
+    };
+
+    const menuList = getMenuListByRole();
+    console.log("Menu list items count:", menuList.length);
 
     const handleMainMenu = (e, name) => {
         if (openDropdown === name) {
@@ -45,7 +87,7 @@ const Menus = () => {
 
     return (
         <>
-            {StudentMenuList.map(({ dropdownMenu, id, name, path, icon }) => {
+            {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
                 return (
                     <li
                         key={id}
@@ -68,7 +110,7 @@ const Menus = () => {
                                 const x = name;
                                 return (
                                     <Fragment key={id}>
-                                        {subdropdownMenu.length ? (
+                                        {subdropdownMenu && subdropdownMenu.length ? (
                                             <li
                                                 className={`nxl-item nxl-hasmenu ${activeChild === name ? "active" : ""
                                                     }`}

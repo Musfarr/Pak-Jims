@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
@@ -6,27 +6,69 @@ import { useAuth } from '../../context/AuthContext'
 const LoginForm = ({ registerPath, resetPath }) => {
     const { login } = useAuth();
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("123456");
+    const [role, setRole] = useState("student");
+
+    const roleOptions = [
+        { value: "masteradmin", label: "Master Admin" },
+        { value: "superadmin", label: "Super Admin" },
+        { value: "admin", label: "Admin" },
+        { value: "faculty", label: "Faculty" },
+        { value: "student", label: "Student" }
+    ];
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // For now, we'll just pass dummy values since we don't have API
-        const success = login('dummy@email.com', 'password');
+        
+        console.log("LoginForm: Submitting with role:", role);
+        
+        // For now, we'll just pass values from the form
+        const { success, redirectTo } = login(email, password, role);
         if (success) {
-            navigate('/dashboard');
+            // Navigate to the appropriate dashboard
+            navigate(redirectTo);
         }
     };
 
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">Login</h2>
-            {/* <h4 className="fs-13 fw-bold mb-2">Login to your account</h4> */}
-            {/* <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
             <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
-                    <input type="email" className="form-control" placeholder="Email or Username" defaultValue="wrapcode.info@gmail.com" required />
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        placeholder="Enter email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required 
+                    />
+                    <small className="text-muted">
+                        Enter your email
+                    </small>
                 </div>
                 <div className="mb-3">
-                    <input type="password" className="form-control" placeholder="Password" defaultValue="123456" required />
+                    <label className="form-label">Role</label>
+                    <select 
+                        className="form-select" 
+                        value={role} 
+                        onChange={(e) => setRole(e.target.value)}
+                    >
+                        {roleOptions.map(option => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="mb-3">
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        placeholder="Password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required 
+                    />
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                     <div>
@@ -43,24 +85,6 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     <button type="submit" className="btn btn-lg btn-primary w-100">Login</button>
                 </div>
             </form>
-            {/* <div className="w-100 mt-5 text-center mx-auto">
-                <div className="mb-4 border-bottom position-relative"><span className="small py-1 px-3 text-uppercase text-muted bg-white position-absolute translate-middle">or</span></div>
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Facebook">
-                        <FiFacebook size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Twitter">
-                        <FiTwitter size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Github">
-                        <FiGithub size={16} />
-                    </a>
-                </div>
-            </div> */}
-            {/* <div className="mt-5 text-muted">
-                <span> Don't have an account?</span>
-                <Link to={registerPath} className="fw-bold"> Create an Account</Link>
-            </div> */}
         </>
     )
 }
