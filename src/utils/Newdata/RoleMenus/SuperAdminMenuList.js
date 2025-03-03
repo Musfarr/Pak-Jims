@@ -135,5 +135,19 @@ export const SuperAdminMenuList = [
                 subdropdownMenu: []
             }
         ]
-    }
+    },
+    {
+        id: 100,
+        name: "Institutes",
+        path: "#",
+        icon: 'feather-airplay',
+        dropdownMenu: [
+            {
+                id: 101,
+                name: "Institutes List",
+                path: "/institutes",
+                subdropdownMenu: false
+            }
+        ]
+    },
 ];
