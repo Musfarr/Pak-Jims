@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import { useAuth } from '../context/AuthContext';
 import RoleNavigation from '../components/RoleNavigation';
-import { FiEdit, FiEye, FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiEye, FiTrash2, FiUserPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Pagination from '@/components/shared/Pagination';
 
@@ -23,7 +23,8 @@ const InstitutesList = () => {
       cell: '0243-720400', 
       website: 'www.gims.edu.pk', 
       email: 'info@gims.edu.pk', 
-      address: 'Gambat'
+      address: 'Gambat',
+      hasSuperAdmin: false
     },
     { 
       id: 2, 
@@ -37,7 +38,8 @@ const InstitutesList = () => {
       cell: '0243-720500', 
       website: 'www.dow.edu.pk', 
       email: 'info@dow.edu.pk', 
-      address: 'Karachi'
+      address: 'Karachi',
+      hasSuperAdmin: true
     },
     { 
       id: 3, 
@@ -51,7 +53,8 @@ const InstitutesList = () => {
       cell: '0243-720600', 
       website: 'www.lmc.edu.pk', 
       email: 'info@lmc.edu.pk', 
-      address: 'Hyderabad'
+      address: 'Hyderabad',
+      hasSuperAdmin: false
     },
   ]);
 
@@ -125,6 +128,14 @@ const InstitutesList = () => {
                                   >
                                     <FiTrash2 />
                                   </button>
+                                  <Link 
+                                    to={`/institutes/create-super-admin/${institute.id}`} 
+                                    className={`btn btn-sm ${institute.hasSuperAdmin ? 'btn-secondary' : 'btn-success'}`}
+                                    title={institute.hasSuperAdmin ? "Update Super Admin" : "Create Super Admin"}
+                                  >
+                                    <FiUserPlus />
+                                    {institute.hasSuperAdmin ? ' Update' : ' Create'} Super Admin
+                                  </Link>
                                 </>
                               )}
                             </div>

@@ -77,6 +77,7 @@ import FacultyDashboard from "../pages/faculty-dashboard";
 import StudentDashboard from "../pages/student-dashboard";
 import InstitutesList from "../pages/institutes-list";
 import InstitutesCreate from "../pages/institutes-create";
+import InstitutesCreateSuperAdmin from "../pages/institutes-create-super-admin";
 import { AuthProvider } from '../context/AuthContext';
 
 // Create a layout component that wraps children with AuthProvider
@@ -284,6 +285,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="masteradmin">
                         <InstitutesCreate />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/institutes/create-super-admin/:id",
+                element: (
+                    <ProtectedRoute requiredRole="masteradmin">
+                        <InstitutesCreateSuperAdmin />
                     </ProtectedRoute>
                 )
             },
