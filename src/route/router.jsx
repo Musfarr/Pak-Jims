@@ -79,6 +79,11 @@ import InstitutesList from "../pages/institutes-list";
 import InstitutesCreate from "../pages/institutes-create";
 import InstitutesCreateSuperAdmin from "../pages/institutes-create-super-admin";
 import { AuthProvider } from '../context/AuthContext';
+import Createfaculty from "../pages/Admin/Create-faculty";
+import Createstudent from "../pages/Admin/Create-student";
+import Facultylist from "../pages/Admin/Faculty-list";
+import Studentlist from "../pages/Admin/Student-list";
+
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -125,6 +130,9 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+
+
+            // Admin dashboard
             {
                 path: "/admin-dashboard",
                 element: (
@@ -133,6 +141,46 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            {
+                path: "/create-student",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Createstudent />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/student-list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Studentlist />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/create-faculty",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Createfaculty />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/faculty-list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Facultylist />
+                    </ProtectedRoute>
+                )
+            },
+            
+
+
+
+
+
+
+
             {
                 path: "/faculty-dashboard",
                 element: (
