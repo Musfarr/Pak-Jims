@@ -83,7 +83,12 @@ import Createfaculty from "../pages/Admin/Create-faculty";
 import Createstudent from "../pages/Admin/Create-student";
 import Facultylist from "../pages/Admin/Faculty-list";
 import Studentlist from "../pages/Admin/Student-list";
-
+import CourseList from "../pages/Admin/Course-list";
+import CreateCourse from "../pages/Admin/Create-course";
+import ProgramList from "../pages/Admin/Program-list";
+import CreateProgram from "../pages/Admin/Create-program";
+import DepartmentList from "../pages/Admin/Department-list";
+import CreateDepartment from "../pages/Admin/Create-department";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -173,11 +178,54 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            
-
-
-
-
+            {
+                path: "/courses/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CourseList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/courses/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateCourse />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/programs/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ProgramList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/programs/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateProgram />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/departments/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <DepartmentList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/departments/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateDepartment />
+                    </ProtectedRoute>
+                )
+            },
 
 
 

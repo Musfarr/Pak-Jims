@@ -57,6 +57,12 @@ export const FacultyMenuList = [
                 name: "Course Materials",
                 path: "/courses/materials",
                 subdropdownMenu: []
+            },
+            {
+                id: 3,
+                name: "Course List",
+                path: "/courses/list",
+                subdropdownMenu: []
             }
         ]
     },

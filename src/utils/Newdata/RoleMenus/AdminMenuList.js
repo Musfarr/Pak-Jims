@@ -20,7 +20,6 @@ export const AdminMenuList = [
             }
         ]
     },
-  
 
 
 
@@ -88,6 +87,52 @@ export const AdminMenuList = [
                 id: 3,
                 name: "Course Categories",
                 path: "/courses/categories",
+                subdropdownMenu: []
+            },
+            {
+                id: 4,
+                name: "Course Setup",
+                path: "/courses/setup",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    {
+        id: 7,
+        name: "programs",
+        path: "#",
+        icon: 'feather-award',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Program List",
+                path: "/programs/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Program",
+                path: "/programs/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    {
+        id: 8,
+        name: "departments",
+        path: "#",
+        icon: 'feather-briefcase',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Department List",
+                path: "/departments/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Department",
+                path: "/departments/add",
                 subdropdownMenu: []
             }
         ]
