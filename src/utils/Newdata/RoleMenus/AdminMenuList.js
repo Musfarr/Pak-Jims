@@ -83,18 +83,6 @@ export const AdminMenuList = [
                 path: "/courses/add",
                 subdropdownMenu: []
             },
-            {
-                id: 3,
-                name: "Course Categories",
-                path: "/courses/categories",
-                subdropdownMenu: []
-            },
-            {
-                id: 4,
-                name: "Course Setup",
-                path: "/courses/setup",
-                subdropdownMenu: []
-            }
         ]
     },
     {
