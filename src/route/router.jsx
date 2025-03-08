@@ -89,6 +89,12 @@ import ProgramList from "../pages/Admin/Program-list";
 import CreateProgram from "../pages/Admin/Create-program";
 import DepartmentList from "../pages/Admin/Department-list";
 import CreateDepartment from "../pages/Admin/Create-department";
+import ClassList from "../pages/Admin/Class-list";
+import CreateClass from "../pages/Admin/Create-class";
+import AcademicYearList from "../pages/Admin/Academic-year-list";
+import CreateAcademicYear from "../pages/Admin/Create-academic-year";
+import BatchList from "../pages/Admin/Batch-list";
+import CreateBatch from "../pages/Admin/Create-batch";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -223,6 +229,54 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <CreateDepartment />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/classes/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ClassList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/classes/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateClass />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/academic-years/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <AcademicYearList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/academic-years/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateAcademicYear />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/batches/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <BatchList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/batches/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateBatch />
                     </ProtectedRoute>
                 )
             },

@@ -69,7 +69,7 @@ export const AdminMenuList = [
         id: 6,
         name: "courses",
         path: "#",
-        icon: 'feather-book',
+        icon: 'feather-award',
         dropdownMenu: [
             {
                 id: 1,
@@ -133,6 +133,66 @@ export const AdminMenuList = [
                 id: 2,
                 name: "Add Department",
                 path: "/departments/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    {
+        id: 9,
+        name: "classes",
+        path: "#",
+        icon: 'feather-layers',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Class List",
+                path: "/classes/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Class",
+                path: "/classes/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    {
+        id: 10,
+        name: "academic years",
+        path: "#",
+        icon: 'feather-briefcase',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Academic Year List",
+                path: "/academic-years/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Academic Year",
+                path: "/academic-years/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    {
+        id: 11,
+        name: "batches",
+        path: "#",
+        icon: 'feather-users',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Batch List",
+                path: "/batches/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Batch",
+                path: "/batches/add",
                 subdropdownMenu: []
             }
         ]
