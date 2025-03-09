@@ -95,6 +95,8 @@ import AcademicYearList from "../pages/Admin/Academic-year-list";
 import CreateAcademicYear from "../pages/Admin/Create-academic-year";
 import BatchList from "../pages/Admin/Batch-list";
 import CreateBatch from "../pages/Admin/Create-batch";
+import StudentView from "../pages/Admin/Student-view";
+import FacultyView from "../pages/Admin/Faculty-view";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -277,6 +279,22 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <CreateBatch />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/students/view/:id",
+                element: (
+                    <ProtectedRoute requiredRole={{ minLevel: "admin" }}>
+                        <StudentView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/faculty/view/:id",
+                element: (
+                    <ProtectedRoute requiredRole={{ minLevel: "admin" }}>
+                        <FacultyView />
                     </ProtectedRoute>
                 )
             },

@@ -1,18 +1,18 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import PageHeaderWidgets  from '@/components/shared/pageHeader/PageHeaderWidgets'
-import Customers from '@/components/widgetsTables/Customers'
+import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets'
+import FacultyTable from '@/components/widgetsTables/FacultyTable'
 import Footer from '@/components/shared/Footer'
 
 const Facultylist = () => {
   return (
     <>
-    <PageHeader >   
+    <PageHeader>   
         <PageHeaderWidgets />
     </PageHeader>
     <div className='main-content'>
         <div className='row'>
-            <Customers title={"Students"}/>
+            <FacultyTable title={"Faculty"} />
         </div>
     </div>
     <Footer/>
