@@ -17,7 +17,10 @@ const FacultyContent = ({ faculty }) => {
     return (
         <div className="col-12">
             <div className="row">
-                <div className="col-md-3 mb-4">
+
+
+
+                <div className="col-xxl-4 col-xl-6">
                     <FacultyProfile faculty={faculty} />
                     <div className="d-grid gap-2 mt-3">
                         <Link to={`/faculty/edit/${faculty.id}`} className="btn btn-warning">
@@ -25,11 +28,16 @@ const FacultyContent = ({ faculty }) => {
                         </Link>
                     </div>
                 </div>
-                <div className="col-md-9">
+
+
+
+                <div className="col-xxl-8 col-xl-6">
                     <div className="card">
                         <div className="card-header p-0 border-bottom-0">
-                            <ul className="nav nav-tabs" id="facultyTab" role="tablist">
-                                <li className="nav-item" role="presentation">
+                            <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="facultyTab" role="tablist">
+                                <li className="nav-item flex-fill" role="presentation">
+                                    
+                                    
                                     <button 
                                         className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
                                         onClick={() => handleTabClick('overview')}
@@ -44,7 +52,7 @@ const FacultyContent = ({ faculty }) => {
                                         Overview
                                     </button>
                                 </li>
-                                <li className="nav-item" role="presentation">
+                                <li className="nav-item flex-fill" role="presentation">
                                     <button 
                                         className={`nav-link ${activeTab === 'education' ? 'active' : ''}`}
                                         onClick={() => handleTabClick('education')}
@@ -59,7 +67,7 @@ const FacultyContent = ({ faculty }) => {
                                         Education & Experience
                                     </button>
                                 </li>
-                                <li className="nav-item" role="presentation">
+                                <li className="nav-item flex-fill" role="presentation">
                                     <button 
                                         className={`nav-link ${activeTab === 'courses' ? 'active' : ''}`}
                                         onClick={() => handleTabClick('courses')}
@@ -74,7 +82,7 @@ const FacultyContent = ({ faculty }) => {
                                         Courses
                                     </button>
                                 </li>
-                                <li className="nav-item" role="presentation">
+                                <li className="nav-item flex-fill" role="presentation">
                                     <button 
                                         className={`nav-link ${activeTab === 'publications' ? 'active' : ''}`}
                                         onClick={() => handleTabClick('publications')}
@@ -91,6 +99,10 @@ const FacultyContent = ({ faculty }) => {
                                 </li>
                             </ul>
                         </div>
+
+
+
+
                         <div className="tab-content" id="facultyTabContent">
                             <div 
                                 className={`tab-pane fade ${activeTab === 'overview' ? 'show active' : ''}`}

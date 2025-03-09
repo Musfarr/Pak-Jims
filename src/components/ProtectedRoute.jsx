@@ -6,9 +6,9 @@ const ProtectedRoute = ({ children, requiredRole, minimumRole }) => {
   const { isAuthenticated, hasRole, homePage } = useAuth();
 
   // Redirect to the appropriate page based on authentication and role
-  if (!isAuthenticated) {
-    return <Navigate to="/authentication/login/cover" replace />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/authentication/login/cover" replace />;
+  // }
 
   // Check if user has the exact required role (if specified)
   if (requiredRole && !hasRole(requiredRole)) {

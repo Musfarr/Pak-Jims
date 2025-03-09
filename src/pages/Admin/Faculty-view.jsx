@@ -65,7 +65,7 @@ const FacultyView = () => {
                 <PageHeaderWidgets />
             </PageHeader>
             <div className='main-content'>
-                <div className='row mb-4'>
+                {/* <div className='row mb-4'>
                     <div className='col-12'>
                         <div className='d-flex justify-content-between align-items-center'>
                             <Link to="/faculty/list" className='btn btn-outline-secondary'>
@@ -73,7 +73,7 @@ const FacultyView = () => {
                             </Link>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className='row'>
                     <FacultyContent faculty={faculty} />
