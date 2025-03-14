@@ -103,12 +103,17 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Navigate to="/dashboard" replace />
+                element: <Navigate to="/Authentication/login" replace />
             },
             {
                 path: "/dashboard",
                 element: <Home />
             },
+
+
+
+
+
             // Role-specific dashboards
             {
                 path: "/master-admin-dashboard",
@@ -449,42 +454,7 @@ export const router = createBrowserRouter([
             },
         ]
     },
-    {
-        path: "/applications",
-        element: (
-            <AuthLayout>
-                <ProtectedRoute>
-                    <LayoutApplications />
-                </ProtectedRoute>
-            </AuthLayout>
-        ),
-        children: [
-            {
-                path: "/applications/chat",
-                element: <AppsChat />
-            },
-            {
-                path: "/applications/email",
-                element: <AppsEmail />
-            },
-            {
-                path: "/applications/tasks",
-                element: <AppsTasks />
-            },
-            {
-                path: "/applications/notes",
-                element: <AppsNotes />
-            },
-            {
-                path: "/applications/calender",
-                element: <AppsCalender />
-            },
-            {
-                path: "/applications/storage",
-                element: <AppsStorage />
-            },
-        ]
-    },
+
     {
         path: "/authentication",
         element: (
@@ -495,10 +465,10 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/authentication",
-                element: <Navigate to="/authentication/login/cover" replace />
+                element: <Navigate to="/authentication/login" replace />
             },
             {
-                path: "/authentication/login/cover",
+                path: "/authentication/login",
                 element: <LoginCover />
             },
             {
@@ -506,64 +476,30 @@ export const router = createBrowserRouter([
                 element: <LoginMinimal />
             },
             {
-                path: "/authentication/login/creative",
-                element: <LoginCreative />
-            },
-            {
-                path: "/authentication/register/cover",
-                element: <RegisterCover />
-            },
-            {
                 path: "/authentication/register/minimal",
                 element: <RegisterMinimal />
             },
-            {
-                path: "/authentication/register/creative",
-                element: <RegisterCreative />
-            },
-
-
-
             
-
-
-
             {
-                path: "/authentication/404/cover",
-                element: <ErrorCover />
-            },
-            {
-                path: "/authentication/404/minimal",
+                path: "/authentication/404",
                 element: <ErrorMinimal />
             },
-            {
-                path: "/authentication/404/creative",
-                element: <ErrorCreative />
-            },
-            {
-                path: "/authentication/verify/cover",
-                element: <OtpCover />
-            },
+           
             {
                 path: "/authentication/verify/minimal",
                 element: <OtpMinimal />
             },
             {
-                path: "/authentication/verify/creative",
-                element: <OtpCreative />
-            },
-            {
-                path: "/authentication/maintenance/cover",
-                element: <MaintenanceCover />
-            },
-            {
                 path: "/authentication/maintenance/minimal",
                 element: <MaintenanceMinimal />
             },
-            {
-                path: "/authentication/maintenance/creative",
-                element: <MaintenanceCreative />
-            },
+            
         ]
+    },
+
+    // For Unidentified Routes 
+    {
+        path : '*',
+        element : <ErrorMinimal />
     }
 ]);
