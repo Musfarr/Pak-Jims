@@ -30,29 +30,12 @@ import PaymentCreate from "../pages/payment-create";
 import ProjectsList from "../pages/projects-list";
 import ProjectsView from "../pages/projects-view";
 import ProjectsCreate from "../pages/projects-create";
-import SettingsGaneral from "../pages/settings-ganeral";
-import LayoutSetting from "../layout/layoutSetting";
-import SettingsSeo from "../pages/settings-seo";
-import SettingsTags from "../pages/settings-tags";
-import SettingsEmail from "../pages/settings-email";
-import SettingsTasks from "../pages/settings-tasks";
-import SettingsLeads from "../pages/settings-leads";
-import SettingsMiscellaneous from "../pages/settings-miscellaneous";
-import SettingsRecaptcha from "../pages/settings-recaptcha";
-import SettingsLocalization from "../pages/settings-localization";
-import SettingsCustomers from "../pages/settings-customers";
-import SettingsGateways from "../pages/settings-gateways";
-import SettingsFinance from "../pages/settings-finance";
-import SettingsSupport from "../pages/settings-support";
 import LayoutAuth from "../layout/layoutAuth";
 import LoginMinimal from "../pages/login-minimal";
 import LoginCreative from "../pages/login-creative";
 import RegisterCover from "../pages/register-cover";
 import RegisterMinimal from "../pages/register-minimal";
 import RegisterCreative from "../pages/register-creative";
-import ResetCover from "../pages/reset-cover";
-import ResetMinimal from "../pages/reset-minimal";
-import ResetCreative from "../pages/reset-creative";
 import ErrorCover from "../pages/error-cover";
 import ErrorCreative from "../pages/error-creative";
 import ErrorMinimal from "../pages/error-minimal";
@@ -503,70 +486,6 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/settings",
-        element: (
-            <AuthLayout>
-                <ProtectedRoute>
-                    <LayoutSetting />
-                </ProtectedRoute>
-            </AuthLayout>
-        ),
-        children: [
-            {
-                path: "/settings/ganeral",
-                element: <SettingsGaneral />
-            },
-            {
-                path: "/settings/seo",
-                element: <SettingsSeo />
-            },
-            {
-                path: "/settings/tags",
-                element: <SettingsTags />
-            },
-            {
-                path: "/settings/email",
-                element: <SettingsEmail />
-            },
-            {
-                path: "/settings/tasks",
-                element: <SettingsTasks />
-            },
-            {
-                path: "/settings/leads",
-                element: <SettingsLeads />
-            },
-            {
-                path: "/settings/Support",
-                element: <SettingsSupport />
-            },
-            {
-                path: "/settings/finance",
-                element: <SettingsFinance />
-            },
-            {
-                path: "/settings/gateways",
-                element: <SettingsGateways />
-            },
-            {
-                path: "/settings/customers",
-                element: <SettingsCustomers />
-            },
-            {
-                path: "/settings/localization",
-                element: <SettingsLocalization />
-            },
-            {
-                path: "/settings/recaptcha",
-                element: <SettingsRecaptcha />
-            },
-            {
-                path: "/settings/miscellaneous",
-                element: <SettingsMiscellaneous />
-            },
-        ]
-    },
-    {
         path: "/authentication",
         element: (
             <AuthLayout>
@@ -602,18 +521,13 @@ export const router = createBrowserRouter([
                 path: "/authentication/register/creative",
                 element: <RegisterCreative />
             },
-            {
-                path: "/authentication/reset/cover",
-                element: <ResetCover />
-            },
-            {
-                path: "/authentication/reset/minimal",
-                element: <ResetMinimal />
-            },
-            {
-                path: "/authentication/reset/creative",
-                element: <ResetCreative />
-            },
+
+
+
+            
+
+
+
             {
                 path: "/authentication/404/cover",
                 element: <ErrorCover />
