@@ -99,22 +99,22 @@ const SearchModal = () => {
                 </div>
                 <div className="dropdown-divider mt-0"></div>
                 <div className="search-items-wrapper">
-                    <div className="searching-for px-4 py-2">
+                    {/* <div className="searching-for px-4 py-2">
                         <p className="fs-11 fw-medium text-muted">I'm searching for...</p>
                         <div className="d-flex flex-wrap gap-1">
                             {
                                 tags.map((tag, index) => <Link key={index} className="flex-fill border rounded py-1 px-2 text-center fs-11 fw-semibold">{tag}</Link>)
                             }
                         </div>
-                    </div>
-                    <div className="dropdown-divider"></div>
-                    <div className="recent-result px-4 py-2">
+                    </div> */}
+                    {/* <div className="dropdown-divider"></div> */}
+                    {/* <div className="recent-result px-4 py-2">
                         <Title name={"Recnet"} number={"3"} />
                         {
                             recnetSearch.map(({ search_title, id, path, icon, badge }) => <Card key={id} icon={icon} subTitle={path} title={search_title} badge={badge} isImg={false} />)
                         }
-                    </div>
-                    <div className="dropdown-divider my-3"></div>
+                    </div> */}
+                    {/* <div className="dropdown-divider my-3"></div> */}
                     <div className="users-result px-4 py-2">
                         <Title name={"Users"} number={"5"} />
                         {
@@ -122,14 +122,14 @@ const SearchModal = () => {
                         }
                     </div>
                     <div className="dropdown-divider my-3"></div>
-                    <div className="file-result px-4 py-2">
+                    {/* <div className="file-result px-4 py-2">
                         <Title name={"Files"} number={"3"} />
                         {
                             filesList.map(({ file_name, id, size, src }) => <Card key={id} src={src} subTitle={size} title={file_name} badge={<FiDownload size={12} />} />)
                         }
-                    </div>
-                    <div className="dropdown-divider mt-3 mb-0"></div>
-                    <Link to={"#"} className="p-3 fs-10 fw-bold text-uppercase text-center d-block">Loar More</Link>
+                    </div> */}
+                    {/* <div className="dropdown-divider mt-3 mb-0"></div> */}
+                    {/* <Link to={"#"} className="p-3 fs-10 fw-bold text-uppercase text-center d-block">Loar More</Link> */}
                 </div>
             </div>
         </div>

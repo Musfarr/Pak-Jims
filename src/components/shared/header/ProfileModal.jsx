@@ -14,7 +14,7 @@ const ProfileModal = () => {
                     <div className="d-flex align-items-center">
                         <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" />
                         <div>
-                            <h6 className="text-dark mb-0">Alexandra Della <span className="badge bg-soft-success text-success ms-1">PRO</span></h6>
+                            <h6 className="text-dark mb-0">Alexandra Della </h6>
                             <span className="fs-12 fw-medium text-muted">alex.della@outlook.com</span>
                         </div>
                     </div>
@@ -45,8 +45,8 @@ const ProfileModal = () => {
                         }
                     </div>
                 </div>
-                <div className="dropdown-divider"></div>
-                <div className="dropdown">
+                {/* <div className="dropdown-divider"></div> */}
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className=" me-2"><FiDollarSign /></i>
@@ -72,30 +72,33 @@ const ProfileModal = () => {
                         }
 
                     </div>
-                </div>
+                </div> */}
+
+
+
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
                     <span>Profile Details</span>
                 </a>
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
                 </a>
                 <a href="#" className="dropdown-item">
                     <i ><FiDollarSign /></i>
                     <span>Billing Details</span>
-                </a>
+                </a> */}
                 <a href="#" className="dropdown-item">
                     <i><FiBell /></i>
                     <span>Notifications</span>
                 </a>
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
-                </a>
+                </a> */}
                 <div className="dropdown-divider"></div>
-                <a href="./auth-login-minimal.html" className="dropdown-item">
+                <a href="/" className="dropdown-item">
                     <i> <FiLogOut /></i>
                     <span>Logout</span>
                 </a>
