@@ -7,6 +7,10 @@ import {
   FiMoreVertical,
   FiSettings,
   FiTrash,
+  FiMaximize,
+  FiRefreshCcw
+
+  
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -16,20 +20,20 @@ const CardHeader = ({ title, refresh, remove, expanded }) => {
       <h5 className="card-title">{title}</h5>
       <div className="card-header-action">
         <div className="card-header-btn">
-          <div data-bs-toggle="tooltip" title="Delete" onClick={remove}>
+          {/* <div data-bs-toggle="tooltip" title="Delete" onClick={remove}>
             <span
-              className="avatar-text avatar-xs bg-danger"
+              className="avatar-text "
               data-bs-toggle="remove"
             >
-              {" "}
+              <FiTrash />
             </span>
-          </div>
+          </div> */}
           <div data-bs-toggle="tooltip" title="Refresh" onClick={refresh}>
             <span
-              className="avatar-text avatar-xs bg-warning"
+              className="avatar-text"
               data-bs-toggle="refresh"
             >
-              {" "}
+              <FiRefreshCcw />
             </span>
           </div>
           <div
@@ -38,10 +42,11 @@ const CardHeader = ({ title, refresh, remove, expanded }) => {
             onClick={expanded}
           >
             <span
-              className="avatar-text avatar-xs bg-success"
+              className="avatar-text  "
               data-bs-toggle="expand"
             >
-              {" "}
+            <FiMaximize />
+              
             </span>
           </div>
         </div>

@@ -35,10 +35,10 @@ const Tasks = ({ title }) => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Tasks</th>
-                                    <th className="wd-250">Status</th>
-                                    <th className="wd-250">Priority</th>
-                                    <th className="wd-300">Assigned</th>
+                                    <th>Institute Branches</th>
+                                    {/* <th className="wd-250">Status</th>
+                                    <th className="wd-250">Priority</th> */}
+                                    <th className="wd-300">Assigned Admin</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,16 +53,16 @@ const Tasks = ({ title }) => {
                                             </td>
                                             <td>
                                                 <a href="#">{taskName} <span className="fs-12 fw-normal text-muted">({taskDate})</span> </a>
-                                                <p className="fs-12 text-muted mt-2 text-truncate-1-line tasks-sort-desc">{taskDescription}</p>
+                                                {/* <p className="fs-12 text-muted mt-2 text-truncate-1-line tasks-sort-desc">{taskDescription}</p> */}
                                                 <div className="tasks-list-action d-flex align-items-center gap-3">
-                                                    <a href="#">Start</a>
-                                                    <span>|</span>
+                                                    {/* <a href="#">Start</a> */}
+                                                    {/* <span>|</span> */}
                                                     <a href="#">Edit</a>
                                                     <span>|</span>
                                                     <a href="#" className="text-danger">Delete</a>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {/* <td>
                                                 <SelectDropdown
                                                     options={status}
                                                     selectedOption={selectedOption}
@@ -77,7 +77,7 @@ const Tasks = ({ title }) => {
                                                     defaultSelect={priorityValue?.value}
                                                     onSelectOption={(option) => setSelectedOption(option)}
                                                 />
-                                            </td>
+                                            </td> */}
                                             <td>
                                                 <SelectDropdown
                                                     options={assignee}

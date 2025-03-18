@@ -5,7 +5,7 @@ import { menuList } from "../../fackData/menuList";
 console.log("Original menuList imported:", menuList);
 console.log("Original menuList length:", menuList.length);
 
-export const MasterAdminMenuList = [ 
+export const MasterAdminMenuList = [ ...menuList,
 
     {
         id: 0,

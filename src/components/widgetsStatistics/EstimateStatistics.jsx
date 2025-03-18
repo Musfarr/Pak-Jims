@@ -3,10 +3,10 @@ import getIcon from '@/utils/getIcon';
 import { FiFigma } from 'react-icons/fi';
 
 const statisticsData = [
-    { amount: '$84,059', description: 'Sales', icon: 'feather-shopping-cart', bgColor: 'bg-primary' },
-    { amount: '$23,485', description: 'Earnings', icon: 'feather-dollar-sign', bgColor: 'bg-success' },
-    { amount: '2,364', description: 'Total Sales', icon: 'feather-tag', bgColor: 'bg-warning' },
-    { amount: '$96,485', description: 'Revenue', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+    { amount: '120', description: 'Students', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: '23', description: 'Faculties', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: '3', description: 'Admins', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: '0', description: 'Branches', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
 ];
 
 const EstimateStatistics = () => {

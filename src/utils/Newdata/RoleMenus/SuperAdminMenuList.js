@@ -12,78 +12,74 @@ export const SuperAdminMenuList = [
                 path: "/super-admin-dashboard",
                 subdropdownMenu: []
             },
-            {
-                id: 2,
-                name: "Analytics",
-                path: "/dashboards/analytics",
-                subdropdownMenu: []
-            }
+            // {
+            //     id: 2,
+            //     name: "Analytics",
+            //     path: "/dashboards/analytics",
+            //     subdropdownMenu: []
+            // }
         ]
     },
     {
         id: 1,
-        name: "reports",
+        name: "Branches",
         path: "#",
-        icon: 'feather-cast',
+        icon: 'feather-list',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Sales Report",
-                path: "/reports/sales",
+                name: "Branches List",
+                path: "/branches",
                 subdropdownMenu: []
             },
             {
                 id: 2,
-                name: "Leads Report",
-                path: "/reports/leads",
-                subdropdownMenu: []
-            },
-            {
-                id: 3,
-                name: "Project Report",
-                path: "/reports/project",
-                subdropdownMenu: []
-            }
-        ]
-    },
-    {
-        id: 2,
-        name: "applications",
-        path: '#',
-        icon: 'feather-send',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Chat",
-                path: "/applications/chat",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Email",
-                path: "/applications/email",
-                subdropdownMenu: []
-            },
-            {
-                id: 3,
-                name: "Tasks",
-                path: "/applications/tasks",
-                subdropdownMenu: []
-            },
-            {
-                id: 4,
-                name: "Notes",
-                path: "/applications/notes",
-                subdropdownMenu: []
-            },
-            {
-                id: 5,
-                name: "Calender",
-                path: "/applications/calender",
+                name: "Create Branch",
+                path: "/create-branch",
                 subdropdownMenu: []
             },
         ]
     },
+
+
+    // {
+    //     id: 2,
+    //     name: "applications",
+    //     path: '#',
+    //     icon: 'feather-send',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Chat",
+    //             path: "/applications/chat",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Email",
+    //             path: "/applications/email",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Tasks",
+    //             path: "/applications/tasks",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Notes",
+    //             path: "/applications/notes",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 5,
+    //             name: "Calender",
+    //             path: "/applications/calender",
+    //             subdropdownMenu: []
+    //         },
+    //     ]
+    // },
     {
         id: 5,
         name: "users",
@@ -110,32 +106,32 @@ export const SuperAdminMenuList = [
             }
         ]
     },
-    {
-        id: 8,
-        name: "settings",
-        path: "#",
-        icon: 'feather-settings',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "General",
-                path: "/settings/general",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Security",
-                path: "/settings/security",
-                subdropdownMenu: []
-            },
-            {
-                id: 3,
-                name: "Notifications",
-                path: "/settings/notifications",
-                subdropdownMenu: []
-            }
-        ]
-    },
+    // {
+    //     id: 8,
+    //     name: "settings",
+    //     path: "#",
+    //     icon: 'feather-settings',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "General",
+    //             path: "/settings/general",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Security",
+    //             path: "/settings/security",
+    //             subdropdownMenu: []
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Notifications",
+    //             path: "/settings/notifications",
+    //             subdropdownMenu: []
+    //         }
+    //     ]
+    // },
     {
         id: 100,
         name: "Institutes",
