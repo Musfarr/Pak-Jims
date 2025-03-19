@@ -1,5 +1,7 @@
 // Master Admin has access to all menus
+import InstituteList from "../../pages/MasterAdmin/Institute-list";
 import { menuList } from "../../fackData/menuList";
+
 
 // Log the menuList to make sure it's imported correctly
 console.log("Original menuList imported:", menuList);

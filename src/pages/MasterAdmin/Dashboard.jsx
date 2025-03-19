@@ -4,6 +4,7 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import RoleNavigation from '../../components/RoleNavigation';
 import { Link } from 'react-router-dom';
 import { FiUsers, FiSettings, FiShield, FiDatabase, FiBook, FiUserCheck } from 'react-icons/fi';
+import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
 
 const MasterAdminDashboard = () => {
   const { user } = useAuth();
@@ -15,10 +16,12 @@ const MasterAdminDashboard = () => {
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
+              <EstimateStatistics />
           <div className='col-12'>
             <RoleNavigation />
             
-            <div className='card'>
+            
+            {/* <div className='card'>
               <div className='card-body'>
                 <h5 className="card-title">Welcome, {user?.name || 'Master Admin'}</h5>
                 <p className="card-text">This is the Master Admin dashboard with highest level of access.</p>
@@ -89,7 +92,7 @@ const MasterAdminDashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
