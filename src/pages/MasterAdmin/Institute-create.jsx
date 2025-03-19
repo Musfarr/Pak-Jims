@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { FiSave, FiX } from 'react-icons/fi';
 
-const InstitutesCreate = () => {
+const InstituteCreate = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   
@@ -19,7 +19,12 @@ const InstitutesCreate = () => {
     cell: '',
     website: '',
     email: '',
-    address: ''
+    address: '',
+    status: 'active',
+    maxAdmin: 5,
+    maxFaculty: 50,
+    maxStudents: 1000,
+    maxBranches: 1
   });
   
   const [errors, setErrors] = useState({});
@@ -218,7 +223,7 @@ const InstitutesCreate = () => {
                         name="website"
                         value={formData.website}
                         onChange={handleChange}
-                        placeholder="www.example.edu.pk"
+                        placeholder="Enter website URL"
                       />
                     </div>
                     
@@ -231,27 +236,93 @@ const InstitutesCreate = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="info@example.edu.pk"
+                        placeholder="Enter email address"
                       />
                       {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                     </div>
                     
-                    <div className="col-12 mb-3">
+                    <div className="col-md-12 mb-3">
                       <label htmlFor="address" className="form-label">Address</label>
-                      <input
-                        type="text"
+                      <textarea
                         className="form-control"
                         id="address"
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
+                        rows="3"
                         placeholder="Enter full address"
+                      ></textarea>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="status" className="form-label">Status</label>
+                      <select
+                        className="form-select"
+                        id="status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                      >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    </div>
+                    
+                    <div className="col-md-4 mb-3">
+                      <label htmlFor="maxAdmin" className="form-label">Max Admin</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="maxAdmin"
+                        name="maxAdmin"
+                        value={formData.maxAdmin}
+                        onChange={handleChange}
+                        placeholder="Enter max admin"
+                      />
+                    </div>
+                    
+                    <div className="col-md-4 mb-3">
+                      <label htmlFor="maxFaculty" className="form-label">Max Faculty</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="maxFaculty"
+                        name="maxFaculty"
+                        value={formData.maxFaculty}
+                        onChange={handleChange}
+                        placeholder="Enter max faculty"
+                      />
+                    </div>
+                    
+                    <div className="col-md-4 mb-3">
+                      <label htmlFor="maxStudents" className="form-label">Max Students</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="maxStudents"
+                        name="maxStudents"
+                        value={formData.maxStudents}
+                        onChange={handleChange}
+                        placeholder="Enter max students"
+                      />
+                    </div>
+                    
+                    <div className="col-md-4 mb-3">
+                      <label htmlFor="maxBranches" className="form-label">Max Branches</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="maxBranches"
+                        name="maxBranches"
+                        value={formData.maxBranches}
+                        onChange={handleChange}
+                        placeholder="Enter max branches"
                       />
                     </div>
                   </div>
                   
-                  <div className="d-flex justify-content-end gap-2 mt-4">
-                    <Link to="/institutes" className="btn btn-light">
+                  <div className="d-flex justify-content-end mt-4">
+                    <Link to="/institutes" className="btn btn-secondary me-2">
                       <FiX className="me-1" /> Cancel
                     </Link>
                     <button type="submit" className="btn btn-primary">
@@ -268,4 +339,4 @@ const InstitutesCreate = () => {
   );
 };
 
-export default InstitutesCreate;
+export default InstituteCreate;

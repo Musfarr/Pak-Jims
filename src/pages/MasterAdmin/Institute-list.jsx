@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import { useAuth } from '../context/AuthContext';
-import RoleNavigation from '../components/RoleNavigation';
+import { useAuth } from '../../context/AuthContext';
 import { FiEdit, FiEye, FiTrash2, FiUserPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Pagination from '@/components/shared/Pagination';
 
-const InstitutesList = () => {
+const InstituteList = () => {
   const { user, role, hasRole } = useAuth();
   
   // Sample data for institutes
@@ -73,8 +72,6 @@ const InstitutesList = () => {
       <div className='main-content'>
         <div className='row'>
           <div className='col-12'>
-            {/* <RoleNavigation /> */}
-            
             <div className='card'>
               <div className='card-body'>
                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -114,20 +111,20 @@ const InstitutesList = () => {
                           <td>{institute.address}</td>
                           <td>
                             <div className="d-flex gap-2">
-                              <Link to={`/institutes/view/${institute.id}`} className="btn btn-sm btn-info">
+                              {/* <Link to={`/institutes/view/${institute.id}`} className="btn btn-sm btn-info">
                                 <FiEye />
-                              </Link>
+                              </Link> */}
                               {hasRole('masteradmin') && (
                                 <>
                                   <Link to={`/institutes/edit/${institute.id}`} className="btn btn-sm btn-warning">
                                     <FiEdit />
                                   </Link>
-                                  <button 
+                                  {/* <button 
                                     className="btn btn-sm btn-danger"
                                     onClick={() => handleDelete(institute.id)}
                                   >
                                     <FiTrash2 />
-                                  </button>
+                                  </button> */}
                                   <Link 
                                     to={`/institutes/create-super-admin/${institute.id}`} 
                                     className={`btn btn-sm ${institute.hasSuperAdmin ? 'btn-secondary' : 'btn-success'}`}
@@ -158,7 +155,9 @@ const InstitutesList = () => {
                 )}
                 
               </div>
-                  <div className="card-footer"> <Pagination /></div>
+              <div className="card-footer">
+                <Pagination />
+              </div>
             </div>
           </div>
         </div>
@@ -167,4 +166,4 @@ const InstitutesList = () => {
   );
 };
 
-export default InstitutesList;
+export default InstituteList;

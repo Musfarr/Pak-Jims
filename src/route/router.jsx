@@ -37,14 +37,10 @@ import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Unauthorized from "../pages/unauthorized";
-import MasterAdminDashboard from "../pages/master-admin-dashboard";
 import SuperAdminDashboard from "../pages/super-admin-dashboard";
 import AdminDashboard from "../pages/admin-dashboard";
 import FacultyDashboard from "../pages/faculty-dashboard";
 import StudentDashboard from "../pages/student-dashboard";
-import InstitutesList from "../pages/institutes-list";
-import InstitutesCreate from "../pages/institutes-create";
-import InstitutesCreateSuperAdmin from "../pages/institutes-create-super-admin";
 import { AuthProvider } from '../context/AuthContext';
 import Createfaculty from "../pages/Admin/Create-faculty";
 import Createstudent from "../pages/Admin/Create-student";
@@ -64,6 +60,13 @@ import BatchList from "../pages/Admin/Batch-list";
 import CreateBatch from "../pages/Admin/Create-batch";
 import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
+
+// MasterAdmin pages
+import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
+import InstituteList from "../pages/MasterAdmin/Institute-list";
+import InstituteCreate from "../pages/MasterAdmin/Institute-create";
+import InstituteEdit from "../pages/MasterAdmin/Institute-edit";
+import InstituteCreateSuperAdmin from "../pages/MasterAdmin/Institute-create-super-admin";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -416,7 +419,7 @@ export const router = createBrowserRouter([
                 path: "/institutes",
                 element: (
                     <ProtectedRoute minimumRole="superadmin">
-                        <InstitutesList />
+                        <InstituteList />
                     </ProtectedRoute>
                 )
             },
@@ -424,7 +427,7 @@ export const router = createBrowserRouter([
                 path: "/institutes/create",
                 element: (
                     <ProtectedRoute requiredRole="masteradmin">
-                        <InstitutesCreate />
+                        <InstituteCreate />
                     </ProtectedRoute>
                 )
             },
@@ -432,7 +435,15 @@ export const router = createBrowserRouter([
                 path: "/institutes/create-super-admin/:id",
                 element: (
                     <ProtectedRoute requiredRole="masteradmin">
-                        <InstitutesCreateSuperAdmin />
+                        <InstituteCreateSuperAdmin />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/institutes/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="masteradmin">
+                        <InstituteEdit />
                     </ProtectedRoute>
                 )
             },
