@@ -37,8 +37,8 @@ import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Unauthorized from "../pages/unauthorized";
-import SuperAdminDashboard from "../pages/super-admin-dashboard";
-import AdminDashboard from "../pages/admin-dashboard";
+import SuperAdminDashboard from "../pages/SuperAdmin/super-admin-dashboard";
+import AdminDashboard from "../pages/Admin/admin-dashboard";
 import FacultyDashboard from "../pages/faculty-dashboard";
 import StudentDashboard from "../pages/student-dashboard";
 import { AuthProvider } from '../context/AuthContext';
@@ -119,6 +119,67 @@ export const router = createBrowserRouter([
                 )
             },
 
+
+
+            //////////////Super Admin  routes////////////////////////////////////////////////////////////////////////////////
+            // 
+
+            {
+                path: "/institutes",
+                element: (
+                    <ProtectedRoute minimumRole="superadmin">
+                        <InstituteList />
+                    </ProtectedRoute>
+                )
+            },
+
+            {
+                path: "/institutes/create",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <InstituteCreate />
+                    </ProtectedRoute>
+                )
+            },
+            
+            {
+                path: "/institutes/create-super-admin/:id",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <InstituteCreateSuperAdmin />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/institutes/edit/:id",
+                element: (
+                    <ProtectedRoute minimumRole="superadmin">
+                        <InstituteEdit />
+                    </ProtectedRoute>
+                )
+            },
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            
+
+
+
+
+
+
+
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////
 
             // Admin dashboard
             {
@@ -414,39 +475,18 @@ export const router = createBrowserRouter([
                 path: "/help/knowledgebase",
                 element: <HelpKnowledgebase />
             },
-            // Institute routes
-            {
-                path: "/institutes",
-                element: (
-                    <ProtectedRoute minimumRole="superadmin">
-                        <InstituteList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/institutes/create",
-                element: (
-                    <ProtectedRoute requiredRole="masteradmin">
-                        <InstituteCreate />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/institutes/create-super-admin/:id",
-                element: (
-                    <ProtectedRoute requiredRole="masteradmin">
-                        <InstituteCreateSuperAdmin />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/institutes/edit/:id",
-                element: (
-                    <ProtectedRoute requiredRole="masteradmin">
-                        <InstituteEdit />
-                    </ProtectedRoute>
-                )
-            },
+
+
+
+
+
+
+
+
+
+
+
+            
         ]
     },
 

@@ -150,7 +150,7 @@ const InstituteEdit = () => {
     navigate('/institutes');
   };
   
-  if (!hasRole('masteradmin')) {
+  if (!hasRole('superadmin')) {
     return (
       <div className="alert alert-danger m-5">
         You don't have permission to access this page.

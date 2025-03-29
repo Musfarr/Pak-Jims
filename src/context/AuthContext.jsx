@@ -24,103 +24,141 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
   const [homePage, setHomePage] = useState('/');
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load authentication state from localStorage on initial render
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedRole = localStorage.getItem('role');
+    const loadAuthState = () => {
+      try {
+        const storedToken = localStorage.getItem('token');
+        const storedRole = localStorage.getItem('role');
+        const storedUser = localStorage.getItem('user');
+        
+        console.log("AuthContext: Loading auth state, role:", storedRole);
+        
+        if (storedToken && storedRole) {
+          setIsAuthenticated(true);
+          setToken(storedToken);
+          setRole(storedRole);
+          setHomePage(roleHomepages[storedRole] || '/dashboard');
+          
+          // Set user data from localStorage if available, otherwise use default
+          if (storedUser) {
+            setUser(JSON.parse(storedUser));
+          } else {
+            // Mock user data
+            const defaultUser = {
+              name: 'John Doe',
+              email: 'john@example.com',
+              role: storedRole
+            };
+            setUser(defaultUser);
+            localStorage.setItem('user', JSON.stringify(defaultUser));
+          }
+        }
+      } catch (error) {
+        console.error("Error loading auth state:", error);
+        // If there's an error, clear localStorage to prevent persistent errors
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('user');
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    console.log("AuthContext: Stored role from localStorage:", storedRole);
+    loadAuthState();
     
-    if (storedToken) {
-      setIsAuthenticated(true);
-      setToken(storedToken);
-      setRole(storedRole);
-      setHomePage(roleHomepages[storedRole] || '/dashboard');
-      
-      // Mock user data
-      setUser({
-        name: 'John Doe',
-        email: 'john@example.com',
-        role: storedRole
-      });
-    }
+    // Add event listener for storage changes in other tabs/windows
+    window.addEventListener('storage', loadAuthState);
+    
+    return () => {
+      window.removeEventListener('storage', loadAuthState);
+    };
   }, []);
 
   const login = (email, password, userRole) => {
     console.log("AuthContext: Logging in with role:", userRole);
     
-    localStorage.setItem('token', 'mock-jwt-token');
-    localStorage.setItem('role', userRole);
-    
-    setIsAuthenticated(true);
-    setToken('mock-jwt-token');
-    setRole(userRole);
-    
-    const newHomePage = roleHomepages[userRole] || '/dashboard';
-    setHomePage(newHomePage);
-    
-    setUser({
+    // Create user object
+    const userData = {
       name: 'John Doe',
       email: email,
       role: userRole
-    });
+    };
+    
+    // Store auth data in localStorage
+    localStorage.setItem('token', 'mock-jwt-token');
+    localStorage.setItem('role', userRole);
+    localStorage.setItem('user', JSON.stringify(userData));
+    
+    // Update state
+    setIsAuthenticated(true);
+    setToken('mock-jwt-token');
+    setRole(userRole);
+    setUser(userData);
+    
+    const newHomePage = roleHomepages[userRole] || '/dashboard';
+    setHomePage(newHomePage);
     
     return { success: true, redirectTo: newHomePage };
   };
 
   const logout = () => {
+    // Clear localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('user');
+    
+    // Reset state
     setIsAuthenticated(false);
     setToken(null);
     setUser(null);
     setRole(null);
     setHomePage('/');
-    return '/authentication/login/cover';
+    
+    return '/authentication/login';
   };
 
   // Check if user has a specific role or minimum role level
   const hasRole = (roleCheck) => {
     console.log("AuthContext: Checking role:", roleCheck, "Current role:", role);
     
-    // Define role hierarchy (higher index = higher privilege)
-    const roleHierarchy = ['student', 'faculty', 'admin', 'superadmin', 'masteradmin'];
+    if (!role) return false;
     
     // If roleCheck is a string, check for exact match
     if (typeof roleCheck === 'string') {
-      const result = role === roleCheck;
-      console.log("AuthContext: Exact role check result:", result);
-      return result;
+      return role.toLowerCase() === roleCheck.toLowerCase();
     }
     
-    // If roleCheck is an object with minLevel, check for minimum role level
+    // If roleCheck is an object with minLevel property, check for minimum role level
     if (roleCheck && roleCheck.minLevel) {
-      const currentRoleIndex = roleHierarchy.indexOf(role.toLowerCase());
-      const requiredRoleIndex = roleHierarchy.indexOf(roleCheck.minLevel.toLowerCase());
-      
-      console.log("AuthContext: Min role check - Current index:", currentRoleIndex, "Required index:", requiredRoleIndex);
-      
-      // User has sufficient role if their role index is >= the required role index
-      const result = currentRoleIndex >= requiredRoleIndex && requiredRoleIndex !== -1;
-      console.log("AuthContext: Min role check result:", result);
-      return result;
+      const userRoleLevel = roleHierarchy[role.toLowerCase()] || 0;
+      const requiredRoleLevel = roleHierarchy[roleCheck.minLevel.toLowerCase()] || 0;
+      return userRoleLevel >= requiredRoleLevel;
     }
     
     return false;
   };
 
-  const value = {
+  // Value object to be provided to consumers
+  const contextValue = {
     isAuthenticated,
     token,
     user,
     role,
     homePage,
+    isLoading,
     login,
     logout,
     hasRole
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {

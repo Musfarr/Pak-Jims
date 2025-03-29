@@ -1,5 +1,5 @@
 // Master Admin has access to all menus
-import InstituteList from "../../pages/MasterAdmin/Institute-list";
+// import InstituteList from "../../pages/MasterAdmin/Institute-list";
 import { menuList } from "../../fackData/menuList";
 
 

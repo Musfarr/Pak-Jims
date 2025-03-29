@@ -3,11 +3,27 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requiredRole, minimumRole }) => {
-  const { isAuthenticated, hasRole, homePage } = useAuth();
+  const { isAuthenticated, hasRole, homePage, isLoading } = useAuth();
 
-  // Redirect to the appropriate page based on authentication and role
+  // Show loading indicator while authentication state is being determined
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect to the login page if not authenticated
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    // Store the current location to redirect back after login
+    const currentPath = window.location.pathname;
+    if (currentPath !== '/' && !currentPath.includes('/authentication/')) {
+      sessionStorage.setItem('redirectAfterLogin', currentPath);
+    }
+    return <Navigate to="/authentication/login" replace />;
   }
 
   // Check if user has the exact required role (if specified)

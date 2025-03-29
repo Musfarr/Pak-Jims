@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Pagination = () => {
     return (
-        <ul className="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+        <ul className="list-unstyled d-flex align-items-center justify-content-end gap-2 mb-0 pagination-common-style">
             <li>
                 <Link to="#"><BsArrowLeft size={16} /></Link>
             </li>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import RoleNavigation from '../components/RoleNavigation';
+import RoleNavigation from '../../components/RoleNavigation';
 
 const AdminDashboard = () => {
   const { user } = useAuth();

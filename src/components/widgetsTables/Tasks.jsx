@@ -3,17 +3,11 @@ import CardHeader from '@/components/shared/CardHeader'
 import Pagination from '@/components/shared/Pagination'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
-import { taskAssigneeOptions, taskPriorityOptions, taskStatusOptions } from '@/utils/options'
+// import { taskAssigneeOptions, taskPriorityOptions, taskStatusOptions } from '@/utils/options'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 
-const tasksData = [
-    { taskNumber: '01', taskName: 'Meeting with beta testers ', taskDate: '20/02/2023', taskDescription: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit.', status: taskStatusOptions, priority: taskPriorityOptions, assignee: taskAssigneeOptions },
-    { taskNumber: '02', taskName: 'Live stream for bpl live ', taskDate: '20/02/2023', taskDescription: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit.', status: taskStatusOptions, priority: taskPriorityOptions, assignee: taskAssigneeOptions },
-    { taskNumber: '03', taskName: "CEO's private party ", taskDate: '20/02/2023', taskDescription: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit.', status: taskStatusOptions, priority: taskPriorityOptions, assignee: taskAssigneeOptions },
-    { taskNumber: '04', taskName: 'Duralux public pnnouncement ', taskDate: '20/02/2023', taskDescription: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit.', status: taskStatusOptions, priority: taskPriorityOptions, assignee: taskAssigneeOptions },
-    { taskNumber: '05', taskName: 'Marketing meeting with clients ', taskDate: '20/02/2023', taskDescription: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit.', status: taskStatusOptions, priority: taskPriorityOptions, assignee: taskAssigneeOptions },
-];
-const Tasks = ({ title }) => {
+
+const Tasks = ({ title ,tasksData }) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
@@ -43,8 +37,6 @@ const Tasks = ({ title }) => {
                             </thead>
                             <tbody>
                                 {tasksData.map(({ taskDate, taskDescription, taskName, taskNumber, assignee, priority, status }, index) => {
-                                    const statusValue = status.find((v) => v.value === defaultStatusList[index])
-                                    const priorityValue = priority.find((v) => v.value === defaultPriorityList[index])
                                     const assigneeValue = assignee.find((v) => v.value === defaultAssigneeList[index])
                                     return (
                                         <tr key={index}>

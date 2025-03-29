@@ -2,14 +2,9 @@ import React from 'react'
 import getIcon from '@/utils/getIcon';
 import { FiFigma } from 'react-icons/fi';
 
-const statisticsData = [
-    { amount: '120', description: 'Students', icon: 'feather-users', bgColor: 'bg-primary' },
-    { amount: '23', description: 'Faculties', icon: 'feather-users', bgColor: 'bg-success' },
-    { amount: '3', description: 'Admins', icon: 'feather-users', bgColor: 'bg-warning' },
-    { amount: '0', description: 'Branches', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
-];
 
-const EstimateStatistics = () => {
+
+const EstimateStatistics = ({ statisticsData = [] }) => {
     return (
         <>
 

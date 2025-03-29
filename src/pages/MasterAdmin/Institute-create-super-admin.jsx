@@ -202,13 +202,7 @@ const InstituteCreateSuperAdmin = () => {
     navigate('/institutes');
   };
   
-  if (!hasRole('masteradmin')) {
-    return (
-      <div className="alert alert-danger m-5">
-        You don't have permission to access this page.
-      </div>
-    );
-  }
+
   
   if (loading) {
     return (
