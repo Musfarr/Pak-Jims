@@ -61,12 +61,18 @@ import CreateBatch from "../pages/Admin/Create-batch";
 import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
 
-// MasterAdmin pages
+// SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
-import InstituteList from "../pages/MasterAdmin/Institute-list";
-import InstituteCreate from "../pages/MasterAdmin/Institute-create";
-import InstituteEdit from "../pages/MasterAdmin/Institute-edit";
-import InstituteCreateSuperAdmin from "../pages/MasterAdmin/Institute-create-super-admin";
+import InstituteList from "../pages/SuperAdmin/Institute-list";
+import InstituteCreate from "../pages/SuperAdmin/Institute-create";
+import InstituteEdit from "../pages/SuperAdmin/Institute-edit";
+import InstituteCreateSuperAdmin from "../pages/SuperAdmin/Institute-create-super-admin";
+import BranchCreate from "../pages/SuperAdmin/branch-create";
+import BranchList from "../pages/SuperAdmin/branch-list";
+import AdminList from "../pages/SuperAdmin/admin-list";
+
+
+
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -110,6 +116,12 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            
+            
+            
+            //////////////Super Admin  routes////////////////////////////////////////////////////////////////////////////////
+            // 
+            
             {
                 path: "/super-admin-dashboard",
                 element: (
@@ -118,12 +130,6 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-
-
-
-            //////////////Super Admin  routes////////////////////////////////////////////////////////////////////////////////
-            // 
-
             {
                 path: "/institutes",
                 element: (
@@ -142,23 +148,47 @@ export const router = createBrowserRouter([
                 )
             },
             
+            
             {
-                path: "/institutes/create-super-admin/:id",
+                path: "/institutes/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <InstituteEdit />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/branch/create/:id",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <BranchCreate />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/branch/list",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <BranchList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/branches/admins/list",
+                element: (
+                    <ProtectedRoute requiredRole="superadmin">
+                        <AdminList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/branch/create-admin/:id",
                 element: (
                     <ProtectedRoute requiredRole="superadmin">
                         <InstituteCreateSuperAdmin />
                     </ProtectedRoute>
                 )
             },
-            {
-                path: "/institutes/edit/:id",
-                element: (
-                    <ProtectedRoute minimumRole="superadmin">
-                        <InstituteEdit />
-                    </ProtectedRoute>
-                )
-            },
-
 
             //////////////////////////////////////////////////////////////////////////////////////////////
             

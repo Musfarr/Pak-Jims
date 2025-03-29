@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
 import { Link } from 'react-router-dom';
-import { FiEdit, FiEye, FiTrash2, FiUserPlus } from 'react-icons/fi';
+import { FiEdit, FiEye, FiTrash2, FiUserPlus, FiPlus } from 'react-icons/fi';
 import Pagination from '@/components/shared/Pagination';
 
 
@@ -92,11 +92,9 @@ const SuperAdminDashboard = () => {
               <div className='card-body'>
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <h5 className="card-title">Institutes List</h5>
-                  {/* {hasRole('masteradmin') && (
-                    <Link to="/institutes/create" className="btn btn-primary">
-                      Add New Institute
+                    <Link to="/institutes/create" className="btn btn-primary hover">
+                    <FiPlus size={16} /> Add New Institute 
                     </Link>
-                  )} */}
                 </div>
                 
                 <div className="table-responsive">
@@ -134,12 +132,10 @@ const SuperAdminDashboard = () => {
                                   </Link>
 
                                   <Link 
-                                    to={`/institutes/create-super-admin/${institute.id}`} 
-                                    className={`btn btn-sm ${institute.hasSuperAdmin ? 'btn-secondary' : 'btn-success'}`}
-                                    title={institute.hasSuperAdmin ? "Update Admin" : "Create Admin"}
+                                    to={`/branch/create/${institute.id}`} 
+                                    className="btn btn-sm btn-primary"
                                   >
-                                    <FiUserPlus />
-                                    {institute.hasSuperAdmin ? ' Update' : ' Create'}  Admin
+                                    <FiPlus className="me-1" /> Add Branch
                                   </Link>
                                 </>
                             </div>
@@ -152,7 +148,7 @@ const SuperAdminDashboard = () => {
                 
                 {institutes.length === 0 && (
                   <div className="text-center py-4">
-                    <p className="text-muted">No institutes found</p>
+                    <p className="text-muted text-bold">No institutes found</p>
                     {/* {hasRole('masteradmin') && (
                       <Link to="/institutes/create" className="btn btn-primary">
                         Add New Institute

@@ -223,8 +223,8 @@ const InstituteCreateSuperAdmin = () => {
   }
 
   const pageTitle = institute?.hasSuperAdmin 
-    ? `Update Super Admin for ${institute.name}` 
-    : `Create Super Admin for ${institute.name}`;
+    ? `Update  Admin for ${institute.name}` 
+    : `Create  Admin for ${institute.name}`;
 
   return (
     <>
@@ -237,7 +237,7 @@ const InstituteCreateSuperAdmin = () => {
             <div className='card'>
               <div className='card-body'>
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h5 className="card-title">Super Admin Information</h5>
+                  <h5 className="card-title"> Admin Information</h5>
                   <Link to="/institutes" className="btn btn-outline-secondary">
                     Back to Institutes
                   </Link>
@@ -286,20 +286,23 @@ const InstituteCreateSuperAdmin = () => {
                       />
                       {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                     </div>
-                    
+
+
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="status" className="form-label">Status</label>
-                      <select
-                        className="form-select"
-                        id="status"
-                        name="status"
-                        value={formData.status}
+                      <label htmlFor="username" className="form-label">User Name*</label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                        id="username"
+                        name="username"
+                        value={formData.username}
                         onChange={handleChange}
-                      >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
+                        placeholder="Enter username"
+                      />
+                      {errors.username && <div className="invalid-feedback">{errors.username}</div>}
                     </div>
+                    
+                   
                     
                     <div className="col-md-6 mb-3">
                       <label htmlFor="password" className="form-label">

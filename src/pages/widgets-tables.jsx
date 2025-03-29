@@ -43,7 +43,7 @@ const WidgetsTables = () => {
                     <ProjectsTwo title={"Projects Stats"} className="col-xxl-6" />
                     <ProgressTwo title={"Project Progress"} />
                     <ProjectTracker />
-                    <Tasks title={"Latest Tasks"} />
+                    {/* <Tasks title={"Latest Tasks"} /> */}
                     <InvoiceSummary title={"Invoice Summary"} />
                     <TrafficReports title={"Traffic Reports"} />
                     <Store title={"Store Overview"}/>

@@ -107,7 +107,7 @@ const InstituteCreate = () => {
                 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    <div className="col-md-3 mb-3">
+                    {/* <div className="col-md-3 mb-3">
                       <label htmlFor="code" className="form-label">Code*</label>
                       <input
                         type="text"
@@ -119,10 +119,10 @@ const InstituteCreate = () => {
                         placeholder="Enter code"
                       />
                       {errors.code && <div className="invalid-feedback">{errors.code}</div>}
-                    </div>
+                    </div> */}
                     
-                    <div className="col-md-9 mb-3">
-                      <label htmlFor="name" className="form-label">School Name*</label>
+                    <div className="col-md-12 mb-3">
+                      <label htmlFor="name" className="form-label">Institute Name*</label>
                       <input
                         type="text"
                         className={`form-control ${errors.name ? 'is-invalid' : ''}`}
@@ -254,21 +254,9 @@ const InstituteCreate = () => {
                       ></textarea>
                     </div>
                     
-                    <div className="col-md-6 mb-3">
-                      <label htmlFor="status" className="form-label">Status</label>
-                      <select
-                        className="form-select"
-                        id="status"
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                      >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
-                    </div>
                     
-                    <div className="col-md-4 mb-3">
+                    
+                    {/* <div className="col-md-3 mb-3">
                       <label htmlFor="maxAdmin" className="form-label">Max Admin</label>
                       <input
                         type="number"
@@ -281,7 +269,7 @@ const InstituteCreate = () => {
                       />
                     </div>
                     
-                    <div className="col-md-4 mb-3">
+                    <div className="col-md-3 mb-3">
                       <label htmlFor="maxFaculty" className="form-label">Max Faculty</label>
                       <input
                         type="number"
@@ -294,7 +282,7 @@ const InstituteCreate = () => {
                       />
                     </div>
                     
-                    <div className="col-md-4 mb-3">
+                    <div className="col-md-3 mb-3">
                       <label htmlFor="maxStudents" className="form-label">Max Students</label>
                       <input
                         type="number"
@@ -307,7 +295,7 @@ const InstituteCreate = () => {
                       />
                     </div>
                     
-                    <div className="col-md-4 mb-3">
+                    <div className="col-md-3 mb-3">
                       <label htmlFor="maxBranches" className="form-label">Max Branches</label>
                       <input
                         type="number"
@@ -318,7 +306,9 @@ const InstituteCreate = () => {
                         onChange={handleChange}
                         placeholder="Enter max branches"
                       />
-                    </div>
+                    </div> */}
+
+
                   </div>
                   
                   <div className="d-flex justify-content-end mt-4">
@@ -326,7 +316,7 @@ const InstituteCreate = () => {
                       <FiX className="me-1" /> Cancel
                     </Link>
                     <button type="submit" className="btn btn-primary">
-                      <FiSave className="me-1" /> Save Institute
+                      <FiSave className="me-1" /> Create Institute
                     </button>
                   </div>
                 </form>
