@@ -76,11 +76,9 @@ const InstituteList = () => {
               <div className='card-body'>
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <h5 className="card-title">Institutes List</h5>
-                  {hasRole('masteradmin') && (
-                    <Link to="/institutes/create" className="btn btn-primary">
-                      Add New Institute
-                    </Link>
-                  )}
+                  <Link to="/institutes/create" className="btn btn-primary">
+                    Add New Institute
+                  </Link>
                 </div>
                 
                 <div className="table-responsive">
@@ -114,7 +112,6 @@ const InstituteList = () => {
                               {/* <Link to={`/institutes/view/${institute.id}`} className="btn btn-sm btn-info">
                                 <FiEye />
                               </Link> */}
-                              {hasRole('masteradmin') && (
                                 <>
                                   <Link to={`/institutes/edit/${institute.id}`} className="btn btn-sm btn-warning">
                                     <FiEdit />
@@ -134,7 +131,6 @@ const InstituteList = () => {
                                     {institute.hasSuperAdmin ? ' Update' : ' Create'} Super Admin
                                   </Link>
                                 </>
-                              )}
                             </div>
                           </td>
                         </tr>
@@ -146,11 +142,9 @@ const InstituteList = () => {
                 {institutes.length === 0 && (
                   <div className="text-center py-4">
                     <p className="text-muted">No institutes found</p>
-                    {hasRole('masteradmin') && (
                       <Link to="/institutes/create" className="btn btn-primary">
                         Add New Institute
                       </Link>
-                    )}
                   </div>
                 )}
                 

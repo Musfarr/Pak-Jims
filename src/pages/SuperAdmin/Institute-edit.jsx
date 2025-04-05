@@ -7,7 +7,6 @@ import { FiSave, FiX } from 'react-icons/fi';
 const InstituteEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { hasRole } = useAuth();
   
   // Form state
   const [formData, setFormData] = useState({
@@ -150,13 +149,6 @@ const InstituteEdit = () => {
     navigate('/institutes');
   };
   
-  if (!hasRole('superadmin')) {
-    return (
-      <div className="alert alert-danger m-5">
-        You don't have permission to access this page.
-      </div>
-    );
-  }
   
   if (loading) {
     return (

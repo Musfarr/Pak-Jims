@@ -34,7 +34,7 @@ const Menus = () => {
             case "masteradmin":
                 console.log("Using Master Admin menu list");
                 return MasterAdminMenuList;
-            case "superadmin":
+            case "super_admin":
                 console.log("Using Super Admin menu list");
                 return SuperAdminMenuList;
             case "admin":

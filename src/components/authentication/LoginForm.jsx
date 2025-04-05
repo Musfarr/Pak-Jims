@@ -1,100 +1,86 @@
-import React, { useState, useEffect } from 'react'
-import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useForm } from 'react-hook-form'
+import { PostApi } from '../../utils/Api/ApiServices'
+import { toast } from 'react-toastify'
 
-const LoginForm = ({ registerPath, resetPath }) => {
+
+const LoginForm = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("123456");
-    const [role, setRole] = useState("student");
-    const [redirectPath, setRedirectPath] = useState(null);
-
-    // Check for stored redirect path on component mount
-    useEffect(() => {
-        const storedRedirectPath = sessionStorage.getItem('redirectAfterLogin');
-        if (storedRedirectPath) {
-            setRedirectPath(storedRedirectPath);
-            console.log("LoginForm: Found stored redirect path:", storedRedirectPath);
+    const [isLoading, setIsLoading] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            username: '',
+            password: ''
         }
-    }, []);
+    });
 
-    const roleOptions = [
-        // { value: "masteradmin", label: "Master Admin" },
-        { value: "superadmin", label: "Super Admin" },
-        { value: "admin", label: "Admin" },
-        { value: "faculty", label: "Faculty" },
-        { value: "student", label: "Student" }
-    ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        console.log("LoginForm: Submitting with role:", role);
-        
-        // For now, we'll just pass values from the form
-        const { success, redirectTo } = login(email, password, role);
-        
-        if (success) {
-            // Clear the stored redirect path
-            sessionStorage.removeItem('redirectAfterLogin');
-            
-            // Navigate to the stored redirect path if available, otherwise to the default dashboard
-            if (redirectPath) {
-                console.log("LoginForm: Redirecting to stored path:", redirectPath);
-                navigate(redirectPath);
-            } else {
-                console.log("LoginForm: Redirecting to default dashboard:", redirectTo);
-                navigate(redirectTo);
+    const onSubmit = (data) => {
+        setIsLoading(true);
+        console.log("Form data:", data);
+
+        PostApi('auth/login', data)
+        .then(
+            (response) => {
+                console.log("API response:", response);
+                setIsLoading(false);                
+                if (response.data && response.data.status) {
+
+                    const userData = response.data.data.user;
+                    const token = response.data.data.token;
+                    
+                    const { success, redirectTo } = login(userData, token);
+                    
+                    if (success) {
+                        toast.success('Login successful');
+                        navigate(redirectTo);
+                    }
+                }
             }
-        }
+        ).catch((error) => {
+            console.log(error)
+            // toast.error(error.response.data.message);
+            setIsLoading(false);
+        });
     };
 
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">Login</h2>
-            {redirectPath && (
-                <div className="alert alert-info" role="alert">
-                    You'll be redirected back to your previous page after login.
-                </div>
-            )}
-            <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
                     <input 
                         type="text" 
-                        className="form-control" 
+                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                         placeholder="Enter email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required 
+                        {...register('username', { 
+                            required: 'Email is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address'
+                            }
+                        })}
                     />
+                    {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                     <small className="text-muted">
                         Enter your email
                     </small>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Role</label>
-                    <select 
-                        className="form-select" 
-                        value={role} 
-                        onChange={(e) => setRole(e.target.value)}
-                    >
-                        {roleOptions.map(option => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="mb-3">
                     <input 
                         type="password" 
-                        className="form-control" 
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                         placeholder="Password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required 
+                        {...register('password', { required: 'Password is required' })}
                     />
+                    {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                 </div>
+
+
                 <div className="d-flex align-items-center justify-content-between">
                     <div>
                         <div className="custom-control custom-checkbox">
@@ -103,11 +89,19 @@ const LoginForm = ({ registerPath, resetPath }) => {
                         </div>
                     </div>
                     <div>
-                        <Link to={resetPath} className="fs-11 text-primary">Forget password?</Link>
+                        <Link to="/" className="fs-11 text-primary">Forget password?</Link>
                     </div>
                 </div>
+
+
                 <div className="mt-5">
-                    <button type="submit" className="btn btn-lg btn-primary w-100">Login</button>
+                    <button 
+                        type="submit" 
+                        className="btn btn-lg btn-primary w-100"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
                 </div>
             </form>
         </>

@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
             {
                 path: "/super-admin-dashboard",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <SuperAdminDashboard />
                     </ProtectedRoute>
                 )
@@ -112,7 +112,7 @@ export const router = createBrowserRouter([
             {
                 path: "/institutes/create",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <InstituteCreate />
                     </ProtectedRoute>
                 )
@@ -121,7 +121,7 @@ export const router = createBrowserRouter([
             {
                 path: "/institutes/edit/:id",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <InstituteEdit />
                     </ProtectedRoute>
                 )
@@ -129,7 +129,7 @@ export const router = createBrowserRouter([
             {
                 path: "/branch/create/:id",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <BranchCreate />
                     </ProtectedRoute>
                 )
@@ -137,7 +137,7 @@ export const router = createBrowserRouter([
             {
                 path: "/branch/list",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <BranchList />
                     </ProtectedRoute>
                 )
@@ -145,7 +145,7 @@ export const router = createBrowserRouter([
             {
                 path: "/branches/admins/list",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <AdminList />
                     </ProtectedRoute>
                 )
@@ -153,7 +153,7 @@ export const router = createBrowserRouter([
             {
                 path: "/branch/create-admin/:id",
                 element: (
-                    <ProtectedRoute requiredRole="superadmin">
+                    <ProtectedRoute requiredRole="super_admin">
                         <InstituteCreateSuperAdmin />
                     </ProtectedRoute>
                 )
@@ -412,6 +412,6 @@ export const router = createBrowserRouter([
     // For Unidentified Routes 
     {
         path : '*',
-        element : <ErrorMinimal />
+        element : <LoginCover />
     }
 ]);

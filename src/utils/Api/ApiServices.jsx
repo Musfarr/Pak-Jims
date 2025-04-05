@@ -1,5 +1,6 @@
 import axios from "axios"
-import { toast } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
+
 const baseurl = "https://api.paqsjims.edu.pk/"
 
 
@@ -14,12 +15,12 @@ axios.interceptors.response.use(
 
 
         (error) => {
-
+            console.log( 'err : ' ,  error)
             if(error.response.status === 401) {
                 toast.error("Unauthorized")
                 window.location.href = "/"
             }
-
+            
             return Promise.reject(error)
         }
     
@@ -44,7 +45,7 @@ export const GetApi = async (endpoint, params) => {
 
         return result
     } catch (error) {
-        return error
+        throw error
     }
 }
 
@@ -66,7 +67,7 @@ export const PostApi = async (endpoint, payload) => {
 
         return result
     } catch (error) {
-        return error
+        throw error
     }
  }
 
@@ -87,7 +88,7 @@ export const PostApi = async (endpoint, payload) => {
 
         return result
     } catch (error) {
-        return error
+        throw error
     }
  }
     
@@ -106,7 +107,7 @@ export const DeleteApi = async (endpoint) => {
 
         return result
     } catch (error) {
-        return error
+        throw error
     }
 }
 

@@ -7,7 +7,6 @@ import { FiSave, FiX } from 'react-icons/fi';
 const InstituteCreateSuperAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { hasRole } = useAuth();
   
   // Institute data state
   const [institute, setInstitute] = useState(null);

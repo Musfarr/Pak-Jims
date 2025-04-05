@@ -6,20 +6,28 @@ import 'react-circular-progressbar/dist/styles.css';
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
+import 'react-toastify/dist/ReactToastify.css';
+
 import NavigationProvider from './contentApi/navigationProvider';
 import SideBarToggleProvider from './contentApi/sideBarToggleProvider';
 import ThemeCustomizer from './components/shared/ThemeCustomizer';
+import AuthProvider from './context/AuthContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ToastContainer } from 'react-toastify'
 
+const queryClient = new QueryClient()
 const App = () => {
   return (
-    <>
-      <NavigationProvider>
-        <SideBarToggleProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <NavigationProvider>
+          <SideBarToggleProvider>
           <RouterProvider router={router} />
         </SideBarToggleProvider>
       </NavigationProvider>
-      {/* <ThemeCustomizer /> */}
-    </>
+      </AuthProvider>
+      <ToastContainer />
+    </QueryClientProvider>
   )
 }
 

@@ -6,7 +6,6 @@ import { useAuth } from '../../context/AuthContext';
 import Pagination from '@/components/shared/Pagination';
 
 const BranchList = () => {
-    const { hasRole } = useAuth();
     const [branches, setBranches] = useState([
         { 
           id: 1, 

@@ -1,12 +1,10 @@
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiEdit, FiUserPlus, FiPlus, FiFilter, FiMail, FiPhone } from 'react-icons/fi';
-import { useAuth } from '../../context/AuthContext';
+import { FiEdit, FiFilter, FiMail, FiPhone } from 'react-icons/fi';
 import Pagination from '@/components/shared/Pagination';
 
 const AdminList = () => {
-    const { hasRole } = useAuth();
     const [admins, setAdmins] = useState([
         { 
           id: 1, 
