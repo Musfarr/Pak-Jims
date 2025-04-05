@@ -2,33 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import RootLayout from "../layout/root";
 import Home from "../pages/home";
 import Analytics from "../pages/analytics";
-import ReportsSales from "../pages/reports-sales";
-import ReportsLeads from "../pages/reports-leads";
-import ReportsProject from "../pages/reports-project";
-import ReportsTimesheets from "../pages/reports-timesheets";
-import LoginCover from "../pages/login-cover";
-import Proposalist from "../pages/proposal-list";
-import CustomersList from "../pages/customers-list";
-import ProposalView from "../pages/proposal-view";
-import ProposalEdit from "../pages/proposal-edit";
-import LeadsList from "../pages/leadsList";
-import CustomersView from "../pages/customers-view";
-import CustomersCreate from "../pages/customers-create";
-import ProposalCreate from "../pages/proposal-create";
-import LeadsView from "../pages/leads-view";
-import LeadsCreate from "../pages/leads-create";
-import PaymentList from "../pages/payment-list";
-import PaymentView from "../pages/payment-view/";
-import PaymentCreate from "../pages/payment-create";
-import ProjectsList from "../pages/projects-list";
-import ProjectsView from "../pages/projects-view";
-import ProjectsCreate from "../pages/projects-create";
-import LayoutAuth from "../layout/layoutAuth";
-import LoginMinimal from "../pages/login-minimal";
-import RegisterMinimal from "../pages/register-minimal";
 import ErrorMinimal from "../pages/error-minimal";
-import OtpMinimal from "../pages/otp-minimal";
-import MaintenanceMinimal from "../pages/maintenance-minimal";
 import HelpKnowledgebase from "../pages/help-knowledgebase";
 import WidgetsLists from "../pages/widgets-lists";
 import WidgetsTables from "../pages/widgets-tables";
@@ -70,9 +44,12 @@ import InstituteCreateSuperAdmin from "../pages/SuperAdmin/Institute-create-supe
 import BranchCreate from "../pages/SuperAdmin/branch-create";
 import BranchList from "../pages/SuperAdmin/branch-list";
 import AdminList from "../pages/SuperAdmin/admin-list";
-
-
-
+import LayoutAuth from "../layout/layoutAuth";
+import LoginCover from "../pages/login-cover";
+import LoginMinimal from "../pages/login-minimal";
+import RegisterMinimal from "../pages/register-minimal";
+import OtpMinimal from "../pages/otp-minimal";
+import MaintenanceMinimal from "../pages/maintenance-minimal";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -103,10 +80,6 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
 
-
-
-
-
             // Role-specific dashboards
             {
                 path: "/master-admin-dashboard",
@@ -117,10 +90,7 @@ export const router = createBrowserRouter([
                 )
             },
             
-            
-            
             //////////////Super Admin  routes////////////////////////////////////////////////////////////////////////////////
-            // 
             
             {
                 path: "/super-admin-dashboard",
@@ -147,7 +117,6 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            
             
             {
                 path: "/institutes/edit/:id",
@@ -189,27 +158,6 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-
-            //////////////////////////////////////////////////////////////////////////////////////////////
-            
-
-
-
-
-
-
-
-
-
-            //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-            //////////////////////////////////////////////////////////////////////////////////////////////
 
             // Admin dashboard
             {
@@ -365,8 +313,6 @@ export const router = createBrowserRouter([
                 )
             },
 
-
-
             {
                 path: "/faculty-dashboard",
                 element: (
@@ -398,90 +344,6 @@ export const router = createBrowserRouter([
                 element: <Unauthorized />
             },
             {
-                path: "/dashboards/analytics",
-                element: <Analytics />
-            },
-            {
-                path: "/reports/sales",
-                element: <ReportsSales />
-            },
-            {
-                path: "/reports/leads",
-                element: <ReportsLeads />
-            },
-            {
-                path: "/reports/project",
-                element: <ReportsProject />
-            },
-            {
-                path: "/reports/timesheets",
-                element: <ReportsTimesheets />
-            },
-            {
-                path: "/proposal/list",
-                element: <Proposalist />
-            },
-            {
-                path: "/proposal/view",
-                element: <ProposalView />
-            },
-            {
-                path: "/proposal/edit",
-                element: <ProposalEdit />
-            },
-            {
-                path: "/proposal/create",
-                element: <ProposalCreate />
-            },
-            {
-                path: "/payment/list",
-                element: <PaymentList />
-            },
-            {
-                path: "/payment/view",
-                element: <PaymentView />
-            },
-            {
-                path: "/payment/create",
-                element: <PaymentCreate />
-            },
-            {
-                path: "/customers/list",
-                element: <CustomersList />
-            },
-            {
-                path: "/customers/view",
-                element: <CustomersView />
-            },
-            {
-                path: "/customers/create",
-                element: <CustomersCreate />
-            },
-            {
-                path: "/leads/list",
-                element: <LeadsList />
-            },
-            {
-                path: "/leads/view",
-                element: <LeadsView />
-            },
-            {
-                path: "/leads/create",
-                element: <LeadsCreate />
-            },
-            {
-                path: "/projects/list",
-                element: <ProjectsList />
-            },
-            {
-                path: "/projects/view",
-                element: <ProjectsView />
-            },
-            {
-                path: "/projects/create",
-                element: <ProjectsCreate />
-            },
-            {
                 path: "/widgets/lists",
                 element: <WidgetsLists />
             },
@@ -505,18 +367,6 @@ export const router = createBrowserRouter([
                 path: "/help/knowledgebase",
                 element: <HelpKnowledgebase />
             },
-
-
-
-
-
-
-
-
-
-
-
-            
         ]
     },
 
@@ -544,12 +394,10 @@ export const router = createBrowserRouter([
                 path: "/authentication/register/minimal",
                 element: <RegisterMinimal />
             },
-            
             {
                 path: "/authentication/404",
                 element: <ErrorMinimal />
             },
-           
             {
                 path: "/authentication/verify/minimal",
                 element: <OtpMinimal />
@@ -558,7 +406,6 @@ export const router = createBrowserRouter([
                 path: "/authentication/maintenance/minimal",
                 element: <MaintenanceMinimal />
             },
-            
         ]
     },
 
