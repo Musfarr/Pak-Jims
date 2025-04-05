@@ -29,8 +29,8 @@ const LoginForm = () => {
                 setIsLoading(false);                
                 if (response.data && response.data.status) {
 
-                    const userData = response.data.data.user;
-                    const token = response.data.data.token;
+                    const userData = response.data.user;
+                    const token = response.data.token;
                     
                     const { success, redirectTo } = login(userData, token);
                     

@@ -4,65 +4,74 @@ import { useAuth } from '../../context/AuthContext';
 import { FiEdit, FiEye, FiTrash2, FiUserPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Pagination from '@/components/shared/Pagination';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
+
+
+
 
 const InstituteList = () => {
   const { user, role, hasRole } = useAuth();
-  
-  // Sample data for institutes
-  const [institutes, setInstitutes] = useState([
-    { 
-      id: 1, 
-      code: '1001', 
-      name: 'GAMBAT MEDICAL COLLEGE', 
-      registrationNo: '245', 
-      isoNo: '123', 
-      ntnNo: '123', 
-      saleTax: '123', 
-      phone: '0243-720400', 
-      cell: '0243-720400', 
-      website: 'www.gims.edu.pk', 
-      email: 'info@gims.edu.pk', 
-      address: 'Gambat',
-      hasSuperAdmin: false
-    },
-    { 
-      id: 2, 
-      code: '1002', 
-      name: 'DOW MEDICAL COLLEGE', 
-      registrationNo: '246', 
-      isoNo: '124', 
-      ntnNo: '124', 
-      saleTax: '124', 
-      phone: '0243-720500', 
-      cell: '0243-720500', 
-      website: 'www.dow.edu.pk', 
-      email: 'info@dow.edu.pk', 
-      address: 'Karachi',
-      hasSuperAdmin: true
-    },
-    { 
-      id: 3, 
-      code: '1003', 
-      name: 'LIAQUAT MEDICAL COLLEGE', 
-      registrationNo: '247', 
-      isoNo: '125', 
-      ntnNo: '125', 
-      saleTax: '125', 
-      phone: '0243-720600', 
-      cell: '0243-720600', 
-      website: 'www.lmc.edu.pk', 
-      email: 'info@lmc.edu.pk', 
-      address: 'Hyderabad',
-      hasSuperAdmin: false
-    },
-  ]);
 
-  // Delete institute handler
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this institute?')) {
-      setInstitutes(institutes.filter(institute => institute.id !== id));
-    }
-  };
+  const { data: response, isLoading, isError } = useQuery({
+    queryKey: ['institutes'],
+    queryFn: () => GetApi('/institutes')
+  });
+
+
+  
+  const institutes = response?.data || [];
+
+  // Sample data for institutes
+  // const [institutes, setInstitutes] = useState([
+  //   { 
+  //     id: 1, 
+  //     code: '1001', 
+  //     name: 'GAMBAT MEDICAL COLLEGE', 
+  //     registrationNo: '245', 
+  //     isoNo: '123', 
+  //     ntnNo: '123', 
+  //     saleTax: '123', 
+  //     phone: '0243-720400', 
+  //     cell: '0243-720400', 
+  //     website: 'www.gims.edu.pk', 
+  //     email: 'info@gims.edu.pk', 
+  //     address: 'Gambat',
+  //     hasSuperAdmin: false
+  //   },
+  //   { 
+  //     id: 2, 
+  //     code: '1002', 
+  //     name: 'DOW MEDICAL COLLEGE', 
+  //     registrationNo: '246', 
+  //     isoNo: '124', 
+  //     ntnNo: '124', 
+  //     saleTax: '124', 
+  //     phone: '0243-720500', 
+  //     cell: '0243-720500', 
+  //     website: 'www.dow.edu.pk', 
+  //     email: 'info@dow.edu.pk', 
+  //     address: 'Karachi',
+  //     hasSuperAdmin: true
+  //   },
+  //   { 
+  //     id: 3, 
+  //     code: '1003', 
+  //     name: 'LIAQUAT MEDICAL COLLEGE', 
+  //     registrationNo: '247', 
+  //     isoNo: '125', 
+  //     ntnNo: '125', 
+  //     saleTax: '125', 
+  //     phone: '0243-720600', 
+  //     cell: '0243-720600', 
+  //     website: 'www.lmc.edu.pk', 
+  //     email: 'info@lmc.edu.pk', 
+  //     address: 'Hyderabad',
+  //     hasSuperAdmin: false
+  //   },
+  // ]);
+
+
 
   return (
     <>
@@ -85,7 +94,6 @@ const InstituteList = () => {
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th>Code</th>
                         <th>School Name</th>
                         <th>Registration No</th>
                         <th>ISO Certified No</th>
@@ -99,38 +107,26 @@ const InstituteList = () => {
                     <tbody>
                       {institutes.map((institute) => (
                         <tr key={institute.id}>
-                          <td>{institute.code}</td>
                           <td>{institute.name}</td>
-                          <td>{institute.registrationNo}</td>
-                          <td>{institute.isoNo}</td>
-                          <td>{institute.ntnNo}</td>
-                          <td>{institute.phone}</td>
+                          <td>{institute.registration_no}</td>
+                          <td>{institute.iso_certified_no}</td>
+                          <td>{institute.ntn_no}</td>
+                          <td>{institute.phone_no}</td>
                           <td>{institute.email}</td>
                           <td>{institute.address}</td>
                           <td>
                             <div className="d-flex gap-2">
-                              {/* <Link to={`/institutes/view/${institute.id}`} className="btn btn-sm btn-info">
-                                <FiEye />
-                              </Link> */}
-                                <>
-                                  <Link to={`/institutes/edit/${institute.id}`} className="btn btn-sm btn-warning">
-                                    <FiEdit />
-                                  </Link>
-                                  {/* <button 
-                                    className="btn btn-sm btn-danger"
-                                    onClick={() => handleDelete(institute.id)}
-                                  >
-                                    <FiTrash2 />
-                                  </button> */}
-                                  <Link 
-                                    to={`/institutes/create-super-admin/${institute.id}`} 
-                                    className={`btn btn-sm ${institute.hasSuperAdmin ? 'btn-secondary' : 'btn-success'}`}
-                                    title={institute.hasSuperAdmin ? "Update Super Admin" : "Create Super Admin"}
-                                  >
-                                    <FiUserPlus />
-                                    {institute.hasSuperAdmin ? ' Update' : ' Create'} Super Admin
-                                  </Link>
-                                </>
+                              <Link to={`/institutes/edit/${institute.id}`} className="btn btn-sm btn-warning">
+                                <FiEdit />
+                              </Link>
+                              <Link 
+                                to={`/institutes/create-super-admin/${institute.id}`} 
+                                className="btn btn-sm btn-success"
+                                title="Create Super Admin"
+                              >
+                                <FiUserPlus />
+                                Create Super Admin
+                              </Link>
                             </div>
                           </td>
                         </tr>

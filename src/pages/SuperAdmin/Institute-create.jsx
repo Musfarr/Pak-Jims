@@ -1,90 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import { useAuth } from '../../context/AuthContext';
+import { useForm } from 'react-hook-form';
 import { FiSave, FiX } from 'react-icons/fi';
+import { PostApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const InstituteCreate = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
   
-  const [formData, setFormData] = useState({
-    code: '',
-    name: '',
-    registrationNo: '',
-    isoNo: '',
-    ntnNo: '',
-    saleTax: '',
-    phone: '',
-    cell: '',
-    website: '',
-    email: '',
-    address: '',
-    status: 'active',
-    maxAdmin: 5,
-    maxFaculty: 50,
-    maxStudents: 1000,
-    maxBranches: 1
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      name: '',
+      registration_no: '',
+      iso_certified_no: '',
+      ntn_no: '',
+      sales_tax: '',
+      phone_no: '',
+      cell_no: '',
+      website: '',
+      email: '',
+      address: ''
+    }
   });
   
-  const [errors, setErrors] = useState({});
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    
-    // Clear error when field is edited
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
+  const onSubmit = async (data) => {
+    try {
+      const response = await PostApi('/institutes', data);
+      
+      if (response.status) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Institute created successfully',
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          navigate('/institutes');
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: response.message || 'Failed to create institute',
+          confirmButtonColor: '#d33'
+        });
+      }
+    } catch (error) {
+      console.error('Error creating institute:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: error.message || 'An unexpected error occurred',
+        confirmButtonColor: '#d33'
       });
     }
-  };
-  
-  const validate = () => {
-    const newErrors = {};
-    
-    if (!formData.code.trim()) {
-      newErrors.code = 'Institute code is required';
-    }
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'School name is required';
-    }
-    
-    if (!formData.registrationNo.trim()) {
-      newErrors.registrationNo = 'Registration number is required';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    
-    return newErrors;
-  };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    const newErrors = validate();
-    
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-    
-    // Here you would typically send the data to your API
-    console.log('Form submitted:', formData);
-    
-    // Show success message and redirect
-    alert('Institute created successfully!');
-    navigate('/institutes');
   };
   
   return (
@@ -105,111 +74,83 @@ const InstituteCreate = () => {
                   </Link>
                 </div>
                 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row">
-                    {/* <div className="col-md-3 mb-3">
-                      <label htmlFor="code" className="form-label">Code*</label>
-                      <input
-                        type="text"
-                        className={`form-control ${errors.code ? 'is-invalid' : ''}`}
-                        id="code"
-                        name="code"
-                        value={formData.code}
-                        onChange={handleChange}
-                        placeholder="Enter code"
-                      />
-                      {errors.code && <div className="invalid-feedback">{errors.code}</div>}
-                    </div> */}
-                    
                     <div className="col-md-12 mb-3">
                       <label htmlFor="name" className="form-label">Institute Name*</label>
                       <input
                         type="text"
                         className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                         id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Enter school name"
+                        {...register('name', { required: 'Institute name is required' })}
+                        placeholder="Enter institute name"
                       />
-                      {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                      {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="registrationNo" className="form-label">Registration No*</label>
+                      <label htmlFor="registration_no" className="form-label">Registration No*</label>
                       <input
                         type="text"
-                        className={`form-control ${errors.registrationNo ? 'is-invalid' : ''}`}
-                        id="registrationNo"
-                        name="registrationNo"
-                        value={formData.registrationNo}
-                        onChange={handleChange}
+                        className={`form-control ${errors.registration_no ? 'is-invalid' : ''}`}
+                        id="registration_no"
+                        {...register('registration_no', { required: 'Registration number is required' })}
                         placeholder="Enter registration number"
                       />
-                      {errors.registrationNo && <div className="invalid-feedback">{errors.registrationNo}</div>}
+                      {errors.registration_no && <div className="invalid-feedback">{errors.registration_no.message}</div>}
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="isoNo" className="form-label">ISO Certified No</label>
+                      <label htmlFor="iso_certified_no" className="form-label">ISO Certified No</label>
                       <input
                         type="text"
                         className="form-control"
-                        id="isoNo"
-                        name="isoNo"
-                        value={formData.isoNo}
-                        onChange={handleChange}
+                        id="iso_certified_no"
+                        {...register('iso_certified_no')}
                         placeholder="Enter ISO certification number"
                       />
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="ntnNo" className="form-label">NTN No</label>
+                      <label htmlFor="ntn_no" className="form-label">NTN No</label>
                       <input
                         type="text"
                         className="form-control"
-                        id="ntnNo"
-                        name="ntnNo"
-                        value={formData.ntnNo}
-                        onChange={handleChange}
+                        id="ntn_no"
+                        {...register('ntn_no')}
                         placeholder="Enter NTN number"
                       />
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="saleTax" className="form-label">Sale Tax</label>
+                      <label htmlFor="sales_tax" className="form-label">Sales Tax</label>
                       <input
                         type="text"
                         className="form-control"
-                        id="saleTax"
-                        name="saleTax"
-                        value={formData.saleTax}
-                        onChange={handleChange}
-                        placeholder="Enter sale tax"
+                        id="sales_tax"
+                        {...register('sales_tax')}
+                        placeholder="Enter sales tax"
                       />
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="phone" className="form-label">Phone No</label>
+                      <label htmlFor="phone_no" className="form-label">Phone No</label>
                       <input
                         type="tel"
                         className="form-control"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
+                        id="phone_no"
+                        {...register('phone_no')}
                         placeholder="Enter phone number"
                       />
                     </div>
                     
                     <div className="col-md-4 mb-3">
-                      <label htmlFor="cell" className="form-label">Cell No</label>
+                      <label htmlFor="cell_no" className="form-label">Cell No</label>
                       <input
                         type="tel"
                         className="form-control"
-                        id="cell"
-                        name="cell"
-                        value={formData.cell}
-                        onChange={handleChange}
+                        id="cell_no"
+                        {...register('cell_no')}
                         placeholder="Enter cell number"
                       />
                     </div>
@@ -217,12 +158,10 @@ const InstituteCreate = () => {
                     <div className="col-md-6 mb-3">
                       <label htmlFor="website" className="form-label">Website</label>
                       <input
-                        type="url"
+                        type="text"
                         className="form-control"
                         id="website"
-                        name="website"
-                        value={formData.website}
-                        onChange={handleChange}
+                        {...register('website')}
                         placeholder="Enter website URL"
                       />
                     </div>
@@ -233,12 +172,16 @@ const InstituteCreate = () => {
                         type="email"
                         className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                         id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
+                        {...register('email', { 
+                          required: 'Email is required',
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Invalid email address'
+                          }
+                        })}
                         placeholder="Enter email address"
                       />
-                      {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                      {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                     </div>
                     
                     <div className="col-md-12 mb-3">
@@ -246,69 +189,11 @@ const InstituteCreate = () => {
                       <textarea
                         className="form-control"
                         id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
+                        {...register('address')}
                         rows="3"
                         placeholder="Enter full address"
                       ></textarea>
                     </div>
-                    
-                    
-                    
-                    {/* <div className="col-md-3 mb-3">
-                      <label htmlFor="maxAdmin" className="form-label">Max Admin</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="maxAdmin"
-                        name="maxAdmin"
-                        value={formData.maxAdmin}
-                        onChange={handleChange}
-                        placeholder="Enter max admin"
-                      />
-                    </div>
-                    
-                    <div className="col-md-3 mb-3">
-                      <label htmlFor="maxFaculty" className="form-label">Max Faculty</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="maxFaculty"
-                        name="maxFaculty"
-                        value={formData.maxFaculty}
-                        onChange={handleChange}
-                        placeholder="Enter max faculty"
-                      />
-                    </div>
-                    
-                    <div className="col-md-3 mb-3">
-                      <label htmlFor="maxStudents" className="form-label">Max Students</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="maxStudents"
-                        name="maxStudents"
-                        value={formData.maxStudents}
-                        onChange={handleChange}
-                        placeholder="Enter max students"
-                      />
-                    </div>
-                    
-                    <div className="col-md-3 mb-3">
-                      <label htmlFor="maxBranches" className="form-label">Max Branches</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="maxBranches"
-                        name="maxBranches"
-                        value={formData.maxBranches}
-                        onChange={handleChange}
-                        placeholder="Enter max branches"
-                      />
-                    </div> */}
-
-
                   </div>
                   
                   <div className="d-flex justify-content-end mt-4">

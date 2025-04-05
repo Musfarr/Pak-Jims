@@ -43,7 +43,7 @@ export const GetApi = async (endpoint, params) => {
             }
         )
 
-        return result
+        return result.data
     } catch (error) {
         throw error
     }
@@ -65,7 +65,7 @@ export const PostApi = async (endpoint, payload) => {
             }
         )
 
-        return result
+        return result.data
     } catch (error) {
         throw error
     }
@@ -86,7 +86,7 @@ export const PostApi = async (endpoint, payload) => {
             }
         )
 
-        return result
+        return result.data
     } catch (error) {
         throw error
     }
@@ -105,7 +105,7 @@ export const DeleteApi = async (endpoint) => {
             }
         )
 
-        return result
+        return result.data
     } catch (error) {
         throw error
     }
