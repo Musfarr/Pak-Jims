@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import { useAuth } from '../../context/AuthContext';
-import { FiEdit, FiEye, FiTrash2, FiUserPlus } from 'react-icons/fi';
+import { FiEdit, FiEye, FiPlus, FiTrash2, FiUserPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Pagination from '@/components/shared/Pagination';
 import { useQuery } from '@tanstack/react-query';
@@ -120,12 +120,10 @@ const InstituteList = () => {
                                 <FiEdit />
                               </Link>
                               <Link 
-                                to={`/institutes/create-super-admin/${institute.id}`} 
-                                className="btn btn-sm btn-success"
-                                title="Create Super Admin"
+                                to={`/branch/create/${institute.id}`} 
+                                className="btn btn-sm btn-primary"
                               >
-                                <FiUserPlus />
-                                Create Super Admin
+                                <FiPlus className="me-1" /> Add Branch
                               </Link>
                             </div>
                           </td>

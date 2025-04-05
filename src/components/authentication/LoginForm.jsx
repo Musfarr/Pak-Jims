@@ -27,7 +27,8 @@ const LoginForm = () => {
             (response) => {
                 console.log("API response:", response);
                 setIsLoading(false);                
-                if (response.data && response.data.status) {
+                if (response.code === 200) {
+
 
                     const userData = response.data.user;
                     const token = response.data.token;

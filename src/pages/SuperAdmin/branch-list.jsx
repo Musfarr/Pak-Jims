@@ -2,61 +2,33 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiUserPlus, FiPlus, FiFilter } from 'react-icons/fi';
-import { useAuth } from '../../context/AuthContext';
 import Pagination from '@/components/shared/Pagination';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
 
 const BranchList = () => {
-    const [branches, setBranches] = useState([
-        { 
-          id: 1, 
-          code: '1001', 
-          name: 'GAMBAT MEDICAL COLLEGE', 
-          address: 'Gambat',
-          institute: 'GIMS Health College',
-          instituteId: 1,
-          hasAdmin: false
-        },
-        { 
-          id: 2, 
-          code: '1002', 
-          name: 'DOW MEDICAL COLLEGE', 
-          address: 'Karachi',
-          institute: 'DOW University',
-          instituteId: 2,
-          hasAdmin: true
-        },
-        { 
-          id: 3, 
-          code: '1003', 
-          name: 'LIAQUAT MEDICAL COLLEGE', 
-          address: 'Hyderabad',
-          institute: 'GIMS Health College',
-          instituteId: 1,
-          hasAdmin: false
-        },
-    ]);
-    
-    const [filteredBranches, setFilteredBranches] = useState([]);
     const [selectedInstitute, setSelectedInstitute] = useState('all');
     
-    // Sample institutes data for the filter
-    const institutes = [
-        { id: 1, name: 'GIMS Health College' },
-        { id: 2, name: 'DOW University' },
-        { id: 3, name: 'Liaquat University' }
-    ];
+    // Fetch branches data
+    const { data: response, isLoading, isError } = useQuery({
+        queryKey: ['branches'],
+        queryFn: () => GetApi('/branches')
+    });
     
-    // Filter branches when selectedInstitute changes
-    useEffect(() => {
-        if (selectedInstitute === 'all') {
-            setFilteredBranches(branches);
-        } else {
-            const filtered = branches.filter(branch => 
-                branch.instituteId === parseInt(selectedInstitute)
-            );
-            setFilteredBranches(filtered);
-        }
-    }, [selectedInstitute, branches]);
+    const branches = response?.data || [];
+    
+    // Fetch institutes data for filtering
+    const { data: institutesResponse } = useQuery({
+        queryKey: ['institutes'],
+        queryFn: () => GetApi('/institutes')
+    });
+    
+    const institutes = institutesResponse?.data || [];
+    
+    // Filter branches based on selected institute
+    const filteredBranches = selectedInstitute === 'all' 
+        ? branches 
+        : branches.filter(branch => branch.institute_id === parseInt(selectedInstitute));
     
     // Handle institute filter change
     const handleInstituteChange = (e) => {
@@ -75,12 +47,7 @@ const BranchList = () => {
                             <div className='card-body'>
                                 <div className="d-flex justify-content-between align-items-center mb-4">
                                     <h5 className="card-title">Branches</h5>
-                                    {/* {hasRole('superadmin') && (
-                                        <Link to="/institutes" className="btn btn-primary">
-                                            <FiPlus className="me-1" /> Add New Branch
-                                        </Link>
-                                    )} */}
-
+                                    
                                     {/* Filter */}
                                     <div className="col-md-4">
                                         <div className="d-flex align-items-center">
@@ -104,55 +71,64 @@ const BranchList = () => {
                                     </div>
                                 </div>
                                 
-                               
-
-                                <div className='table-responsive'>
-                                    <table className="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Branch Name</th>
-                                                <th>Address</th>
-                                                <th>Institute</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {filteredBranches.map((branch) => (
-                                                <tr key={branch.id}>
-                                                    <td>{branch.id}</td>
-                                                    <td>{branch.name}</td>
-                                                    <td>{branch.address}</td>
-                                                    <td>{branch.institute}</td>
-                                                    <td>
-                                                        <div className="d-flex gap-2">
-                                                            {/* <Link to={`/branch/edit/${branch.id}`} className="btn btn-sm btn-warning">
-                                                                <FiEdit />
-                                                            </Link> */}
-                                                            <Link 
-                                                                to={`/branch/create-admin/${branch.id}`} 
-                                                                className={`btn btn-sm ${branch.hasAdmin ? 'btn-secondary' : 'btn-success'}`}
-                                                                title={branch.hasAdmin ? "Update Admin" : "Create Admin"}
-                                                            >
-                                                                <FiUserPlus size={16} />
-                                                                {branch.hasAdmin ? ' Update' : ' Create '} Admin
-                                                            </Link>
-                                                        </div>
-                                                    </td>
+                                {isLoading ? (
+                                    <div className="text-center py-4">
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p className="mt-2">Loading branches...</p>
+                                    </div>
+                                ) : isError ? (
+                                    <div className="alert alert-danger">
+                                        Error loading branches. Please try again later.
+                                    </div>
+                                ) : (
+                                    <div className='table-responsive'>
+                                        <table className="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Branch Name</th>
+                                                    <th>Address</th>
+                                                    <th>Institute</th>
+                                                    <th>Actions</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </thead>
+                                            <tbody>
+                                                {filteredBranches.map((branch) => (
+                                                    <tr key={branch.id}>
+                                                        <td>{branch.id}</td>
+                                                        <td>{branch.name}</td>
+                                                        <td>{branch.address}</td>
+                                                        <td>{branch.institute_name || 'N/A'}</td>
+                                                        <td>
+                                                            <div className="d-flex gap-2">
+                                                                <Link to={`/branch/edit/${branch.id}`} className="btn btn-sm btn-warning">
+                                                                    <FiEdit />
+                                                                </Link>
+                                                                <Link 
+                                                                    to={`/branch/create-admin/${branch.id}`} 
+                                                                    className="btn btn-sm btn-success"
+                                                                    title="Create Admin"
+                                                                >
+                                                                    <FiUserPlus size={16} />
+                                                                    Create Admin
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
 
-                                {filteredBranches.length === 0 && (
+                                {!isLoading && !isError && filteredBranches.length === 0 && (
                                     <div className="text-center py-4">
                                         <p className="text-muted">No branches found</p>
-                                        {/* {hasRole('superadmin') && (
-                                            <Link to="/institutes" className="btn btn-primary">
-                                                <FiPlus className="me-1" /> Add New Branch
-                                            </Link>
-                                        )} */}
+                                        <Link to="/branch/create" className="btn btn-primary">
+                                            <FiPlus className="me-1" /> Add New Branch
+                                        </Link>
                                     </div>
                                 )}
                             </div>

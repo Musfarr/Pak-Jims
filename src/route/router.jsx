@@ -43,6 +43,7 @@ import InstituteEdit from "../pages/SuperAdmin/Institute-edit";
 import InstituteCreateSuperAdmin from "../pages/SuperAdmin/Institute-create-super-admin";
 import BranchCreate from "../pages/SuperAdmin/branch-create";
 import BranchList from "../pages/SuperAdmin/branch-list";
+import BranchEdit from "../pages/SuperAdmin/branch-edit";
 import AdminList from "../pages/SuperAdmin/admin-list";
 import LayoutAuth from "../layout/layoutAuth";
 import LoginCover from "../pages/login-cover";
@@ -139,6 +140,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="super_admin">
                         <BranchList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/branch/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="super_admin">
+                        <BranchEdit />
                     </ProtectedRoute>
                 )
             },
@@ -412,6 +421,6 @@ export const router = createBrowserRouter([
     // For Unidentified Routes 
     {
         path : '*',
-        element : <LoginCover />
+        element : <Unauthorized />
     }
 ]);
