@@ -45,6 +45,8 @@ import BranchCreate from "../pages/SuperAdmin/branch-create";
 import BranchList from "../pages/SuperAdmin/branch-list";
 import BranchEdit from "../pages/SuperAdmin/branch-edit";
 import AdminList from "../pages/SuperAdmin/admin-list";
+import AdminCreate from "../pages/SuperAdmin/admin-create";
+import AdminEdit from "../pages/SuperAdmin/admin-edit";
 import LayoutAuth from "../layout/layoutAuth";
 import LoginCover from "../pages/login-cover";
 import LoginMinimal from "../pages/login-minimal";
@@ -152,7 +154,7 @@ export const router = createBrowserRouter([
                 )
             },
             {
-                path: "/branches/admins/list",
+                path: "/super-admin/admin/list",
                 element: (
                     <ProtectedRoute requiredRole="super_admin">
                         <AdminList />
