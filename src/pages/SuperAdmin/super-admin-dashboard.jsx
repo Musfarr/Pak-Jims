@@ -35,7 +35,7 @@ const SuperAdminDashboard = () => {
         <div className="row">
           <EstimateStatistics statisticsData={statisticsData} />
           <div className='col-12'>          
-          <div className='col-12'>
+          {/* <div className='col-12'>
             <div className='card'>
               <div className='card-body'>
                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -104,11 +104,7 @@ const SuperAdminDashboard = () => {
                 {!isLoading && !isError && institutes.length === 0 && (
                   <div className="text-center py-4">
                     <p className="text-muted text-bold">No institutes found</p>
-                    {/* {hasRole('masteradmin') && (
-                      <Link to="/institutes/create" className="btn btn-primary">
-                        Add New Institute
-                      </Link>
-                    )} */}
+                    
                   </div>
                 )}
                 
@@ -117,7 +113,7 @@ const SuperAdminDashboard = () => {
                 <Pagination />
               </div>
             </div>
-          </div>
+          </div> */}
           </div>
         </div>
       </div>

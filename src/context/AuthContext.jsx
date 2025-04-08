@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+// import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -8,9 +9,29 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
 
-
+  // Load authentication state from cookies on component mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    
+    if (storedToken && storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setIsAuthenticated(true);
+        setToken(storedToken);
+        setUser(userData);
+        setRole(userData.user_type);
+      } catch (error) {
+        console.error('Error parsing user data from cookie:', error);
+        // Clear invalid cookies
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
 
   const login = (userData, apiToken) => {
+    // Store in cookies (expires in 7 days)
     localStorage.setItem('token', apiToken);
     localStorage.setItem('user', JSON.stringify(userData));
     
@@ -35,9 +56,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // Clear localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    // Clear cookies
+    Cookies.remove('token');
+    Cookies.remove('user');
     
     // Reset state
     setIsAuthenticated(false);
@@ -55,7 +76,9 @@ export const AuthProvider = ({ children }) => {
     user,
     role,
     login,
-    logout
+    logout,
+    // Add institute_id for convenience in components
+    institute_id: user?.institute_id
   };
 
   return (

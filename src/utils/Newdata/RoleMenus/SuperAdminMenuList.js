@@ -71,7 +71,7 @@ export const SuperAdminMenuList = [
             {
                 id: 1,
                 name: "Admin Management",
-                path: "/branches/admins/list",
+                path: "/super-admin/admin/list",
                 subdropdownMenu: []
             },
             

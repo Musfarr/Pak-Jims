@@ -103,11 +103,11 @@ const BranchList = () => {
                                                         <td>{branch.institute_name || 'N/A'}</td>
                                                         <td>
                                                             <div className="d-flex gap-2">
-                                                                <Link to={`/super-admin/branch/edit/${branch.id}`} className="btn btn-sm btn-warning">
+                                                                <Link to={`/branch/edit/${branch.id}`} className="btn btn-sm btn-warning">
                                                                     <FiEdit />
                                                                 </Link>
                                                                 <Link 
-                                                                    to={`/super-admin/admin/create/${branch.id}`} 
+                                                                    to={`/branch/create-admin/${branch.id}`} 
                                                                     className="btn btn-sm btn-success"
                                                                     title="Create Admin"
                                                                 >
