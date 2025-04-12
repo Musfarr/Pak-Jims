@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
-import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import Input from '@/components/shared/Input';
-import { FiSave, FiX, FiPlus } from 'react-icons/fi';
+import { FiX, FiPlus } from 'react-icons/fi';
 
 const CreateAcademicYear = () => {
   // State for form data
@@ -72,27 +71,24 @@ const CreateAcademicYear = () => {
                   </div>
 
                   <div className='d-flex gap-2 mt-4'>
+                    <Link to="/admin-dashboard" className='btn btn-secondary ms-auto'>
+                      <FiX className="me-1" /> Cancel
+                    </Link>
                     <button type="submit" className='btn btn-success'>
                       <FiPlus className="me-1" /> Add New
                     </button>
-                    <button type="submit" className='btn btn-success'>
-                      <FiSave className="me-1" /> Edit
-                    </button>
-                    <Link to="/academic-years/list" className='btn btn-secondary ms-auto'>
-                      <FiX className="me-1" /> Cancel
-                    </Link>
                   </div>
                 </form>
               </div>
             </div>
           </div>
           
-          <div className='col-md-6'>
+          <div className='col-md-6' >
             <div className='card'>
               <div className='card-header'>
                 <h5 className='mb-0'>Academic Years</h5>
               </div>
-              <div className='card-body'>
+              <div className='card-body' style={{ height: "280px", overflow: "scroll" }}>
                 <div className='table-responsive'>
                   <table className='table table-hover'>
                     <thead>
@@ -118,6 +114,18 @@ const CreateAcademicYear = () => {
                         <td>1003</td>
                         <td>SESSION 2023</td>
                       </tr>
+                      <tr>
+                        <td>1003</td>
+                        <td>SESSION 2023</td>
+                      </tr>
+                      <tr>
+                        <td>1003</td>
+                        <td>SESSION 2023</td>
+                      </tr>
+                      <tr>
+                        <td>1003</td>
+                        <td>SESSION 2023</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -126,7 +134,7 @@ const CreateAcademicYear = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

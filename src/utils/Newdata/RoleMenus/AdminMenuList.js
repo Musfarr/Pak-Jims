@@ -8,63 +8,22 @@ export const AdminMenuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Admin",
+                name: "Admin Home",
                 path: "/admin-dashboard",
                 subdropdownMenu: []
             },
-            {
-                id: 2,
-                name: "Analytics",
-                path: "/dashboards/analytics",
-                subdropdownMenu: []
-            }
+            // {
+            //     id: 2,
+            //     name: "Analytics",
+            //     path: "/dashboards/analytics",
+            //     subdropdownMenu: []
+            // }
         ]
     },
 
 
 
-    {
-        id: 5,
-        name: "Students",
-        path: "#",
-        icon: 'feather-users',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: " Student Create",
-                path: "/create-student",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Student List",   
-                path: "/student-list",
-                subdropdownMenu: []
-            }
-        ]
-    },
 
-
-    {
-        id: 5,
-        name: "Faculty",
-        path: "#",
-        icon: 'feather-users',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Faculty Create",
-                path: "/create-faculty",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Faculty List",
-                path: "/faculty-list",
-                subdropdownMenu: []
-            }
-        ]
-    },
     {
         id: 6,
         name: "courses",
@@ -151,12 +110,12 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-briefcase',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Academic Year List",
-                path: "/academic-years/list",
-                subdropdownMenu: []
-            },
+            // {
+            //     id: 1,
+            //     name: "Academic Years",
+            //     path: "/academic-years/list",
+            //     subdropdownMenu: []
+            // },
             {
                 id: 2,
                 name: "Add Academic Year",
@@ -185,6 +144,50 @@ export const AdminMenuList = [
             }
         ]
     },
+
+    {
+        id: 5,
+        name: "Students",
+        path: "#",
+        icon: 'feather-users',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: " Student Create",
+                path: "/create-student",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Student List",   
+                path: "/student-list",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
+
+    {
+        id: 5,
+        name: "Faculty",
+        path: "#",
+        icon: 'feather-users',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Faculty Create",
+                path: "/create-faculty",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Faculty List",
+                path: "/faculty-list",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
     // {
     //     id: 8,
     //     name: "settings",

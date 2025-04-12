@@ -14,16 +14,17 @@ const SuperAdminDashboard = () => {
   // Fetch institutes data
   const { data: response, isLoading, isError } = useQuery({
     queryKey: ['institutes'],
-    queryFn: () => GetApi('/institutes')
+    queryFn: () => GetApi('/dashboard')
   });
 
   const institutes = response?.data || [];
 
   const statisticsData = [
-    { amount: institutes.length || '0', description: 'Total Institutes', icon: 'feather-users', bgColor: 'bg-primary' },
-    { amount: '2', description: 'Total Branches', icon: 'feather-users', bgColor: 'bg-success' },
-    { amount: '3', description: 'Total Admins', icon: 'feather-users', bgColor: 'bg-warning' },
-    { amount: '0', description: 'Total Users', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+    { amount: institutes.totalInstitues || '0', description: 'Total Institutes', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: institutes.totalBranches || '0', description: 'Total Branches', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: institutes.totalAdmins || '0', description: 'Total Admins', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: institutes.totalFaculties || '0', description: 'Total Faculties', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' },
+    { amount: institutes.totalStudents || '0', description: 'Total Students', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
   ];
 
   return (

@@ -162,6 +162,14 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/super-admin/admin/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="super_admin">
+                        <AdminEdit />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/branch/create-admin/:id",
                 element: (
                     <ProtectedRoute requiredRole="super_admin">

@@ -1,21 +1,36 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import RoleNavigation from '../../components/RoleNavigation';
+import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
+
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const { data: response, isLoading, isError } = useQuery({
+    queryKey: ['institutes'],
+    queryFn: () => GetApi('/dashboard')
+  });
 
+  const institutes = response?.data || [];
+
+  const statisticsData = [
+    { amount: institutes.totalInstitues || '0', description: 'Total Institutes', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: institutes.totalBranches || '0', description: 'Total Branches', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: institutes.totalAdmins || '0', description: 'Total Admins', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: institutes.totalUsers || '0', description: 'Total Users', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+  ];  
   return (
     <>
       <PageHeader>
-        <h4 className="mb-0">Admin Dashboard</h4>
+        <h4 className="mb-0">{user?.name || 'Admin'}</h4>
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
-          <div className='col-12'>
-            <RoleNavigation />
-            
+          <EstimateStatistics statisticsData={statisticsData} />
+
+          {/* <div className='col-12'>  
             <div className='card'>
               <div className='card-body'>
                 <h5 className="card-title">Welcome, {user?.name || 'Admin'}</h5>
@@ -49,7 +64,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

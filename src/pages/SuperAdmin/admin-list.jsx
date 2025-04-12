@@ -91,7 +91,7 @@ const AdminList = () => {
 
                                     <div className="d-flex gap-3 align-items-center">
                                         {/* Filters */}
-                                        <div className="d-flex align-items-center me-3">
+                                        {/* <div className="d-flex align-items-center me-3">
                                             <label htmlFor="instituteFilter" className="me-2">
                                                 <FiFilter className="me-1" /> Institute:
                                             </label>
@@ -108,9 +108,9 @@ const AdminList = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </div>
+                                        </div> */}
                                         
-                                        <div className="d-flex align-items-center me-3">
+                                        {/* <div className="d-flex align-items-center me-3">
                                             <label htmlFor="branchFilter" className="me-2">
                                                 <FiFilter className="me-1" /> Branch:
                                             </label>
@@ -127,12 +127,12 @@ const AdminList = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </div>
+                                        </div> */}
 
                                         {/* Add Admin Button */}
-                                        <Link to="/super-admin/admin/create" className="btn btn-primary btn-sm">
+                                        {/* <Link to="/super-admin/admin/create" className="btn btn-primary btn-sm">
                                             <FiPlus className="me-1" /> Add Admin
-                                        </Link>
+                                        </Link> */}
                                     </div>
                                 </div>
                                 

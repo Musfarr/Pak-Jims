@@ -12,6 +12,7 @@ const AcademicYearList = () => {
     { id: 2, code: '1001', academicYear: 'SESSION 2021', isActive: false },
     { id: 3, code: '1002', academicYear: 'SESSION 2022', isActive: false },
     { id: 4, code: '1003', academicYear: 'SESSION 2023', isActive: false },
+    { id: 4, code: '1003', academicYear: 'SESSION 2023', isActive: false },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');

@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import { useAuth } from '../../../context/AuthContext'
+
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
+    const { user } = useAuth();
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -14,12 +17,13 @@ const ProfileModal = () => {
                     <div className="d-flex align-items-center">
                         <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" />
                         <div>
-                            <h6 className="text-dark mb-0">Alexandra Della </h6>
-                            <span className="fs-12 fw-medium text-muted">alex.della@outlook.com</span>
+                            <h6 className="text-dark mb-0">{user?.name || 'Admin'}</h6>
+                            <span className="fs-12 fw-medium text-muted">{user?.email}<br /></span>
+                            <span className="fs-12 fw-medium text-muted">{user?.user_type.toUpperCase()}</span>
                         </div>
                     </div>
                 </div>
-                <div className="dropdown">
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
@@ -44,7 +48,7 @@ const ProfileModal = () => {
                             })
                         }
                     </div>
-                </div>
+                </div> */}
                 {/* <div className="dropdown-divider"></div> */}
                 {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
@@ -76,7 +80,7 @@ const ProfileModal = () => {
 
 
 
-                <div className="dropdown-divider"></div>
+                {/* <div className="dropdown-divider"></div> */}
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
                     <span>Profile Details</span>
@@ -89,10 +93,10 @@ const ProfileModal = () => {
                     <i ><FiDollarSign /></i>
                     <span>Billing Details</span>
                 </a> */}
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i><FiBell /></i>
                     <span>Notifications</span>
-                </a>
+                </a> */}
                 {/* <a href="#" className="dropdown-item">
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
