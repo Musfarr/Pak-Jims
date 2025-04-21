@@ -2,55 +2,64 @@ import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
-import { Link } from 'react-router-dom';
-import Input from '@/components/shared/Input';
-import SelectDropdown from '@/components/shared/SelectDropdown';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSave, FiX } from 'react-icons/fi';
+import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, PostApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const CreateBatch = () => {
-  // State for form data
-  const [formData, setFormData] = useState({
-    code: '',
-    prefix: '',
-    batchName: '',
-    program: null,
-    description: '',
-    status: 'active'
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Fetch programs for dropdown
+  const { data: programsResponse, isLoading: programsLoading } = useQuery({
+    queryKey: ['programs'],
+    queryFn: () => GetApi('/programs')
   });
-
-  // Program options for dropdown
-  const programOptions = [
-    { value: 'mbbs', label: 'MBBS PROGRAM' },
-    { value: 'bs', label: 'BS PROGRAM' },
-    { value: 'bds', label: 'BDS PROGRAM' },
-    { value: 'pharm-d', label: 'PHARM-D PROGRAM' },
-    { value: 'bsn', label: 'BSN PROGRAM' }
-  ];
-
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  // Handle program selection
-  const handleProgramSelect = (option) => {
-    setFormData({
-      ...formData,
-      program: option
-    });
-  };
-
+  
+  const programs = programsResponse?.data || [];
+  
+  // React Hook Form setup
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      prefix: '',
+      name: '',
+      program_id: ''
+    }
+  });
+  
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form data submitted:', formData);
-    // Here you would typically send the data to an API
-    alert('Batch created successfully!');
-    // Reset form or redirect
+  const onSubmit = (data) => {
+    setIsSubmitting(true);
+    
+    PostApi('/batches', data)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Batch created successfully',
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          navigate('/batches/list');
+        });
+      })
+      .catch(error => {
+        console.error('Error creating batch:', error);
+        // Only show error if it's not a 422 validation error (which is already handled by interceptor)
+        if (!error.response || error.response.status !== 422) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: error.message || 'Failed to create batch',
+            confirmButtonColor: '#d33'
+          });
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -66,82 +75,23 @@ const CreateBatch = () => {
                 <h5 className='mb-0'>Create New Batch</h5>
               </div>
               <div className='card-body'>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className='row mb-4'>
                     <div className='col-md-6'>
-                      <Input
-                        icon='feather-hash'
-                        label={"Code :"}
-                        labelId={"codeInput"}
-                        placeholder={"Enter batch code"}
-                        name={"code"}
-                        value={formData.code}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className='col-md-6'>
-                      <Input
-                        icon='feather-tag'
-                        label={"Prefix :"}
-                        labelId={"prefixInput"}
-                        placeholder={"Enter batch prefix"}
-                        name={"prefix"}
-                        value={formData.prefix}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-12'>
-                      <Input
-                        icon='feather-users'
-                        label={"Batch Name :"}
-                        labelId={"batchNameInput"}
-                        placeholder={"Enter batch name"}
-                        name={"batchName"}
-                        value={formData.batchName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-12'>
-                      <div className="row mb-4 align-items-center">
-                        <div className="col-lg-2">
-                          <label className="fw-semibold">Program :</label>
-                        </div>
-                        <div className="col-lg-10">
-                          <SelectDropdown
-                            options={programOptions}
-                            selectedOption={formData.program}
-                            defaultSelect="Select program"
-                            onSelectOption={handleProgramSelect}
+                      <div className="form-group">
+                        <label htmlFor="prefix" className="form-label">Prefix*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-tag"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.prefix ? 'is-invalid' : ''}`}
+                            id="prefix"
+                            placeholder="Enter batch prefix"
+                            {...register('prefix', { required: 'Prefix is required' })}
                           />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-md-6'>
-                      <div className="row mb-4 align-items-center">
-                        <div className="col-lg-4">
-                          <label className="fw-semibold">Status :</label>
-                        </div>
-                        <div className="col-lg-8">
-                          <select 
-                            className="form-select" 
-                            name="status"
-                            value={formData.status}
-                            onChange={handleInputChange}
-                          >
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                          </select>
+                          {errors.prefix && <div className="invalid-feedback">{errors.prefix.message}</div>}
                         </div>
                       </div>
                     </div>
@@ -149,17 +99,48 @@ const CreateBatch = () => {
 
                   <div className='row mb-4'>
                     <div className='col-12'>
-                      <div className="mb-3">
-                        <label htmlFor="descriptionTextarea" className="form-label fw-semibold">Description</label>
-                        <textarea 
-                          className="form-control" 
-                          id="descriptionTextarea" 
-                          rows="3"
-                          name="description"
-                          value={formData.description}
-                          onChange={handleInputChange}
-                          placeholder="Enter batch description"
-                        ></textarea>
+                      <div className="form-group">
+                        <label htmlFor="name" className="form-label">Batch Name*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-users"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                            id="name"
+                            placeholder="Enter batch name"
+                            {...register('name', { required: 'Batch name is required' })}
+                          />
+                          {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='row mb-4'>
+                    <div className='col-12'>
+                      <div className="form-group">
+                        <label htmlFor="program_id" className="form-label">Program*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-book"></i>
+                          </span>
+                          <select
+                            id="program_id"
+                            className={`form-select ${errors.program_id ? 'is-invalid' : ''}`}
+                            {...register('program_id', { required: 'Program is required' })}
+                            disabled={programsLoading}
+                          >
+                            <option value="">Select program</option>
+                            {programs.map(program => (
+                              <option key={program.id} value={program.id}>
+                                {program.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.program_id && <div className="invalid-feedback">{errors.program_id.message}</div>}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -168,8 +149,13 @@ const CreateBatch = () => {
                     <Link to="/batches/list" className='btn btn-secondary'>
                       <FiX className="me-1" /> Cancel
                     </Link>
-                    <button type="submit" className='btn btn-primary'>
-                      <FiSave className="me-1" /> Save Batch
+                    <button 
+                      type="submit" 
+                      className='btn btn-primary'
+                      disabled={isSubmitting || programsLoading}
+                    >
+                      <FiSave className="me-1" /> 
+                      {isSubmitting ? 'Saving...' : 'Save Batch'}
                     </button>
                   </div>
                 </form>

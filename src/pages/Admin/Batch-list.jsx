@@ -3,48 +3,91 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
-import { FiEdit, FiEye, FiTrash, FiSearch } from 'react-icons/fi';
+import { FiEdit, FiEye, FiTrash, FiSearch, FiLoader } from 'react-icons/fi';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const BatchList = () => {
-  // Sample data for batches
-  const [batches, setBatches] = useState([
-    { id: 1, code: 'B001', prefix: 'MB', batchName: 'MBBS Batch 2023', program: 'MBBS PROGRAM', status: 'Active' },
-    { id: 2, code: 'B002', prefix: 'BS', batchName: 'BS Batch 2023', program: 'BS PROGRAM', status: 'Active' },
-    { id: 3, code: 'B003', prefix: 'BD', batchName: 'BDS Batch 2023', program: 'BDS PROGRAM', status: 'Active' },
-    { id: 4, code: 'B004', prefix: 'PD', batchName: 'PHARM-D Batch 2023', program: 'PHARM-D PROGRAM', status: 'Inactive' },
-    { id: 5, code: 'B005', prefix: 'NS', batchName: 'BSN Batch 2023', program: 'BSN PROGRAM', status: 'Active' },
-  ]);
-
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Program options for filter
+  // Fetch batches and programs data
+  const { data: batchesResponse, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['batches'],
+    queryFn: () => GetApi('/batches')
+  });
+
+  const { data: programsResponse, isLoading: programsLoading } = useQuery({
+    queryKey: ['programs'],
+    queryFn: () => GetApi('/programs')
+  });
+
+  const batches = batchesResponse?.data || [];
+  const programs = programsResponse?.data || [];
+
+  // Create program options for filter
   const programOptions = [
     { value: '', label: 'All Programs' },
-    { value: 'MBBS PROGRAM', label: 'MBBS PROGRAM' },
-    { value: 'BS PROGRAM', label: 'BS PROGRAM' },
-    { value: 'BDS PROGRAM', label: 'BDS PROGRAM' },
-    { value: 'PHARM-D PROGRAM', label: 'PHARM-D PROGRAM' },
-    { value: 'BSN PROGRAM', label: 'BSN PROGRAM' },
+    ...(programs.map(program => ({
+      value: program.id,
+      label: program.name
+    })) || [])
   ];
 
   // Filter batches based on search term and program filter
   const filteredBatches = batches.filter(batch => {
     const matchesSearch = 
-      batch.batchName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      batch.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      batch.prefix.toLowerCase().includes(searchTerm.toLowerCase());
+      batch.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      batch.prefix?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesProgram = filterProgram === '' || batch.program === filterProgram;
+    const matchesProgram = filterProgram === '' || batch.program_id?.toString() === filterProgram.toString();
     
     return matchesSearch && matchesProgram;
   });
 
   // Handle batch deletion
   const handleDeleteBatch = (id) => {
-    if (window.confirm('Are you sure you want to delete this batch?')) {
-      setBatches(batches.filter(batch => batch.id !== id));
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsDeleting(true);
+        DeleteApi(`/batches/${id}`)
+          .then(() => {
+            Swal.fire(
+              'Deleted!',
+              'Batch has been deleted.',
+              'success'
+            );
+            refetch(); // Refresh the batches list
+          })
+          .catch(error => {
+            console.error('Error deleting batch:', error);
+            Swal.fire(
+              'Error!',
+              error.message || 'Failed to delete batch',
+              'error'
+            );
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
+  };
+
+  // Find program name by ID
+  const getProgramName = (programId) => {
+    const program = programs.find(p => p.id.toString() === programId?.toString());
+    return program ? program.name : 'Unknown Program';
   };
 
   return (
@@ -72,17 +115,18 @@ const BatchList = () => {
                       <input 
                         type='text' 
                         className='form-control' 
-                        placeholder='Search by batch name, code or prefix'
+                        placeholder='Search by batch name or prefix'
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div className='col-md-6'>
+                  {/* <div className='col-md-6'>
                     <select 
                       className='form-select'
                       value={filterProgram}
                       onChange={(e) => setFilterProgram(e.target.value)}
+                      disabled={programsLoading}
                     >
                       {programOptions.map(option => (
                         <option key={option.value} value={option.value}>
@@ -90,59 +134,64 @@ const BatchList = () => {
                         </option>
                       ))}
                     </select>
+                  </div> */}
+                </div>
+
+                {isLoading ? (
+                  <div className="text-center py-4">
+                    <FiLoader className="spinner-border" role="status" />
+                    <p className="mt-2">Loading batches...</p>
                   </div>
-                </div>
-                <div className='table-responsive'>
-                  <table className='table table-hover'>
-                    <thead>
-                      <tr>
-                        <th>Code</th>
-                        <th>Prefix</th>
-                        <th>Batch Name</th>
-                        <th>Program</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredBatches.length > 0 ? (
-                        filteredBatches.map(batch => (
-                          <tr key={batch.id}>
-                            <td>{batch.code}</td>
-                            <td>{batch.prefix}</td>
-                            <td>{batch.batchName}</td>
-                            <td>{batch.program}</td>
-                            <td>
-                              <span className={`badge ${batch.status === 'Active' ? 'bg-success' : 'bg-secondary'}`}>
-                                {batch.status}
-                              </span>
-                            </td>
-                            <td>
-                              <div className='d-flex gap-2'>
-                                <Link to={`/batches/view/${batch.id}`} className='btn btn-sm btn-info'>
-                                  <FiEye size={16} />
-                                </Link>
-                                <Link to={`/batches/edit/${batch.id}`} className='btn btn-sm btn-warning'>
-                                  <FiEdit size={16} />
-                                </Link>
-                                <button 
-                                  className='btn btn-sm btn-danger'
-                                  onClick={() => handleDeleteBatch(batch.id)}
-                                >
-                                  <FiTrash size={16} />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
+                ) : isError ? (
+                  <div className="alert alert-danger">
+                    Error loading batches: {error?.message || 'Unknown error'}
+                  </div>
+                ) : (
+                  <div className='table-responsive'>
+                    <table className='table table-hover'>
+                      <thead>
                         <tr>
-                          <td colSpan="6" className="text-center">No batches found</td>
+                          <th>Prefix</th>
+                          <th>Batch Name</th>
+                          <th>Program</th>
+                          <th>Actions</th>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {filteredBatches.length > 0 ? (
+                          filteredBatches.map(batch => (
+                            <tr key={batch.id}>
+                              <td>{batch.prefix}</td>
+                              <td>{batch.name}</td>
+                              <td>{getProgramName(batch.program_id)}</td>
+                              <td>
+                                <div className='d-flex gap-2'>
+                                  {/* <Link to={`/batches/view/${batch.id}`} className='btn btn-sm btn-info'>
+                                    <FiEye size={16} />
+                                  </Link>
+                                  <Link to={`/batches/edit/${batch.id}`} className='btn btn-sm btn-warning'>
+                                    <FiEdit size={16} />
+                                  </Link> */}
+                                  <button 
+                                    className='btn btn-sm btn-danger'
+                                    onClick={() => handleDeleteBatch(batch.id)}
+                                    disabled={isDeleting}
+                                  >
+                                    <FiTrash size={16} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="4" className="text-center">No batches found</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           </div>

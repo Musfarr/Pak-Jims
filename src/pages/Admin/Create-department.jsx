@@ -2,56 +2,64 @@ import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
-import { Link } from 'react-router-dom';
-import Input from '@/components/shared/Input';
-import SelectDropdown from '@/components/shared/SelectDropdown';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSave, FiX } from 'react-icons/fi';
+import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, PostApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const CreateDepartment = () => {
-  // State for form data
-  const [formData, setFormData] = useState({
-    code: '',
-    prefix: '',
-    departmentName: '',
-    course: null,
-    description: '',
-    status: 'active'
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Fetch courses for dropdown
+  const { data: coursesResponse, isLoading: coursesLoading } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => GetApi('/courses')
   });
-
-  // Course options for dropdown
-  const courseOptions = [
-    { value: 'mbbs', label: 'MBBS' },
-    { value: 'bds', label: 'BDS' },
-    { value: 'pharm-d', label: 'PHARM-D' },
-    { value: 'dpt', label: 'DPT' },
-    { value: 'bsn', label: 'BSN' },
-    { value: 'bs-mt', label: 'BS MEDICAL TECHNOLOGY' }
-  ];
-
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  // Handle course selection
-  const handleCourseSelect = (option) => {
-    setFormData({
-      ...formData,
-      course: option
-    });
-  };
-
+  
+  const courses = coursesResponse?.data || [];
+  
+  // React Hook Form setup
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      prefix: '',
+      name: '',
+      course_id: ''
+    }
+  });
+  
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form data submitted:', formData);
-    // Here you would typically send the data to an API
-    alert('Department created successfully!');
-    // Reset form or redirect
+  const onSubmit = (data) => {
+    setIsSubmitting(true);
+    
+    PostApi('/departments', data)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Department created successfully',
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          navigate('/departments/list');
+        });
+      })
+      .catch(error => {
+        console.error('Error creating department:', error);
+        // Only show error if it's not a 422 validation error (which is already handled by interceptor)
+        if (!error.response || error.response.status !== 422) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: error.message || 'Failed to create department',
+            confirmButtonColor: '#d33'
+          });
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -67,82 +75,23 @@ const CreateDepartment = () => {
                 <h5 className='mb-0'>Create New Department</h5>
               </div>
               <div className='card-body'>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className='row mb-4'>
                     <div className='col-md-6'>
-                      <Input
-                        icon='feather-hash'
-                        label={"Code :"}
-                        labelId={"codeInput"}
-                        placeholder={"Enter department code"}
-                        name={"code"}
-                        value={formData.code}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className='col-md-6'>
-                      <Input
-                        icon='feather-tag'
-                        label={"Prefix :"}
-                        labelId={"prefixInput"}
-                        placeholder={"Enter department prefix"}
-                        name={"prefix"}
-                        value={formData.prefix}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-12'>
-                      <Input
-                        icon='feather-briefcase'
-                        label={"Department :"}
-                        labelId={"departmentNameInput"}
-                        placeholder={"Enter department name"}
-                        name={"departmentName"}
-                        value={formData.departmentName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-12'>
-                      <div className="row mb-4 align-items-center">
-                        <div className="col-lg-2">
-                          <label className="fw-semibold">Course :</label>
-                        </div>
-                        <div className="col-lg-10">
-                          <SelectDropdown
-                            options={courseOptions}
-                            selectedOption={formData.course}
-                            defaultSelect="Select associated course"
-                            onSelectOption={handleCourseSelect}
+                      <div className="form-group">
+                        <label htmlFor="prefix" className="form-label">Prefix*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-tag"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.prefix ? 'is-invalid' : ''}`}
+                            id="prefix"
+                            placeholder="Enter department prefix"
+                            {...register('prefix', { required: 'Prefix is required' })}
                           />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-md-6'>
-                      <div className="row mb-4 align-items-center">
-                        <div className="col-lg-4">
-                          <label className="fw-semibold">Status :</label>
-                        </div>
-                        <div className="col-lg-8">
-                          <select 
-                            className="form-select" 
-                            name="status"
-                            value={formData.status}
-                            onChange={handleInputChange}
-                          >
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                          </select>
+                          {errors.prefix && <div className="invalid-feedback">{errors.prefix.message}</div>}
                         </div>
                       </div>
                     </div>
@@ -150,17 +99,48 @@ const CreateDepartment = () => {
 
                   <div className='row mb-4'>
                     <div className='col-12'>
-                      <div className="mb-3">
-                        <label htmlFor="descriptionTextarea" className="form-label fw-semibold">Description</label>
-                        <textarea 
-                          className="form-control" 
-                          id="descriptionTextarea" 
-                          rows="3"
-                          name="description"
-                          value={formData.description}
-                          onChange={handleInputChange}
-                          placeholder="Enter department description"
-                        ></textarea>
+                      <div className="form-group">
+                        <label htmlFor="name" className="form-label">Department Name*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-briefcase"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                            id="name"
+                            placeholder="Enter department name"
+                            {...register('name', { required: 'Department name is required' })}
+                          />
+                          {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='row mb-4'>
+                    <div className='col-12'>
+                      <div className="form-group">
+                        <label htmlFor="course_id" className="form-label">Course*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-book"></i>
+                          </span>
+                          <select
+                            id="course_id"
+                            className={`form-select ${errors.course_id ? 'is-invalid' : ''}`}
+                            {...register('course_id', { required: 'Course is required' })}
+                            disabled={coursesLoading}
+                          >
+                            <option value="">Select course</option>
+                            {courses.map(course => (
+                              <option key={course.id} value={course.id}>
+                                {course.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.course_id && <div className="invalid-feedback">{errors.course_id.message}</div>}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -169,8 +149,13 @@ const CreateDepartment = () => {
                     <Link to="/departments/list" className='btn btn-secondary'>
                       <FiX className="me-1" /> Cancel
                     </Link>
-                    <button type="submit" className='btn btn-primary'>
-                      <FiSave className="me-1" /> Save Department
+                    <button 
+                      type="submit" 
+                      className='btn btn-primary'
+                      disabled={isSubmitting || coursesLoading}
+                    >
+                      <FiSave className="me-1" /> 
+                      {isSubmitting ? 'Saving...' : 'Save Department'}
                     </button>
                   </div>
                 </form>
