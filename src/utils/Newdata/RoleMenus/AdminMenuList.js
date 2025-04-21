@@ -86,46 +86,7 @@ export const AdminMenuList = [
             }
         ]
     },
-    {
-        id: 9,
-        name: "classes",
-        path: "#",
-        icon: 'feather-layers',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Class List",
-                path: "/classes/list",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Add Class",
-                path: "/classes/add",
-                subdropdownMenu: []
-            }
-        ]
-    },
-    {
-        id: 10,
-        name: "academic years",
-        path: "#",
-        icon: 'feather-briefcase',
-        dropdownMenu: [
-            // {
-            //     id: 1,
-            //     name: "Academic Years",
-            //     path: "/academic-years/list",
-            //     subdropdownMenu: []
-            // },
-            {
-                id: 2,
-                name: "Add Academic Year",
-                path: "/academic-years/add",
-                subdropdownMenu: []
-            }
-        ]
-    },
+
     {
         id: 11,
         name: "batches",
@@ -146,6 +107,50 @@ export const AdminMenuList = [
             }
         ]
     },
+
+    {
+        id: 10,
+        name: "academic years",
+        path: "#",
+        icon: 'feather-briefcase',
+        dropdownMenu: [
+            // {
+            //     id: 1,
+            //     name: "Academic Years",
+            //     path: "/academic-years/list",
+            //     subdropdownMenu: []
+            // },
+            {
+                id: 2,
+                name: "Add Academic Year",
+                path: "/academic-years/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+    
+    {
+        id: 9,
+        name: "classes",
+        path: "#",
+        icon: 'feather-layers',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Class List",
+                path: "/classes/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Class",
+                path: "/classes/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
+
 
     {
         id: 5,

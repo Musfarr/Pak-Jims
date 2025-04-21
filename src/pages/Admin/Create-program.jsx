@@ -2,37 +2,55 @@ import React, { useState } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '@/components/shared/Input';
 import { FiSave, FiX } from 'react-icons/fi';
+import { useForm } from 'react-hook-form';
+import { PostApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const CreateProgram = () => {
-  // State for form data
-  const [formData, setFormData] = useState({
-    code: '',
-    prefix: '',
-    programName: '',
-    description: '',
-    duration: '',
-    status: 'active'
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // React Hook Form setup
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      prefix: '',
+      name: '' // Changed from programName to name to match API
+    }
   });
-
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
+  
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form data submitted:', formData);
-    // Here you would typically send the data to an API
-    alert('Program created successfully!');
-    // Reset form or redirect
+  const onSubmit = (data) => {
+    setIsSubmitting(true);
+    
+    PostApi('/programs', data)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Program created successfully',
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          navigate('/programs/list');
+        });
+      })
+      .catch(error => {
+        console.error('Error creating program:', error);
+        // Only show error if it's not a 422 validation error (which is already handled by interceptor)
+        if (!error.response || error.response.status !== 422) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: error.message || 'Failed to create program',
+            confirmButtonColor: '#d33'
+          });
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -48,75 +66,23 @@ const CreateProgram = () => {
                 <h5 className='mb-0'>Create New Program</h5>
               </div>
               <div className='card-body'>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className='row mb-4'>
                     <div className='col-md-6'>
-                      <Input
-                        icon='feather-hash'
-                        label={"Code :"}
-                        labelId={"codeInput"}
-                        placeholder={"Enter program code"}
-                        name={"code"}
-                        value={formData.code}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className='col-md-6'>
-                      <Input
-                        icon='feather-tag'
-                        label={"Prefix :"}
-                        labelId={"prefixInput"}
-                        placeholder={"Enter program prefix"}
-                        name={"prefix"}
-                        value={formData.prefix}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-12'>
-                      <Input
-                        icon='feather-file-text'
-                        label={"Program Name:"}
-                        labelId={"programNameInput"}
-                        placeholder={"Enter program name"}
-                        name={"programName"}
-                        value={formData.programName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className='row mb-4'>
-                    <div className='col-md-6'>
-                      <Input
-                        icon='feather-clock'
-                        label={"Duration"}
-                        labelId={"durationInput"}
-                        placeholder={"e.g., 4 years, 5 semesters"}
-                        name={"duration"}
-                        value={formData.duration}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    <div className='col-md-6'>
-                      <div className="row mb-4 align-items-center">
-                        <div className="col-lg-4">
-                          <label className="fw-semibold">Status :</label>
-                        </div>
-                        <div className="col-lg-8">
-                          <select 
-                            className="form-select" 
-                            name="status"
-                            value={formData.status}
-                            onChange={handleInputChange}
-                          >
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                          </select>
+                      <div className="form-group">
+                        <label htmlFor="prefix" className="form-label">Prefix*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-tag"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.prefix ? 'is-invalid' : ''}`}
+                            id="prefix"
+                            placeholder="Enter program prefix"
+                            {...register('prefix', { required: 'Prefix is required' })}
+                          />
+                          {errors.prefix && <div className="invalid-feedback">{errors.prefix.message}</div>}
                         </div>
                       </div>
                     </div>
@@ -124,17 +90,21 @@ const CreateProgram = () => {
 
                   <div className='row mb-4'>
                     <div className='col-12'>
-                      <div className="mb-3">
-                        <label htmlFor="descriptionTextarea" className="form-label fw-semibold">Description</label>
-                        <textarea 
-                          className="form-control" 
-                          id="descriptionTextarea" 
-                          rows="3"
-                          name="description"
-                          value={formData.description}
-                          onChange={handleInputChange}
-                          placeholder="Enter program description"
-                        ></textarea>
+                      <div className="form-group">
+                        <label htmlFor="name" className="form-label">Program Name*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-file-text"></i>
+                          </span>
+                          <input
+                            type="text"
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                            id="name"
+                            placeholder="Enter program name"
+                            {...register('name', { required: 'Program name is required' })}
+                          />
+                          {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -143,8 +113,13 @@ const CreateProgram = () => {
                     <Link to="/programs/list" className='btn btn-secondary'>
                       <FiX className="me-1" /> Cancel
                     </Link>
-                    <button type="submit" className='btn btn-primary'>
-                      <FiSave className="me-1" /> Save Program
+                    <button 
+                      type="submit" 
+                      className='btn btn-primary'
+                      disabled={isSubmitting}
+                    >
+                      <FiSave className="me-1" /> 
+                      {isSubmitting ? 'Saving...' : 'Save Program'}
                     </button>
                   </div>
                 </form>

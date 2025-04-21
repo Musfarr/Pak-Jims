@@ -3,38 +3,81 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
-import { FiEdit, FiEye, FiTrash, FiSearch, FiFilter } from 'react-icons/fi';
+import { FiEdit, FiEye, FiTrash, FiSearch, FiFilter, FiPlus } from 'react-icons/fi';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 
 const CourseList = () => {
-  // Sample data for courses
-  const [courses, setCourses] = useState([
-    { id: 1, code: 'MED101', prefix: 'MED', name: 'Introduction to Medical Sciences', program: 'MBBS', status: 'Active' },
-    { id: 2, code: 'MED201', prefix: 'MED', name: 'Anatomy and Physiology', program: 'MBBS', status: 'Active' },
-    { id: 3, code: 'DENT105', prefix: 'DENT', name: 'Dental Basics', program: 'BDS', status: 'Active' },
-    { id: 4, code: 'PHARM110', prefix: 'PHARM', name: 'Pharmaceutical Chemistry', program: 'Pharm-D', status: 'Inactive' },
-    { id: 5, code: 'MED301', prefix: 'MED', name: 'Pathology', program: 'MBBS', status: 'Active' },
-  ]);
-
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Fetch courses from API
+  const { data: coursesResponse, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => GetApi('/courses')
+  });
+
+  // Extract courses from response
+  const courses = coursesResponse?.data || [];
+
+  // Fetch programs for filter dropdown
+  const { data: programsResponse } = useQuery({
+    queryKey: ['programs'],
+    queryFn: () => GetApi('/programs')
+  });
+
+  // Extract programs from response
+  const programs = programsResponse?.data || [];
 
   // Filter courses based on search term and program filter
   const filteredCourses = courses.filter(course => {
     return (
-      (course.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-       course.code.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (filterProgram === '' || course.program === filterProgram)
+      (course.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+       course.prefix?.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 
-  // Programs for filter dropdown
-  const programs = ['MBBS', 'BDS', 'Pharm-D', 'DPT', 'BSN'];
-
   // Handle course deletion
   const handleDeleteCourse = (id) => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
-      setCourses(courses.filter(course => course.id !== id));
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsDeleting(true);
+        DeleteApi(`/courses/${id}`)
+          .then(() => {
+            refetch(); // Refresh the courses list
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Course deleted successfully',
+              confirmButtonColor: '#3085d6'
+            });
+          })
+          .catch(error => {
+            console.error('Error deleting course:', error);
+            if (!error.response || error.response.status !== 422) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: error.message || 'Failed to delete course',
+                confirmButtonColor: '#d33'
+              });
+            }
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
   };
 
   return (
@@ -48,8 +91,8 @@ const CourseList = () => {
             <div className='card'>
               <div className='card-header d-flex justify-content-between align-items-center'>
                 <h5 className='mb-0'>Course List</h5>
-                <Link to="/courses/add" className='btn btn-primary'>
-                  Add New Course
+                <Link to="/courses/create" className='btn btn-primary'>
+                  <FiPlus className="me-1" /> Add New Course
                 </Link>
               </div>
               <div className='card-body'>
@@ -62,13 +105,13 @@ const CourseList = () => {
                       <input 
                         type='text' 
                         className='form-control' 
-                        placeholder='Search by course name or code'
+                        placeholder='Search by course name or prefix'
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div className='col-md-6'>
+                  {/* <div className='col-md-6'>
                     <div className='input-group'>
                       <span className='input-group-text'>
                         <FiFilter size={18} />
@@ -79,64 +122,75 @@ const CourseList = () => {
                         onChange={(e) => setFilterProgram(e.target.value)}
                       >
                         <option value=''>All Programs</option>
-                        {programs.map((program, index) => (
-                          <option key={index} value={program}>{program}</option>
+                        {programs.map((program) => (
+                          <option key={program.id} value={program.id}>{program.name}</option>
                         ))}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-                <div className='table-responsive'>
-                  <table className='table table-hover'>
-                    <thead>
-                      <tr>
-                        <th>Course Code</th>
-                        <th>Prefix</th>
-                        <th>Course Name</th>
-                        <th>Program</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredCourses.length > 0 ? (
-                        filteredCourses.map(course => (
-                          <tr key={course.id}>
-                            <td>{course.code}</td>
-                            <td>{course.prefix}</td>
-                            <td>{course.name}</td>
-                            <td>{course.program}</td>
-                            <td>
-                              <span className={`badge ${course.status === 'Active' ? 'bg-success' : 'bg-secondary'}`}>
-                                {course.status}
-                              </span>
-                            </td>
-                            <td>
-                              <div className='d-flex gap-2'>
-                                <Link to={`/courses/view/${course.id}`} className='btn btn-sm btn-info'>
-                                  <FiEye size={16} />
-                                </Link>
-                                <Link to={`/courses/edit/${course.id}`} className='btn btn-sm btn-warning'>
-                                  <FiEdit size={16} />
-                                </Link>
-                                <button 
-                                  className='btn btn-sm btn-danger'
-                                  onClick={() => handleDeleteCourse(course.id)}
-                                >
-                                  <FiTrash size={16} />
-                                </button>
-                              </div>
+                
+                {isLoading ? (
+                  <div className="text-center py-4">
+                    <div className="spinner-border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : isError ? (
+                  <div className="alert alert-danger">
+                    {error?.message || 'Error loading courses'}
+                  </div>
+                ) : (
+                  <div className='table-responsive'>
+                    <table className='table table-hover'>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Prefix</th>
+                          <th>Course Name</th>
+                          <th>Program</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredCourses.length > 0 ? (
+                          filteredCourses.map((course, index) => {
+                            // Find the program name by ID
+                            const program = programs.find(p => p.id === course.program_id);
+                            return (
+                              <tr key={course.id}>
+                                <td>{index + 1}</td>
+                                <td>{course.prefix}</td>
+                                <td>{course.name}</td>
+                                <td>{program?.name || 'Unknown'}</td>
+                                <td>
+                                  <div className='d-flex gap-2'>
+                                    {/* <Link to={`/courses/edit/${course.id}`} className='btn btn-sm btn-warning'>
+                                      <FiEdit size={16} />
+                                    </Link> */}
+                                    <button 
+                                      className='btn btn-sm btn-danger'
+                                      onClick={() => handleDeleteCourse(course.id)}
+                                      disabled={isDeleting}
+                                    >
+                                      <FiTrash size={16} />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td colSpan="5" className="text-center">
+                              {courses.length === 0 ? 'No courses found' : 'No matching courses'}
                             </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="6" className="text-center">No courses found</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           </div>

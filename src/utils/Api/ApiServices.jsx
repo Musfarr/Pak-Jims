@@ -1,5 +1,6 @@
 import axios from "axios"
 import { toast, ToastContainer } from "react-toastify"
+import Swal from "sweetalert2"
 
 const baseurl = "https://api.paqsjims.edu.pk/"
 
@@ -16,9 +17,20 @@ axios.interceptors.response.use(
 
         (error) => {
             console.log( 'err : ' ,  error)
-            if(error.response.status === 401) {
-                toast.error("Unauthorized")
-                window.location.href = "/"
+            if(error.response) {
+                if(error.response.status === 401) {
+                    // Clear token and redirect to login page
+                    localStorage.clear();
+                    window.location.href = "/";
+                } else if(error.response.status === 422) {
+                    // Swal.fire({
+                    //     icon: 'error',
+                    //     title: 'Error!',
+                    //     text: error.response.data.message,
+                    //     confirmButtonColor: '#d33'
+                    // })
+                    toast.error("Field Already Exists ")
+                }
             }
             
             return Promise.reject(error)
@@ -110,4 +122,3 @@ export const DeleteApi = async (endpoint) => {
         throw error
     }
 }
-
