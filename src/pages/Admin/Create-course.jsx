@@ -4,11 +4,10 @@ import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets'
 import Footer from '@/components/shared/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSave, FiX } from 'react-icons/fi';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
-import Select from 'react-select';
 
 const CreateCourse = () => {
   const navigate = useNavigate();
@@ -22,18 +21,12 @@ const CreateCourse = () => {
   
   const programs = programsResponse?.data || [];
   
-  // Convert programs to options format for react-select
-  const programOptions = programs.map(program => ({
-    value: program.id,
-    label: program.name
-  }));
-  
   // React Hook Form setup
-  const { register, handleSubmit, control, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       prefix: '',
       name: '',
-      program_id: null
+      program_id: ''
     }
   });
   
@@ -41,13 +34,7 @@ const CreateCourse = () => {
   const onSubmit = (data) => {
     setIsSubmitting(true);
     
-    // Extract the program_id value from the select option
-    const formData = {
-      ...data,
-      program_id: data.program_id ? data.program_id.value : null
-    };
-    
-    PostApi('/courses', formData)
+    PostApi('/courses', data)
       .then(() => {
         Swal.fire({
           icon: 'success',
@@ -134,24 +121,26 @@ const CreateCourse = () => {
                   <div className='row mb-4'>
                     <div className='col-12'>
                       <div className="form-group">
-                        <label htmlFor="program" className="form-label">Program*</label>
-                        <Controller
-                          name="program_id"
-                          control={control}
-                          rules={{ required: 'Program is required' }}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={programOptions}
-                              className={errors.program_id ? 'is-invalid' : ''}
-                              placeholder="Select program"
-                              isLoading={programsLoading}
-                              isDisabled={programsLoading}
-                              isClearable
-                            />
-                          )}
-                        />
-                        {errors.program_id && <div className="text-danger mt-1">{errors.program_id.message}</div>}
+                        <label htmlFor="program_id" className="form-label">Program*</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <i className="feather feather-layers"></i>
+                          </span>
+                          <select
+                            id="program_id"
+                            className={`form-select ${errors.program_id ? 'is-invalid' : ''}`}
+                            {...register('program_id', { required: 'Program is required' })}
+                            disabled={programsLoading}
+                          >
+                            <option value="">Select program</option>
+                            {programs.map(program => (
+                              <option key={program.id} value={program.id}>
+                                {program.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.program_id && <div className="invalid-feedback">{errors.program_id.message}</div>}
+                        </div>
                       </div>
                     </div>
                   </div>
