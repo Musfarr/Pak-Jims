@@ -38,11 +38,11 @@ const CreateAcademicYear = () => {
       <div className='main-content'>
         <div className='row'>
           <div className='col-md-6'>
-            <div className='card'>
+            <div className='card' >
               <div className='card-header'>
                 <h5 className='mb-0'>Create Academic Year</h5>
               </div>
-              <div className='card-body'>
+              <div className='card-body' style={{ height: "280px" }}>
                 <form onSubmit={handleSubmit}>
                   <div className='mb-4'>
                     <Input
