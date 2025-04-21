@@ -60,15 +60,15 @@ const LoginForm = () => {
                         placeholder="Enter email" 
                         {...register('username', { 
                             required: 'Email is required',
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: 'Invalid email address'
-                            }
+                            // pattern: {
+                            //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            //     message: 'Invalid email address'
+                            // }
                         })}
                     />
-                    {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                    {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                     <small className="text-muted">
-                        Enter your email
+                        {/* Enter your email */}
                     </small>
                 </div>
                 <div className="mb-3">

@@ -21,6 +21,27 @@ export const AdminMenuList = [
         ]
     },
 
+    {
+        id: 7,
+        name: "programs",
+        path: "#",
+        icon: 'feather-award',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Program List",
+                path: "/programs/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Add Program",
+                path: "/programs/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
 
 
 
@@ -44,26 +65,7 @@ export const AdminMenuList = [
             },
         ]
     },
-    {
-        id: 7,
-        name: "programs",
-        path: "#",
-        icon: 'feather-award',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Program List",
-                path: "/programs/list",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Add Program",
-                path: "/programs/add",
-                subdropdownMenu: []
-            }
-        ]
-    },
+
     {
         id: 8,
         name: "departments",
