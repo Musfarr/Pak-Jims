@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// import Cookies from 'js-cookie';
-// import Cookies from 'js-cookie';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -57,8 +55,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     // Clear cookies
-    Cookies.remove('token');
-    Cookies.remove('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     
     // Reset state
     setIsAuthenticated(false);
@@ -77,7 +75,6 @@ export const AuthProvider = ({ children }) => {
     role,
     login,
     logout,
-    // Add institute_id for convenience in components
     institute_id: user?.institute_id
   };
 

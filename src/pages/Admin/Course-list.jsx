@@ -10,17 +10,14 @@ import Swal from 'sweetalert2';
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterProgram, setFilterProgram] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Fetch courses from API
   const { data: coursesResponse, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['courses'],
     queryFn: () => GetApi('/courses')
   });
 
-  // Extract courses from response
-  const courses = coursesResponse?.data || [];
+  const courses = coursesResponse?.data.data || [];
 
   // Fetch programs for filter dropdown
   const { data: programsResponse } = useQuery({
@@ -28,11 +25,10 @@ const CourseList = () => {
     queryFn: () => GetApi('/programs')
   });
 
-  // Extract programs from response
   const programs = programsResponse?.data || [];
 
   // Filter courses based on search term and program filter
-  const filteredCourses = courses.filter(course => {
+  const filteredCourses = courses?.filter(course => {
     return (
       (course.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
        course.prefix?.toLowerCase().includes(searchTerm.toLowerCase()))
