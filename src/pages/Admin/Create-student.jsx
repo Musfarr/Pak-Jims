@@ -8,9 +8,9 @@ import CustomersCreateHeader from '@/components/customersCreate/CustomersCreateH
 const Createstudent = () => {
   return (
     <>
-        <PageHeader>
+        {/* <PageHeader>
                 <CustomersCreateHeader />
-            </PageHeader>
+            </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
                     <Studentform />

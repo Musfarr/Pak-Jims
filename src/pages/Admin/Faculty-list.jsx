@@ -7,9 +7,7 @@ import Footer from '@/components/shared/Footer'
 const Facultylist = () => {
   return (
     <>
-    <PageHeader>   
-        <PageHeaderWidgets />
-    </PageHeader>
+
     <div className='main-content'>
         <div className='row'>
             <FacultyTable title={"Faculty"} />

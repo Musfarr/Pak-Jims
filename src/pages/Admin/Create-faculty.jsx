@@ -6,9 +6,9 @@ import Facultyform from './components/facultyform'
 const Createfaculty = () => {
   return (
     <>
-        <PageHeader>
+        {/* <PageHeader>
                 <CustomersCreateHeader />
-            </PageHeader>
+            </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
                     <Facultyform />

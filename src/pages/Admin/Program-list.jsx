@@ -71,9 +71,9 @@ const ProgramList = () => {
 
   return (
     <>
-      <PageHeader>
+      {/* <PageHeader>
         <PageHeaderWidgets />
-      </PageHeader>
+      </PageHeader> */}
       <div className='main-content'>
         <div className='row'>
           <div className='col-12'>
