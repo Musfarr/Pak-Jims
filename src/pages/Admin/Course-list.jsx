@@ -19,15 +19,7 @@ const CourseList = () => {
 
   const courses = coursesResponse?.data.data || [];
 
-  // Fetch programs for filter dropdown
-  const { data: programsResponse } = useQuery({
-    queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
-  });
-
-  const programs = programsResponse?.data || [];
-
-  // Filter courses based on search term and program filter
+  // Filter courses based on search term
   const filteredCourses = courses?.filter(course => {
     return (
       (course.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -151,14 +143,12 @@ const CourseList = () => {
                       <tbody>
                         {filteredCourses.length > 0 ? (
                           filteredCourses.map((course, index) => {
-                            // Find the program name by ID
-                            const program = programs.find(p => p.id === course.program_id);
                             return (
                               <tr key={course.id}>
                                 <td>{index + 1}</td>
                                 <td>{course.prefix}</td>
                                 <td>{course.name}</td>
-                                <td>{program?.name || 'Unknown'}</td>
+                                <td>{course?.program?.name || 'Unknown'}</td>
                                 <td>
                                   <div className='d-flex gap-2'>
                                     {/* <Link to={`/courses/edit/${course.id}`} className='btn btn-sm btn-warning'>
