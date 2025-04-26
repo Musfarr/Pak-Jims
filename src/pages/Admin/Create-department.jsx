@@ -19,7 +19,7 @@ const CreateDepartment = () => {
     queryFn: () => GetApi('/courses')
   });
   
-  const courses = coursesResponse?.data || [];
+  const courses = coursesResponse?.data?.data || [];
   
   // React Hook Form setup
   const { register, handleSubmit, formState: { errors } } = useForm({

@@ -19,16 +19,7 @@ const DepartmentList = () => {
   });
 
   // Extract departments from response
-  const departments = departmentsResponse?.data || [];
-
-  // Fetch courses for relationship lookup
-  const { data: coursesResponse } = useQuery({
-    queryKey: ['courses'],
-    queryFn: () => GetApi('/courses')
-  });
-
-  // Extract courses from response
-  const courses = coursesResponse?.data || [];
+  const departments = departmentsResponse?.data?.data || [];
 
   // Filter departments based on search term
   const filteredDepartments = departments.filter(department => {
@@ -137,14 +128,12 @@ const DepartmentList = () => {
                       <tbody>
                         {filteredDepartments.length > 0 ? (
                           filteredDepartments.map((department, index) => {
-                            // Find the course name by ID
-                            const course = courses.find(c => c.id === department.course_id);
                             return (
                               <tr key={department.id}>
                                 <td>{index + 1}</td>
                                 <td>{department.prefix}</td>
                                 <td>{department.name}</td>
-                                <td>{course?.name || 'Unknown'}</td>
+                                <td>{department?.course?.name}</td>
                                 <td>
                                   <div className='d-flex gap-2'>
                                     {/* <Link to={`/departments/edit/${department.id}`} className='btn btn-sm btn-warning'>
