@@ -44,7 +44,7 @@ const CreateAcademicYear = () => {
               </div>
               <div className='card-body' style={{ height: "280px" }}>
                 <form onSubmit={handleSubmit}>
-                  <div className='mb-4'>
+                  {/* <div className='mb-4'>
                     <Input
                       icon='feather-hash'
                       label={"Code :"}
@@ -55,7 +55,7 @@ const CreateAcademicYear = () => {
                       onChange={handleInputChange}
                       required
                     />
-                  </div>
+                  </div> */}
 
                   <div className='mb-4'>
                     <Input
