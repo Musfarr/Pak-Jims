@@ -18,33 +18,8 @@ import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab'
 
 const Facultyform = () => {
     const [selectedOption, setSelectedOption] = useState(null);
-    const { startDate, endDate, setStartDate, setEndDate, renderFooter } = useDatePicker();
-    const { countries, states, cities, loading, error, fetchStates, fetchCities, } = useLocationData();
     
-    // Define faculty status options
-    const facultyStatusOptions = [
-        { value: 'active', label: 'Active' },
-        { value: 'inactive', label: 'Inactive' },
-        { value: 'on-leave', label: 'On Leave' }
-    ];
 
-    // Define faculty department options
-    const departmentOptions = [
-        { value: 'computer-science', label: 'Computer Science' },
-        { value: 'business', label: 'Business' },
-        { value: 'engineering', label: 'Engineering' },
-        { value: 'medicine', label: 'Medicine' },
-        { value: 'arts', label: 'Arts & Humanities' }
-    ];
-
-    // Define faculty position options
-    const positionOptions = [
-        { value: 'professor', label: 'Professor' },
-        { value: 'associate-professor', label: 'Associate Professor' },
-        { value: 'assistant-professor', label: 'Assistant Professor' },
-        { value: 'lecturer', label: 'Lecturer' },
-        { value: 'instructor', label: 'Instructor' }
-    ];
 
     // Form data state
     const [formData, setFormData] = useState({
@@ -101,25 +76,18 @@ const Facultyform = () => {
                         {/* Personal Details Tab */}
                         <div className="tab-pane fade show active" id="personalDetailsTab" role="tabpanel">
                             <ProfileTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
+                                formData={formData}
+                                setFormData={setFormData}
                                 selectedOption={selectedOption} 
                                 setSelectedOption={setSelectedOption}
-                                countries={countries}
-                                states={states}
-                                cities={cities}
-                                fetchStates={fetchStates}
-                                fetchCities={fetchCities}
                             />
                         </div>
 
                         {/* Job/Family Details Tab */}
                         <div className="tab-pane fade" id="jobFamilyTab" role="tabpanel">
                             <JobFamilyDetailsTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
+                                formData={formData}
+                                setFormData={setFormData}
                                 selectedOption={selectedOption} 
                                 setSelectedOption={setSelectedOption} 
                             />
@@ -128,52 +96,51 @@ const Facultyform = () => {
                         {/* Education History Tab */}
                         <div className="tab-pane fade" id="educationHistoryTab" role="tabpanel">
                             <EducationHistoryTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
+                                formData={formData}
+                                setFormData={setFormData}
+                                selectedOption={selectedOption} 
+                                setSelectedOption={setSelectedOption} 
                             />
                         </div>
 
                         {/* Work Experiences Tab */}
                         <div className="tab-pane fade" id="workExperiencesTab" role="tabpanel">
                             <WorkExperiencesTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
+                                formData={formData}
+                                setFormData={setFormData}
                             />
                         </div>
 
                         {/* Trainings/Courses Tab */}
                         <div className="tab-pane fade" id="trainingsCoursesTab" role="tabpanel">
                             <TrainingsCoursesTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
+                                formData={formData}
+                                setFormData={setFormData}
                             />
                         </div>
 
                         {/* Foreign Visits Tab */}
                         <div className="tab-pane fade" id="foreignVisitsTab" role="tabpanel">
                             <ForeignVisitsTab 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                renderFooter={renderFooter} 
-                                selectedOption={selectedOption} 
-                                setSelectedOption={setSelectedOption} 
+                                formData={formData}
+                                setFormData={setFormData}
                             />
                         </div>
 
                         {/* Emergency Contact Tab */}
                         <div className="tab-pane fade" id="emergencyTab" role="tabpanel">
                             <EmergencyContactTab 
-                                selectedOption={selectedOption} 
-                                setSelectedOption={setSelectedOption} 
+                                formData={formData}
+                                setFormData={setFormData}
                             />
                         </div>
 
                         {/* Password Tab */}
                         <div className="tab-pane fade" id="passwordTab" role="tabpanel">
-                            <PasswordTab />
+                            <PasswordTab
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
                         </div>
                     </div>
                     <div className="card-footer">

@@ -1,81 +1,93 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
 import CardHeader from '@/components/shared/CardHeader';
 import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Pagination from '@/components/shared/Pagination';
 import Dropdown from '@/components/shared/Dropdown';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
-
-// Sample student data
-const studentData = [
-    { id: 1, name: 'Ahmed Khan', studentId: 'STD-2023-001', email: 'ahmed.khan@email.com', avatar: '/images/avatar/1.png', batch: 'MBBS Batch 2023', program: 'MBBS PROGRAM', gender: 'Male', status: 'Active', enrollmentDate: '21 Sep, 2023' },
-    { id: 2, name: 'Sara Ali', studentId: 'STD-2023-002', email: 'sara.ali@email.com', avatar: '/images/avatar/2.png', batch: 'BS Batch 2023', program: 'BS PROGRAM', gender: 'Female', status: 'Active', enrollmentDate: '25 Sep, 2023' },
-    { id: 3, name: 'Usman Ahmed', studentId: 'STD-2023-003', email: 'usman.ahmed@email.com', avatar: '/images/avatar/3.png', batch: 'BDS Batch 2023', program: 'BDS PROGRAM', gender: 'Male', status: 'Active', enrollmentDate: '16 Sep, 2023' },
-    { id: 4, name: 'Ayesha Malik', studentId: 'STD-2023-004', email: 'ayesha.malik@email.com', avatar: '/images/avatar/4.png', batch: 'PHARM-D Batch 2023', program: 'PHARM-D PROGRAM', gender: 'Female', status: 'Inactive', enrollmentDate: '20 Sep, 2023' },
-    { id: 5, name: 'Bilal Hassan', studentId: 'STD-2023-005', email: 'bilal.hassan@email.com', avatar: '/images/avatar/5.png', batch: 'BSN Batch 2023', program: 'BSN PROGRAM', gender: 'Male', status: 'Active', enrollmentDate: '20 Sep, 2023' },
-];
+import Swal from 'sweetalert2';
 
 const StudentsTable = ({ title }) => {
+    const navigate = useNavigate();
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
     const [searchTerm, setSearchTerm] = useState('');
     const [programFilter, setProgramFilter] = useState('');
     const [batchFilter, setBatchFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
-    // Program options for filter
-    const programOptions = [
-        { value: '', label: 'All Programs' },
-        { value: 'MBBS PROGRAM', label: 'MBBS PROGRAM' },
-        { value: 'BS PROGRAM', label: 'BS PROGRAM' },
-        { value: 'BDS PROGRAM', label: 'BDS PROGRAM' },
-        { value: 'PHARM-D PROGRAM', label: 'PHARM-D PROGRAM' },
-        { value: 'BSN PROGRAM', label: 'BSN PROGRAM' },
-    ];
-
-    // Batch options for filter
-    const batchOptions = [
-        { value: '', label: 'All Batches' },
-        { value: 'MBBS Batch 2023', label: 'MBBS Batch 2023' },
-        { value: 'BS Batch 2023', label: 'BS Batch 2023' },
-        { value: 'BDS Batch 2023', label: 'BDS Batch 2023' },
-        { value: 'PHARM-D Batch 2023', label: 'PHARM-D Batch 2023' },
-        { value: 'BSN Batch 2023', label: 'BSN Batch 2023' },
-    ];
-
-    // Filter students based on search term and filters
-    const filteredStudents = studentData.filter(student => {
-        const matchesSearch = 
-            student.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            student.email.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        const matchesProgram = programFilter === '' || student.program === programFilter;
-        const matchesBatch = batchFilter === '' || student.batch === batchFilter;
-        
-        return matchesSearch && matchesProgram && matchesBatch;
+    // Fetch students data using React Query
+    const { data: studentsResponse, isLoading, isError, error, refetch } = useQuery({
+        queryKey: ['students'],
+        queryFn: () => GetApi('/students')
     });
 
-    // Action options for dropdown
-    const actionOptions = [
-        { label: "View Student", onClick: (id) => handleViewStudent(id) },
-        { label: "Edit Student", onClick: (id) => handleEditStudent(id) },
-        { label: "Delete Student", onClick: (id) => handleDeleteStudent(id) },
-    ];
+    // Extract students data from the response
+    const studentsData = studentsResponse?.data?.data || [];
+
+    // Filter students based on search term
+    const filteredStudents = studentsData.filter(student => {
+        const matchesSearch = 
+            (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
+            (student.enrollment_no && student.enrollment_no.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase()));
+        
+        return matchesSearch;
+    });
+
+    // Pagination logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+
+    // Handle page change
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     // Handle student actions
     const handleViewStudent = (id) => {
-        window.location.href = `/students/view/${id}`;
+        navigate(`/students/view/${id}`);
     };
 
     const handleEditStudent = (id) => {
-        window.location.href = `/students/edit/${id}`;
+        navigate(`/students/edit/${id}`);
     };
 
     const handleDeleteStudent = (id) => {
-        if (window.confirm('Are you sure you want to delete this student?')) {
-            console.log('Deleting student with ID:', id);
-            // Delete logic would go here
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                DeleteApi(`/students/${id}`)
+                    .then(() => {
+                        Swal.fire(
+                            'Deleted!',
+                            'Student has been deleted.',
+                            'success'
+                        );
+                        refetch(); // Refresh the data after deletion
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Error!',
+                            'Failed to delete student.',
+                            'error'
+                        );
+                        console.error('Error deleting student:', error);
+                    });
+            }
+        });
     };
 
     if (isRemoved) {
@@ -86,6 +98,8 @@ const StudentsTable = ({ title }) => {
         <div className="col-xxl-12">
             <div className={`card stretch stretch-full widget-tasks-content ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
+
+                {refreshKey && <CardLoader />}
 
                 <div className="card-body">
                     <div className="row mb-3">
@@ -103,7 +117,7 @@ const StudentsTable = ({ title }) => {
                                 />
                             </div>
                         </div>
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                             <select 
                                 className="form-select"
                                 value={programFilter}
@@ -115,8 +129,8 @@ const StudentsTable = ({ title }) => {
                                     </option>
                                 ))}
                             </select>
-                        </div>
-                        <div className="col-md-4">
+                        </div> */}
+                        {/* <div className="col-md-4">
                             <select 
                                 className="form-select"
                                 value={batchFilter}
@@ -128,7 +142,7 @@ const StudentsTable = ({ title }) => {
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="d-flex justify-content-between align-items-center mb-3">
@@ -138,75 +152,101 @@ const StudentsTable = ({ title }) => {
                         </Link>
                     </div>
 
-                    <div className="table-responsive">
-                        <table className="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Student ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Program</th>
-                                    <th>Batch</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredStudents.length > 0 ? (
-                                    filteredStudents.map((student) => (
-                                        <tr key={student.id}>
-                                            <td>{student.studentId}</td>
-                                            <td>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="avatar-image">
-                                                        <img src={student.avatar} className="img-fluid" alt="Student" />
-                                                    </div>
-                                                    <div>
-                                                        <span className="d-block">{student.name}</span>
-                                                        <small className="text-muted">{student.gender}</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>{student.email}</td>
-                                            <td>{student.program}</td>
-                                            <td>{student.batch}</td>
-                                            <td>
-                                                <span className={`badge ${student.status === 'Active' ? 'bg-success' : 'bg-secondary'}`}>
-                                                    {student.status}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div className="d-flex gap-2">
-                                                    <Link to={`/students/view/${student.id}`} className="btn btn-sm btn-info">
-                                                        <FiEye size={16} />
-                                                    </Link>
-                                                    <Link to={`/students/edit/${student.id}`} className="btn btn-sm btn-warning">
-                                                        <FiEdit size={16} />
-                                                    </Link>
-                                                    <button 
-                                                        className="btn btn-sm btn-danger"
-                                                        onClick={() => handleDeleteStudent(student.id)}
-                                                    >
-                                                        <FiTrash size={16} />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
+                    {isLoading ? (
+                        <div className="text-center py-4">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            <p className="mt-2">Loading students data...</p>
+                        </div>
+                    ) : isError ? (
+                        <div className="alert alert-danger" role="alert">
+                            Error loading students: {error?.message || 'Unknown error'}
+                        </div>
+                    ) : (
+                        <div className="table-responsive">
+                            <table className="table table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td colSpan="7" className="text-center">No students found</td>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Program</th>
+                                        <th>Batch</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                </thead>
+                                <tbody>
+                                    {filteredStudents.length > 0 ? (
+                                        filteredStudents.map((student) => (
+                                            <tr key={student.id}>
+                                                <td>{student.id || 'N/A'}</td>
+                                                <td>
+                                                    <div className="d-flex align-items-center gap-3">
+                                                        <div className="avatar-image">
+                                                            <img 
+                                                                src={student.photo || '/images/avatar/default.png'} 
+                                                                className="img-fluid" 
+                                                                alt="Student" 
+                                                                onError={(e) => {
+                                                                    e.target.onerror = null;
+                                                                    e.target.src = '/images/avatar/default.png';
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <span className="d-block">{student.name || 'N/A'}</span>
+                                                            <small className="text-muted">{student.gender || 'N/A'}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{student.email || 'N/A'}</td>
+                                                <td>{student.course?.name || student.course_id || 'N/A'}</td>
+                                                <td>{student.batch?.name || student.batch_id || 'N/A'}</td>
+                                                <td>
+                                                    <span className={`badge ${student.status === 'active' ? 'bg-success' : 'bg-secondary'}`}>
+                                                        {student.status || 'N/A'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div className="d-flex gap-2">
+                                                        <Link to={`/students/view/${student.id}`} className="btn btn-sm btn-info">
+                                                            <FiEye size={16} />
+                                                        </Link>
+                                                        <Link to={`/students/edit/${student.id}`} className="btn btn-sm btn-warning">
+                                                            <FiEdit size={16} />
+                                                        </Link>
+                                                        {/* <button 
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() => handleDeleteStudent(student.id)}
+                                                        >
+                                                            <FiTrash size={16} />
+                                                        </button> */}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="7" className="text-center">No students found</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
 
-                <div className="card-footer">
-                    <Pagination />
+                    {filteredStudents.length > itemsPerPage && (
+                        <div className="d-flex justify-content-end mt-3">
+                            <Pagination 
+                                currentPage={currentPage} 
+                                totalPages={totalPages} 
+                                onPageChange={handlePageChange} 
+                            />
+                        </div>
+                    )}
                 </div>
-                <CardLoader refreshKey={refreshKey} />
             </div>
         </div>
     );

@@ -1,41 +1,67 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiEye, FiTrash, FiSearch } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 const ClassList = () => {
-  // Sample data for classes based on the image provided
-  const [classes, setClasses] = useState([
-    { id: 1, code: '10060', className: '1ST SEMESTER 1ST YEAR', shift: 'MORNING', program: 'BS PROGRAM', section: 'A' },
-    { id: 2, code: '10010', className: '1ST YEAR', shift: 'MORNING', program: 'MBBS PROGRAM', section: 'A' },
-    { id: 3, code: '10070', className: '2ND SEMESTER 1ST YEAR', shift: 'MORNING', program: 'BS PROGRAM', section: 'A' },
-    { id: 4, code: '10020', className: '2ND YEAR', shift: 'MORNING', program: 'MBBS PROGRAM', section: 'A', highlighted: true },
-    { id: 5, code: '10080', className: '3RD SEMESTER 2ND YEAR', shift: 'MORNING', program: 'BS PROGRAM', section: 'A' },
-  ]);
+  // Fetch classes data using React Query
+  const { data: classesResponse, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['classes'],
+    queryFn: () => GetApi('/classes')
+  });
+
+  // Extract classes data from the response
+  const classesData = classesResponse?.data || [];
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
   const [filterShift, setFilterShift] = useState('');
 
-  // Filter classes based on search term and filters
-  const filteredClasses = classes.filter(classItem => {
+  // Filter classes based on search term
+  const filteredClasses = classesData.filter(classItem => {
     const matchesSearch = 
-      classItem.className.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      classItem.code.toLowerCase().includes(searchTerm.toLowerCase());
+      (classItem.name && classItem.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
+      (classItem.code && classItem.code.toLowerCase().includes(searchTerm.toLowerCase()));
     
-    const matchesProgram = filterProgram === '' || classItem.program === filterProgram;
-    const matchesShift = filterShift === '' || classItem.shift === filterShift;
-    
-    return matchesSearch && matchesProgram && matchesShift;
+    return matchesSearch;
   });
 
   // Handle class deletion
   const handleDeleteClass = (id) => {
-    if (window.confirm('Are you sure you want to delete this class?')) {
-      setClasses(classes.filter(classItem => classItem.id !== id));
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteApi(`/classes/${id}`)
+          .then(() => {
+            Swal.fire(
+              'Deleted!',
+              'Class has been deleted.',
+              'success'
+            );
+            refetch(); // Refresh the data after deletion
+          })
+          .catch(error => {
+            Swal.fire(
+              'Error!',
+              'Failed to delete class.',
+              'error'
+            );
+            console.error('Error deleting class:', error);
+          });
+      }
+    });
   };
 
   // Program options for filter
@@ -83,7 +109,7 @@ const ClassList = () => {
                       />
                     </div>
                   </div>
-                  <div className='col-md-4'>
+                  {/* <div className='col-md-4'>
                     <select 
                       className='form-select'
                       value={filterProgram}
@@ -95,8 +121,8 @@ const ClassList = () => {
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div className='col-md-4'>
+                  </div> */}
+                  {/* <div className='col-md-4'>
                     <select 
                       className='form-select'
                       value={filterShift}
@@ -108,58 +134,72 @@ const ClassList = () => {
                         </option>
                       ))}
                     </select>
+                  </div> */}
+                </div>
+
+                {isLoading ? (
+                  <div className="text-center py-4">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">Loading classes data...</p>
                   </div>
-                </div>
-                <div className='table-responsive'>
-                  <table className='table table-hover'>
-                    <thead>
-                      <tr>
-                        <th>CODE</th>
-                        <th>CLASS NAME</th>
-                        <th>SHIFT</th>
-                        <th>PROGRAM</th>
-                        <th>SECTION</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredClasses.length > 0 ? (
-                        filteredClasses.map(classItem => (
-                          <tr 
-                            key={classItem.id}
-                            className={classItem.highlighted ? 'table-success' : ''}
-                          >
-                            <td>{classItem.code}</td>
-                            <td>{classItem.className}</td>
-                            <td>{classItem.shift}</td>
-                            <td>{classItem.program}</td>
-                            <td>{classItem.section}</td>
-                            <td>
-                              <div className='d-flex gap-2'>
-                                <Link to={`/classes/view/${classItem.id}`} className='btn btn-sm btn-info'>
-                                  <FiEye size={16} />
-                                </Link>
-                                <Link to={`/classes/edit/${classItem.id}`} className='btn btn-sm btn-warning'>
-                                  <FiEdit size={16} />
-                                </Link>
-                                <button 
-                                  className='btn btn-sm btn-danger'
-                                  onClick={() => handleDeleteClass(classItem.id)}
-                                >
-                                  <FiTrash size={16} />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
+                ) : isError ? (
+                  <div className="alert alert-danger" role="alert">
+                    Error loading classes: {error?.message || 'Unknown error'}
+                  </div>
+                ) : (
+                  <div className='table-responsive'>
+                    <table className='table table-hover'>
+                      <thead>
                         <tr>
-                          <td colSpan="6" className="text-center">No classes found</td>
+                          <th>CODE</th>
+                          <th>CLASS NAME</th>
+                          <th>SHIFT</th>
+                          <th>PROGRAM</th>
+                          <th>SECTION</th>
+                          <th>Actions</th>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {filteredClasses.length > 0 ? (
+                          filteredClasses.map(classItem => (
+                            <tr 
+                              key={classItem.id}
+                              className={classItem.highlighted ? 'table-success' : ''}
+                            >
+                              <td>{classItem.code || 'N/A'}</td>
+                              <td>{classItem.name || classItem.className || 'N/A'}</td>
+                              <td>{classItem.shift?.name || classItem.shift_id || 'N/A'}</td>
+                              <td>{classItem.program?.name || classItem.program_id || 'N/A'}</td>
+                              <td>{classItem.section?.name || classItem.section_id || 'N/A'}</td>
+                              <td>
+                                <div className='d-flex gap-2'>
+                                  {/* <Link to={`/classes/view/${classItem.id}`} className='btn btn-sm btn-info'>
+                                    <FiEye size={16} />
+                                  </Link>
+                                  <Link to={`/classes/edit/${classItem.id}`} className='btn btn-sm btn-warning'>
+                                    <FiEdit size={16} />
+                                  </Link> */}
+                                  <button 
+                                    className='btn btn-sm btn-danger'
+                                    onClick={() => handleDeleteClass(classItem.id)}
+                                  >
+                                    <FiTrash size={16} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="6" className="text-center">No classes found</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           </div>
