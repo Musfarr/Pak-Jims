@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FiCalendar, FiCamera } from 'react-icons/fi'
 import DatePicker from 'react-datepicker'
 import TextArea from '@/components/shared/TextArea'
@@ -15,29 +15,56 @@ import EducationHistoryTab from './facultyTabs/EducationHistoryTab'
 import WorkExperiencesTab from './facultyTabs/WorkExperiencesTab'
 import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab'
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab'
+import { useForm } from 'react-hook-form';
 
 const Facultyform = () => {
-    const [selectedOption, setSelectedOption] = useState(null);
-    
-
-
-    // Form data state
-    const [formData, setFormData] = useState({
-        profile: {},
-        jobFamily: {},
-        education: {},
-        workExperience: {},
-        trainings: {},
-        foreignVisits: {},
-        emergency: {},
-        password: {}
+    const [selectedOption, setSelectedOption] = React.useState(null);
+    const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm({
+        defaultValues: {
+            profile: {},
+            jobFamily: {},
+            education: [{ 
+                nameOfInstitute: '', 
+                degree: '', 
+                fromDate: null, 
+                toDate: null, 
+                gpaGradeDiv: '', 
+                city: '', 
+                country: '',
+                subject: '' 
+            }],
+            workExperiences: [{ 
+                nameOfPost: '', 
+                joiningDate: null, 
+                scaleGrade: '', 
+                nameOfInstitute: '', 
+                leavingDate: null,
+                jobResponsibilities: ''
+            }],
+            trainings: [{ 
+                trainingDetail: '', 
+                grade: '', 
+                countryStation: '', 
+                dateFrom: null, 
+                dateTo: null, 
+                year: '',
+                institute: '' 
+            }],
+            foreignVisits: [{ 
+                country: '', 
+                purpose: '', 
+                startDate: null, 
+                endDate: null, 
+                sponsor: '' 
+            }],
+            emergency: {},
+            password: {}
+        }
     });
 
-    // Handle form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form data to be submitted:', formData);
-        // API integration will be added later
+    const onSubmit = (data) => {
+        console.log(data);
+        // Handle form submission
     };
 
     return (
@@ -71,75 +98,93 @@ const Facultyform = () => {
                         </li>
                     </ul>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="tab-content">
                         {/* Personal Details Tab */}
                         <div className="tab-pane fade show active" id="personalDetailsTab" role="tabpanel">
                             <ProfileTab 
-                                formData={formData}
-                                setFormData={setFormData}
-                                selectedOption={selectedOption} 
-                                setSelectedOption={setSelectedOption}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Job/Family Details Tab */}
                         <div className="tab-pane fade" id="jobFamilyTab" role="tabpanel">
                             <JobFamilyDetailsTab 
-                                formData={formData}
-                                setFormData={setFormData}
-                                selectedOption={selectedOption} 
-                                setSelectedOption={setSelectedOption} 
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Education History Tab */}
                         <div className="tab-pane fade" id="educationHistoryTab" role="tabpanel">
                             <EducationHistoryTab 
-                                formData={formData}
-                                setFormData={setFormData}
-                                selectedOption={selectedOption} 
-                                setSelectedOption={setSelectedOption} 
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Work Experiences Tab */}
                         <div className="tab-pane fade" id="workExperiencesTab" role="tabpanel">
                             <WorkExperiencesTab 
-                                formData={formData}
-                                setFormData={setFormData}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Trainings/Courses Tab */}
                         <div className="tab-pane fade" id="trainingsCoursesTab" role="tabpanel">
                             <TrainingsCoursesTab 
-                                formData={formData}
-                                setFormData={setFormData}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Foreign Visits Tab */}
                         <div className="tab-pane fade" id="foreignVisitsTab" role="tabpanel">
                             <ForeignVisitsTab 
-                                formData={formData}
-                                setFormData={setFormData}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Emergency Contact Tab */}
                         <div className="tab-pane fade" id="emergencyTab" role="tabpanel">
                             <EmergencyContactTab 
-                                formData={formData}
-                                setFormData={setFormData}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
 
                         {/* Password Tab */}
                         <div className="tab-pane fade" id="passwordTab" role="tabpanel">
                             <PasswordTab
-                                formData={formData}
-                                setFormData={setFormData}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                control={control}
                             />
                         </div>
                     </div>

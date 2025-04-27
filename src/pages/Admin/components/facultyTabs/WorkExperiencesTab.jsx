@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FiCalendar, FiPlus, FiTrash } from 'react-icons/fi';
-import DatePicker from 'react-datepicker';
-import Input from '@/components/shared/Input';
-import TextArea from '@/components/shared/TextArea';
+import { useFieldArray } from 'react-hook-form';
 
-const WorkExperiencesTab = ({ startDate, setStartDate, renderFooter }) => {
-    const [workExperiences, setWorkExperiences] = useState([
-        { id: 1, nameOfPost: '', joiningDate: null, scaleGrade: '', nameOfInstitute: '', leavingDate: null }
-    ]);
+const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
+    // Use useFieldArray to handle dynamic form fields
+    const { fields, append, remove } = useFieldArray({
+        name: "workExperiences",
+        control: control
+    });
 
     const handleAddExperience = () => {
-        const newId = workExperiences.length > 0 
-            ? Math.max(...workExperiences.map(item => item.id)) + 1 
-            : 1;
-        setWorkExperiences([...workExperiences, { id: newId, nameOfPost: '', joiningDate: null, scaleGrade: '', nameOfInstitute: '', leavingDate: null }]);
-    };
-
-    const handleRemoveExperience = (id) => {
-        if (workExperiences.length > 1) {
-            setWorkExperiences(workExperiences.filter(item => item.id !== id));
-        }
-    };
-
-    const handleExperienceChange = (id, field, value) => {
-        setWorkExperiences(workExperiences.map(item => 
-            item.id === id ? { ...item, [field]: value } : item
-        ));
+        append({ 
+            nameOfPost: '', 
+            joiningDate: null, 
+            scaleGrade: '', 
+            nameOfInstitute: '', 
+            leavingDate: null,
+            jobResponsibilities: ''
+        });
     };
 
     return (
@@ -38,121 +30,160 @@ const WorkExperiencesTab = ({ startDate, setStartDate, renderFooter }) => {
                 <button type="button" className="btn btn-sm btn-primary">Save</button>
             </div>
 
-            {workExperiences.map((experience, index) => (
-                <div key={experience.id} className="experience-entry border rounded p-3 mb-3">
-                    <div className="d-flex justify-content-between mb-3">
-                        <h6 className="fw-bold">Experience #{index + 1}</h6>
-                        {workExperiences.length > 1 && (
+            {fields.map((item, index) => (
+                <div key={item.id} className="experience-item mb-4 pb-4 border-bottom">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="fw-semibold mb-0">Experience {index + 1}</h6>
+                        {fields.length > 1 && (
                             <button 
                                 type="button" 
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() => handleRemoveExperience(experience.id)}
+                                onClick={() => remove(index)}
                             >
                                 <FiTrash size={16} />
                             </button>
                         )}
                     </div>
 
-                    <Input
-                        icon='feather-briefcase'
-                        label={"Name of Post"}
-                        labelId={`nameOfPost-${experience.id}`}
-                        placeholder={"e.g., Medical Officer"}
-                        name={`nameOfPost-${experience.id}`}
-                        value={experience.nameOfPost}
-                        onChange={(e) => handleExperienceChange(experience.id, 'nameOfPost', e.target.value)}
-                    />
-
+                    {/* Name of Post */}
                     <div className="row mb-3">
-                        <div className="col-md-6">
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor={`joiningDate-${experience.id}`} className="fw-semibold">Joining Date: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group flex-nowrap">
-                                        <div className="input-group-text"><FiCalendar size={16} /></div>
-                                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                            <DatePicker
-                                                placeholderText='Joining Date'
-                                                selected={experience.joiningDate}
-                                                showPopperArrow={false}
-                                                onChange={(date) => handleExperienceChange(experience.id, 'joiningDate', date)}
-                                                className='form-control rounded-0'
-                                                popperPlacement="bottom-start"
-                                                calendarContainer={({ children }) => (
-                                                    <div className='bg-white react-datepicker'>
-                                                        {children}
-                                                        {renderFooter("start")}
-                                                    </div>
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="col-lg-4">
+                            <label htmlFor={`work-${index}-post`} className="fw-semibold">Position / Job Title: </label>
                         </div>
-                        <div className="col-md-6">
-                            <Input
-                                icon='feather-award'
-                                label={"Scale/Grade"}
-                                labelId={`scaleGrade-${experience.id}`}
-                                placeholder={"e.g., BPS-17, Grade 5"}
-                                name={`scaleGrade-${experience.id}`}
-                                value={experience.scaleGrade}
-                                onChange={(e) => handleExperienceChange(experience.id, 'scaleGrade', e.target.value)}
-                            />
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.workExperiences?.[index]?.nameOfPost ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-post`}
+                                    placeholder="e.g., Senior Lecturer, Professor"
+                                    {...register(`workExperiences.${index}.nameOfPost`, { required: 'Position is required' })}
+                                />
+                                {errors?.workExperiences?.[index]?.nameOfPost && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].nameOfPost.message}</div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    <Input
-                        icon='feather-home'
-                        label={"Name of Institute/Organization"}
-                        labelId={`nameOfInstitute-${experience.id}`}
-                        placeholder={"e.g., City Hospital, Medical College"}
-                        name={`nameOfInstitute-${experience.id}`}
-                        value={experience.nameOfInstitute}
-                        onChange={(e) => handleExperienceChange(experience.id, 'nameOfInstitute', e.target.value)}
-                    />
-
-                    <div className="row mb-4 align-items-center">
+                    {/* Name of Institute */}
+                    <div className="row mb-3">
                         <div className="col-lg-4">
-                            <label htmlFor={`leavingDate-${experience.id}`} className="fw-semibold">Leaving Date: </label>
+                            <label htmlFor={`work-${index}-institute`} className="fw-semibold">Name of Institute/Company: </label>
                         </div>
                         <div className="col-lg-8">
-                            <div className="input-group flex-nowrap">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.workExperiences?.[index]?.nameOfInstitute ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-institute`}
+                                    placeholder="e.g., University of Health Sciences"
+                                    {...register(`workExperiences.${index}.nameOfInstitute`, { required: 'Institute name is required' })}
+                                />
+                                {errors?.workExperiences?.[index]?.nameOfInstitute && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].nameOfInstitute.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Scale/Grade */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`work-${index}-scale`} className="fw-semibold">Scale/Grade: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.workExperiences?.[index]?.scaleGrade ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-scale`}
+                                    placeholder="e.g., BPS-18, Level 5"
+                                    {...register(`workExperiences.${index}.scaleGrade`, { required: 'Scale/Grade is required' })}
+                                />
+                                {errors?.workExperiences?.[index]?.scaleGrade && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].scaleGrade.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Joining Date */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`work-${index}-joiningDate`} className="fw-semibold">Joining Date: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                    <DatePicker
-                                        placeholderText='Leaving Date (or Present)'
-                                        selected={experience.leavingDate}
-                                        showPopperArrow={false}
-                                        onChange={(date) => handleExperienceChange(experience.id, 'leavingDate', date)}
-                                        className='form-control rounded-0'
-                                        popperPlacement="bottom-start"
-                                        calendarContainer={({ children }) => (
-                                            <div className='bg-white react-datepicker'>
-                                                {children}
-                                                {renderFooter("end")}
-                                            </div>
-                                        )}
-                                    />
-                                </div>
+                                <input 
+                                    type="date" 
+                                    className={`form-control ${errors?.workExperiences?.[index]?.joiningDate ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-joiningDate`}
+                                    {...register(`workExperiences.${index}.joiningDate`, { required: 'Joining date is required' })}
+                                />
+                                {errors?.workExperiences?.[index]?.joiningDate && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].joiningDate.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Leaving Date */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`work-${index}-leavingDate`} className="fw-semibold">Leaving Date: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiCalendar size={16} /></div>
+                                <input 
+                                    type="date" 
+                                    className={`form-control ${errors?.workExperiences?.[index]?.leavingDate ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-leavingDate`}
+                                    {...register(`workExperiences.${index}.leavingDate`)}
+                                />
+                                {errors?.workExperiences?.[index]?.leavingDate && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].leavingDate.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Job Responsibilities */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`work-${index}-responsibilities`} className="fw-semibold">Job Responsibilities: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <textarea
+                                    className={`form-control ${errors?.workExperiences?.[index]?.jobResponsibilities ? 'is-invalid' : ''}`}
+                                    id={`work-${index}-responsibilities`}
+                                    rows="3"
+                                    placeholder="Describe your job responsibilities"
+                                    {...register(`workExperiences.${index}.jobResponsibilities`)}
+                                ></textarea>
+                                {errors?.workExperiences?.[index]?.jobResponsibilities && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].jobResponsibilities.message}</div>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             ))}
 
-            <div className="d-flex justify-content-center mt-3">
-                <button 
-                    type="button" 
-                    className="btn btn-outline-primary"
-                    onClick={handleAddExperience}
-                >
-                    <FiPlus size={16} className="me-2" /> Add Work Experience
-                </button>
-            </div>
+            <button 
+                type="button" 
+                className="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                onClick={handleAddExperience}
+            >
+                <FiPlus size={16} /> Add Work Experience
+            </button>
         </div>
     );
 };

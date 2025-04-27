@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { FiCalendar, FiCamera } from 'react-icons/fi'
-import DatePicker from 'react-datepicker'
-import TextArea from '@/components/shared/TextArea'
-import MultiSelectTags from '@/components/shared/MultiSelectTags'
+
 import useLocationData from '@/hooks/useLocationData'
 import useDatePicker from '@/hooks/useDatePicker'
 import { useQuery } from '@tanstack/react-query'

@@ -1,64 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FiCalendar, FiPlus, FiTrash } from 'react-icons/fi';
-import DatePicker from 'react-datepicker';
-import Input from '@/components/shared/Input';
-import SelectDropdown from '@/components/shared/SelectDropdown';
+import { useFieldArray } from 'react-hook-form';
 
-const TrainingsCoursesTab = ({ startDate, setStartDate, renderFooter }) => {
-    const [trainings, setTrainings] = useState([
-        { 
-            id: 1, 
-            trainingDetail: '', 
-            grade: '', 
-            countryStation: '', 
-            dateFrom: null, 
-            dateTo: null, 
-            year: null,
-            institute: '' 
-        }
-    ]);
+const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => {
+    // Use useFieldArray to handle dynamic form fields
+    const { fields, append, remove } = useFieldArray({
+        name: "trainings",
+        control: control
+    });
 
     const handleAddTraining = () => {
-        const newId = trainings.length > 0 
-            ? Math.max(...trainings.map(item => item.id)) + 1 
-            : 1;
-        setTrainings([...trainings, { 
-            id: newId, 
+        append({ 
             trainingDetail: '', 
             grade: '', 
             countryStation: '', 
             dateFrom: null, 
             dateTo: null, 
-            year: null,
+            year: '',
             institute: '' 
-        }]);
-    };
-
-    const handleRemoveTraining = (id) => {
-        if (trainings.length > 1) {
-            setTrainings(trainings.filter(item => item.id !== id));
-        }
-    };
-
-    const handleTrainingChange = (id, field, value) => {
-        setTrainings(trainings.map(item => 
-            item.id === id ? { ...item, [field]: value } : item
-        ));
+        });
     };
 
     // Country options for dropdown
     const countryOptions = [
         { value: 'pakistan', label: 'Pakistan' },
-        { value: 'usa', label: 'United States' },
+        { value: 'china', label: 'China' },
         { value: 'uk', label: 'United Kingdom' },
-        { value: 'canada', label: 'Canada' },
-        { value: 'australia', label: 'Australia' },
+        { value: 'usa', label: 'United States' },
         { value: 'germany', label: 'Germany' },
         { value: 'france', label: 'France' },
         { value: 'japan', label: 'Japan' },
-        { value: 'china', label: 'China' },
-        { value: 'uae', label: 'United Arab Emirates' },
-        { value: 'saudi-arabia', label: 'Saudi Arabia' }
+        { value: 'australia', label: 'Australia' },
+        { value: 'canada', label: 'Canada' },
+        { value: 'india', label: 'India' }
     ];
 
     return (
@@ -66,169 +40,196 @@ const TrainingsCoursesTab = ({ startDate, setStartDate, renderFooter }) => {
             <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Trainings & Courses:</span>
-                    <span className="fs-12 fw-normal text-muted text-truncate-1-line">Professional development and specialized training</span>
+                    <span className="fs-12 fw-normal text-muted text-truncate-1-line">Professional development and special training courses</span>
                 </h5>
                 <button type="button" className="btn btn-sm btn-primary">Save</button>
             </div>
 
-            {trainings.map((training, index) => (
-                <div key={training.id} className="training-entry border rounded p-3 mb-3">
-                    <div className="d-flex justify-content-between mb-3">
-                        <h6 className="fw-bold">Training/Course #{index + 1}</h6>
-                        {trainings.length > 1 && (
+            {fields.map((item, index) => (
+                <div key={item.id} className="training-item mb-4 pb-4 border-bottom">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="fw-semibold mb-0">Training/Course {index + 1}</h6>
+                        {fields.length > 1 && (
                             <button 
                                 type="button" 
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() => handleRemoveTraining(training.id)}
+                                onClick={() => remove(index)}
                             >
                                 <FiTrash size={16} />
                             </button>
                         )}
                     </div>
 
-                    <Input
-                        icon='feather-award'
-                        label={"Training/Course Detail"}
-                        labelId={`trainingDetail-${training.id}`}
-                        placeholder={"e.g., Advanced Cardiac Life Support"}
-                        name={`trainingDetail-${training.id}`}
-                        value={training.trainingDetail}
-                        onChange={(e) => handleTrainingChange(training.id, 'trainingDetail', e.target.value)}
-                    />
-
-                    <Input
-                        icon='feather-star'
-                        label={"Grade"}
-                        labelId={`grade-${training.id}`}
-                        placeholder={"e.g., A, B+, Distinction"}
-                        name={`grade-${training.id}`}
-                        value={training.grade}
-                        onChange={(e) => handleTrainingChange(training.id, 'grade', e.target.value)}
-                    />
-
-                    <div className="row mb-4 align-items-center">
-                        <div className="col-lg-4">
-                            <label className="fw-semibold">Country/Station: </label>
-                        </div>
-                        <div className="col-lg-8">
-                            <SelectDropdown
-                                options={countryOptions}
-                                selectedOption={training.countryStation ? { value: training.countryStation, label: countryOptions.find(c => c.value === training.countryStation)?.label || training.countryStation } : null}
-                                defaultSelect=""
-                                onSelectOption={(option) => handleTrainingChange(training.id, 'countryStation', option.value)}
-                            />
-                        </div>
-                    </div>
-
+                    {/* Training Detail */}
                     <div className="row mb-3">
-                        <div className="col-md-6">
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor={`dateFrom-${training.id}`} className="fw-semibold">Date From: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group flex-nowrap">
-                                        <div className="input-group-text"><FiCalendar size={16} /></div>
-                                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                            <DatePicker
-                                                placeholderText='Start Date'
-                                                selected={training.dateFrom}
-                                                showPopperArrow={false}
-                                                onChange={(date) => handleTrainingChange(training.id, 'dateFrom', date)}
-                                                className='form-control rounded-0'
-                                                popperPlacement="bottom-start"
-                                                calendarContainer={({ children }) => (
-                                                    <div className='bg-white react-datepicker'>
-                                                        {children}
-                                                        {renderFooter("start")}
-                                                    </div>
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor={`dateTo-${training.id}`} className="fw-semibold">Date To: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group flex-nowrap">
-                                        <div className="input-group-text"><FiCalendar size={16} /></div>
-                                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                            <DatePicker
-                                                placeholderText='End Date'
-                                                selected={training.dateTo}
-                                                showPopperArrow={false}
-                                                onChange={(date) => handleTrainingChange(training.id, 'dateTo', date)}
-                                                className='form-control rounded-0'
-                                                popperPlacement="bottom-start"
-                                                calendarContainer={({ children }) => (
-                                                    <div className='bg-white react-datepicker'>
-                                                        {children}
-                                                        {renderFooter("end")}
-                                                    </div>
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-4 align-items-center">
                         <div className="col-lg-4">
-                            <label htmlFor={`year-${training.id}`} className="fw-semibold">Year: </label>
+                            <label htmlFor={`training-${index}-detail`} className="fw-semibold">Training/Course Title: </label>
                         </div>
                         <div className="col-lg-8">
-                            <div className="input-group flex-nowrap">
-                                <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                    <DatePicker
-                                        placeholderText='Year'
-                                        selected={training.year}
-                                        showPopperArrow={false}
-                                        onChange={(date) => handleTrainingChange(training.id, 'year', date)}
-                                        className='form-control rounded-0'
-                                        popperPlacement="bottom-start"
-                                        showYearPicker
-                                        dateFormat="yyyy"
-                                        calendarContainer={({ children }) => (
-                                            <div className='bg-white react-datepicker'>
-                                                {children}
-                                                {renderFooter("start")}
-                                            </div>
-                                        )}
-                                    />
-                                </div>
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.trainings?.[index]?.trainingDetail ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-detail`}
+                                    placeholder="e.g., Advanced Medical Research Methods"
+                                    {...register(`trainings.${index}.trainingDetail`, { required: 'Training detail is required' })}
+                                />
+                                {errors?.trainings?.[index]?.trainingDetail && (
+                                    <div className="invalid-feedback">{errors.trainings[index].trainingDetail.message}</div>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    <Input
-                        icon='feather-home'
-                        label={"Name of Institute/Organization"}
-                        labelId={`institute-${training.id}`}
-                        placeholder={"e.g., American Heart Association"}
-                        name={`institute-${training.id}`}
-                        value={training.institute}
-                        onChange={(e) => handleTrainingChange(training.id, 'institute', e.target.value)}
-                    />
+                    {/* Institute */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-institute`} className="fw-semibold">Institute/Organization: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.trainings?.[index]?.institute ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-institute`}
+                                    placeholder="e.g., Medical Research Institute"
+                                    {...register(`trainings.${index}.institute`, { required: 'Institute is required' })}
+                                />
+                                {errors?.trainings?.[index]?.institute && (
+                                    <div className="invalid-feedback">{errors.trainings[index].institute.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Country/Station */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-country`} className="fw-semibold">Country/Station: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <select
+                                    className={`form-select ${errors?.trainings?.[index]?.countryStation ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-country`}
+                                    {...register(`trainings.${index}.countryStation`, { required: 'Country is required' })}
+                                >
+                                    <option value="">Select Country</option>
+                                    {countryOptions.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </select>
+                                {errors?.trainings?.[index]?.countryStation && (
+                                    <div className="invalid-feedback">{errors.trainings[index].countryStation.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Year */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-year`} className="fw-semibold">Year: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="number" 
+                                    className={`form-control ${errors?.trainings?.[index]?.year ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-year`}
+                                    placeholder="e.g., 2023"
+                                    min="1950"
+                                    max="2099"
+                                    {...register(`trainings.${index}.year`, { 
+                                        required: 'Year is required',
+                                        min: { value: 1950, message: 'Year must be 1950 or later' },
+                                        max: { value: 2099, message: 'Year must be 2099 or earlier' } 
+                                    })}
+                                />
+                                {errors?.trainings?.[index]?.year && (
+                                    <div className="invalid-feedback">{errors.trainings[index].year.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Date From */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-dateFrom`} className="fw-semibold">Start Date: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiCalendar size={16} /></div>
+                                <input 
+                                    type="date" 
+                                    className={`form-control ${errors?.trainings?.[index]?.dateFrom ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-dateFrom`}
+                                    {...register(`trainings.${index}.dateFrom`, { required: 'Start date is required' })}
+                                />
+                                {errors?.trainings?.[index]?.dateFrom && (
+                                    <div className="invalid-feedback">{errors.trainings[index].dateFrom.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Date To */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-dateTo`} className="fw-semibold">End Date: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiCalendar size={16} /></div>
+                                <input 
+                                    type="date" 
+                                    className={`form-control ${errors?.trainings?.[index]?.dateTo ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-dateTo`}
+                                    {...register(`trainings.${index}.dateTo`, { required: 'End date is required' })}
+                                />
+                                {errors?.trainings?.[index]?.dateTo && (
+                                    <div className="invalid-feedback">{errors.trainings[index].dateTo.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Grade */}
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label htmlFor={`training-${index}-grade`} className="fw-semibold">Grade/Certificate: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"></div>
+                                <input 
+                                    type="text" 
+                                    className={`form-control ${errors?.trainings?.[index]?.grade ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-grade`}
+                                    placeholder="e.g., Distinction, A+, Pass"
+                                    {...register(`trainings.${index}.grade`)}
+                                />
+                                {errors?.trainings?.[index]?.grade && (
+                                    <div className="invalid-feedback">{errors.trainings[index].grade.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             ))}
 
-            <div className="d-flex justify-content-center mt-3">
-                <button 
-                    type="button" 
-                    className="btn btn-outline-primary"
-                    onClick={handleAddTraining}
-                >
-                    <FiPlus size={16} className="me-2" /> Add Training/Course
-                </button>
-            </div>
+            <button 
+                type="button" 
+                className="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                onClick={handleAddTraining}
+            >
+                <FiPlus size={16} /> Add Training/Course
+            </button>
         </div>
     );
 };

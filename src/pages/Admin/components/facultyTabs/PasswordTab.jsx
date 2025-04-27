@@ -1,7 +1,8 @@
 import React from 'react';
-import Input from '@/components/shared/Input';
 
-const PasswordTab = () => {
+const PasswordTab = ({ register, errors, watch }) => {
+    const password = watch('password');
+
     return (
         <div className="card-body password-info">
             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -11,29 +12,66 @@ const PasswordTab = () => {
                 </h5>
                 <button type="button" className="btn btn-sm btn-primary">Save</button>
             </div>
-            <Input
-                icon='feather-user'
-                label={"Username"}
-                labelId={"usernameInput"}
-                placeholder={"Username"}
-                name={"username"}
-            />
-            <Input
-                icon='feather-lock'
-                label={"Password"}
-                labelId={"passwordInput"}
-                placeholder={"Password"}
-                name={"password"}
-                type={"password"}
-            />
-            <Input
-                icon='feather-lock'
-                label={"Confirm Password"}
-                labelId={"confirmPasswordInput"}
-                placeholder={"Confirm Password"}
-                name={"confirmPassword"}
-                type={"password"}
-            />
+            
+            <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                    <label htmlFor="usernameInput" className="fw-semibold">Username: </label>
+                </div>
+                <div className="col-lg-8">
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="text" 
+                            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                            id="usernameInput"
+                            placeholder="Username"
+                            {...register('username', { required: 'Username is required' })}
+                        />
+                        {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+                    </div>
+                </div>
+            </div>
+            
+            <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                    <label htmlFor="passwordInput" className="fw-semibold">Password: </label>
+                </div>
+                <div className="col-lg-8">
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="password" 
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            id="passwordInput"
+                            placeholder="Password"
+                            {...register('password', { required: 'Password is required' })}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                    </div>
+                </div>
+            </div>
+            
+            <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                    <label htmlFor="confirmPasswordInput" className="fw-semibold">Confirm Password: </label>
+                </div>
+                <div className="col-lg-8">
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="password" 
+                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                            id="confirmPasswordInput"
+                            placeholder="Confirm Password"
+                            {...register('confirmPassword', { 
+                                required: 'Confirm Password is required',
+                                validate: value => value === password || "Passwords do not match" 
+                            })}
+                        />
+                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,22 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiCalendar, FiCamera } from 'react-icons/fi';
-import DatePicker from 'react-datepicker';
-import TextArea from '@/components/shared/TextArea';
-import SelectDropdown from '@/components/shared/SelectDropdown';
-import Input from '@/components/shared/Input';
 
-const ProfileTab = ({ 
-    startDate, 
-    setStartDate, 
-    renderFooter, 
-    selectedOption, 
-    setSelectedOption,
-    countries,
-    states,
-    cities,
-    fetchStates,
-    fetchCities
-}) => {
+const ProfileTab = ({ register, errors, watch, setValue }) => {
+    const [imagePreview, setImagePreview] = useState("/images/avatar/1.png");
+
+    // Handle file input change
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setValue('profile.photo', file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
     return (
         <div className="card-body personal-info">
             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -26,6 +22,8 @@ const ProfileTab = ({
                 </h5>
                 <button type="button" className="btn btn-sm btn-primary">Save</button>
             </div>
+            
+            {/* Profile Picture */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                     <label className="fw-semibold">Profile Picture: </label>
@@ -33,11 +31,18 @@ const ProfileTab = ({
                 <div className="col-lg-8">
                     <div className="mb-4 mb-md-0 d-flex gap-4 your-brand">
                         <label htmlFor='img' className="wd-100 ht-100 position-relative overflow-hidden border border-gray-2 rounded">
-                            <img src="/images/avatar/1.png" className="upload-pic img-fluid rounded h-100 w-100" alt="" />
+                            <img src={imagePreview} className="upload-pic img-fluid rounded h-100 w-100" alt="" />
                             <div className="position-absolute start-50 top-50 end-0 bottom-0 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
                                 <i aria-hidden="true" className='camera-icon'><FiCamera /></i>
                             </div>
-                            <input className="file-upload" type="file" accept="image/*" id='img' hidden />
+                            <input 
+                                className="file-upload" 
+                                type="file" 
+                                accept="image/*" 
+                                id='img' 
+                                hidden 
+                                onChange={handleFileChange} 
+                            />
                         </label>
                         <div className="d-flex flex-column gap-1">
                             <div className="fs-11 text-gray-500 mt-2"># Upload faculty profile picture</div>
@@ -48,20 +53,48 @@ const ProfileTab = ({
                     </div>
                 </div>
             </div>
-            <Input
-                icon='feather-credit-card'
-                label={"Faculty ID"}
-                labelId={"facultyIdInput"}
-                placeholder={"Faculty ID"}
-                name={"facultyId"}
-            />
-            <Input
-                icon='feather-user'
-                label={"Faculty Name"}
-                labelId={"facultyNameInput"}
-                placeholder={"Faculty Name"}
-                name={"facultyName"}
-            />
+            
+            {/* Faculty ID */}
+            <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                    <label htmlFor="facultyIdInput" className="fw-semibold">Faculty ID: </label>
+                </div>
+                <div className="col-lg-8">
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="text" 
+                            className={`form-control ${errors?.profile?.facultyId ? 'is-invalid' : ''}`}
+                            id="facultyIdInput"
+                            placeholder="Faculty ID"
+                            {...register('profile.facultyId', { required: 'Faculty ID is required' })}
+                        />
+                        {errors?.profile?.facultyId && <div className="invalid-feedback">{errors.profile.facultyId.message}</div>}
+                    </div>
+                </div>
+            </div>
+            
+            {/* Faculty Name */}
+            <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                    <label htmlFor="facultyNameInput" className="fw-semibold">Faculty Name: </label>
+                </div>
+                <div className="col-lg-8">
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="text" 
+                            className={`form-control ${errors?.profile?.facultyName ? 'is-invalid' : ''}`}
+                            id="facultyNameInput"
+                            placeholder="Faculty Name"
+                            {...register('profile.facultyName', { required: 'Faculty Name is required' })}
+                        />
+                        {errors?.profile?.facultyName && <div className="invalid-feedback">{errors.profile.facultyName.message}</div>}
+                    </div>
+                </div>
+            </div>
+            
+            {/* Gender */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                     <label className="fw-semibold">Gender: </label>
@@ -69,384 +102,172 @@ const ProfileTab = ({
                 <div className="col-lg-8">
                     <div className="d-flex gap-4">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gender" id="male" value="male" />
+                            <input 
+                                className="form-check-input" 
+                                type="radio" 
+                                id="male" 
+                                value="male" 
+                                {...register('profile.gender', { required: 'Gender is required' })}
+                            />
                             <label className="form-check-label" htmlFor="male">Male</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gender" id="female" value="female" />
+                            <input 
+                                className="form-check-input" 
+                                type="radio" 
+                                id="female" 
+                                value="female" 
+                                {...register('profile.gender', { required: 'Gender is required' })}
+                            />
                             <label className="form-check-label" htmlFor="female">Female</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gender" id="other" value="other" />
+                            <input 
+                                className="form-check-input" 
+                                type="radio" 
+                                id="other" 
+                                value="other" 
+                                {...register('profile.gender', { required: 'Gender is required' })}
+                            />
                             <label className="form-check-label" htmlFor="other">Other</label>
                         </div>
                     </div>
+                    {errors?.profile?.gender && <div className="invalid-feedback d-block">{errors.profile.gender.message}</div>}
                 </div>
             </div>
+            
+            {/* Designation */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                    <label className="fw-semibold">Designation: </label>
+                    <label htmlFor="designationInput" className="fw-semibold">Designation: </label>
                 </div>
                 <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'registrar', label: 'REGISTRAR' },
-                            { value: 'dean', label: 'DEAN' },
-                            { value: 'professor', label: 'PROFESSOR' },
-                            { value: 'lecturer', label: 'LECTURER' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="registrar"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <select 
+                            className={`form-select ${errors?.profile?.designation ? 'is-invalid' : ''}`}
+                            id="designationInput"
+                            {...register('profile.designation', { required: 'Designation is required' })}
+                        >
+                            <option value="">Select Designation</option>
+                            <option value="registrar">REGISTRAR</option>
+                            <option value="dean">DEAN</option>
+                            <option value="professor">PROFESSOR</option>
+                            <option value="lecturer">LECTURER</option>
+                        </select>
+                        {errors?.profile?.designation && <div className="invalid-feedback">{errors.profile.designation.message}</div>}
+                    </div>
                 </div>
             </div>
+            
+            {/* Grade */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                    <label className="fw-semibold">Grade: </label>
+                    <label htmlFor="gradeInput" className="fw-semibold">Grade: </label>
                 </div>
                 <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'bps18', label: 'BPS 18' },
-                            { value: 'bps19', label: 'BPS 19' },
-                            { value: 'bps20', label: 'BPS 20' },
-                            { value: 'bps21', label: 'BPS 21' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="bps18"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <select 
+                            className={`form-select ${errors?.profile?.grade ? 'is-invalid' : ''}`}
+                            id="gradeInput"
+                            {...register('profile.grade', { required: 'Grade is required' })}
+                        >
+                            <option value="">Select Grade</option>
+                            <option value="bps18">BPS 18</option>
+                            <option value="bps19">BPS 19</option>
+                            <option value="bps20">BPS 20</option>
+                            <option value="bps21">BPS 21</option>
+                        </select>
+                        {errors?.profile?.grade && <div className="invalid-feedback">{errors.profile.grade.message}</div>}
+                    </div>
                 </div>
             </div>
+            
+            {/* Joining Date */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                     <label htmlFor="joiningDate" className="fw-semibold">Joining Date: </label>
                 </div>
                 <div className="col-lg-8">
-                    <div className="input-group flex-nowrap">
+                    <div className="input-group">
                         <div className="input-group-text"><FiCalendar size={16} /></div>
-                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                            <DatePicker
-                                placeholderText='Pick joining date'
-                                selected={startDate}
-                                showPopperArrow={false}
-                                onChange={(date) => setStartDate(date)}
-                                className='form-control rounded-0'
-                                popperPlacement="bottom-start"
-                                calendarContainer={({ children }) => (
-                                    <div className='bg-white react-datepicker'>
-                                        {children}
-                                        {renderFooter("start")}
-                                    </div>
-                                )}
-                            />
-                        </div>
+                        <input 
+                            type="date" 
+                            className={`form-control ${errors?.profile?.joiningDate ? 'is-invalid' : ''}`}
+                            id="joiningDate"
+                            {...register('profile.joiningDate', { required: 'Joining Date is required' })}
+                        />
+                        {errors?.profile?.joiningDate && <div className="invalid-feedback">{errors.profile.joiningDate.message}</div>}
                     </div>
                 </div>
             </div>
+            
+            {/* Marital Status */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                    <label className="fw-semibold">Marital Status: </label>
+                    <label htmlFor="maritalStatus" className="fw-semibold">Marital Status: </label>
                 </div>
                 <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'married', label: 'MARRIED' },
-                            { value: 'single', label: 'SINGLE' },
-                            { value: 'divorced', label: 'DIVORCED' },
-                            { value: 'widowed', label: 'WIDOWED' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="married"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
-                </div>
-            </div>
-            <Input
-                icon='feather-flag'
-                label={"Nationality"}
-                labelId={"nationalityInput"}
-                placeholder={"PAKISTAN"}
-                name={"nationality"}
-            />
-            <Input
-                icon='feather-bookmark'
-                label={"Religion"}
-                labelId={"religionInput"}
-                placeholder={"ISLAM"}
-                name={"religion"}
-            />
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label className="fw-semibold">Blood Group: </label>
-                </div>
-                <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'a-positive', label: 'A POSITIVE' },
-                            { value: 'a-negative', label: 'A NEGATIVE' },
-                            { value: 'b-positive', label: 'B POSITIVE' },
-                            { value: 'b-negative', label: 'B NEGATIVE' },
-                            { value: 'ab-positive', label: 'AB POSITIVE' },
-                            { value: 'ab-negative', label: 'AB NEGATIVE' },
-                            { value: 'o-positive', label: 'O POSITIVE' },
-                            { value: 'o-negative', label: 'O NEGATIVE' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="b-positive"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
-                </div>
-            </div>
-            <Input
-                icon='feather-bookmark'
-                label={"Identity Mark"}
-                labelId={"identityMarkInput"}
-                placeholder={"N/A"}
-                name={"identityMark"}
-            />
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label className="fw-semibold">Domicile: </label>
-                </div>
-                <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'khairpur', label: 'KHAIRPUR' },
-                            { value: 'karachi', label: 'KARACHI' },
-                            { value: 'lahore', label: 'LAHORE' },
-                            { value: 'islamabad', label: 'ISLAMABAD' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="khairpur"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
-                </div>
-            </div>
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label className="fw-semibold">Province: </label>
-                </div>
-                <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'sindh', label: 'SINDH' },
-                            { value: 'punjab', label: 'PUNJAB' },
-                            { value: 'kpk', label: 'KHYBER PAKHTUNKHWA' },
-                            { value: 'balochistan', label: 'BALOCHISTAN' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="sindh"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
-                </div>
-            </div>
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="dateofBirth" className="fw-semibold">Date of Birth: </label>
-                </div>
-                <div className="col-lg-8">
-                    <div className="input-group flex-nowrap">
-                        <div className="input-group-text"><FiCalendar size={16} /></div>
-                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                            <DatePicker
-                                placeholderText='Pick date of birth'
-                                selected={startDate}
-                                showPopperArrow={false}
-                                onChange={(date) => setStartDate(date)}
-                                className='form-control rounded-0'
-                                popperPlacement="bottom-start"
-                                calendarContainer={({ children }) => (
-                                    <div className='bg-white react-datepicker'>
-                                        {children}
-                                        {renderFooter("start")}
-                                    </div>
-                                )}
-                            />
-                        </div>
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <select 
+                            className={`form-select ${errors?.profile?.maritalStatus ? 'is-invalid' : ''}`}
+                            id="maritalStatus"
+                            {...register('profile.maritalStatus', { required: 'Marital Status is required' })}
+                        >
+                            <option value="">Select Marital Status</option>
+                            <option value="married">MARRIED</option>
+                            <option value="single">SINGLE</option>
+                            <option value="divorced">DIVORCED</option>
+                            <option value="widowed">WIDOWED</option>
+                        </select>
+                        {errors?.profile?.maritalStatus && <div className="invalid-feedback">{errors.profile.maritalStatus.message}</div>}
                     </div>
                 </div>
             </div>
-            <Input
-                icon='feather-credit-card'
-                label={"PMDC No"}
-                labelId={"pmdcInput"}
-                placeholder={"123"}
-                name={"pmdc"}
-            />
-            <Input
-                icon='feather-credit-card'
-                label={"C.N.I.C No"}
-                labelId={"cnicInput"}
-                placeholder={"___-_______-_"}
-                name={"cnic"}
-            />
-            <Input
-                icon='feather-credit-card'
-                label={"Passport No"}
-                labelId={"passportInput"}
-                placeholder={"Passport No."}
-                name={"passport"}
-            />
-            <Input
-                icon='feather-map-pin'
-                label={"Birth Place"}
-                labelId={"birthPlaceInput"}
-                placeholder={"GAMBAT"}
-                name={"birthPlace"}
-            />
-            <Input
-                icon='feather-user'
-                label={"Father Name"}
-                labelId={"fatherNameInput"}
-                placeholder={"Father's Name"}
-                name={"fatherName"}
-            />
-            <Input
-                icon='feather-user'
-                label={"Surname"}
-                labelId={"surnameInput"}
-                placeholder={"BHATTI"}
-                name={"surname"}
-            />
-            <TextArea
-                icon="feather-map-pin"
-                label={"Present Address"}
-                labelId={"presentAddressInput"}
-                placeholder={"GAMBAT, SINDH"}
-                name={"presentAddress"}
-            />
+            
+            {/* Nationality */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                    <label className="fw-semibold"> </label>
+                    <label htmlFor="nationalityInput" className="fw-semibold">Nationality: </label>
                 </div>
                 <div className="col-lg-8">
-                    <div className="form-check">
-                        <input className="form-check-input" type="checkbox" id="sameAsPresent" />
-                        <label className="form-check-label" htmlFor="sameAsPresent">Same as Present Address</label>
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="text" 
+                            className={`form-control ${errors?.profile?.nationality ? 'is-invalid' : ''}`}
+                            id="nationalityInput"
+                            placeholder="Nationality"
+                            defaultValue="PAKISTAN"
+                            {...register('profile.nationality')}
+                        />
+                        {errors?.profile?.nationality && <div className="invalid-feedback">{errors.profile.nationality.message}</div>}
                     </div>
                 </div>
             </div>
-            <TextArea
-                icon="feather-map-pin"
-                label={"Permanent Address"}
-                labelId={"permanentAddressInput"}
-                placeholder={"GAMBAT, SINDH"}
-                name={"permanentAddress"}
-            />
-            <Input
-                icon='feather-phone'
-                label={"Phone"}
-                labelId={"phoneInput"}
-                placeholder={"___-_______"}
-                name={"phone"}
-            />
-            <Input
-                icon='feather-smartphone'
-                label={"Mobile No"}
-                labelId={"mobileInput"}
-                placeholder={"0303-0589819"}
-                name={"mobile"}
-            />
-            <Input
-                icon='feather-phone-call'
-                label={"Emergency No"}
-                labelId={"emergencyNoInput"}
-                placeholder={"0323-2650961"}
-                name={"emergencyNo"}
-            />
-            <Input
-                icon='feather-mail'
-                label={"Official Email"}
-                labelId={"officialEmailInput"}
-                placeholder={"registrar@pjims.edu.pk"}
-                name={"officialEmail"}
-                type={"email"}
-            />
-            <Input
-                icon='feather-mail'
-                label={"Personal Email"}
-                labelId={"personalEmailInput"}
-                placeholder={"shamim_bhtti@yahoo.com"}
-                name={"personalEmail"}
-                type={"email"}
-            />
-            <TextArea
-                icon="feather-file-text"
-                label={"Remarks"}
-                labelId={"remarksInput"}
-                placeholder={"Any additional notes or remarks"}
-                name={"remarks"}
-            />
+            
+            {/* Religion */}
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                    <label className="fw-semibold">Status: </label>
+                    <label htmlFor="religionInput" className="fw-semibold">Religion: </label>
                 </div>
                 <div className="col-lg-8">
-                    <SelectDropdown
-                        options={[
-                            { value: 'permanent', label: 'PERMANENT' },
-                            { value: 'contract', label: 'CONTRACT' },
-                            { value: 'visiting', label: 'VISITING' },
-                            { value: 'temporary', label: 'TEMPORARY' }
-                        ]}
-                        selectedOption={selectedOption}
-                        defaultSelect="permanent"
-                        onSelectOption={(option) => setSelectedOption(option)}
-                    />
-                </div>
-            </div>
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label className="fw-semibold">Currently: </label>
-                </div>
-                <div className="col-lg-8">
-                    <div className="d-flex gap-4">
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" name="currently" id="present" value="present" checked />
-                            <label className="form-check-label" htmlFor="present">Present</label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" name="currently" id="relieved" value="relieved" />
-                            <label className="form-check-label" htmlFor="relieved">Relieved</label>
-                        </div>
+                    <div className="input-group">
+                        <div className="input-group-text"></div>
+                        <input 
+                            type="text" 
+                            className={`form-control ${errors?.profile?.religion ? 'is-invalid' : ''}`}
+                            id="religionInput"
+                            placeholder="Religion"
+                            defaultValue="ISLAM"
+                            {...register('profile.religion')}
+                        />
+                        {errors?.profile?.religion && <div className="invalid-feedback">{errors.profile.religion.message}</div>}
                     </div>
                 </div>
             </div>
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="dateOfRelieving" className="fw-semibold">Date of Relieving: </label>
-                </div>
-                <div className="col-lg-8">
-                    <div className="input-group flex-nowrap">
-                        <div className="input-group-text"><FiCalendar size={16} /></div>
-                        <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                            <DatePicker
-                                placeholderText='Pick date of relieving'
-                                selected={startDate}
-                                showPopperArrow={false}
-                                onChange={(date) => setStartDate(date)}
-                                className='form-control rounded-0'
-                                popperPlacement="bottom-start"
-                                calendarContainer={({ children }) => (
-                                    <div className='bg-white react-datepicker'>
-                                        {children}
-                                        {renderFooter("start")}
-                                    </div>
-                                )}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <TextArea
-                icon="feather-file-text"
-                label={"Reason for Leaving"}
-                labelId={"reasonForLeavingInput"}
-                placeholder={"Reason for leaving"}
-                name={"reasonForLeaving"}
-            />
         </div>
     );
 };
