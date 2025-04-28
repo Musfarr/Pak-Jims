@@ -10,6 +10,9 @@ import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab'
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab'
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2'
+import { PostApi } from '@/utils/Api/ApiServices'
+
+
 
 
 
@@ -27,31 +30,59 @@ const Facultyform = () => {
         "passwordTab"
       ];
 
-    const { register, handleSubmit, watch, setValue, control, formState: { errors } , trigger} = useForm({
+    const { register, handleSubmit, watch, setValue, control, formState: { errors }, trigger} = useForm({
         defaultValues: {
             photo: null, 
-            facultyId: '',
-            facultyName: '',
+            // Profile Details
+            name: '', 
+            facultyId: '', 
             gender: '',
             designation: '',
             grade: '',
-            joiningDate: '', 
-            maritalStatus: '',
+            joining_date: null, 
+            marital_status: '', 
             nationality: 'PAKISTAN', 
             religion: 'ISLAM',
+            blood_group: '', 
+            identity_mark: '', 
+            domicile_id: '', 
+            province: '', 
+            dob: null, 
+            pmdc_no: '', 
+            cnic_no: '', 
+            passport_no: '', 
+            birth_place: '', 
+            father_name: '', 
+            surname: '', 
+            present_address: '', 
+            permanent_address: '', 
+            phone: '', 
+            mobile_no: '', 
+            emergency_no: '', 
+            official_email: '', 
+            personal_email: '', 
+            remarks: '', 
+            status: '', 
+            currently: '', 
+            date_of_relieving: null, 
+            reason_of_relieving: '', 
 
             // Job/Family Details
-            workingIn: '',
-            currentPost: '',
-            scaleGrade: '',
-            dateOfJoiningCurrentPost: '', 
-            department: '',
-            supervisorName: '',
-            supervisorDesignation: '',
-            supervisorMobile: '',
-            isSpouseInPsaqsjims: 'no', 
-            spouseName: '',
-            spouseDesignation: '',
+            working_in: '', 
+            current_post: '', 
+            scale: '', 
+            date_of_joining_current_post: null, 
+            department: '', 
+            supervisory_officer: '', 
+            designation_supervisory_officer: '', 
+            mobile: '', 
+            spouse_paqsjims: '', 
+            spouse_name: '', 
+            spouse_designation: '', 
+            place_of_posting: '', 
+            size_of_family: '', 
+            no_of_sons: '', 
+            no_of_daugther: '', 
 
             // Education History
             education: [{ 
@@ -66,43 +97,42 @@ const Facultyform = () => {
             }],
 
             // Work Experiences
-            workExperiences: [{ 
-                nameOfPost: '', 
-                joiningDate: null, 
-                scaleGrade: '', 
-                nameOfInstitute: '', 
-                leavingDate: null,
-                jobResponsibilities: ''
+            workExperiences: [{
+                organization: '',
+                designation: '',
+                fromDate: null,
+                toDate: null,
+                jobDescription: ''
             }],
 
-            // Trainings/Courses
-            trainings: [{ 
-                trainingDetail: '', 
-                grade: '', 
-                countryStation: '', 
-                dateFrom: null, 
-                dateTo: null, 
-                year: '',
-                institute: '' 
+            // Trainings
+            trainings: [{
+                trainingTitle: '',
+                institution: '',
+                fromDate: null,
+                toDate: null,
+                location: '',
+                country: ''
             }],
 
             // Foreign Visits
-            foreignVisits: [{ 
-                country: '', 
-                purpose: '', 
-                startDate: null, 
-                endDate: null, 
+            foreignVisits: [{
+                country: '',
+                city: '',
+                fromDate: null,
+                toDate: null,
+                purpose: '',
                 sponsor: '' 
             }],
 
             // Emergency Contact
-            emergencyName: '',
-            emergencyPhone: '',
-            emergencyEmail: '',
-            emergencyRelationship: '',
-            emergencyAddress: '',
+            emergency_name: '', 
+            emergency_phone: '', 
+            emergency_email: '', 
+            emergency_relation: '', 
+            emergency_address: '', 
 
-            // Flattened Password Fields
+            // Password Details
             username: '',
             password: '',
             confirmPassword: ''
@@ -110,15 +140,30 @@ const Facultyform = () => {
     });
 
     const stepFields = [
-        ['photo', 'facultyId', 'facultyName', 'gender', 'designation', 'grade', 'joiningDate', 'maritalStatus', 'nationality', 'religion'],
-        ['workingIn', 'currentPost', 'scaleGrade', 'dateOfJoiningCurrentPost', 'department', 'supervisorName', 'supervisorDesignation', 'supervisorMobile', 'isSpouseInPsaqsjims', 'spouseName', 'spouseDesignation'],
+        ['name', 'gender', 'designation', 'grade', 'joining_date', 'marital_status', 
+         'nationality', 'religion', 'blood_group', 'identity_mark', 'domicile_id', 
+         'province', 'dob', 'pmdc_no', 'cnic_no', 'passport_no', 'birth_place', 
+         'father_name', 'surname', 'present_address', 'permanent_address', 'phone', 
+         'mobile_no', 'emergency_no', 'official_email', 'personal_email', 'remarks', 
+         'status', 'currently', 'date_of_relieving', 'reason_of_relieving'],
+        
+        ['working_in', 'current_post', 'scale', 'date_of_joining_current_post', 
+         'department', 'supervisory_officer', 'designation_supervisory_officer', 
+         'mobile', 'spouse_paqsjims', 'spouse_name', 'spouse_designation', 
+         'place_of_posting', 'size_of_family', 'no_of_sons', 'no_of_daugther'],
+        
         ['education'], 
+        
         ['workExperiences'],
+        
         ['trainings'],
+        
         ['foreignVisits'],
-        ['emergencyName', 'emergencyPhone', 'emergencyEmail', 'emergencyRelationship', 'emergencyAddress'],
+        
+        ['emergency_name', 'emergency_phone', 'emergency_email', 'emergency_relation', 'emergency_address'],
+        
         ['username', 'password', 'confirmPassword']
-    ];
+      ];
 
     const handleNext = async () => {
         const fieldsToValidate = stepFields[currentStep];
@@ -149,7 +194,41 @@ const Facultyform = () => {
 
     const onSubmit = (data) => {
         console.log('Form Submitted:', data);
-        // Handle final form submission logic here
+        
+        PostApi('/faculties', data).then((res) => {
+            console.log('Faculty added successfully:', res);
+            Swal.fire({
+                icon: 'success',
+                title: 'Faculty added successfully',
+                text: 'Faculty has been added successfully',
+                confirmButtonText: 'OK'
+            });
+        }).catch((error) => {
+            console.error('Error adding faculty:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add faculty',
+                confirmButtonText: 'OK'
+            });
+        });
+    };
+
+
+
+
+    const getTabLabel = (step) => {
+        const labels = {
+            personalDetailsTab: 'PERSONAL DETAILS',
+            jobFamilyTab: 'JOB/FAMILY DETAILS',
+            educationHistoryTab: 'EDUCATION HISTORY',
+            workExperiencesTab: 'WORK EXPERIENCES',
+            trainingsCoursesTab: 'TRAININGS/COURSES',
+            foreignVisitsTab: 'FOREIGN VISITS',
+            emergencyTab: 'EMERGENCY CONTACT',
+            passwordTab: 'PASSWORD'
+        };
+        return labels[step];
     };
 
 
@@ -165,34 +244,26 @@ const Facultyform = () => {
         <div className="col-lg-12">
             
             <div className="card border-top-0">
-                <div className="card-header p-0">
-                    <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link active" data-bs-toggle="tab" data-bs-target="#personalDetailsTab" role="tab">PERSONAL DETAILS</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#jobFamilyTab" role="tab">JOB/FAMILY DETAILS</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#educationHistoryTab" role="tab">EDUCATION HISTORY</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#workExperiencesTab" role="tab">WORK EXPERIENCES</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#trainingsCoursesTab" role="tab">TRAININGS/COURSES</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#foreignVisitsTab" role="tab">FOREIGN VISITS</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#emergencyTab" role="tab">EMERGENCY CONTACT</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#passwordTab" role="tab">PASSWORD</a>
-                        </li>
-                    </ul>
-                </div>
+            <div className="card-header p-0">
+    <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
+        {steps.map((step, index) => (
+            <li 
+                key={step}
+                className={`nav-item flex-fill border-top ${currentStep === index ? 'active' : ''}`} 
+                role="presentation"
+            >
+                <button
+                    type="button"
+                    className={`nav-link ${currentStep === index ? 'active' : ''}`}
+                    onClick={() => setCurrentStep(index)}
+                    // disabled={currentStep < index} // Optional: prevent jumping ahead
+                >
+                    {getTabLabel(step)}
+                </button>
+            </li>
+        ))}
+    </ul>
+</div>
                 
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="tab-content">

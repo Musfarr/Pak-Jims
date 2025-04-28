@@ -21,12 +21,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.workingIn ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.working_in ? 'is-invalid' : ''}`}
                             id="workingInInput"
                             placeholder="Working In"
-                            {...register('workingIn', { required: 'Working In is required' })}
+                            {...register('working_in', { required: 'Working In is required' })}
                         />
-                        {errors.workingIn && <div className="invalid-feedback">{errors.workingIn.message}</div>}
+                        {errors.working_in && <div className="invalid-feedback">{errors.working_in.message}</div>}
                     </div>
                 </div>
             </div>
@@ -40,12 +40,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.currentPost ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.current_post ? 'is-invalid' : ''}`}
                             id="currentPostInput"
                             placeholder="Current Post"
-                            {...register('currentPost', { required: 'Current Post is required' })}
+                            {...register('current_post', { required: 'Current Post is required' })}
                         />
-                        {errors.currentPost && <div className="invalid-feedback">{errors.currentPost.message}</div>}
+                        {errors.current_post && <div className="invalid-feedback">{errors.current_post.message}</div>}
                     </div>
                 </div>
             </div>
@@ -59,12 +59,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.scaleGrade ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.scale ? 'is-invalid' : ''}`}
                             id="scaleGradeInput"
                             placeholder="Scale/Grade"
-                            {...register('scaleGrade', { required: 'Scale/Grade is required' })}
+                            {...register('scale', { required: 'Scale/Grade is required' })}
                         />
-                        {errors.scaleGrade && <div className="invalid-feedback">{errors.scaleGrade.message}</div>}
+                        {errors.scale && <div className="invalid-feedback">{errors.scale.message}</div>}
                     </div>
                 </div>
             </div>
@@ -78,11 +78,11 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"><FiCalendar size={16} /></div>
                         <input 
                             type="date"
-                            className={`form-control ${errors.dateOfJoiningCurrentPost ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.date_of_joining_current_post ? 'is-invalid' : ''}`}
                             id="dateOfJoiningCurrentPost"
-                            {...register('dateOfJoiningCurrentPost', { required: 'Date of Joining Current Post is required' })}
+                            {...register('date_of_joining_current_post', { required: 'Date of Joining Current Post is required' })}
                         />
-                        {errors.dateOfJoiningCurrentPost && <div className="invalid-feedback">{errors.dateOfJoiningCurrentPost.message}</div>}
+                        {errors.date_of_joining_current_post && <div className="invalid-feedback">{errors.date_of_joining_current_post.message}</div>}
                     </div>
                 </div>
             </div>
@@ -115,12 +115,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.supervisorName ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.supervisory_officer ? 'is-invalid' : ''}`}
                             id="supervisorNameInput"
                             placeholder="Name of Supervisory Officer"
-                            {...register('supervisorName', { required: 'Name of Supervisory Officer is required' })}
+                            {...register('supervisory_officer', { required: 'Name of Supervisory Officer is required' })}
                         />
-                        {errors.supervisorName && <div className="invalid-feedback">{errors.supervisorName.message}</div>}
+                        {errors.supervisory_officer && <div className="invalid-feedback">{errors.supervisory_officer.message}</div>}
                     </div>
                 </div>
             </div>
@@ -134,12 +134,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.supervisorDesignation ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.designation_supervisory_officer ? 'is-invalid' : ''}`}
                             id="supervisorDesignationInput"
                             placeholder="Designation of Supervisory Officer"
-                            {...register('supervisorDesignation', { required: 'Designation of Supervisory Officer is required' })}
+                            {...register('designation_supervisory_officer', { required: 'Designation of Supervisory Officer is required' })}
                         />
-                        {errors.supervisorDesignation && <div className="invalid-feedback">{errors.supervisorDesignation.message}</div>}
+                        {errors.designation_supervisory_officer && <div className="invalid-feedback">{errors.designation_supervisory_officer.message}</div>}
                     </div>
                 </div>
             </div>
@@ -153,17 +153,17 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.supervisorMobile ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.mobile ? 'is-invalid' : ''}`}
                             id="supervisorMobileInput"
                             placeholder="___-_______"
-                            {...register('supervisorMobile', {
+                            {...register('mobile', {
                                 pattern: {
                                     value: /^\d{3}-\d{7}$/,
                                     message: 'Mobile number must be in format: ___-_______'
                                 }
                             })}
                         />
-                        {errors.supervisorMobile && <div className="invalid-feedback">{errors.supervisorMobile.message}</div>}
+                        {errors.mobile && <div className="invalid-feedback">{errors.mobile.message}</div>}
                     </div>
                 </div>
             </div>
@@ -175,13 +175,13 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 <div className="col-lg-8">
                     <div className="d-flex gap-4">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="isSpouseInPsaqsjims" id="spouseNo" value="no" {...register('isSpouseInPsaqsjims')} />
+                            <input className="form-check-input" type="radio" name="isSpouseInPsaqsjims" id="spouseNo" value="no" {...register('spouse_paqsjims')} />
                             <label className="form-check-label" htmlFor="spouseNo">NO</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="isSpouseInPsaqsjims" id="spouseYes" value="yes" {...register('isSpouseInPsaqsjims')} />
+                            <input className="form-check-input" type="radio" name="isSpouseInPsaqsjims" id="spouseYes" value="yes" {...register('spouse_paqsjims')} />
                             <label className="form-check-label" htmlFor="spouseYes">IF Yes, Name:</label>
-                            <input type="text" className="form-control form-control-sm ms-2" style={{ width: '200px' }} {...register('spouseName')} />
+                            <input type="text" className="form-control form-control-sm ms-2" style={{ width: '200px' }} {...register('spouse_name')} />
                         </div>
                     </div>
                 </div>
@@ -196,12 +196,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.spouseDesignation ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.spouse_designation ? 'is-invalid' : ''}`}
                             id="spouseDesignationInput"
                             placeholder="Designation of Spouse"
-                            {...register('spouseDesignation')}
+                            {...register('spouse_designation')}
                         />
-                        {errors.spouseDesignation && <div className="invalid-feedback">{errors.spouseDesignation.message}</div>}
+                        {errors.spouse_designation && <div className="invalid-feedback">{errors.spouse_designation.message}</div>}
                     </div>
                 </div>
             </div>
@@ -215,12 +215,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.placeOfPosting ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.place_of_posting ? 'is-invalid' : ''}`}
                             id="placeOfPostingInput"
                             placeholder="Place of Posting"
-                            {...register('placeOfPosting')}
+                            {...register('place_of_posting')}
                         />
-                        {errors.placeOfPosting && <div className="invalid-feedback">{errors.placeOfPosting.message}</div>}
+                        {errors.place_of_posting && <div className="invalid-feedback">{errors.place_of_posting.message}</div>}
                     </div>
                 </div>
             </div>
@@ -234,12 +234,12 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text"
-                            className={`form-control ${errors.familySize ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.size_of_family ? 'is-invalid' : ''}`}
                             id="familySizeInput"
                             placeholder="Self, Spouse, Sons, Daughters"
-                            {...register('familySize')}
+                            {...register('size_of_family')}
                         />
-                        {errors.familySize && <div className="invalid-feedback">{errors.familySize.message}</div>}
+                        {errors.size_of_family && <div className="invalid-feedback">{errors.size_of_family.message}</div>}
                     </div>
                 </div>
             </div>
@@ -253,14 +253,14 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="number"
-                            className={`form-control ${errors.numberOfSons ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.no_of_sons ? 'is-invalid' : ''}`}
                             id="numberOfSonsInput"
-                            {...register('numberOfSons', {
+                            {...register('no_of_sons', {
                                 valueAsNumber: true,
                                 validate: value => !isNaN(value) || 'Please enter a valid number'
                             })}
                         />
-                        {errors.numberOfSons && <div className="invalid-feedback">{errors.numberOfSons.message}</div>}
+                        {errors.no_of_sons && <div className="invalid-feedback">{errors.no_of_sons.message}</div>}
                     </div>
                 </div>
             </div>
@@ -274,14 +274,14 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="number"
-                            className={`form-control ${errors.numberOfDaughters ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.no_of_daugther ? 'is-invalid' : ''}`}
                             id="numberOfDaughtersInput"
-                            {...register('numberOfDaughters', {
+                            {...register('no_of_daugther', {
                                 valueAsNumber: true,
                                 validate: value => !isNaN(value) || 'Please enter a valid number'
                             })}
                         />
-                        {errors.numberOfDaughters && <div className="invalid-feedback">{errors.numberOfDaughters.message}</div>}
+                        {errors.no_of_daugther && <div className="invalid-feedback">{errors.no_of_daugther.message}</div>}
                     </div>
                 </div>
             </div>
