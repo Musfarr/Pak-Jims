@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
 import { FiCalendar, FiCamera } from 'react-icons/fi'
-import DatePicker from 'react-datepicker'
-import TextArea from '@/components/shared/TextArea'
-import SelectDropdown from '@/components/shared/SelectDropdown'
-import Input from '@/components/shared/Input'
-import MultiSelectTags from '@/components/shared/MultiSelectTags'
-import useLocationData from '@/hooks/useLocationData'
-import useDatePicker from '@/hooks/useDatePicker'
 import ProfileTab from './facultyTabs/ProfileTab'
 import JobFamilyDetailsTab from './facultyTabs/JobFamilyDetailsTab'
 import EmergencyContactTab from './facultyTabs/EmergencyContactTab'
@@ -16,6 +9,7 @@ import WorkExperiencesTab from './facultyTabs/WorkExperiencesTab'
 import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab'
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab'
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2'
 
 
 
@@ -33,13 +27,33 @@ const Facultyform = () => {
         "passwordTab"
       ];
 
-
-
-    // Form data state
-    const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, setValue, control, formState: { errors } , trigger} = useForm({
         defaultValues: {
-            profile: {},
-            jobFamily: {},
+            photo: null, 
+            facultyId: '',
+            facultyName: '',
+            gender: '',
+            designation: '',
+            grade: '',
+            joiningDate: '', 
+            maritalStatus: '',
+            nationality: 'PAKISTAN', 
+            religion: 'ISLAM',
+
+            // Job/Family Details
+            workingIn: '',
+            currentPost: '',
+            scaleGrade: '',
+            dateOfJoiningCurrentPost: '', 
+            department: '',
+            supervisorName: '',
+            supervisorDesignation: '',
+            supervisorMobile: '',
+            isSpouseInPsaqsjims: 'no', 
+            spouseName: '',
+            spouseDesignation: '',
+
+            // Education History
             education: [{ 
                 nameOfInstitute: '', 
                 degree: '', 
@@ -50,6 +64,8 @@ const Facultyform = () => {
                 country: '',
                 subject: '' 
             }],
+
+            // Work Experiences
             workExperiences: [{ 
                 nameOfPost: '', 
                 joiningDate: null, 
@@ -58,6 +74,8 @@ const Facultyform = () => {
                 leavingDate: null,
                 jobResponsibilities: ''
             }],
+
+            // Trainings/Courses
             trainings: [{ 
                 trainingDetail: '', 
                 grade: '', 
@@ -67,6 +85,8 @@ const Facultyform = () => {
                 year: '',
                 institute: '' 
             }],
+
+            // Foreign Visits
             foreignVisits: [{ 
                 country: '', 
                 purpose: '', 
@@ -74,18 +94,76 @@ const Facultyform = () => {
                 endDate: null, 
                 sponsor: '' 
             }],
-            emergency: {},
-            password: {}
+
+            // Emergency Contact
+            emergencyName: '',
+            emergencyPhone: '',
+            emergencyEmail: '',
+            emergencyRelationship: '',
+            emergencyAddress: '',
+
+            // Flattened Password Fields
+            username: '',
+            password: '',
+            confirmPassword: ''
         }
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        // Handle form submission
+    const stepFields = [
+        ['photo', 'facultyId', 'facultyName', 'gender', 'designation', 'grade', 'joiningDate', 'maritalStatus', 'nationality', 'religion'],
+        ['workingIn', 'currentPost', 'scaleGrade', 'dateOfJoiningCurrentPost', 'department', 'supervisorName', 'supervisorDesignation', 'supervisorMobile', 'isSpouseInPsaqsjims', 'spouseName', 'spouseDesignation'],
+        ['education'], 
+        ['workExperiences'],
+        ['trainings'],
+        ['foreignVisits'],
+        ['emergencyName', 'emergencyPhone', 'emergencyEmail', 'emergencyRelationship', 'emergencyAddress'],
+        ['username', 'password', 'confirmPassword']
+    ];
+
+    const handleNext = async () => {
+        const fieldsToValidate = stepFields[currentStep];
+        const isValid = await trigger(fieldsToValidate);
+        setCurrentStep(currentStep + 1);
+
+        
+        if (isValid) {
+            if (currentStep < steps.length - 1) {
+                setCurrentStep(currentStep + 1);
+            }
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Failed',
+                text: 'Please fill in all required fields.',
+                confirmButtonText: 'OK'
+            });
+            // Optionally, focus on the first invalid field
+        }
     };
+
+    const handlePrevious = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    const onSubmit = (data) => {
+        console.log('Form Submitted:', data);
+        // Handle final form submission logic here
+    };
+
+
+    const props = {
+        register,
+        errors,
+        watch,
+        setValue,
+        control
+    }
 
     return (
         <div className="col-lg-12">
+            
             <div className="card border-top-0">
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
@@ -115,101 +193,45 @@ const Facultyform = () => {
                         </li>
                     </ul>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="tab-content">
-                        {/* Personal Details Tab */}
-                        <div className="tab-pane fade show active" id="personalDetailsTab" role="tabpanel">
-                            <ProfileTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Job/Family Details Tab */}
-                        <div className="tab-pane fade" id="jobFamilyTab" role="tabpanel">
-                            <JobFamilyDetailsTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Education History Tab */}
-                        <div className="tab-pane fade" id="educationHistoryTab" role="tabpanel">
-                            <EducationHistoryTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Work Experiences Tab */}
-                        <div className="tab-pane fade" id="workExperiencesTab" role="tabpanel">
-                            <WorkExperiencesTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Trainings/Courses Tab */}
-                        <div className="tab-pane fade" id="trainingsCoursesTab" role="tabpanel">
-                            <TrainingsCoursesTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Foreign Visits Tab */}
-                        <div className="tab-pane fade" id="foreignVisitsTab" role="tabpanel">
-                            <ForeignVisitsTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Emergency Contact Tab */}
-                        <div className="tab-pane fade" id="emergencyTab" role="tabpanel">
-                            <EmergencyContactTab 
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
-
-                        {/* Password Tab */}
-                        <div className="tab-pane fade" id="passwordTab" role="tabpanel">
-                            <PasswordTab
-                                register={register}
-                                errors={errors}
-                                watch={watch}
-                                setValue={setValue}
-                                control={control}
-                            />
-                        </div>
+                        {currentStep === 0 && <ProfileTab {...props} />}
+                        {currentStep === 1 && <JobFamilyDetailsTab {...props} />}
+                        {currentStep === 2 && <EducationHistoryTab {...props} />}
+                        {currentStep === 3 && <WorkExperiencesTab {...props} />}
+                        {currentStep === 4 && <TrainingsCoursesTab {...props} />}
+                        {currentStep === 5 && <ForeignVisitsTab {...props} />}
+                        {currentStep === 6 && <EmergencyContactTab {...props} />}
+                        {currentStep === 7 && <PasswordTab {...props} />}
                     </div>
-                    <div className="card-footer">
-                        <div className="d-flex justify-content-end">
-                            <button type="button" className="btn btn-secondary me-2">Cancel</button>
-                            <button type="submit" className="btn btn-primary">Submit</button>
-                        </div>
+
+                    <div className="card-footer d-flex justify-content-between p-3">
+                        <button 
+                            type="button" 
+                            className="btn btn-secondary" 
+                            onClick={handlePrevious} 
+                            disabled={currentStep === 0}
+                        >
+                            Previous
+                        </button>
+
+                        {currentStep < steps.length - 1 ? (
+                            <button 
+                                type="button" 
+                                className="btn btn-primary" 
+                                onClick={handleNext}
+                            >
+                                Next
+                            </button>
+                        ) : (
+                            <button 
+                                type="submit" 
+                                className="btn btn-success"
+                            >
+                                Submit
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>

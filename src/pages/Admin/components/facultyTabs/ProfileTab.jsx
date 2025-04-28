@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { FiCalendar, FiCamera } from 'react-icons/fi';
 
-const ProfileTab = ({ register, errors, watch, setValue }) => {
+const ProfileTab = ({ register, errors, setValue }) => {
     const [imagePreview, setImagePreview] = useState("/images/avatar/1.png");
 
     // Handle file input change
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setValue('profile.photo', file);
+            setValue('photo', file);
             setImagePreview(URL.createObjectURL(file));
         }
     };
@@ -64,12 +64,12 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors?.profile?.facultyId ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.facultyId ? 'is-invalid' : ''}`}
                             id="facultyIdInput"
                             placeholder="Faculty ID"
-                            {...register('profile.facultyId', { required: 'Faculty ID is required' })}
+                            {...register('facultyId', { required: 'Faculty ID is required' })}
                         />
-                        {errors?.profile?.facultyId && <div className="invalid-feedback">{errors.profile.facultyId.message}</div>}
+                        {errors?.facultyId && <div className="invalid-feedback">{errors.facultyId.message}</div>}
                     </div>
                 </div>
             </div>
@@ -84,12 +84,12 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors?.profile?.facultyName ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.facultyName ? 'is-invalid' : ''}`}
                             id="facultyNameInput"
                             placeholder="Faculty Name"
-                            {...register('profile.facultyName', { required: 'Faculty Name is required' })}
+                            {...register('facultyName', { required: 'Faculty Name is required' })}
                         />
-                        {errors?.profile?.facultyName && <div className="invalid-feedback">{errors.profile.facultyName.message}</div>}
+                        {errors?.facultyName && <div className="invalid-feedback">{errors.facultyName.message}</div>}
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                                 type="radio" 
                                 id="male" 
                                 value="male" 
-                                {...register('profile.gender', { required: 'Gender is required' })}
+                                {...register('gender', { required: 'Gender is required' })}
                             />
                             <label className="form-check-label" htmlFor="male">Male</label>
                         </div>
@@ -117,7 +117,7 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                                 type="radio" 
                                 id="female" 
                                 value="female" 
-                                {...register('profile.gender', { required: 'Gender is required' })}
+                                {...register('gender', { required: 'Gender is required' })}
                             />
                             <label className="form-check-label" htmlFor="female">Female</label>
                         </div>
@@ -127,12 +127,12 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                                 type="radio" 
                                 id="other" 
                                 value="other" 
-                                {...register('profile.gender', { required: 'Gender is required' })}
+                                {...register('gender', { required: 'Gender is required' })}
                             />
                             <label className="form-check-label" htmlFor="other">Other</label>
                         </div>
                     </div>
-                    {errors?.profile?.gender && <div className="invalid-feedback d-block">{errors.profile.gender.message}</div>}
+                    {errors?.gender && <div className="invalid-feedback d-block">{errors.gender.message}</div>}
                 </div>
             </div>
             
@@ -145,9 +145,9 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"></div>
                         <select 
-                            className={`form-select ${errors?.profile?.designation ? 'is-invalid' : ''}`}
+                            className={`form-select ${errors?.designation ? 'is-invalid' : ''}`}
                             id="designationInput"
-                            {...register('profile.designation', { required: 'Designation is required' })}
+                            {...register('designation', { required: 'Designation is required' })}
                         >
                             <option value="">Select Designation</option>
                             <option value="registrar">REGISTRAR</option>
@@ -155,7 +155,7 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                             <option value="professor">PROFESSOR</option>
                             <option value="lecturer">LECTURER</option>
                         </select>
-                        {errors?.profile?.designation && <div className="invalid-feedback">{errors.profile.designation.message}</div>}
+                        {errors?.designation && <div className="invalid-feedback">{errors.designation.message}</div>}
                     </div>
                 </div>
             </div>
@@ -169,9 +169,9 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"></div>
                         <select 
-                            className={`form-select ${errors?.profile?.grade ? 'is-invalid' : ''}`}
+                            className={`form-select ${errors?.grade ? 'is-invalid' : ''}`}
                             id="gradeInput"
-                            {...register('profile.grade', { required: 'Grade is required' })}
+                            {...register('grade', { required: 'Grade is required' })}
                         >
                             <option value="">Select Grade</option>
                             <option value="bps18">BPS 18</option>
@@ -179,7 +179,7 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                             <option value="bps20">BPS 20</option>
                             <option value="bps21">BPS 21</option>
                         </select>
-                        {errors?.profile?.grade && <div className="invalid-feedback">{errors.profile.grade.message}</div>}
+                        {errors?.grade && <div className="invalid-feedback">{errors.grade.message}</div>}
                     </div>
                 </div>
             </div>
@@ -194,11 +194,11 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"><FiCalendar size={16} /></div>
                         <input 
                             type="date" 
-                            className={`form-control ${errors?.profile?.joiningDate ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.joiningDate ? 'is-invalid' : ''}`}
                             id="joiningDate"
-                            {...register('profile.joiningDate', { required: 'Joining Date is required' })}
+                            {...register('joiningDate', { required: 'Joining Date is required' })}
                         />
-                        {errors?.profile?.joiningDate && <div className="invalid-feedback">{errors.profile.joiningDate.message}</div>}
+                        {errors?.joiningDate && <div className="invalid-feedback">{errors.joiningDate.message}</div>}
                     </div>
                 </div>
             </div>
@@ -212,9 +212,9 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"></div>
                         <select 
-                            className={`form-select ${errors?.profile?.maritalStatus ? 'is-invalid' : ''}`}
+                            className={`form-select ${errors?.maritalStatus ? 'is-invalid' : ''}`}
                             id="maritalStatus"
-                            {...register('profile.maritalStatus', { required: 'Marital Status is required' })}
+                            {...register('maritalStatus', { required: 'Marital Status is required' })}
                         >
                             <option value="">Select Marital Status</option>
                             <option value="married">MARRIED</option>
@@ -222,7 +222,7 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                             <option value="divorced">DIVORCED</option>
                             <option value="widowed">WIDOWED</option>
                         </select>
-                        {errors?.profile?.maritalStatus && <div className="invalid-feedback">{errors.profile.maritalStatus.message}</div>}
+                        {errors?.maritalStatus && <div className="invalid-feedback">{errors.maritalStatus.message}</div>}
                     </div>
                 </div>
             </div>
@@ -237,13 +237,13 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors?.profile?.nationality ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.nationality ? 'is-invalid' : ''}`}
                             id="nationalityInput"
                             placeholder="Nationality"
                             defaultValue="PAKISTAN"
-                            {...register('profile.nationality')}
+                            {...register('nationality')}
                         />
-                        {errors?.profile?.nationality && <div className="invalid-feedback">{errors.profile.nationality.message}</div>}
+                        {errors?.nationality && <div className="invalid-feedback">{errors.nationality.message}</div>}
                     </div>
                 </div>
             </div>
@@ -258,13 +258,13 @@ const ProfileTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors?.profile?.religion ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.religion ? 'is-invalid' : ''}`}
                             id="religionInput"
                             placeholder="Religion"
                             defaultValue="ISLAM"
-                            {...register('profile.religion')}
+                            {...register('religion')}
                         />
-                        {errors?.profile?.religion && <div className="invalid-feedback">{errors.profile.religion.message}</div>}
+                        {errors?.religion && <div className="invalid-feedback">{errors.religion.message}</div>}
                     </div>
                 </div>
             </div>

@@ -21,12 +21,12 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors?.emergency?.name ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.emergencyName ? 'is-invalid' : ''}`}
                             id="emergencyNameInput"
                             placeholder="Emergency Contact Name"
-                            {...register('emergency.name', { required: 'Emergency contact name is required' })}
+                            {...register('emergencyName', { required: 'Emergency contact name is required' })}
                         />
-                        {errors?.emergency?.name && <div className="invalid-feedback">{errors.emergency.name.message}</div>}
+                        {errors?.emergencyName && <div className="invalid-feedback">{errors.emergencyName.message}</div>}
                     </div>
                 </div>
             </div>
@@ -41,10 +41,10 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="tel" 
-                            className={`form-control ${errors?.emergency?.phone ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.emergencyPhone ? 'is-invalid' : ''}`}
                             id="emergencyPhoneInput"
                             placeholder="Emergency Contact Phone"
-                            {...register('emergency.phone', { 
+                            {...register('emergencyPhone', { 
                                 required: 'Emergency contact phone is required',
                                 pattern: {
                                     value: /^[0-9+-]+$/,
@@ -52,7 +52,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                                 }
                             })}
                         />
-                        {errors?.emergency?.phone && <div className="invalid-feedback">{errors.emergency.phone.message}</div>}
+                        {errors?.emergencyPhone && <div className="invalid-feedback">{errors.emergencyPhone.message}</div>}
                     </div>
                 </div>
             </div>
@@ -67,10 +67,10 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                         <div className="input-group-text"></div>
                         <input 
                             type="email" 
-                            className={`form-control ${errors?.emergency?.email ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.emergencyEmail ? 'is-invalid' : ''}`}
                             id="emergencyEmailInput"
                             placeholder="Emergency Contact Email"
-                            {...register('emergency.email', { 
+                            {...register('emergencyEmail', { 
                                 required: 'Emergency contact email is required',
                                 pattern: {
                                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -78,7 +78,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                                 }
                             })}
                         />
-                        {errors?.emergency?.email && <div className="invalid-feedback">{errors.emergency.email.message}</div>}
+                        {errors?.emergencyEmail && <div className="invalid-feedback">{errors.emergencyEmail.message}</div>}
                     </div>
                 </div>
             </div>
@@ -92,9 +92,9 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"></div>
                         <select 
-                            className={`form-select ${errors?.emergency?.relationship ? 'is-invalid' : ''}`}
+                            className={`form-select ${errors?.emergencyRelationship ? 'is-invalid' : ''}`}
                             id="emergencyRelationship"
-                            {...register('emergency.relationship', { required: 'Relationship is required' })}
+                            {...register('emergencyRelationship', { required: 'Relationship is required' })}
                         >
                             <option value="">Select Relationship</option>
                             <option value="spouse">Spouse</option>
@@ -104,7 +104,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <option value="relative">Other Relative</option>
                             <option value="other">Other</option>
                         </select>
-                        {errors?.emergency?.relationship && <div className="invalid-feedback">{errors.emergency.relationship.message}</div>}
+                        {errors?.emergencyRelationship && <div className="invalid-feedback">{errors.emergencyRelationship.message}</div>}
                     </div>
                 </div>
             </div>
@@ -118,13 +118,13 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"></div>
                         <textarea
-                            className={`form-control ${errors?.emergency?.address ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.emergencyAddress ? 'is-invalid' : ''}`}
                             id="emergencyAddress"
                             rows="3"
                             placeholder="Emergency Contact Address"
-                            {...register('emergency.address', { required: 'Emergency contact address is required' })}
+                            {...register('emergencyAddress', { required: 'Emergency contact address is required' })}
                         ></textarea>
-                        {errors?.emergency?.address && <div className="invalid-feedback">{errors.emergency.address.message}</div>}
+                        {errors?.emergencyAddress && <div className="invalid-feedback">{errors.emergencyAddress.message}</div>}
                     </div>
                 </div>
             </div>
