@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FiCalendar, FiCamera } from 'react-icons/fi'
 import DatePicker from 'react-datepicker'
 import TextArea from '@/components/shared/TextArea'
@@ -17,8 +17,25 @@ import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab'
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab'
 import { useForm } from 'react-hook-form';
 
+
+
 const Facultyform = () => {
-    const [selectedOption, setSelectedOption] = React.useState(null);
+    const [currentStep, setCurrentStep] = useState(0);
+    
+    const steps = [
+        "personalDetailsTab",
+        "jobFamilyTab",
+        "educationHistoryTab",
+        "workExperiencesTab",
+        "trainingsCoursesTab",
+        "foreignVisitsTab",
+        "emergencyTab",
+        "passwordTab"
+      ];
+
+
+
+    // Form data state
     const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm({
         defaultValues: {
             profile: {},
