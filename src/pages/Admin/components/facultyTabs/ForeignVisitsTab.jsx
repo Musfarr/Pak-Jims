@@ -66,12 +66,9 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                         )}
                     </div>
 
-                    {/* Country */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`visit-${index}-country`} className="fw-semibold">Country: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`visit-${index}-country`} className="form-label">Country</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiFlag /></div>
                                 <select
@@ -89,14 +86,8 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Purpose */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`visit-${index}-purpose`} className="fw-semibold">Purpose: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`visit-${index}-purpose`} className="form-label">Purpose</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiBookOpen /></div>
                                 <select
@@ -115,17 +106,13 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Start Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`visit-${index}-startDate`} className="fw-semibold">Start Date: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`visit-${index}-startDate`} className="form-label">Start Date</label>
                             <div className="input-group">
-                                <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                                <div className="input-group-text"><FiCalendar /></div>
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.foreignVisits?.[index]?.startDate ? 'is-invalid' : ''}`}
                                     id={`visit-${index}-startDate`}
                                     {...register(`foreignVisits.${index}.startDate`, { required: 'Start date is required' })}
@@ -135,18 +122,12 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* End Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`visit-${index}-endDate`} className="fw-semibold">End Date: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`visit-${index}-endDate`} className="form-label">End Date</label>
                             <div className="input-group">
-                                <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                                <div className="input-group-text"><FiCalendar /></div>
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.foreignVisits?.[index]?.endDate ? 'is-invalid' : ''}`}
                                     id={`visit-${index}-endDate`}
                                     {...register(`foreignVisits.${index}.endDate`, { required: 'End date is required' })}
@@ -157,20 +138,16 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Sponsor */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`visit-${index}-sponsor`} className="fw-semibold">Sponsor: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`visit-${index}-sponsor`} className="form-label">Sponsor</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiUser /></div>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     className={`form-control ${errors?.foreignVisits?.[index]?.sponsor ? 'is-invalid' : ''}`}
                                     id={`visit-${index}-sponsor`}
-                                    placeholder="e.g., WHO, Self, University"
+                                    placeholder="e.g., HEC, WHO"
                                     {...register(`foreignVisits.${index}.sponsor`, { required: 'Sponsor is required' })}
                                 />
                                 {errors?.foreignVisits?.[index]?.sponsor && (

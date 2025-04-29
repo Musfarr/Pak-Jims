@@ -1,8 +1,8 @@
 import React from 'react';
 import { FiUser, FiLock, FiCheckCircle } from 'react-icons/fi';
 
-const PasswordTab = ({ register, errors }) => {
-    // const password = watch('password');
+const PasswordTab = ({ register, errors, watch }) => {
+    const password = watch('password');
 
     return (
         <div className="card-body password-info">
@@ -14,34 +14,27 @@ const PasswordTab = ({ register, errors }) => {
                 <button type="button" className="btn btn-sm btn-primary">Save</button>
             </div>
             
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="usernameInput" className="fw-semibold">Username: </label>
-                </div>
-                <div className="col-lg-8">
+            <div className="row g-3 mb-4">
+                <div className="col-lg-6">
+                    <label htmlFor="usernameInput" className="form-label">Username</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiUser /></div>
-                        <input 
-                            type="text" 
-                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                        <input
+                            type="text"
+                            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                             id="usernameInput"
                             placeholder="Username"
-                            {...register('name', { required: 'Name is required' })}
+                            {...register('username', { required: 'Username is required' })}
                         />
-                        {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                        {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                     </div>
                 </div>
-            </div>
-            
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="passwordInput" className="fw-semibold">Password: </label>
-                </div>
-                <div className="col-lg-8">
+                <div className="col-lg-6">
+                    <label htmlFor="passwordInput" className="form-label">Password</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiLock /></div>
-                        <input 
-                            type="password" 
+                        <input
+                            type="password"
                             className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                             id="passwordInput"
                             placeholder="Password"
@@ -51,22 +44,19 @@ const PasswordTab = ({ register, errors }) => {
                     </div>
                 </div>
             </div>
-            
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="confirmPasswordInput" className="fw-semibold">Confirm Password: </label>
-                </div>
-                <div className="col-lg-8">
+            <div className="row g-3 mb-4">
+                <div className="col-lg-6">
+                    <label htmlFor="confirmPasswordInput" className="form-label">Confirm Password</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiCheckCircle /></div>
-                        <input 
-                            type="password" 
+                        <input
+                            type="password"
                             className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
                             id="confirmPasswordInput"
                             placeholder="Confirm Password"
-                            {...register('confirmPassword', { 
+                            {...register('confirmPassword', {
                                 required: 'Confirm Password is required',
-                                validate: value => value === password || "Passwords do not match" 
+                                validate: value => value === watch('password') || 'Passwords do not match'
                             })}
                         />
                         {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}

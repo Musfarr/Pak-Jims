@@ -45,16 +45,13 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                         )}
                     </div>
 
-                    {/* Name of Post */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-post`} className="fw-semibold">Position / Job Title: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-post`} className="form-label">Position / Job Title</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiBriefcase /></div>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     className={`form-control ${errors?.workExperiences?.[index]?.nameOfPost ? 'is-invalid' : ''}`}
                                     id={`work-${index}-post`}
                                     placeholder="e.g., Senior Lecturer, Professor"
@@ -65,18 +62,12 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Name of Institute */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-institute`} className="fw-semibold">Name of Institute/Company: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-institute`} className="form-label">Institute/Company</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiHome /></div>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     className={`form-control ${errors?.workExperiences?.[index]?.nameOfInstitute ? 'is-invalid' : ''}`}
                                     id={`work-${index}-institute`}
                                     placeholder="e.g., University of Health Sciences"
@@ -88,17 +79,13 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Scale/Grade */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-scale`} className="fw-semibold">Scale/Grade: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-scale`} className="form-label">Scale/Grade</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiAward /></div>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     className={`form-control ${errors?.workExperiences?.[index]?.scaleGrade ? 'is-invalid' : ''}`}
                                     id={`work-${index}-scale`}
                                     placeholder="e.g., BPS-18, Level 5"
@@ -109,18 +96,12 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Joining Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-joiningDate`} className="fw-semibold">Joining Date: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-joiningDate`} className="form-label">Joining Date</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.workExperiences?.[index]?.joiningDate ? 'is-invalid' : ''}`}
                                     id={`work-${index}-joiningDate`}
                                     {...register(`workExperiences.${index}.joiningDate`, { required: 'Joining date is required' })}
@@ -131,17 +112,13 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Leaving Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-leavingDate`} className="fw-semibold">Leaving Date: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-leavingDate`} className="form-label">Leaving Date</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.workExperiences?.[index]?.leavingDate ? 'is-invalid' : ''}`}
                                     id={`work-${index}-leavingDate`}
                                     {...register(`workExperiences.${index}.leavingDate`)}
@@ -151,23 +128,16 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Job Responsibilities */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`work-${index}-responsibilities`} className="fw-semibold">Job Responsibilities: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`work-${index}-responsibilities`} className="form-label">Job Responsibilities</label>
                             <div className="input-group">
-                                <div className="input-group-text"><FiEdit /></div>
                                 <textarea
                                     className={`form-control ${errors?.workExperiences?.[index]?.jobResponsibilities ? 'is-invalid' : ''}`}
                                     id={`work-${index}-responsibilities`}
-                                    rows="3"
-                                    placeholder="Describe your job responsibilities"
-                                    {...register(`workExperiences.${index}.jobResponsibilities`)}
-                                ></textarea>
+                                    placeholder="Describe responsibilities, e.g., teaching, research, admin"
+                                    rows={2}
+                                    {...register(`workExperiences.${index}.jobResponsibilities`, { required: 'Job responsibilities are required' })}
+                                />
                                 {errors?.workExperiences?.[index]?.jobResponsibilities && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].jobResponsibilities.message}</div>
                                 )}

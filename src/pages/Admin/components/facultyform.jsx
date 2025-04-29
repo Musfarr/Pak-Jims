@@ -54,12 +54,12 @@ const Facultyform = () => {
             birth_place: '', 
             father_name: '', 
             surname: '', 
-            present_address: '', 
+            persent_address: '', 
             permanent_address: '', 
             phone: '', 
             mobile_no: '', 
             emergency_no: '', 
-            official_email: '', 
+            offical_email: '', 
             personal_email: '', 
             remarks: '', 
             status: '', 
@@ -77,8 +77,8 @@ const Facultyform = () => {
             designation_supervisory_officer: '', 
             mobile: '', 
             spouse_paqsjims: '', 
-            spouse_name: '', 
-            spouse_designation: '', 
+            spouse_name_paqsjims: '', 
+            designation_of_spouse: '', 
             place_of_posting: '', 
             size_of_family: '', 
             no_of_sons: '', 
@@ -86,11 +86,11 @@ const Facultyform = () => {
 
             // Education History
             education: [{ 
-                nameOfInstitute: '', 
+                institute_name: '', 
                 degree: '', 
-                fromDate: null, 
-                toDate: null, 
-                gpaGradeDiv: '', 
+                start_date: null, 
+                end_date: null, 
+                grade: '', 
                 city: '', 
                 country: '',
                 subject: '' 
@@ -100,17 +100,17 @@ const Facultyform = () => {
             workExperiences: [{
                 organization: '',
                 designation: '',
-                fromDate: null,
-                toDate: null,
+                start_date: null,
+                end_date: null,
                 jobDescription: ''
             }],
 
             // Trainings
             trainings: [{
-                trainingTitle: '',
-                institution: '',
-                fromDate: null,
-                toDate: null,
+                course_detail: '',
+                institute_name: '',
+                start_date: null,
+                end_date: null,
                 location: '',
                 country: ''
             }],
@@ -119,8 +119,8 @@ const Facultyform = () => {
             foreignVisits: [{
                 country: '',
                 city: '',
-                fromDate: null,
-                toDate: null,
+                start_date: null,
+                end_date: null,
                 purpose: '',
                 sponsor: '' 
             }],
@@ -194,8 +194,30 @@ const Facultyform = () => {
 
     const onSubmit = (data) => {
         console.log('Form Submitted:', data);
+
+
+
+        var formdata = new FormData();
+
+        Object.keys(data).forEach(key => {
+            formdata.append(key, data[key]);
+        });
+
+        for (let index = 0; index < data.education.length; index++) {
+            const element = data.education[index];
+            formdata.append(`education[${index}].institute_name`, element.institute_name);
+            formdata.append(`education[${index}].degree`, element.degree);
+            formdata.append(`education[${index}].start_date`, element.start_date);
+            formdata.append(`education[${index}].end_date`, element.end_date);
+            formdata.append(`education[${index}].grade`, element.grade);
+            formdata.append(`education[${index}].city`, element.city);
+            formdata.append(`education[${index}].country`, element.country);
+            formdata.append(`education[${index}].subject`, element.subject);
+        }
+
+
         
-        PostApi('/faculties', data).then((res) => {
+        PostApi('/faculties', formdata).then((res) => {
             console.log('Faculty added successfully:', res);
             Swal.fire({
                 icon: 'success',

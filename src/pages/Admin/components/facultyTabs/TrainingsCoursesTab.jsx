@@ -47,77 +47,67 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
 
             {fields.map((item, index) => (
                 <div key={item.id} className="training-item mb-4 pb-4 border-bottom">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h6 className="fw-semibold mb-0">Training/Course {index + 1}</h6>
-                        {fields.length > 1 && (
-                            <button 
-                                type="button" 
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() => remove(index)}
-                            >
-                                <FiTrash size={16} />
-                            </button>
-                        )}
-                    </div>
-
-                    {/* Training Detail */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-detail`} className="fw-semibold">Training/Course Title: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-detail`} className="form-label">Training/Course Title</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiAward /></div>
-                                <input 
-                                    type="text" 
-                                    className={`form-control ${errors?.trainings?.[index]?.trainingDetail ? 'is-invalid' : ''}`}
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.trainings?.[index]?.course_detail ? 'is-invalid' : ''}`}
                                     id={`training-${index}-detail`}
                                     placeholder="e.g., Advanced Medical Research Methods"
-                                    {...register(`trainings.${index}.trainingDetail`, { required: 'Training detail is required' })}
+                                    {...register(`trainings.${index}.course_detail`, { required: 'Training detail is required' })}
                                 />
-                                {errors?.trainings?.[index]?.trainingDetail && (
-                                    <div className="invalid-feedback">{errors.trainings[index].trainingDetail.message}</div>
+                                {errors?.trainings?.[index]?.course_detail && (
+                                    <div className="invalid-feedback">{errors.trainings[index].course_detail.message}</div>
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Institute */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-institute`} className="fw-semibold">Institute/Organization: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-institute`} className="form-label">Institute</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiHome /></div>
-                                <input 
-                                    type="text" 
-                                    className={`form-control ${errors?.trainings?.[index]?.institute ? 'is-invalid' : ''}`}
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.trainings?.[index]?.institute_name ? 'is-invalid' : ''}`}
                                     id={`training-${index}-institute`}
                                     placeholder="e.g., Medical Research Institute"
-                                    {...register(`trainings.${index}.institute`, { required: 'Institute is required' })}
+                                    {...register(`trainings.${index}.institute_name`, { required: 'Institute is required' })}
                                 />
-                                {errors?.trainings?.[index]?.institute && (
-                                    <div className="invalid-feedback">{errors.trainings[index].institute.message}</div>
+                                {errors?.trainings?.[index]?.institute_name && (
+                                    <div className="invalid-feedback">{errors.trainings[index].institute_name.message}</div>
                                 )}
                             </div>
                         </div>
                     </div>
-
-                    {/* Country/Station */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-country`} className="fw-semibold">Country/Station: </label>
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-grade`} className="form-label">Grade</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><FiAward /></div>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.trainings?.[index]?.grade ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-grade`}
+                                    placeholder="e.g., A, Distinction"
+                                    {...register(`trainings.${index}.grade`, { required: 'Grade is required' })}
+                                />
+                                {errors?.trainings?.[index]?.grade && (
+                                    <div className="invalid-feedback">{errors.trainings[index].grade.message}</div>
+                                )}
+                            </div>
                         </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-countryStation`} className="form-label">Country/Station</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiFlag /></div>
                                 <select
                                     className={`form-select ${errors?.trainings?.[index]?.countryStation ? 'is-invalid' : ''}`}
-                                    id={`training-${index}-country`}
-                                    {...register(`trainings.${index}.countryStation`, { required: 'Country is required' })}
+                                    id={`training-${index}-countryStation`}
+                                    {...register(`trainings.${index}.countryStation`, { required: 'Country/Station is required' })}
                                 >
-                                    <option value="">Select Country</option>
+                                    <option value="">Select Country/Station</option>
                                     {countryOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
@@ -128,41 +118,31 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                             </div>
                         </div>
                     </div>
-
-                    {/* Date From */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-dateFrom`} className="fw-semibold">From Date: </label>
-                        </div>
-                        <div className="col-lg-8">
-                            <div className="input-group flex-nowrap">
-                                <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-dateFrom`} className="form-label">Date From</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><FiCalendar /></div>
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.trainings?.[index]?.dateFrom ? 'is-invalid' : ''}`}
                                     id={`training-${index}-dateFrom`}
-                                    {...register(`trainings.${index}.dateFrom`, { required: 'From date is required' })}
+                                    {...register(`trainings.${index}.dateFrom`, { required: 'Date From is required' })}
                                 />
                                 {errors?.trainings?.[index]?.dateFrom && (
                                     <div className="invalid-feedback">{errors.trainings[index].dateFrom.message}</div>
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Date To */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-dateTo`} className="fw-semibold">To Date: </label>
-                        </div>
-                        <div className="col-lg-8">
-                            <div className="input-group flex-nowrap">
-                                <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <input 
-                                    type="date" 
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-dateTo`} className="form-label">Date To</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><FiCalendar /></div>
+                                <input
+                                    type="date"
                                     className={`form-control ${errors?.trainings?.[index]?.dateTo ? 'is-invalid' : ''}`}
                                     id={`training-${index}-dateTo`}
-                                    {...register(`trainings.${index}.dateTo`, { required: 'To date is required' })}
+                                    {...register(`trainings.${index}.dateTo`, { required: 'Date To is required' })}
                                 />
                                 {errors?.trainings?.[index]?.dateTo && (
                                     <div className="invalid-feedback">{errors.trainings[index].dateTo.message}</div>
@@ -170,17 +150,13 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                             </div>
                         </div>
                     </div>
-
-                    {/* Year */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-year`} className="fw-semibold">Year: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`training-${index}-year`} className="form-label">Year</label>
                             <div className="input-group">
                                 <div className="input-group-text"><FiAward /></div>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     className={`form-control ${errors?.trainings?.[index]?.year ? 'is-invalid' : ''}`}
                                     id={`training-${index}-year`}
                                     placeholder="Year"
@@ -188,28 +164,6 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                 />
                                 {errors?.trainings?.[index]?.year && (
                                     <div className="invalid-feedback">{errors.trainings[index].year.message}</div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Grade */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`training-${index}-grade`} className="fw-semibold">Grade/Certificate: </label>
-                        </div>
-                        <div className="col-lg-8">
-                            <div className="input-group">
-                                <div className="input-group-text"></div>
-                                <input 
-                                    type="text" 
-                                    className={`form-control ${errors?.trainings?.[index]?.grade ? 'is-invalid' : ''}`}
-                                    id={`training-${index}-grade`}
-                                    placeholder="e.g., Distinction, A+, Pass"
-                                    {...register(`trainings.${index}.grade`)}
-                                />
-                                {errors?.trainings?.[index]?.grade && (
-                                    <div className="invalid-feedback">{errors.trainings[index].grade.message}</div>
                                 )}
                             </div>
                         </div>

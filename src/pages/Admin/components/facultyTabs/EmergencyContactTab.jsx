@@ -3,7 +3,6 @@ import { FiUser, FiPhone, FiMail } from 'react-icons/fi';
 
 const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
     return (
-        <div id="emergencyTab" className="tab-pane fade">
             <div className="card-body pt-3">
                 <div className="row g-3">
                     <div className="col-sm-6">
@@ -77,7 +76,6 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 };
 

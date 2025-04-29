@@ -65,25 +65,27 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                         )}
                     </div>
 
-                    {/* Name of Institute */}
-                    <Input
-                        icon='feather-home'
-                        label={"Name of Institute"}
-                        labelId={`education-${index}-institute`}
-                        placeholder={"e.g., University of Health Sciences"}
-                        name={`education.${index}.nameOfInstitute`}
-                        value={watch(`education.${index}.nameOfInstitute`)}
-                        onChange={(e) => setValue(`education.${index}.nameOfInstitute`, e.target.value)}
-                    />
-
-                    {/* Degree */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`education-${index}-degree`} className="fw-semibold">Degree: </label>
-                        </div>
-                        <div className="col-lg-8">
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-institute`} className="form-label">Name of Institute</label>
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><i className="feather-home"></i></div>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.education?.[index]?.institute_name ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-institute`}
+                                    placeholder="e.g., University of Health Sciences"
+                                    {...register(`education.${index}.institute_name`, { required: 'Institute name is required' })}
+                                />
+                                {errors?.education?.[index]?.institute_name && (
+                                    <div className="invalid-feedback">{errors.education[index].institute_name.message}</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-degree`} className="form-label">Degree</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><i className="feather-award"></i></div>
                                 <select
                                     className={`form-select ${errors?.education?.[index]?.degree ? 'is-invalid' : ''}`}
                                     id={`education-${index}-degree`}
@@ -104,23 +106,82 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                         </div>
                     </div>
 
-                    {/* Subject */}
-                    <Input
-                        icon='feather-book'
-                        label={"Subject"}
-                        labelId={`education-${index}-subject`}
-                        placeholder={"e.g., Medicine, Computer Science"}
-                        name={`education.${index}.subject`}
-                        value={watch(`education.${index}.subject`)}
-                        onChange={(e) => setValue(`education.${index}.subject`, e.target.value)}
-                    />
-
-                    {/* From Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`education-${index}-fromDate`} className="fw-semibold">From Date: </label>
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-subject`} className="form-label">Subject</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><i className="feather-book"></i></div>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.education?.[index]?.subject ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-subject`}
+                                    placeholder="e.g., Medicine, Computer Science"
+                                    {...register(`education.${index}.subject`, { required: 'Subject is required' })}
+                                />
+                                {errors?.education?.[index]?.subject && (
+                                    <div className="invalid-feedback">{errors.education[index].subject.message}</div>
+                                )}
+                            </div>
                         </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-gpaGradeDiv`} className="form-label">GPA/Grade/Div</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><i className="feather-star"></i></div>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.education?.[index]?.gpaGradeDiv ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-gpaGradeDiv`}
+                                    placeholder="e.g., 3.8/4.0, A+, First Division"
+                                    {...register(`education.${index}.gpaGradeDiv`, { required: 'GPA/Grade/Div is required' })}
+                                />
+                                {errors?.education?.[index]?.gpaGradeDiv && (
+                                    <div className="invalid-feedback">{errors.education[index].gpaGradeDiv.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-city`} className="form-label">City</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><i className="feather-map-pin"></i></div>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors?.education?.[index]?.city ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-city`}
+                                    placeholder="e.g., Lahore, Karachi"
+                                    {...register(`education.${index}.city`, { required: 'City is required' })}
+                                />
+                                {errors?.education?.[index]?.city && (
+                                    <div className="invalid-feedback">{errors.education[index].city.message}</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-country`} className="form-label">Country</label>
+                            <div className="input-group">
+                                <div className="input-group-text"><i className="feather-flag"></i></div>
+                                <select
+                                    className={`form-select ${errors?.education?.[index]?.country ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-country`}
+                                    {...register(`education.${index}.country`, { required: 'Country is required' })}
+                                >
+                                    <option value="">Select Country</option>
+                                    {countryOptions.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </select>
+                                {errors?.education?.[index]?.country && (
+                                    <div className="invalid-feedback">{errors.education[index].country.message}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row g-3 mb-3">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-fromDate`} className="form-label">From Date</label>
                             <div className="input-group flex-nowrap">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
                                 <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
@@ -140,14 +201,8 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    {/* To Date */}
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label htmlFor={`education-${index}-toDate`} className="fw-semibold">To Date: </label>
-                        </div>
-                        <div className="col-lg-8">
+                        <div className="col-lg-6">
+                            <label htmlFor={`education-${index}-toDate`} className="form-label">To Date</label>
                             <div className="input-group flex-nowrap">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
                                 <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
@@ -166,43 +221,6 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     />
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* GPA/Grade/Division */}
-                    <Input
-                        icon='feather-star'
-                        label={"GPA/Grade/Div"}
-                        labelId={`education-${index}-gpaGradeDiv`}
-                        placeholder={"e.g., 3.8/4.0, A+, First Division"}
-                        name={`education.${index}.gpaGradeDiv`}
-                        value={watch(`education.${index}.gpaGradeDiv`)}
-                        onChange={(e) => setValue(`education.${index}.gpaGradeDiv`, e.target.value)}
-                    />
-
-                    {/* City */}
-                    <Input
-                        icon='feather-map-pin'
-                        label={"City"}
-                        labelId={`education-${index}-city`}
-                        placeholder={"e.g., Lahore, Karachi"}
-                        name={`education.${index}.city`}
-                        value={watch(`education.${index}.city`)}
-                        onChange={(e) => setValue(`education.${index}.city`, e.target.value)}
-                    />
-
-                    {/* Country */}
-                    <div className="row mb-4 align-items-center">
-                        <div className="col-lg-4">
-                            <label className="fw-semibold">Country: </label>
-                        </div>
-                        <div className="col-lg-8">
-                            <SelectDropdown
-                                options={countryOptions}
-                                selectedOption={watch(`education.${index}.country`) ? { value: watch(`education.${index}.country`), label: countryOptions.find(c => c.value === watch(`education.${index}.country`))?.label || watch(`education.${index}.country`) } : null}
-                                defaultSelect=""
-                                onSelectOption={(option) => setValue(`education.${index}.country`, option.value)}
-                            />
                         </div>
                     </div>
                 </div>
