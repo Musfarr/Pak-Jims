@@ -126,7 +126,7 @@ const Facultyform = () => {
             }],
 
             // Emergency Contact
-            emergency_name: '', 
+            emergency_name: 'sd', 
             emergency_phone: '', 
             emergency_email: '', 
             emergency_relation: '', 
@@ -168,7 +168,7 @@ const Facultyform = () => {
     const handleNext = async () => {
         const fieldsToValidate = stepFields[currentStep];
         const isValid = await trigger(fieldsToValidate);
-        setCurrentStep(currentStep + 1);
+        
 
         
         if (isValid) {

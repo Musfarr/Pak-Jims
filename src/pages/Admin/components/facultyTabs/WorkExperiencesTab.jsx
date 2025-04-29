@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiCalendar, FiPlus, FiTrash } from 'react-icons/fi';
+import { FiCalendar, FiPlus, FiTrash, FiBriefcase, FiHome, FiAward, FiEdit } from 'react-icons/fi';
 import { useFieldArray } from 'react-hook-form';
 
 const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
@@ -52,7 +52,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiBriefcase /></div>
                                 <input 
                                     type="text" 
                                     className={`form-control ${errors?.workExperiences?.[index]?.nameOfPost ? 'is-invalid' : ''}`}
@@ -74,7 +74,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiHome /></div>
                                 <input 
                                     type="text" 
                                     className={`form-control ${errors?.workExperiences?.[index]?.nameOfInstitute ? 'is-invalid' : ''}`}
@@ -96,7 +96,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiAward /></div>
                                 <input 
                                     type="text" 
                                     className={`form-control ${errors?.workExperiences?.[index]?.scaleGrade ? 'is-invalid' : ''}`}
@@ -160,7 +160,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiEdit /></div>
                                 <textarea
                                     className={`form-control ${errors?.workExperiences?.[index]?.jobResponsibilities ? 'is-invalid' : ''}`}
                                     id={`work-${index}-responsibilities`}

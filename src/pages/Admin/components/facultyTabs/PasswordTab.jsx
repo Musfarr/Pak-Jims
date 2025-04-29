@@ -1,7 +1,8 @@
 import React from 'react';
+import { FiUser, FiLock, FiCheckCircle } from 'react-icons/fi';
 
-const PasswordTab = ({ register, errors, watch }) => {
-    const password = watch('password');
+const PasswordTab = ({ register, errors }) => {
+    // const password = watch('password');
 
     return (
         <div className="card-body password-info">
@@ -19,15 +20,15 @@ const PasswordTab = ({ register, errors, watch }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiUser /></div>
                         <input 
                             type="text" 
-                            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                             id="usernameInput"
                             placeholder="Username"
-                            {...register('username', { required: 'Username is required' })}
+                            {...register('name', { required: 'Name is required' })}
                         />
-                        {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+                        {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                     </div>
                 </div>
             </div>
@@ -38,7 +39,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiLock /></div>
                         <input 
                             type="password" 
                             className={`form-control ${errors.password ? 'is-invalid' : ''}`}
@@ -57,7 +58,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiCheckCircle /></div>
                         <input 
                             type="password" 
                             className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}

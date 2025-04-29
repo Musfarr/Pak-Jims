@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiCalendar, FiPlus, FiTrash } from 'react-icons/fi';
+import { FiCalendar, FiPlus, FiTrash, FiFlag, FiBookOpen, FiUser } from 'react-icons/fi';
 import { useFieldArray } from 'react-hook-form';
 
 const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
@@ -73,7 +73,7 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiFlag /></div>
                                 <select
                                     className={`form-select ${errors?.foreignVisits?.[index]?.country ? 'is-invalid' : ''}`}
                                     id={`visit-${index}-country`}
@@ -98,7 +98,7 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiBookOpen /></div>
                                 <select
                                     className={`form-select ${errors?.foreignVisits?.[index]?.purpose ? 'is-invalid' : ''}`}
                                     id={`visit-${index}-purpose`}
@@ -165,7 +165,7 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="input-group">
-                                <div className="input-group-text"></div>
+                                <div className="input-group-text"><FiUser /></div>
                                 <input 
                                     type="text" 
                                     className={`form-control ${errors?.foreignVisits?.[index]?.sponsor ? 'is-invalid' : ''}`}

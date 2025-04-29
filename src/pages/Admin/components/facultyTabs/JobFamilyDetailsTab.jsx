@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiCalendar } from 'react-icons/fi';
+import { FiCalendar, FiHome, FiBriefcase, FiAward, FiMap, FiUser, FiPhone, FiMapPin, FiUsers } from 'react-icons/fi';
 
 const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
     return (
@@ -18,7 +18,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiHome /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.working_in ? 'is-invalid' : ''}`}
@@ -37,7 +37,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiBriefcase /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.current_post ? 'is-invalid' : ''}`}
@@ -56,7 +56,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiAward /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.scale ? 'is-invalid' : ''}`}
@@ -93,7 +93,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiMap /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.department ? 'is-invalid' : ''}`}
@@ -112,7 +112,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiUser /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.supervisory_officer ? 'is-invalid' : ''}`}
@@ -131,7 +131,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiBriefcase /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.designation_supervisory_officer ? 'is-invalid' : ''}`}
@@ -150,7 +150,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiPhone /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.mobile ? 'is-invalid' : ''}`}
@@ -193,7 +193,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiBriefcase /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.spouse_designation ? 'is-invalid' : ''}`}
@@ -212,7 +212,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiMapPin /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.place_of_posting ? 'is-invalid' : ''}`}
@@ -231,7 +231,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiUsers /></div>
                         <input 
                             type="text"
                             className={`form-control ${errors.size_of_family ? 'is-invalid' : ''}`}
@@ -250,7 +250,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiUser /></div>
                         <input 
                             type="number"
                             className={`form-control ${errors.no_of_sons ? 'is-invalid' : ''}`}
@@ -271,7 +271,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                 </div>
                 <div className="col-lg-8">
                     <div className="input-group">
-                        <div className="input-group-text"></div>
+                        <div className="input-group-text"><FiUser /></div>
                         <input 
                             type="number"
                             className={`form-control ${errors.no_of_daugther ? 'is-invalid' : ''}`}
