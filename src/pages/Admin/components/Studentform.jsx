@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FiCalendar, FiCamera } from 'react-icons/fi'
+import { FiCalendar, FiCamera, FiUser, FiBookOpen, FiPhone, FiMail, FiLock } from 'react-icons/fi'
 
 import useLocationData from '@/hooks/useLocationData'
 import useDatePicker from '@/hooks/useDatePicker'
@@ -211,395 +211,184 @@ const Studentform = () => {
                     {/* Profile Tab */}
                     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
                         <div className="card-body personal-info">
-
-                            
-                 
-
-                            
-
-                    
                             <h6 className="fw-bold mb-3">PERSONAL INFORMATION</h6>
 
-
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Profile Picture: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="mb-4 mb-md-0 d-flex gap-4 your-brand">
-                                        <label htmlFor='img' className="wd-100 ht-100 position-relative overflow-hidden border border-gray-2 rounded">
-                                            <img src={imagePreview} className="upload-pic img-fluid rounded h-100 w-100" alt="" />
-                                            <div className="position-absolute start-50 top-50 end-0 bottom-0 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
-                                                <i aria-hidden="true" className='camera-icon'><FiCamera /></i>
-                                            </div>
-                                            <input 
-                                                className="file-upload" 
-                                                type="file" 
-                                                accept="image/*" 
-                                                id='img' 
-                                                hidden 
-                                                onChange={handleFileChange}
-                                            />
-                                        </label>
-                                        <div className="d-flex flex-column gap-1">
-                                            <div className="fs-11 text-gray-500 mt-2"># Upload student profile picture</div>
-                                            <div className="fs-11 text-gray-500"># Image size 150x150</div>
-                                            <div className="fs-11 text-gray-500"># Max upload size 2mb</div>
-                                            <div className="fs-11 text-gray-500"># Allowed file types: png, jpg, jpeg</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Student Name: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="nameInput">Student Name</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                                            id="nameInput"
-                                            {...register('name', { required: 'Name is required' })}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.name ? 'is-invalid' : ''}`} id="nameInput" {...register('name', { required: 'Name is required' })} />
                                         {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Surname: </label>
-                                </div>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="surnameInput">Surname</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.surname ? 'is-invalid' : ''}`}
-                                            id="surnameInput"
-                                            {...register('surname')}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.surname ? 'is-invalid' : ''}`} id="surnameInput" {...register('surname')} />
                                         {errors.surname && <div className="invalid-feedback">{errors.surname.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Father's Name: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="fatherNameInput">Father's Name</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.father_name ? 'is-invalid' : ''}`}
-                                            id="fatherNameInput"
-                                            {...register('father_name', { required: 'Father Name is required' })}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.father_name ? 'is-invalid' : ''}`} id="fatherNameInput" {...register('father_name', { required: 'Father Name is required' })} />
                                         {errors.father_name && <div className="invalid-feedback">{errors.father_name.message}</div>}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Gender: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="d-flex gap-3">
-                                        <div className="form-check">
-                                            <input 
-                                                className="form-check-input" 
-                                                type="radio" 
-                                                id="maleRadio" 
-                                                value="male"
-                                                {...register('gender', { required: 'Gender is required' })}
-                                            />
-                                            <label className="form-check-label" htmlFor="maleRadio">
-                                                Male
-                                            </label>
-                                        </div>
-                                        <div className="form-check">
-                                            <input 
-                                                className="form-check-input" 
-                                                type="radio" 
-                                                id="femaleRadio" 
-                                                value="female"
-                                                {...register('gender', { required: 'Gender is required' })}
-                                            />
-                                            <label className="form-check-label" htmlFor="femaleRadio">
-                                                Female
-                                            </label>
-                                        </div>
-                                    </div>
-                                    {errors.gender && <div className="invalid-feedback d-block">{errors.gender.message}</div>}
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Date of Birth: </label>
-                                </div>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="dobInput">Date of Birth</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiCalendar /></div>
-                                        <input 
-                                            type='date' 
-                                            className={`form-control ${errors.dob ? 'is-invalid' : ''}`}
-                                            id="dobInput"
-                                            {...register('dob', { required: 'Date of Birth is required' })}
-                                        />
+                                        <input type="date" className={`form-control ${errors.dob ? 'is-invalid' : ''}`} id="dobInput" {...register('dob', { required: 'Date of Birth is required' })} />
                                         {errors.dob && <div className="invalid-feedback">{errors.dob.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">C.N.I.C NO: </label>
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="genderInput">Gender</label>
+                                    <div className="d-flex gap-3">
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="radio" id="maleRadio" value="male" {...register('gender', { required: 'Gender is required' })} />
+                                            <label className="form-check-label" htmlFor="maleRadio">Male</label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="radio" id="femaleRadio" value="female" {...register('gender', { required: 'Gender is required' })} />
+                                            <label className="form-check-label" htmlFor="femaleRadio">Female</label>
+                                        </div>
+                                    </div>
+                                    {errors.gender && <div className="invalid-feedback d-block">{errors.gender.message}</div>}
                                 </div>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="cnicInput">C.N.I.C NO</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.cnic ? 'is-invalid' : ''}`}
-                                            id="cnicInput"
-                                            placeholder="00000-0000000-0"
-                                            {...register('cnic', { 
-                                                required: 'CNIC is required',
-                                                pattern: {
-                                                    value: /^\d{5}-\d{7}-\d{1}$/,
-                                                    message: 'CNIC must be in format: 00000-0000000-0'
-                                                }
-                                            })}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} id="cnicInput" placeholder="00000-0000000-0" {...register('cnic', { required: 'CNIC is required', pattern: { value: /^\d{5}-\d{7}-\d{1}$/, message: 'CNIC must be in format: 00000-0000000-0' } })} />
                                         {errors.cnic && <div className="invalid-feedback">{errors.cnic.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Mobile No: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="mobileInput">Mobile No</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`}
-                                            id="mobileInput"
-                                            placeholder="03XX-XXXXXXX"
-                                            {...register('mobile_1', { 
-                                                required: 'Mobile number is required',
-                                                pattern: {
-                                                    value: /^03\d{2}-\d{7}$/,
-                                                    message: 'Mobile number must be in format: 03XX-XXXXXXX'
-                                                }
-                                            })}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="03XX-XXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', pattern: { value: /^03\d{2}-\d{7}$/, message: 'Mobile number must be in format: 03XX-XXXXXXX' } })} />
                                         {errors.mobile_1 && <div className="invalid-feedback">{errors.mobile_1.message}</div>}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Mobile II: </label>
-                                </div>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="mobile2Input">Mobile II</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.mobile_2 ? 'is-invalid' : ''}`}
-                                            id="mobile2Input"
-                                            placeholder="___-_______"
-                                            {...register('mobile_2')}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.mobile_2 ? 'is-invalid' : ''}`} id="mobile2Input" placeholder="___-_______" {...register('mobile_2')} />
                                         {errors.mobile_2 && <div className="invalid-feedback">{errors.mobile_2.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Father Mob No: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="fatherMobileInput">Father Mob No</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.father_mobile ? 'is-invalid' : ''}`}
-                                            id="fatherMobileInput"
-                                            placeholder="___-_______"
-                                            {...register('father_mobile')}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.father_mobile ? 'is-invalid' : ''}`} id="fatherMobileInput" placeholder="___-_______" {...register('father_mobile')} />
                                         {errors.father_mobile && <div className="invalid-feedback">{errors.father_mobile.message}</div>}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Email: </label>
-                                </div>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="emailInput">Email</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='email' 
-                                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                            id="emailInput"
-                                            {...register('email', { pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email address' } })}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="email" className={`form-control ${errors.email ? 'is-invalid' : ''}`} id="emailInput" {...register('email', { pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email address' } })} />
                                         {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Religion: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <select 
-                                        className={`form-select ${errors.religion ? 'is-invalid' : ''}`}
-                                        id="religionInput" 
-                                        {...register('religion')}
-                                    >
-                                        <option value="">Select</option>
-                                        <option value="islam">Islam</option>
-                                        <option value="christianity">Christianity</option>
-                                        <option value="hinduism">Hinduism</option>
-                                    </select>
-                                    {errors.religion && <div className="invalid-feedback">{errors.religion.message}</div>}
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Nationality: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="religionInput">Religion</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <input 
-                                            type='text' 
-                                            className={`form-control ${errors.nationality ? 'is-invalid' : ''}`}
-                                            id="nationalityInput" 
-                                            defaultValue="ISLAM" 
-                                            {...register('nationality')}
-                                        />
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <select className={`form-select ${errors.religion ? 'is-invalid' : ''}`} id="religionInput" {...register('religion')}>
+                                            <option value="">Select</option>
+                                            <option value="islam">Islam</option>
+                                            <option value="christianity">Christianity</option>
+                                            <option value="hinduism">Hinduism</option>
+                                        </select>
+                                        {errors.religion && <div className="invalid-feedback">{errors.religion.message}</div>}
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="nationalityInput">Nationality</label>
+                                    <div className="input-group">
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <input type="text" className={`form-control ${errors.nationality ? 'is-invalid' : ''}`} id="nationalityInput" defaultValue="Pakistani" {...register('nationality')} />
                                         {errors.nationality && <div className="invalid-feedback">{errors.nationality.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Domicile: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <select 
-                                        className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`}
-                                        id="domicileInput"
-                                        {...register('domicile_id', { required: 'Domicile is required' })}
-                                    >
-                                        <option value="">Select Domicile</option>
-                                        {domiciles.map((domicile) => (
-                                            <option key={domicile.id} value={domicile.id}>{domicile.name}</option>
-                                        ))}
-                                    </select>
-                                    {errors.domicile_id && <div className="invalid-feedback">{errors.domicile_id.message}</div>}
-                                    {isDomicilesLoading && <div className="text-info mt-1">Loading domiciles...</div>}
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Category: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <select 
-                                        className={`form-select ${errors.category_id ? 'is-invalid' : ''}`}
-                                        id="categoryInput"
-                                        {...register('category_id', { required: 'Category is required' })}
-                                    >
-                                        <option value="">Select Category</option>
-                                        {categories.map((category) => (
-                                            <option key={category.id} value={category.id}>{category.name}</option>
-                                        ))}
-                                    </select>
-                                    {errors.category_id && <div className="invalid-feedback">{errors.category_id.message}</div>}
-                                    {isCategoriesLoading && <div className="text-info mt-1">Loading categories...</div>}
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Current Address: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="domicileInput">Domicile</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <textarea 
-                                            className={`form-control ${errors.current_address ? 'is-invalid' : ''}`}
-                                            id="currentAddressInput"
-                                            rows="3"
-                                            {...register('current_address', { required: 'Current address is required' })}
-                                        ></textarea>
-                                        {errors.current_address && <div className="invalid-feedback">{errors.current_address.message}</div>}
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <select className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`} id="domicileInput" {...register('domicile_id', { required: 'Domicile is required' })}>
+                                            <option value="">Select Domicile</option>
+                                            {domiciles.map((domicile) => (
+                                                <option key={domicile.id} value={domicile.id}>{domicile.name}</option>
+                                            ))}
+                                        </select>
+                                        {errors.domicile_id && <div className="invalid-feedback">{errors.domicile_id.message}</div>}
+                                        {isDomicilesLoading && <div className="text-info mt-1">Loading domiciles...</div>}
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="categoryInput">Category</label>
+                                    <div className="input-group">
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <select className={`form-select ${errors.category_id ? 'is-invalid' : ''}`} id="categoryInput" {...register('category_id', { required: 'Category is required' })}>
+                                            <option value="">Select Category</option>
+                                            {categories.map((category) => (
+                                                <option key={category.id} value={category.id}>{category.name}</option>
+                                            ))}
+                                        </select>
+                                        {errors.category_id && <div className="invalid-feedback">{errors.category_id.message}</div>}
+                                        {isCategoriesLoading && <div className="text-info mt-1">Loading categories...</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Permanent Address: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="currentAddressInput">Current Address</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <textarea 
-                                            className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`}
-                                            id="permanentAddressInput"
-                                            rows="3"
-                                            {...register('permanent_address', { required: 'Permanent address is required' })}
-                                        ></textarea>
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <textarea className={`form-control ${errors.current_address ? 'is-invalid' : ''}`} id="currentAddressInput" rows="3" {...register('current_address', { required: 'Current address is required' })}></textarea>
+                                        {errors.current_address && <div className="invalid-feedback">{errors.current_address.message}</div>}
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="permanentAddressInput">Permanent Address</label>
+                                    <div className="input-group">
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <textarea className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`} id="permanentAddressInput" rows="3" {...register('permanent_address', { required: 'Permanent address is required' })}></textarea>
                                         {errors.permanent_address && <div className="invalid-feedback">{errors.permanent_address.message}</div>}
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label className="fw-semibold">Remarks: </label>
-                                </div>
-                                <div className="col-lg-8">
+                            <div className="row g-3 mb-4">
+                                <div className="col-lg-6">
+                                    <label className="form-label" htmlFor="remarksInput">Remarks</label>
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
-                                        <textarea name="remarks" className="form-control" id="remarksInput" rows="2"
-                                        {...register('remarks')}
-                                        
-                                        ></textarea>
-                                        
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <textarea name="remarks" className="form-control" id="remarksInput" rows="2" {...register('remarks')}></textarea>
                                     </div>
                                 </div>
                             </div>
-
                             <div className="row mb-4 align-items-center">
                                 <div className="col-lg-4">
                                     <label className="fw-semibold">Enrollment Type: </label>
@@ -937,16 +726,13 @@ const Studentform = () => {
                                 {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
                             </div>
 
-
-
-
                             <div className="row mb-4 align-items-center">
                                 <div className="col-lg-4">
                                     <label className="fw-semibold">Student ID: </label>
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiBookOpen /></div>
                                         <input 
                                             type='text' 
                                             className={`form-control ${errors.student_id ? 'is-invalid' : ''}`}
@@ -965,7 +751,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiBookOpen /></div>
                                         <input 
                                             type='text' 
                                             className={`form-control ${errors.enrollment_no ? 'is-invalid' : ''}`}
@@ -983,7 +769,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiCalendar /></div>
                                         <input 
                                             type='date' 
                                             className={`form-control ${errors.admission_date ? 'is-invalid' : ''}`}
@@ -1002,7 +788,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiBookOpen /></div>
                                         <input 
                                             type='text' 
                                             className={`form-control ${errors.rf_id ? 'is-invalid' : ''}`}
@@ -1020,7 +806,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiBookOpen /></div>
                                         <input 
                                             type='text' 
                                             className={`form-control ${errors.enroll_no_ii ? 'is-invalid' : ''}`}
@@ -1132,7 +918,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiUser /></div>
                                         <input
                                             type='text'
                                             className={`form-control ${errors.emergency_contact_name ? 'is-invalid' : ''}`}
@@ -1151,7 +937,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiPhone /></div>
                                         <input
                                             type='tel'
                                             className={`form-control ${errors.emergency_contact_phone ? 'is-invalid' : ''}`}
@@ -1170,7 +956,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiMail /></div>
                                         <input
                                             type='email'
                                             className={`form-control ${errors.emergency_contact_email ? 'is-invalid' : ''}`}
@@ -1228,7 +1014,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiUser /></div>
                                         <input 
                                             type='text' 
                                             className={`form-control ${errors.username ? 'is-invalid' : ''}`}
@@ -1246,7 +1032,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiLock /></div>
                                         <input 
                                             type='password' 
                                             className={`form-control ${errors.password ? 'is-invalid' : ''}`}
@@ -1264,7 +1050,7 @@ const Studentform = () => {
                                 </div>
                                 <div className="col-lg-8">
                                     <div className="input-group">
-                                        <div className="input-group-text"></div>
+                                        <div className="input-group-text"><FiLock /></div>
                                         <input 
                                             type='password' 
                                             className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
