@@ -9,14 +9,7 @@ import Swal from 'sweetalert2';
 import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
 import { useQuery } from '@tanstack/react-query';
 
-// Sample faculty data
-const facultyData = [
-    { id: 1, name: 'Dr. Muhammad Ali', facultyId: 'FAC-2023-001', email: 'dr.ali@email.com', avatar: '/images/avatar/default.png', department: 'Medicine', designation: 'Professor', gender: 'Male', status: 'Active', joinDate: '15 Jan, 2023' },
-    { id: 2, name: 'Dr. Fatima Khan', facultyId: 'FAC-2023-002', email: 'dr.fatima@email.com', avatar: '/images/avatar/2.png', department: 'Computer Science', designation: 'Associate Professor', gender: 'Female', status: 'Active', joinDate: '10 Feb, 2023' },
-    { id: 3, name: 'Dr. Imran Ahmed', facultyId: 'FAC-2023-003', email: 'dr.imran@email.com', avatar: '/images/avatar/3.png', department: 'Engineering', designation: 'Assistant Professor', gender: 'Male', status: 'Active', joinDate: '05 Mar, 2023' },
-    { id: 4, name: 'Dr. Saima Malik', facultyId: 'FAC-2023-004', email: 'dr.saima@email.com', avatar: '/images/avatar/4.png', department: 'Business', designation: 'Lecturer', gender: 'Female', status: 'On Leave', joinDate: '20 Apr, 2023' },
-    { id: 5, name: 'Dr. Kamran Raza', facultyId: 'FAC-2023-005', email: 'dr.kamran@email.com', avatar: '/images/avatar/5.png', department: 'Arts & Humanities', designation: 'Professor', gender: 'Male', status: 'Active', joinDate: '12 May, 2023' },
-];
+
 
 const FacultyTable = ({ title }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
@@ -30,16 +23,26 @@ const FacultyTable = ({ title }) => {
         queryKey : ['faculty'] ,
         queryFn : () => GetApi('/faculties')
     })
-
-
     const facultydata = facultyresponse?.data?.data || []
 
- const filteredfaculty = facultydata.filter((faculty) => 
-
+    const filteredfaculty = facultydata.filter((faculty) => 
     faculty.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faculty.pmdc_no?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faculty.personal_email?.toLowerCase().includes(searchTerm.toLowerCase()))
 
+
+    
+    const { data :departmentresponse , isLoading : isDepartmentLoading , isError : isDepartmentError , error : departmentError , refetch : departmentRefetch } = useQuery({
+        queryKey : ['department'] ,
+        queryFn : () => GetApi('/departments')
+    })
+    const departmentdata = departmentresponse?.data?.data || []
+
+
+
+
+
+    
 
 
 
@@ -113,9 +116,10 @@ const FacultyTable = ({ title }) => {
                                 value={departmentFilter}
                                 onChange={(e) => setDepartmentFilter(e.target.value)}
                             >
-                                {departmentOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
+                                <option value="">All Departments</option>
+                                {departmentdata.map(option => (
+                                    <option key={option.id} value={option.id}>
+                                        {option.name}
                                     </option>
                                 ))}
                             </select>
@@ -163,7 +167,7 @@ const FacultyTable = ({ title }) => {
                                             <td>
                                                 <div className="d-flex align-items-center gap-3">
                                                     <div className="avatar-image">
-                                                        <img src={faculty.avatar} className="img-fluid" alt="Faculty" />
+                                                        <img src={faculty.avatar || "/images/avatar/default.png"} className="img-fluid" alt="Faculty" />
                                                     </div>
                                                     <div>
                                                         <span className="d-block">{faculty.name}</span>
