@@ -195,6 +195,27 @@ export const AdminMenuList = [
         ]
     },
 
+    {
+        id: 12,
+        name: "Quality Enhancement Cell",
+        path: "#",
+        icon: 'feather-award',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "QEC Questionnaires",
+                path: "/qec-list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Create New Questionnaire",
+                path: "/qec/add",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
     // {
     //     id: 8,
     //     name: "settings",

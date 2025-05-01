@@ -21,6 +21,45 @@ const FacultyTable = ({ title }) => {
     const [departmentFilter, setDepartmentFilter] = useState('');
     const [designationFilter, setDesignationFilter] = useState('');
 
+
+
+
+
+    const { data :departmentresponse , isLoading : isDepartmentLoading , isError : isDepartmentError , error : departmentError , refetch : departmentRefetch } = useQuery({
+        queryKey : ['department'] ,
+        queryFn : () => GetApi('/departments')
+    })
+    const departmentdata = departmentresponse?.data?.data || []
+
+
+    
+
+    const { data :facultyresponse , isLoading , isError , error , refetch } = useQuery({
+        queryKey : ['faculty'] ,
+        queryFn : () => GetApi('/faculties')
+    })
+    const facultydata = facultyresponse?.data?.data || []
+
+    const filteredfaculty = facultydata.filter((faculty) => 
+    faculty.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faculty.pmdc_no?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faculty.personal_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faculty.department?.toLowerCase().includes(departmentFilter.toLowerCase())
+    )
+
+
+    
+ 
+
+
+
+
+
+    
+
+
+
+
     // Department options for filter
     const departmentOptions = [
         { value: '', label: 'All Departments' },
@@ -101,9 +140,10 @@ const FacultyTable = ({ title }) => {
                                 value={departmentFilter}
                                 onChange={(e) => setDepartmentFilter(e.target.value)}
                             >
-                                {departmentOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
+                                <option value="">All Departments</option>
+                                {departmentdata.map(option => (
+                                    <option key={option.id} value={option.name}>
+                                        {option.name}
                                     </option>
                                 ))}
                             </select>

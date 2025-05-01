@@ -34,6 +34,8 @@ import BatchList from "../pages/Admin/Batch-list";
 import CreateBatch from "../pages/Admin/Create-batch";
 import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
+import CreateQEC from "../pages/Admin/Create-QEC";
+import QECList from "../pages/Admin/QEC-list";
 
 // SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
@@ -328,6 +330,22 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole={{ minLevel: "admin" }}>
                         <FacultyView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec-list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <CreateQEC />
                     </ProtectedRoute>
                 )
             },
