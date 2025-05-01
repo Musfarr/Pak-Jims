@@ -15,7 +15,7 @@ export const projectTableData = [
         },
         "customer": {
             "name": "Alexandra Della",
-            "img": "/images/avatar/1.png"
+            "img": "/images/avatar/default.png"
         },
         "start-date": "2023-04-05",
         "end-date": "2023-04-10",

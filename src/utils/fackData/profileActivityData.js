@@ -129,7 +129,7 @@ export const profileActivityData2 = [
                 users: [
                     {
                         user_name: "Alex Curten",
-                        user_img: "/images/avatar/1.png"
+                        user_img: "/images/avatar/default.png"
                     },
                     {
                         user_name: "Janette Dalton",

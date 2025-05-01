@@ -29,7 +29,7 @@ const ChatHeader = ({setSidebarOpen}) => {
                     </Link>
                     <Link to="#" className="d-flex align-items-center justify-content-center gap-3" data-bs-toggle="offcanvas" data-bs-target="#userProfileDetails">
                         <div className="avatar-image">
-                            <img src="/images/avatar/1.png" className="img-fluid" alt="image" />
+                            <img src="/images/avatar/default.png" className="img-fluid" alt="image" />
                         </div>
                         <div className="d-none d-sm-block">
                             <div className="fw-bold d-flex align-items-center">Alexandra Della</div>

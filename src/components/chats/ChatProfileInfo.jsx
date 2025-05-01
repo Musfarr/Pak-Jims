@@ -31,7 +31,7 @@ const ChatProfileInfo = () => {
             </div>
             <div className="offcanvas-body p-0">
                 <div className="p-4 text-center position-relative">
-                    <img src="/images/avatar/1.png" alt="img" className="wd-100 ht-100 rounded-circle border border-5 img-fluid" />
+                    <img src="/images/avatar/default.png" alt="img" className="wd-100 ht-100 rounded-circle border border-5 img-fluid" />
                     <h2 className="text-dark fs-13 fw-bold mt-3 mb-0">Alexandra Della
                         <i className="text-success fs-11 ms-1" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Verified" ><BsPatchCheck /></i>
                         <i className="text-warning fs-11 ms-1" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Feedback" ><BsPatchQuestion /></i>

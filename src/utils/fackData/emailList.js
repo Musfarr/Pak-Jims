@@ -195,7 +195,7 @@ export const emailList = {
   prevSentEmail: [
     {
       id: "collapseOne",
-      user_img: "/images/avatar/1.png",
+      user_img: "/images/avatar/default.png",
       user_email: "mar.audrey@gmail.com",
       user_name: "Alexandra Della",
       date: "27 May, 2023",

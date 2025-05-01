@@ -29,7 +29,7 @@ const generalInfoData = [
     },
     {
         title: 'Assigned',
-        image: '/images/avatar/1.png',
+        image: '/images/avatar/default.png',
         text: 'Alexandra Della',
     },
     {

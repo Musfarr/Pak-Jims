@@ -5,7 +5,7 @@ import { FaTint } from 'react-icons/fa';
 import { FiCalendar, FiCamera, FiUserCheck, FiUser, FiBriefcase, FiAward, FiHeart, FiFlag, FiBook, FiPhone, FiSmartphone, FiAlertCircle, FiMail, FiMapPin, FiHome, FiEdit, FiMap, FiHash, FiCreditCard, FiGlobe, FiTag, FiActivity, FiAlertTriangle } from 'react-icons/fi';
 
 const ProfileTab = ({ register, errors, setValue }) => {
-    const [imagePreview, setImagePreview] = useState("/images/avatar/1.png");
+    const [imagePreview, setImagePreview] = useState("/images/avatar/default.png");
 
     const { data: domicilesResponse } = useQuery({
         queryKey: ['domiciles'],

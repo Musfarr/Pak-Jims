@@ -3,7 +3,7 @@ export const recentDealData = [
         deal_name: "Web developement deal with alex",
         deal_price: "450",
         dealr_name: "Alexandra Della",
-        dealr_img: "/images/avatar/1.png",
+        dealr_img: "/images/avatar/default.png",
         clossing_date: "22 March, 2023"
     },
     {

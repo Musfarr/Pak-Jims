@@ -9,7 +9,7 @@ export const leadTableData = [
         "id": 1,
         "customer": {
             "name": "Alexandra Della",
-            "img": "/images/avatar/1.png"
+            "img": "/images/avatar/default.png"
         },
         "email": "alex.della@outlook.com",
         "source": {

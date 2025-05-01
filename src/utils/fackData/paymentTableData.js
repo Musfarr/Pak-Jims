@@ -5,7 +5,7 @@ export const paymentTableData = [
         "client": {
             "name": "Alexandra Della",
             "email": "alex.della@outlook.com",
-            "img": "/images/avatar/1.png"
+            "img": "/images/avatar/default.png"
         },
         "transaction": "#SDEG4589SE1E",
         "amount": "$249.99 USD",

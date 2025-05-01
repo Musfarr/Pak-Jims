@@ -5,7 +5,7 @@ import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 
 const supportData = [
-    { name: 'Alexandra Della', message: "My item doesn't ship to correct address", avatar: '/images/avatar/1.png', time: '2 hours ago' },
+    { name: 'Alexandra Della', message: "My item doesn't ship to correct address", avatar: '/images/avatar/default.png', time: '2 hours ago' },
     { name: 'Green Cute', message: 'Can you please refund back my money', avatar: '/images/avatar/2.png', time: '3 hours ago' },
     { name: 'Marianne Audrey', message: 'You shipped the wrong color, I need it to be', avatar: '/images/avatar/3.png', time: '4 hours ago' },
     { name: 'Holland Scott', message: 'Thank you very much for quick support!', avatar: '/images/avatar/4.png', time: '5 hours ago' },

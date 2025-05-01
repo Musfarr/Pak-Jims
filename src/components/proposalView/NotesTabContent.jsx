@@ -26,7 +26,7 @@ const NotesTabContent = () => {
                     </div>
                 </div>
                 <UserCard
-                    avatarSrc="/images/avatar/1.png"
+                    avatarSrc="/images/avatar/default.png"
                     userName="Alexandra Della"
                     dateTime="2023-02-13 14:20:35"
                     description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, quasi nostrum iure nesciunt dolores in, dolorem sequi quidem accusantium voluptates officia nihil."

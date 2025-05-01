@@ -2,7 +2,7 @@ export const leadsStatusData = [
     {
         id: 1,
         name: "Archie Tones",
-        img: "/images/avatar/1.png",
+        img: "/images/avatar/default.png",
         date: "15 June, 2023",
         status: "Deal Won",
         value: "15.56K",
