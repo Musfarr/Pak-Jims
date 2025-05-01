@@ -190,11 +190,11 @@ const ProfileTab = ({ register, errors, setValue }) => {
                         <div className="input-group-text"><FiCalendar size={16} /></div>
                         <input
                             type="date"
-                            className={`form-control ${errors?.joiningDate ? 'is-invalid' : ''}`}
+                            className={`form-control ${errors?.joining_date ? 'is-invalid' : ''}`}
                             id="joiningDate"
-                            {...register('joiningDate', { required: 'Joining Date is required' })}
+                            {...register('joining_date', { required: 'Joining Date is required' })}
                         />
-                        {errors?.joiningDate && <div className="invalid-feedback">{errors.joiningDate.message}</div>}
+                        {errors?.joining_date && <div className="invalid-feedback">{errors.joining_date.message}</div>}
                     </div>
                 </div>
             </div>
@@ -363,11 +363,16 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiCreditCard /></div>
                         <input
-                            type="text"
+                            type="number"
                             className={`form-control ${errors?.cnic_no ? 'is-invalid' : ''}`}
                             id="cnicNoInput"
                             placeholder="CNIC No"
-                            {...register('cnic_no')}
+                            {...register('cnic_no', { required: 'CNIC No is required' , 
+                                pattern: {
+                                    value: /^[0-9]{13}$/, 
+                                    message: 'CNIC No must be 13 digits'
+                                }
+                             })}
                         />
                         {errors?.cnic_no && <div className="invalid-feedback">{errors.cnic_no.message}</div>}
                     </div>
@@ -466,11 +471,16 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiAlertCircle /></div>
                         <input
-                            type="text"
+                            type="number"
                             className={`form-control ${errors?.emergency_no ? 'is-invalid' : ''}`}
                             id="emergencyNoInput"
                             placeholder="Emergency No"
-                            {...register('emergency_no')}
+                            {...register('emergency_no', { required: 'Emergency contact phone is required' 
+                                , pattern: {
+                                    value: /^[0-9]{11}$/, 
+                                    message: 'Emergency contact phone must be 11 digits'
+                                }
+                            })}
                         />
                         {errors?.emergency_no && <div className="invalid-feedback">{errors.emergency_no.message}</div>}
                     </div>

@@ -52,13 +52,13 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiBriefcase /></div>
                                 <input
                                     type="text"
-                                    className={`form-control ${errors?.workExperiences?.[index]?.nameOfPost ? 'is-invalid' : ''}`}
+                                    className={`form-control ${errors?.workExperiences?.[index]?.designation ? 'is-invalid' : ''}`}
                                     id={`work-${index}-post`}
                                     placeholder="e.g., Senior Lecturer, Professor"
-                                    {...register(`workExperiences.${index}.nameOfPost`, { required: 'Position is required' })}
+                                    {...register(`workExperiences.${index}.designation`, { required: 'Position is required' })}
                                 />
-                                {errors?.workExperiences?.[index]?.nameOfPost && (
-                                    <div className="invalid-feedback">{errors.workExperiences[index].nameOfPost.message}</div>
+                                {errors?.workExperiences?.[index]?.designation && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].designation.message}</div>
                                 )}
                             </div>
                         </div>
@@ -68,13 +68,13 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiHome /></div>
                                 <input
                                     type="text"
-                                    className={`form-control ${errors?.workExperiences?.[index]?.nameOfInstitute ? 'is-invalid' : ''}`}
+                                    className={`form-control ${errors?.workExperiences?.[index]?.organization_name ? 'is-invalid' : ''}`}
                                     id={`work-${index}-institute`}
                                     placeholder="e.g., University of Health Sciences"
-                                    {...register(`workExperiences.${index}.nameOfInstitute`, { required: 'Institute name is required' })}
+                                    {...register(`workExperiences.${index}.organization_name`, { required: 'Institute name is required' })}
                                 />
-                                {errors?.workExperiences?.[index]?.nameOfInstitute && (
-                                    <div className="invalid-feedback">{errors.workExperiences[index].nameOfInstitute.message}</div>
+                                {errors?.workExperiences?.[index]?.organization_name && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].organization_name.message}</div>
                                 )}
                             </div>
                         </div>
@@ -85,14 +85,14 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                             <div className="input-group">
                                 <div className="input-group-text"><FiAward /></div>
                                 <input
-                                    type="text"
-                                    className={`form-control ${errors?.workExperiences?.[index]?.scaleGrade ? 'is-invalid' : ''}`}
+                                    type="number"
+                                    className={`form-control ${errors?.workExperiences?.[index]?.grade ? 'is-invalid' : ''}`}
                                     id={`work-${index}-scale`}
                                     placeholder="e.g., BPS-18, Level 5"
-                                    {...register(`workExperiences.${index}.scaleGrade`, { required: 'Scale/Grade is required' })}
+                                    {...register(`workExperiences.${index}.grade`, { required: 'Scale/Grade is required' })}
                                 />
-                                {errors?.workExperiences?.[index]?.scaleGrade && (
-                                    <div className="invalid-feedback">{errors.workExperiences[index].scaleGrade.message}</div>
+                                {errors?.workExperiences?.[index]?.grade && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].grade.message}</div>
                                 )}
                             </div>
                         </div>
@@ -102,12 +102,12 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.workExperiences?.[index]?.joiningDate ? 'is-invalid' : ''}`}
+                                    className={`form-control ${errors?.workExperiences?.[index]?.start_date ? 'is-invalid' : ''}`}
                                     id={`work-${index}-joiningDate`}
-                                    {...register(`workExperiences.${index}.joiningDate`, { required: 'Joining date is required' })}
+                                    {...register(`workExperiences.${index}.start_date`, { required: 'Joining date is required' })}
                                 />
-                                {errors?.workExperiences?.[index]?.joiningDate && (
-                                    <div className="invalid-feedback">{errors.workExperiences[index].joiningDate.message}</div>
+                                {errors?.workExperiences?.[index]?.start_date && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].start_date.message}</div>
                                 )}
                             </div>
                         </div>
@@ -119,12 +119,12 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.workExperiences?.[index]?.leavingDate ? 'is-invalid' : ''}`}
+                                    className={`form-control ${errors?.workExperiences?.[index]?.end_date ? 'is-invalid' : ''}`}
                                     id={`work-${index}-leavingDate`}
-                                    {...register(`workExperiences.${index}.leavingDate`)}
+                                    {...register(`workExperiences.${index}.end_date`)}
                                 />
-                                {errors?.workExperiences?.[index]?.leavingDate && (
-                                    <div className="invalid-feedback">{errors.workExperiences[index].leavingDate.message}</div>
+                                {errors?.workExperiences?.[index]?.end_date && (
+                                    <div className="invalid-feedback">{errors.workExperiences[index].end_date.message}</div>
                                 )}
                             </div>
                         </div>

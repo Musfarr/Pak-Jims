@@ -13,8 +13,8 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
         append({ 
             country: '', 
             purpose: '', 
-            startDate: null, 
-            endDate: null, 
+            start_date: null, 
+            end_date: null, 
             sponsor: '' 
         });
     };
@@ -113,12 +113,12 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiCalendar /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.foreignVisits?.[index]?.startDate ? 'is-invalid' : ''}`}
-                                    id={`visit-${index}-startDate`}
-                                    {...register(`foreignVisits.${index}.startDate`, { required: 'Start date is required' })}
+                                    className={`form-control ${errors?.foreignVisits?.[index]?.start_date ? 'is-invalid' : ''}`}
+                                    id={`visit-${index}-start_date`}
+                                    {...register(`foreignVisits.${index}.start_date`, { required: 'Start date is required' })}
                                 />
-                                {errors?.foreignVisits?.[index]?.startDate && (
-                                    <div className="invalid-feedback">{errors.foreignVisits[index].startDate.message}</div>
+                                {errors?.foreignVisits?.[index]?.start_date && (
+                                    <div className="invalid-feedback">{errors.foreignVisits[index].start_date.message}</div>
                                 )}
                             </div>
                         </div>
@@ -128,12 +128,12 @@ const ForeignVisitsTab = ({ register, errors, watch, setValue, control }) => {
                                 <div className="input-group-text"><FiCalendar /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.foreignVisits?.[index]?.endDate ? 'is-invalid' : ''}`}
-                                    id={`visit-${index}-endDate`}
-                                    {...register(`foreignVisits.${index}.endDate`, { required: 'End date is required' })}
+                                    className={`form-control ${errors?.foreignVisits?.[index]?.end_date ? 'is-invalid' : ''}`}
+                                    id={`visit-${index}-end_date`}
+                                    {...register(`foreignVisits.${index}.end_date`, { required: 'End date is required' })}
                                 />
-                                {errors?.foreignVisits?.[index]?.endDate && (
-                                    <div className="invalid-feedback">{errors.foreignVisits[index].endDate.message}</div>
+                                {errors?.foreignVisits?.[index]?.end_date && (
+                                    <div className="invalid-feedback">{errors.foreignVisits[index].end_date.message}</div>
                                 )}
                             </div>
                         </div>
