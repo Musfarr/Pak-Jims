@@ -5,6 +5,7 @@ import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Pagination from '@/components/shared/Pagination';
 import { Link } from 'react-router-dom';
 import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
+import { useQuery } from '@tanstack/react-query';
 
 // Sample faculty data
 const facultyData = [

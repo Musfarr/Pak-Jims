@@ -6,6 +6,7 @@ import Pagination from '@/components/shared/Pagination';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
 import Swal from 'sweetalert2';
+import { FaDownLong } from 'react-icons/fa6';
 
 const QECTable = ({ title }) => {
     const navigate = useNavigate();
@@ -18,39 +19,20 @@ const QECTable = ({ title }) => {
     const qecData = [
         {
             id: 1,
-            title: "Annual Faculty Assessment",
-            description: "Comprehensive evaluation of teaching faculty performance across all departments",
-            date: "2025-04-15",
-            status: "active"
+            title: "Student Course Evaluation Questionnaire",
+            description: "For Students at the time of Course Completion",
         },
         {
             id: 2,
-            title: "Student Learning Outcomes",
-            description: "Assessment of student achievement of program learning outcomes",
-            date: "2025-03-22",
-            status: "completed"
-        },
-        {
-            id: 3,
-            title: "Curriculum Review",
-            description: "Systematic evaluation of curriculum relevance and effectiveness",
-            date: "2025-05-10",
+            title: "Survey of Graduating Students",
+            description: "For Graduating Students",
             status: "pending"
         },
         {
-            id: 4,
-            title: "Teaching Quality Assessment",
-            description: "Evaluation of teaching methodologies and effectiveness",
-            date: "2025-04-05",
-            status: "active"
+            id: 3,
+            title: "Teacher Evaluation Form",
+            description: "For Students",
         },
-        {
-            id: 5,
-            title: "Research Output Evaluation",
-            description: "Assessment of faculty research productivity and impact",
-            date: "2025-02-18",
-            status: "completed"
-        }
     ];
 
     // Filter QEC records based on search term
@@ -74,9 +56,24 @@ const QECTable = ({ title }) => {
     };
 
     // Handle QEC actions
-    const handleViewQEC = (id) => {
-        navigate(`/qec/view/${id}`);
+    const handleQECDownload = (id) => {
+        
+        const url = `./src/assets/pdfs/${id}.pdf`;
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `QEC-${id}.pdf`;
+
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
+
+
+
+
+
 
     const handleEditQEC = (id) => {
         navigate(`/qec/edit/${id}`);
@@ -133,22 +130,20 @@ const QECTable = ({ title }) => {
                         </div>
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center mb-3">
+                    {/* <div className="d-flex justify-content-between align-items-center mb-3">
                         <h6 className="mb-0">Total QEC Records: {filteredQEC.length}</h6>
                         <Link to="/qec/add" className="btn btn-primary btn-sm">
                             Add New QEC
                         </Link>
-                    </div>
+                    </div> */}
 
-                    <div className="table-responsive">
-                        <table className="table table-hover mb-0">
+                    <div className="table-responsive ">
+                        <table className="table table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
+                                    <th>Target Audience</th>                                    
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -165,35 +160,29 @@ const QECTable = ({ title }) => {
                                                         : qec.description) 
                                                     : 'N/A'}
                                             </td>
-                                            <td>{qec.date || 'N/A'}</td>
-                                            <td>
-                                                <span className={`badge ${qec.status === 'active' ? 'bg-success' : qec.status === 'completed' ? 'bg-info' : 'bg-warning'}`}>
-                                                    {qec.status || 'N/A'}
-                                                </span>
-                                            </td>
                                             <td>
                                                 <div className="d-flex gap-2">
                                                     <button 
                                                         className="btn btn-sm btn-outline-info" 
-                                                        onClick={() => handleViewQEC(qec.id)}
+                                                        onClick={() => handleQECDownload(qec.id)}
                                                         title="View"
                                                     >
-                                                        <FiEye />
+                                                        <FaDownLong />
                                                     </button>
-                                                    <button 
+                                                    {/* <button 
                                                         className="btn btn-sm btn-outline-primary" 
                                                         onClick={() => handleEditQEC(qec.id)}
                                                         title="Edit"
                                                     >
                                                         <FiEdit />
-                                                    </button>
-                                                    <button 
+                                                    </button> */}
+                                                    {/* <button 
                                                         className="btn btn-sm btn-outline-danger" 
                                                         onClick={() => handleDeleteQEC(qec.id)}
                                                         title="Delete"
                                                     >
                                                         <FiTrash />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </td>
                                         </tr>
