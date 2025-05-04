@@ -98,7 +98,7 @@ const Facultyform = () => {
 
             // Work Experiences
             workExperiences: [{
-                organization: '',
+                organization_name: '',
                 designation: '',
                 start_date: null,
                 end_date: null,
@@ -112,7 +112,9 @@ const Facultyform = () => {
                 start_date: null,
                 end_date: null,
                 location: '',
-                country: ''
+                country: '',
+                grade: '',
+                year: ''
             }],
 
             // Foreign Visits
@@ -205,17 +207,50 @@ const Facultyform = () => {
 
         for (let index = 0; index < data.education.length; index++) {
             const element = data.education[index];
-            formdata.append(`education[${index}].institute_name`, element.institute_name);
-            formdata.append(`education[${index}].degree`, element.degree);
-            formdata.append(`education[${index}].start_date`, element.start_date);
-            formdata.append(`education[${index}].end_date`, element.end_date);
-            formdata.append(`education[${index}].grade`, element.grade);
-            formdata.append(`education[${index}].city`, element.city);
-            formdata.append(`education[${index}].country`, element.country);
-            formdata.append(`education[${index}].subject`, element.subject);
+            formdata.append(`education[${index}][institute_name]`, element.institute_name);
+            formdata.append(`education[${index}][degree]`, element.degree);
+            formdata.append(`education[${index}][start_date]`, element.start_date);
+            formdata.append(`education[${index}][end_date]`, element.end_date);
+            formdata.append(`education[${index}][grade]`, element.grade);
+            formdata.append(`education[${index}][city]`, element.city);
+            formdata.append(`education[${index}][country]`, element.country);
+            formdata.append(`education[${index}][subject]`, element.subject);
         }
 
 
+        for(let i = 0 ; i<data.trainings.length ; i++ ) {
+
+            formdata.append(`trainings[${i}][course_detail]`, data.trainings[i].course_detail);
+            formdata.append(`trainings[${i}][institute_name]`, data.trainings[i].institute_name);
+            formdata.append(`trainings[${i}][start_date]`, data.trainings[i].start_date);
+            formdata.append(`trainings[${i}][end_date]`, data.trainings[i].end_date);
+            formdata.append(`trainings[${i}][location]`, data.trainings[i].location);
+            formdata.append(`trainings[${i}][country]`, data.trainings[i].country);
+            formdata.append(`trainings[${i}][grade]`, data.trainings[i].grade);
+            formdata.append(`trainings[${i}][year]`, data.trainings[i].year);
+        }
+        
+        for(let i = 0 ; i<data.foreignVisits.length ; i++ ) {
+            formdata.append(`foreignVisits[${i}][country]`, data.foreignVisits[i].country);
+            formdata.append(`foreignVisits[${i}][city]`, data.foreignVisits[i].city);
+            formdata.append(`foreignVisits[${i}][start_date]`, data.foreignVisits[i].start_date);
+            formdata.append(`foreignVisits[${i}][end_date]`, data.foreignVisits[i].end_date);
+            formdata.append(`foreignVisits[${i}][purpose]`, data.foreignVisits[i].purpose);
+            formdata.append(`foreignVisits[${i}][sponsor]`, data.foreignVisits[i].sponsor);
+        }
+
+
+        for(let i = 0 ; i<data.workExperiences.length ; i++ ) {
+            formdata.append(`workExperience[${i}][organization_name]`, data.workExperiences[i].organization_name);
+            formdata.append(`workExperience[${i}][designation]`, data.workExperiences[i].designation);
+            formdata.append(`workExperience[${i}][joining_date]`, data.workExperiences[i].start_date);
+            formdata.append(`workExperience[${i}][leaving_date]`, data.workExperiences[i].end_date);
+            formdata.append(`workExperience[${i}][job_description]`, data.workExperiences[i].jobDescription);
+            formdata.append(`workExperience[${i}][scale]`, data.workExperiences[i].grade);
+        }
+        
+        console.log(formdata , ' dasdasd ')
+        
         
         PostApi('/faculties', formdata).then((res) => {
             console.log('Faculty added successfully:', res);
@@ -235,6 +270,9 @@ const Facultyform = () => {
             });
         });
     };
+
+
+
 
 
 

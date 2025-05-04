@@ -8,7 +8,7 @@ export const tasksListData = [
         taskType: "Call",
         taskTypeColor: "primary",
         taskTypeBgColor: "soft-primary",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         date: new Date()
     },
     {
@@ -154,7 +154,7 @@ export const tasksListData = [
 export const tasksCommentsData = [
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "57 Min Ago",
         like: "6",
         replies: [

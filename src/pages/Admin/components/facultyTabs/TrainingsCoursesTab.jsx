@@ -14,8 +14,8 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
             trainingDetail: '', 
             grade: '', 
             countryStation: '', 
-            dateFrom: null, 
-            dateTo: null, 
+            start_date: null, 
+            end_date: null, 
             year: '',
             institute: '' 
         });
@@ -103,17 +103,17 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                             <div className="input-group">
                                 <div className="input-group-text"><FiFlag /></div>
                                 <select
-                                    className={`form-select ${errors?.trainings?.[index]?.countryStation ? 'is-invalid' : ''}`}
-                                    id={`training-${index}-countryStation`}
-                                    {...register(`trainings.${index}.countryStation`, { required: 'Country/Station is required' })}
+                                    className={`form-select ${errors?.trainings?.[index]?.country ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-country`}
+                                    {...register(`trainings.${index}.country`, { required: 'Country/Station is required' })}
                                 >
                                     <option value="">Select Country/Station</option>
                                     {countryOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
                                 </select>
-                                {errors?.trainings?.[index]?.countryStation && (
-                                    <div className="invalid-feedback">{errors.trainings[index].countryStation.message}</div>
+                                {errors?.trainings?.[index]?.country && (
+                                    <div className="invalid-feedback">{errors.trainings[index].country.message}</div>
                                 )}
                             </div>
                         </div>
@@ -125,12 +125,12 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                 <div className="input-group-text"><FiCalendar /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.trainings?.[index]?.dateFrom ? 'is-invalid' : ''}`}
-                                    id={`training-${index}-dateFrom`}
-                                    {...register(`trainings.${index}.dateFrom`, { required: 'Date From is required' })}
+                                    className={`form-control ${errors?.trainings?.[index]?.start_date ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-start_date`}
+                                    {...register(`trainings.${index}.start_date`, { required: 'Start date is required' })}
                                 />
-                                {errors?.trainings?.[index]?.dateFrom && (
-                                    <div className="invalid-feedback">{errors.trainings[index].dateFrom.message}</div>
+                                {errors?.trainings?.[index]?.start_date && (
+                                    <div className="invalid-feedback">{errors.trainings[index].start_date.message}</div>
                                 )}
                             </div>
                         </div>
@@ -140,12 +140,12 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                 <div className="input-group-text"><FiCalendar /></div>
                                 <input
                                     type="date"
-                                    className={`form-control ${errors?.trainings?.[index]?.dateTo ? 'is-invalid' : ''}`}
-                                    id={`training-${index}-dateTo`}
-                                    {...register(`trainings.${index}.dateTo`, { required: 'Date To is required' })}
+                                    className={`form-control ${errors?.trainings?.[index]?.end_date ? 'is-invalid' : ''}`}
+                                    id={`training-${index}-end_date`}
+                                    {...register(`trainings.${index}.end_date`, { required: 'End date is required' })}
                                 />
-                                {errors?.trainings?.[index]?.dateTo && (
-                                    <div className="invalid-feedback">{errors.trainings[index].dateTo.message}</div>
+                                {errors?.trainings?.[index]?.end_date && (
+                                    <div className="invalid-feedback">{errors.trainings[index].end_date.message}</div>
                                 )}
                             </div>
                         </div>

@@ -14,11 +14,11 @@ const propsalVisibilityOptions = [
     { value: 'customs', label: 'Customs', icon: "feather-settings" },
 ]
 const propasalLeadOptions = [
-    { value: 'web', label: 'Alexandra Della - Website design and development', img: "/images/avatar/1.png" },
-    { value: 'ui', label: 'Curtis Green - User experience (UX) and user interface (UI) design', img: "/images/avatar/1.png" },
-    { value: 'mobile', label: 'Marianne Audrey - Responsive and mobile design', img: "/images/avatar/1.png" },
-    { value: 'ecommerce', label: 'Holland Scott - E-commerce website design and development', img: "/images/avatar/1.png" },
-    { value: 'ecommerce', label: 'Olive Delarosa - Custom graphics and icon design', img: "/images/avatar/1.png" },
+    { value: 'web', label: 'Alexandra Della - Website design and development', img: "/images/avatar/default.png" },
+    { value: 'ui', label: 'Curtis Green - User experience (UX) and user interface (UI) design', img: "/images/avatar/default.png" },
+    { value: 'mobile', label: 'Marianne Audrey - Responsive and mobile design', img: "/images/avatar/default.png" },
+    { value: 'ecommerce', label: 'Holland Scott - E-commerce website design and development', img: "/images/avatar/default.png" },
+    { value: 'ecommerce', label: 'Olive Delarosa - Custom graphics and icon design', img: "/images/avatar/default.png" },
 ]
 const propsalStatusOptions = [
     { value: 'sent', label: 'Sent', color: "#41b2c4" },

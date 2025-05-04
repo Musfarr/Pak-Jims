@@ -17,7 +17,7 @@ const studentsData = [
         gender: 'Male',
         dob: '15 May, 2002',
         address: 'House #123, Street 4, Islamabad, Pakistan',
-        avatar: '/images/avatar/1.png',
+        avatar: '/images/avatar/default.png',
         batch: 'MBBS Batch 2023',
         program: 'MBBS PROGRAM',
         status: 'Active',

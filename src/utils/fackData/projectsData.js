@@ -323,7 +323,7 @@ export const projectsData = {
                 {
                     id: 5,
                     user_name: "Wind Mind",
-                    user_img: "/images/avatar/1.png"
+                    user_img: "/images/avatar/default.png"
                 },
             ]
         },
@@ -363,7 +363,7 @@ export const projectsData = {
                 {
                     id: 5,
                     user_name: "Wind Mind",
-                    user_img: "/images/avatar/1.png"
+                    user_img: "/images/avatar/default.png"
                 },
             ]
         },
@@ -402,7 +402,7 @@ export const projectsData = {
                 {
                     id: 5,
                     user_name: "Wind Mind",
-                    user_img: "/images/avatar/1.png"
+                    user_img: "/images/avatar/default.png"
                 },
             ]
         },

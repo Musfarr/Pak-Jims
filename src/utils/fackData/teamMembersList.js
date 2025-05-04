@@ -1,7 +1,7 @@
 export const teamMembersList = [
     {
         id: 1,
-        thumbnail: "/images/avatar/1.png",
+        thumbnail: "/images/avatar/default.png",
         name: "Alexandra Della",
         position: "Frontend Developer",
         progress: 40,

@@ -5,7 +5,7 @@ export const proposalTableData = [
         "client": {
             "name": "Alexandra Della",
             "email": "alex.della@outlook.com",
-            "img": "/images/avatar/1.png"
+            "img": "/images/avatar/default.png"
         },
         "subject": "A business proposal for a new product or service",
         "amount": "$249.99 USD",

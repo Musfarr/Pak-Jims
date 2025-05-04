@@ -10,7 +10,7 @@ export const customersTableData = [
         "id": 1,
         "customer": {
             "name": "Alexandra Della",
-            "img": "/images/avatar/1.png"
+            "img": "/images/avatar/default.png"
         },
         "email": "alex.della@outlook.com",
         "group": { tags, defaultSelect: [tags[5], tags[6]] },

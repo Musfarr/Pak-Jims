@@ -19,7 +19,7 @@ const actionOptions = [
     { icon: <FiTrash2 />, label: 'Delete' }
 ]
 const summaryData = [
-    { invoiceNumber: '#896574', avatar: '/images/avatar/1.png', name: 'Alexandra Della', email: 'alex@outlook.com', code: 'SU56HD246K', date: '28-02-2023', icon: 'fa-cc-visa', cardType: 'Visa', status: taskStatusOptions },
+    { invoiceNumber: '#896574', avatar: '/images/avatar/default.png', name: 'Alexandra Della', email: 'alex@outlook.com', code: 'SU56HD246K', date: '28-02-2023', icon: 'fa-cc-visa', cardType: 'Visa', status: taskStatusOptions },
     { invoiceNumber: '#478523', avatar: '/images/avatar/2.png', name: 'Green Cute', email: 'green.cute@hotmail.com', code: 'SU56HD246K', date: '28-02-2023', icon: 'fa-cc-mastercard', cardType: 'Mastercard', status: taskStatusOptions },
     { invoiceNumber: '#568745', avatar: '/images/avatar/3.png', name: 'Marianne Audrey', email: 'marianne.audrey@live.com', code: 'SU56HD246K', date: '28-02-2023', icon: 'fa-cc-paypal', cardType: 'Paypal', status: taskStatusOptions },
     { invoiceNumber: '#852369', avatar: '/images/avatar/4.png', name: 'Holland Scott', email: 'holland.scott@gmail.com', code: 'SU56HD246K', date: '28-02-2023', icon: 'fa-cc-paypal', cardType: 'Paypal', status: taskStatusOptions },

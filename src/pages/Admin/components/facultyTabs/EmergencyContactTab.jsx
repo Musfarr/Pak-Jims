@@ -25,7 +25,12 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <input 
                                 type="tel" 
                                 className={`form-control ${errors.emergency_phone ? 'is-invalid' : ''}`}
-                                {...register('emergency_phone', { required: 'Emergency contact phone is required' })}
+                                {...register('emergency_phone', { required: 'Emergency contact phone is required' 
+                                    , pattern: {
+                                        value: /^[0-9]{11}$/, 
+                                        message: 'Emergency contact phone must be 11 digits'
+                                    }
+                                })}
                             />
                             {errors.emergency_phone && <div className="invalid-feedback">{errors.emergency_phone.message}</div>}
                         </div>

@@ -1,7 +1,7 @@
 export const chatMessageData = [
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "10:32 PM",
         isReplay: false,
         messages: [
@@ -23,7 +23,7 @@ export const chatMessageData = [
 
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "10:40 PM",
         isReplay: false,
         messages: [
@@ -46,7 +46,7 @@ export const chatMessageData = [
 
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "10:45 PM",
         isReplay: false,
         messages: [
@@ -87,7 +87,7 @@ export const chatMessageData = [
 
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "10:50 PM",
         isReplay: false,
         messages: [
@@ -109,7 +109,7 @@ export const chatMessageData = [
 
     {
         user_name: "Alexandra Della",
-        user_img: "/images/avatar/1.png",
+        user_img: "/images/avatar/default.png",
         time: "10:50 PM",
         isReplay: false,
         isTyping: true,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { FiCalendar, FiPlus, FiTrash } from 'react-icons/fi';
 import { useFieldArray } from 'react-hook-form';
-import DatePicker from 'react-datepicker';
 import Input from '@/components/shared/Input';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 
@@ -16,9 +15,9 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
         append({ 
             nameOfInstitute: '', 
             degree: '', 
-            fromDate: null, 
-            toDate: null, 
-            gpaGradeDiv: '', 
+            start_date: null, 
+            end_date: null, 
+            grade: '', 
             city: '', 
             country: '',
             subject: '' 
@@ -124,18 +123,23 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                             </div>
                         </div>
                         <div className="col-lg-6">
-                            <label htmlFor={`education-${index}-gpaGradeDiv`} className="form-label">GPA/Grade/Div</label>
+                            <label htmlFor={`education-${index}-gpaGradeDiv`} className="form-label">Grade</label>
                             <div className="input-group">
                                 <div className="input-group-text"><i className="feather-star"></i></div>
                                 <input
                                     type="text"
-                                    className={`form-control ${errors?.education?.[index]?.gpaGradeDiv ? 'is-invalid' : ''}`}
-                                    id={`education-${index}-gpaGradeDiv`}
+                                    className={`form-control ${errors?.education?.[index]?.grade ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-grade`}
                                     placeholder="e.g., 3.8/4.0, A+, First Division"
-                                    {...register(`education.${index}.gpaGradeDiv`, { required: 'GPA/Grade/Div is required' })}
+                                    {...register(`education.${index}.grade`, { required: 'Grade is required' ,
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9+]{2}$/,
+                                            message: 'Please enter a valid grade'
+                                        }
+                                     })}
                                 />
-                                {errors?.education?.[index]?.gpaGradeDiv && (
-                                    <div className="invalid-feedback">{errors.education[index].gpaGradeDiv.message}</div>
+                                {errors?.education?.[index]?.grade && (
+                                    <div className="invalid-feedback">{errors.education[index].grade.message}</div>
                                 )}
                             </div>
                         </div>
@@ -184,42 +188,30 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                             <label htmlFor={`education-${index}-fromDate`} className="form-label">From Date</label>
                             <div className="input-group flex-nowrap">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                    <DatePicker
-                                        placeholderText='Start Date'
-                                        selected={watch(`education.${index}.fromDate`)}
-                                        showPopperArrow={false}
-                                        onChange={(date) => setValue(`education.${index}.fromDate`, date)}
-                                        className='form-control rounded-0'
-                                        popperPlacement="bottom-start"
-                                        calendarContainer={({ children }) => (
-                                            <div className='bg-white react-datepicker'>
-                                                {children}
-                                            </div>
-                                        )}
-                                    />
-                                </div>
+                                <input
+                                    type="date"
+                                    className={`form-control ${errors?.education?.[index]?.start_date ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-start_date`}
+                                    {...register(`education.${index}.start_date`, { required: 'Start date is required' })}
+                                />
+                                {errors?.education?.[index]?.start_date && (
+                                    <div className="invalid-feedback">{errors.education[index].start_date.message}</div>
+                                )}
                             </div>
                         </div>
                         <div className="col-lg-6">
                             <label htmlFor={`education-${index}-toDate`} className="form-label">To Date</label>
                             <div className="input-group flex-nowrap">
                                 <div className="input-group-text"><FiCalendar size={16} /></div>
-                                <div className='w-100 d-flex date rounded-0' style={{ flexBasis: "95%" }}>
-                                    <DatePicker
-                                        placeholderText='End Date'
-                                        selected={watch(`education.${index}.toDate`)}
-                                        showPopperArrow={false}
-                                        onChange={(date) => setValue(`education.${index}.toDate`, date)}
-                                        className='form-control rounded-0'
-                                        popperPlacement="bottom-start"
-                                        calendarContainer={({ children }) => (
-                                            <div className='bg-white react-datepicker'>
-                                                {children}
-                                            </div>
-                                        )}
-                                    />
-                                </div>
+                                <input
+                                    type="date"
+                                    className={`form-control ${errors?.education?.[index]?.end_date ? 'is-invalid' : ''}`}
+                                    id={`education-${index}-end_date`}
+                                    {...register(`education.${index}.end_date`, { required: 'End date is required' })}
+                                />
+                                {errors?.education?.[index]?.end_date && (
+                                    <div className="invalid-feedback">{errors.education[index].end_date.message}</div>
+                                )}
                             </div>
                         </div>
                     </div>

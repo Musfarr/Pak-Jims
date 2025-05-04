@@ -49,7 +49,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiAward /></div>
                         <input
-                            type="text"
+                            type="number"
                             className={`form-control ${errors.scale ? 'is-invalid' : ''}`}
                             id="scaleGradeInput"
                             placeholder="Scale/Grade"

@@ -36,7 +36,7 @@ const TabProfile = () => {
                     <div className="col-lg-8">
                         <div className="mb-4 mb-md-0 d-flex gap-4 your-brand">
                             <label htmlFor='img' className="wd-100 ht-100 position-relative overflow-hidden border border-gray-2 rounded">
-                                <img src="/images/avatar/1.png" className="upload-pic img-fluid rounded h-100 w-100" alt="" />
+                                <img src="/images/avatar/default.png" className="upload-pic img-fluid rounded h-100 w-100" alt="" />
                                 <div className="position-absolute start-50 top-50 end-0 bottom-0 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
                                     <i aria-hidden="true" className='camera-icon'><FiCamera /></i>
                                 </div>

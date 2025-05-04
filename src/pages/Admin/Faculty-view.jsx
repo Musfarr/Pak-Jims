@@ -17,7 +17,7 @@ const facultyData = [
         gender: 'Male',
         dob: '15 May, 1980',
         address: 'House #123, Street 4, Islamabad, Pakistan',
-        avatar: '/images/avatar/1.png',
+        avatar: '/images/avatar/default.png',
         department: 'Cardiology',
         designation: 'Associate Professor',
         status: 'Active',

@@ -32,7 +32,7 @@ const userSearch = [
         id: 1,
         name: "Alexandra Della",
         email: "alex.della@outlook.com",
-        src: "/images/avatar/1.png",
+        src: "/images/avatar/default.png",
     },
     {
         id: 2,

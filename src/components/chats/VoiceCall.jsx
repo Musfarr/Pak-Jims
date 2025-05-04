@@ -14,7 +14,7 @@ const VoiceCall = () => {
                             {/* <!--! BEGIN: [voice-call-content] !-->  */}
                             <div className="d-flex align-items-center justify-content-center flex-column voice-call-content">
                                 <div className="wd-150 ht-150">
-                                    <img src="/images/avatar/1.png" className="rounded-circle border border-5 img-fluid animation-infinite" alt="image" />
+                                    <img src="/images/avatar/default.png" className="rounded-circle border border-5 img-fluid animation-infinite" alt="image" />
                                 </div>
                                 <div className="my-4 text-center">
                                     <h2 className="fs-13 fw-bold text-dark mb-1">Alexandra Della</h2>
