@@ -36,6 +36,8 @@ import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
 import CreateQEC from "../pages/Admin/Create-QEC";
 import QECList from "../pages/Admin/QEC-list";
+import QECView from "../pages/Admin/QEC-view";
+import QECReport from "../pages/Admin/QEC-report";
 
 // SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
@@ -346,6 +348,22 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <CreateQEC />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/view/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/report/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECReport />
                     </ProtectedRoute>
                 )
             },

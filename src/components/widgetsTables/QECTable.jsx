@@ -6,7 +6,10 @@ import Pagination from '@/components/shared/Pagination';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
 import Swal from 'sweetalert2';
-import { FaDownLong } from 'react-icons/fa6';
+import { FaDownLong, FaRegHandPointRight } from 'react-icons/fa6';
+import SelectDropdown from '@/components/shared/SelectDropdown';
+import Dropdown from '@/components/shared/Dropdown';
+
 
 const QECTable = ({ title }) => {
     const navigate = useNavigate();
@@ -20,19 +23,27 @@ const QECTable = ({ title }) => {
         {
             id: 1,
             title: "Student Course Evaluation Questionnaire",
+            status: "unassigned",
             description: "For Students at the time of Course Completion",
         },
         {
             id: 2,
             title: "Survey of Graduating Students",
             description: "For Graduating Students",
-            status: "pending"
+            status: "unassigned"
         },
         {
             id: 3,
             title: "Teacher Evaluation Form",
             description: "For Students",
+            status: "unassigned"
         },
+    ];
+
+
+    const statusOptions = [
+        { value: "Assigned", label: "Assigned" },
+        { value: "Unassigned", label: "Unassigned" },
     ];
 
     // Filter QEC records based on search term
@@ -64,7 +75,7 @@ const QECTable = ({ title }) => {
         link.href = url;
         link.download = `QEC-${id}.pdf`;
 
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -77,6 +88,12 @@ const QECTable = ({ title }) => {
 
     const handleEditQEC = (id) => {
         navigate(`/qec/edit/${id}`);
+    };
+
+
+
+    const handleViewQEC = (id) => {
+        navigate(`/qec/view/${id}`);
     };
 
     const handleDeleteQEC = (id) => {
@@ -143,7 +160,9 @@ const QECTable = ({ title }) => {
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
-                                    <th>Target Audience</th>                                    
+                                    <th>Assigned To</th>      
+                                    <th>Status</th>
+                                    <th>Report</th>                               
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -158,10 +177,40 @@ const QECTable = ({ title }) => {
                                                     ? (qec.description.length > 50 
                                                         ? `${qec.description.substring(0, 50)}...` 
                                                         : qec.description) 
-                                                    : 'N/A'}
+                                                        : 'N/A'}
                                             </td>
+
+
+                                            <td>
+                                            <span className={`badge bg-soft-${qec.status === "Assigned" ? "success" : "danger"} text-${qec.status === "Assigned" ? "primary" : "danger"}`}>{qec.status}</span>
+                                            </td>
+
+
+                                            <td>
+                                                <button 
+                                                    className="btn btn-sm btn-outline-secondary" 
+                                                    onClick={() => navigate(`/qec/report/${qec.id}`)}
+                                                    title="View"
+                                                >
+                                                    
+                                                    Report
+                                                </button>
+                                            </td>
+
+
+
+                                            
+
+
                                             <td>
                                                 <div className="d-flex gap-2">
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-primary" 
+                                                        onClick={() => handleViewQEC(qec.id)}
+                                                        title="View"
+                                                    >
+                                                        <FiEye />
+                                                    </button>
                                                     <button 
                                                         className="btn btn-sm btn-outline-info" 
                                                         onClick={() => handleQECDownload(qec.id)}
@@ -169,13 +218,6 @@ const QECTable = ({ title }) => {
                                                     >
                                                         <FaDownLong />
                                                     </button>
-                                                    {/* <button 
-                                                        className="btn btn-sm btn-outline-primary" 
-                                                        onClick={() => handleEditQEC(qec.id)}
-                                                        title="Edit"
-                                                    >
-                                                        <FiEdit />
-                                                    </button> */}
                                                     {/* <button 
                                                         className="btn btn-sm btn-outline-danger" 
                                                         onClick={() => handleDeleteQEC(qec.id)}
@@ -185,6 +227,9 @@ const QECTable = ({ title }) => {
                                                     </button> */}
                                                 </div>
                                             </td>
+
+
+
                                         </tr>
                                     ))
                                 ) : (

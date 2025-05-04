@@ -197,7 +197,7 @@ export const AdminMenuList = [
 
     {
         id: 12,
-        name: "Quality Enhancement Cell",
+        name: "QEC",
         path: "#",
         icon: 'feather-award',
         dropdownMenu: [
@@ -207,12 +207,12 @@ export const AdminMenuList = [
                 path: "/qec-list",
                 subdropdownMenu: []
             },
-            {
-                id: 2,
-                name: "Create New Questionnaire",
-                path: "/qec/add",
-                subdropdownMenu: []
-            }
+            // {
+            //     id: 2,
+            //     name: "Create New Questionnaire",
+            //     path: "/qec/add",
+            //     subdropdownMenu: []
+            // }
         ]
     },
 
