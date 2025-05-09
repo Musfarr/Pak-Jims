@@ -144,7 +144,7 @@ const QECTable = ({ title }) => {
 
                 {(refreshKey || isLoading) && <CardLoader />}
 
-                <div className="card-body">
+                <div className="card-body  ">
                     <div className="row mb-3">
                         <div className="col-md-4">
                             <div className="input-group">
@@ -169,20 +169,19 @@ const QECTable = ({ title }) => {
                         </Link>
                     </div> */}
 
-                    <div className="table-responsive ">
-                        <table className="table table-hover">
+                    <div className="table-responsie  ">
+                        <table className="table table-hover ">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
                                     <th>Description</th>      
                                     <th>Status</th>
-                                    <th>Report</th>
                                     <th>Assignments</th>                               
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                                 {isLoading ? (
                                     <tr>
                                         <td colSpan="7" className="text-center">
@@ -212,15 +211,7 @@ const QECTable = ({ title }) => {
                                                     {qec.status || "unassigned"}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <button 
-                                                    className="btn btn-sm btn-outline-secondary" 
-                                                    onClick={() => navigate(`/qec/report/${qec.id}`)}
-                                                    title="View Report"
-                                                >
-                                                    Report
-                                                </button>
-                                            </td>
+                                            
                                             <td>
                                                 <button 
                                                     className="btn btn-sm btn-outline-primary" 

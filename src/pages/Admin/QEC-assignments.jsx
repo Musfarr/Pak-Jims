@@ -27,12 +27,11 @@ const QECAssignments = ({ title }) => {
   // Get assignments from API response or use static data
   const assignments = assignmentsResponse?.data ||[]
 
+
   // Filter assignments based on search term
   const filteredAssignments = assignments.filter(assignment => {
     return (
-      assignment.survey_title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      assignment.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      assignment.program?.toLowerCase().includes(searchTerm.toLowerCase())
+      assignment.term?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -71,16 +70,16 @@ const QECAssignments = ({ title }) => {
                   </div>
                 </div>
               </div>
-              <div className="card-body">
+              <div className="card-body pb-4">
                 {isLoading ? (
-                  <div className="text-center py-5">
+                  <div className="text-center py-4">
                     <div className="spinner-border text-primary" role="status">
                       <span className="visually-hidden">Loading...</span>
                     </div>
                     <p className="mt-3">Loading assignment information...</p>
                   </div>
                 ) : error ? (
-                  <div className="text-center py-5">
+                  <div className="text-center py-4">
                     <div className="alert alert-danger">
                       An error occurred while loading the assignments. Please try again.
                     </div>
@@ -92,36 +91,46 @@ const QECAssignments = ({ title }) => {
                     </button>
                   </div>
                 ) : filteredAssignments.length === 0 ? (
-                  <div className="text-center py-5">
+                  <div className="text-center py-4">
                     <div className="alert alert-info">
                       No assignments found matching your search criteria.
                     </div>
                   </div>
                 ) : (
-                  <div className="table-responsive">
+                  <div className="table-rponsive">
                     <table className="table table-hover">
                       <thead>
                         <tr>
-                          <th>Assignment ID</th>
-                          <th>Survey Title</th>
+                          <th>#</th>
+                          <th>Term</th>
+                          <th>Survey</th>
+                          <th>Assigned Details</th>
+                          <th>Report</th>
                           
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredAssignments.map((assignment) => (
+                        {filteredAssignments.map((assignment , index) => (
                           <tr key={assignment.id}>
-                            <td>{assignment.id}</td>
-                            <td>{assignment.survey_title}</td>
-                            
-                            
-                            
+                            <td>{index + 1}</td>
+                            <td>{assignment.survey.title}</td>
+                            <td>{assignment.term}</td>
                             <td>
                               <button 
                                 className="btn btn-sm btn-outline-primary" 
-                                onClick={() => handleViewDetails(assignment.id)}
+                                onClick={() => navigate(`/qec/assignment-details/${assignment.survey_id}` , { state: { assignmentTerm: assignment.term } })}
                                 title="View Details"
                               >
                                 <FiEye /> Details
+                              </button>
+                            </td>
+                            <td>
+                              <button 
+                                className="btn btn-sm btn-outline-secondary" 
+                                onClick={() => navigate(`/qec/report/${assignment.survey_id}`)}
+                                title="View Report"
+                              >
+                                Report
                               </button>
                             </td>
                           </tr>

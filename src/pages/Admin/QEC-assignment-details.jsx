@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import Footer from '@/components/shared/Footer'
 import { useParams, useNavigate } from 'react-router-dom'
-import { FiCalendar, FiCheck, FiCheckCircle, FiFileText, FiList, FiTarget, FiUser } from 'react-icons/fi'
-import { DeleteApi, GetApi, PostApi } from '@/utils/Api/ApiServices'
-import { useQuery } from '@tanstack/react-query'
+import { FiCalendar, FiCheck, FiCheckCircle, FiFileText, FiList, FiTarget, FiUser, FiSave, FiX, FiEdit } from 'react-icons/fi'
+import { DeleteApi, GetApi, PostApi, PutApi } from '@/utils/Api/ApiServices'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import Swal from 'sweetalert2'
+import { useLocation } from 'react-router-dom'
+import Select from 'react-select'
 
 const QECAssignmentDetails = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const assignmentTerm = location.state?.assignmentTerm;
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
+  // State for editing mode
+  const [isEditing, setIsEditing] = useState(false);
 
   // Fetch assignment details
   const { 
@@ -18,83 +26,98 @@ const QECAssignmentDetails = () => {
     error: assignmentError,
     refetch: refetchAssignment
   } = useQuery({
-    queryKey: ['assignment-details', id],
-    queryFn: () => GetApi(`/survey-assign/${id}`)
+    queryKey: ['assignment-details', id, assignmentTerm],
+    queryFn: () => PostApi(`/survey-assign-show`, { term: assignmentTerm, survey_id: id})
   });
+
+  // Fetch departments
+  const { data: departmentsResponse, isLoading: isDepartmentsLoading } = useQuery({
+    queryKey: ['departments'],
+    queryFn: () => GetApi('/departments')
+  });
+  const departmentsData = departmentsResponse?.data?.data || [];
+
+
+  // Fetch batches
+  const { data: batchesResponse, isLoading: isBatchesLoading } = useQuery({
+    queryKey: ['batches'],
+    queryFn: () => GetApi('/batches')
+  });
+  const batchesData = batchesResponse?.data || [];
+
+  // Fetch courses
+  const { data: coursesResponse, isLoading: isCoursesLoading } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => GetApi('/courses')
+  });
+  const coursesData = coursesResponse?.data?.data || [];
 
   // Fetch survey details based on the assignment survey_id
-  const { 
-    data: surveyResponse, 
-    isLoading: isSurveyLoading, 
-    error: surveyError 
-  } = useQuery({
-    queryKey: ['survey-details', assignmentResponse?.data?.data?.survey_id],
-    queryFn: () => GetApi(`/surveys/${assignmentResponse?.data?.data?.survey_id}`),
-    enabled: !!assignmentResponse?.data?.data?.survey_id
+
+ 
+
+  // Process data from API response
+  const assignment = assignmentResponse?.data?.data || {
+    survey_id: id,
+    term: assignmentTerm,
+    course_ids: [],
+    depart_ids: [],
+    batch_ids: []
+  };
+  
+  // Extract IDs directly from assignment data when needed
+  const selectedDepartments = assignment?.depart_ids || [];
+  const selectedBatches = assignment?.batch_ids || [];
+  const selectedCourses = assignment?.course_ids || [];
+  
+  const isLoading = isAssignmentLoading || isDepartmentsLoading || isBatchesLoading || isCoursesLoading;
+  const hasError = assignmentError;
+
+  // Mutation for updating assignment
+  const updateAssignmentMutation = useMutation({
+    mutationFn: (data) => PutApi(`/survey-assign-update`, data),
+    onSuccess: () => {
+      Swal.fire('Success', 'Assignment updated successfully', 'success');
+      queryClient.invalidateQueries(['assignment-details', id, assignmentTerm]);
+      setIsEditing(false);
+    },
+    onError: (error) => {
+      Swal.fire('Error', error.message || 'Failed to update assignment', 'error');
+    }
   });
 
-  // Static data for demonstration
-  const staticAssignment = {
-    id: id,
-    survey_id: 2,
-    survey_title: "Teacher Evaluation Form",
-    term: "2025-spring",
-    assigned_by: "13",
-    created_at: "2025-05-08 18:48:30",
-    department: "Computer Science",
-    program: "BS Computer Science",
-    course: "Introduction to Programming",
-    status: "active"
+  // Initialize edited values - only once when data loads or changes
+  const [editedDepartments, setEditedDepartments] = useState([]);
+  const [editedBatches, setEditedBatches] = useState([]);
+  const [editedCourses, setEditedCourses] = useState([]);
+  
+  // Initialize edit states only when data actually changes
+  const [dataInitialized, setDataInitialized] = useState(false);
+  
+  useEffect(() => {
+    // Only update if we have assignment data and it hasn't been initialized yet
+    // or if the assignment data has changed (based on the query key)
+    if (assignmentResponse?.data?.data && (!dataInitialized || assignmentResponse)) {
+      setEditedDepartments(assignmentResponse.data.data.depart_ids || []);
+      setEditedBatches(assignmentResponse.data.data.batch_ids || []);
+      setEditedCourses(assignmentResponse.data.data.course_ids || []);
+      setDataInitialized(true);
+    }
+  }, [assignmentResponse, dataInitialized]);
+
+  // Handle save changes
+  const handleSaveChanges = () => {
+    const updateData = {
+      survey_id: id,
+      term: assignmentTerm,
+      depart_ids: editedDepartments,
+      batch_ids: editedBatches,
+      course_ids: editedCourses
+    };
+    
+    updateAssignmentMutation.mutate(updateData);
   };
 
-  const staticSurvey = {
-    id: staticAssignment.survey_id,
-    title: staticAssignment.survey_title,
-    description: "Comprehensive evaluation of teaching faculty performance across all departments",
-    sections: [
-      {
-        id: 1,
-        title: "Instructor",
-        questions: [
-          {
-            id: 1,
-            text: "The Instructor is prepared for each class",
-            type: "radio",
-            options: [
-              { id: 1, label: "A", text: "A" },
-              { id: 2, label: "B", text: "B" },
-              { id: 3, label: "C", text: "C" },
-              { id: 4, label: "D", text: "D" }
-            ]
-          },
-          {
-            id: 2,
-            text: "The Instructor demonstrates knowledge of the subject",
-            type: "radio",
-            options: [
-              { id: 5, label: "A", text: "A" },
-              { id: 6, label: "B", text: "B" },
-              { id: 7, label: "C", text: "C" },
-              { id: 8, label: "D", text: "D" }
-            ]
-          }
-        ]
-      }
-    ]
-  };
-
-  // Process data - use API data if available, otherwise use static data
-  const assignment = assignmentResponse?.data?.data || staticAssignment;
-  const survey = surveyResponse?.data?.data || staticSurvey;
-  const isLoading = isAssignmentLoading || isSurveyLoading;
-  const hasError = assignmentError || surveyError;
-
-  // Format term for display
-  const formatTerm = (term) => {
-    if (!term) return 'N/A';
-    const [year, semester] = term.split('-');
-    return `${semester.charAt(0).toUpperCase() + semester.slice(1)} ${year}`;
-  };
 
   // Handle unassign
   const handleUnassign = () => {
@@ -123,10 +146,8 @@ const QECAssignmentDetails = () => {
 
   return (
     <>
-      <PageHeader>
-        <h4 className="mb-0">Assignment Details</h4>
-      </PageHeader>
-      <div className='main-content'>
+      
+      <div className='main-content '  >
         <div className='row'>
           {isLoading ? (
             <div className="col-12">
@@ -164,16 +185,9 @@ const QECAssignmentDetails = () => {
                 <div className="card mb-4">
                   <div className="card-header d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 className="card-title mb-0">{survey?.title || 'Survey Details'}</h5>
-                      <p className="text-muted mb-0 small">{survey?.description || 'No description available'}</p>
                     </div>
                     <div className="d-flex gap-2">
-                      <button 
-                        className="btn btn-outline-primary"
-                        onClick={() => navigate(`/qec/view/${survey.id}`)}
-                      >
-                        <FiFileText className="me-1" /> View Survey
-                      </button>
+                      
                       <button 
                         className="btn btn-outline-danger"
                         onClick={handleUnassign}
@@ -190,58 +204,222 @@ const QECAssignmentDetails = () => {
                           <table className="table table-sm mb-0">
                             <tbody>
                               <tr>
-                                <td width="40%" className="fw-medium">Assignment ID:</td>
-                                <td>{assignment.id}</td>
+                                <td width="40%" className="fw-medium">Survey ID:</td>
+                                <td>{assignment.survey_id}</td>
                               </tr>
                               <tr>
                                 <td className="fw-medium">Term:</td>
-                                <td>{formatTerm(assignment.term)}</td>
+                                <td>{assignment.term}</td>
                               </tr>
                               <tr>
                                 <td className="fw-medium">Created On:</td>
                                 <td>{assignment.created_at || 'N/A'}</td>
-                              </tr>
-                              <tr>
-                                <td className="fw-medium">Status:</td>
-                                <td>
-                                  <span className={`badge bg-${assignment.status === 'active' ? 'success' : 'warning'}`}>
-                                    {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
-                                  </span>
-                                </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
                       
-                      <div className="col-md-6">
-                        <h6 className="fw-bold mb-3">Assignment Target</h6>
+                      <div className="col-md-6 d-flex flex-column">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6 className="fw-bold mb-0"></h6>
+                          {!isEditing ? (
+                            <button 
+                              className="btn btn-sm btn-primary" 
+                              onClick={() => setIsEditing(true)}
+                            >
+                              <FiEdit className="me-1" /> Edit Assignments
+                            </button>
+                          ) : (
+                            <div className="d-flex gap-2">
+                              <button 
+                                className="btn btn-sm btn-success" 
+                                onClick={handleSaveChanges}
+                                disabled={updateAssignmentMutation.isLoading}
+                              >
+                                <FiSave className="me-1" /> Save
+                              </button>
+                              <button 
+                                className="btn btn-sm btn-secondary" 
+                                onClick={() => setIsEditing(false)}
+                              >
+                                <FiX className="me-1" /> Cancel
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                        {updateAssignmentMutation.isLoading && (
+                          <div className="alert alert-info mb-3">
+                            <div className="d-flex align-items-center">
+                              <div className="spinner-border spinner-border-sm me-2" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </div>
+                              <div>Updating assignment...</div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="row mt-4">
+                      <div className="col-md-4">
+                        <h6 className="fw-bold mb-3">Departments</h6>
                         <div className="border rounded p-3">
-                          <table className="table table-sm mb-0">
-                            <tbody>
-                              <tr>
-                                <td width="40%" className="fw-medium">Department:</td>
-                                <td>{assignment.department || 'All Departments'}</td>
-                              </tr>
-                              <tr>
-                                <td className="fw-medium">Program:</td>
-                                <td>{assignment.program || 'All Programs'}</td>
-                              </tr>
-                              <tr>
-                                <td className="fw-medium">Course:</td>
-                                <td>{assignment.course || 'All Courses'}</td>
-                              </tr>
-                              <tr>
-                                <td className="fw-medium">Assigned By:</td>
-                                <td>Admin (ID: {assignment.assigned_by})</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          {isEditing ? (
+                            <div>
+                              <Select
+                                isMulti
+                                isLoading={isDepartmentsLoading}
+                                options={departmentsData.map(dept => ({
+                                  value: dept.id.toString(),
+                                  label: dept.name
+                                }))}
+                                value={departmentsData
+                                  .filter(dept => editedDepartments.includes(dept.id.toString()))
+                                  .map(dept => ({
+                                    value: dept.id.toString(),
+                                    label: dept.name
+                                  }))}
+                                onChange={(selected) => {
+                                  setEditedDepartments(selected.map(item => item.value));
+                                }}
+                                placeholder="Select departments..."
+                                className="mb-3"
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              {isDepartmentsLoading ? (
+                                <div className="text-center py-3">
+                                  <div className="spinner-border spinner-border-sm" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
+                                </div>
+                              ) : editedDepartments.length === 0 ? (
+                                <div className="text-muted">No departments assigned</div>
+                              ) : (
+                                <ul className="list-group list-group-flush">
+                                  {departmentsData
+                                    .filter(dept => editedDepartments.includes(dept.id.toString()))
+                                    .map(dept => (
+                                      <li key={dept.id} className="list-group-item py-2">
+                                        <FiCheckCircle className="text-success me-2" />
+                                        {dept.name}
+                                      </li>
+                                    ))}
+                                </ul>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="col-md-4">
+                        <h6 className="fw-bold mb-3">Batches</h6>
+                        <div className="border rounded p-3">
+                          {isEditing ? (
+                            <div>
+                              <Select
+                                isMulti
+                                isLoading={isBatchesLoading}
+                                options={batchesData.map(batch => ({
+                                  value: batch.id.toString(),
+                                  label: batch.name
+                                }))}
+                                value={batchesData
+                                  .filter(batch => editedBatches.includes(batch.id.toString()))
+                                  .map(batch => ({
+                                    value: batch.id.toString(),
+                                    label: batch.name
+                                  }))}
+                                onChange={(selected) => {
+                                  setEditedBatches(selected.map(item => item.value));
+                                }}
+                                placeholder="Select batches..."
+                                className="mb-3"
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              {isBatchesLoading ? (
+                                <div className="text-center py-3">
+                                  <div className="spinner-border spinner-border-sm" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
+                                </div>
+                              ) : editedBatches.length === 0 ? (
+                                <div className="text-muted">No batches assigned</div>
+                              ) : (
+                                <ul className="list-group list-group-flush">
+                                  {batchesData
+                                    .filter(batch => editedBatches.includes(batch.id.toString()))
+                                    .map(batch => (
+                                      <li key={batch.id} className="list-group-item py-2">
+                                        <FiCheckCircle className="text-success me-2" />
+                                        {batch.name}
+                                      </li>
+                                    ))}
+                                </ul>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="col-md-4">
+                        <h6 className="fw-bold mb-3">Courses</h6>
+                        <div className="border rounded p-3">
+                          {isEditing ? (
+                            <div>
+                              <Select
+                                isMulti
+                                isLoading={isCoursesLoading}
+                                options={coursesData.map(course => ({
+                                  value: course.id.toString(),
+                                  label: course.name
+                                }))}
+                                value={coursesData
+                                  .filter(course => editedCourses.includes(course.id.toString()))
+                                  .map(course => ({
+                                    value: course.id.toString(),
+                                    label: course.name
+                                  }))}
+                                onChange={(selected) => {
+                                  setEditedCourses(selected.map(item => item.value));
+                                }}
+                                placeholder="Select courses..."
+                                className="mb-3"
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              {isCoursesLoading ? (
+                                <div className="text-center py-3">
+                                  <div className="spinner-border spinner-border-sm" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
+                                </div>
+                              ) : editedCourses.length === 0 ? (
+                                <div className="text-muted">No courses assigned</div>
+                              ) : (
+                                <ul className="list-group list-group-flush">
+                                  {coursesData
+                                    .filter(course => editedCourses.includes(course.id.toString()))
+                                    .map(course => (
+                                      <li key={course.id} className="list-group-item py-2">
+                                        <FiCheckCircle className="text-success me-2" />
+                                        {course.name}
+                                      </li>
+                                    ))}
+                                </ul>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
 
-                    <div className="alert alert-info mt-4">
+                    {/* <div className="alert alert-info mt-4">
                       <div className="d-flex">
                         <div className="me-3">
                           <FiCheckCircle size={24} />
@@ -260,55 +438,7 @@ const QECAssignmentDetails = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Survey Questions Preview */}
-              <div className="col-lg-12">
-                <div className="card">
-                  <div className="card-header">
-                    <h5 className="card-title">Survey Questions Preview</h5>
-                  </div>
-                  <div className="card-body">
-                    {survey.sections && survey.sections.length > 0 ? (
-                      survey.sections.map((section) => (
-                        <div key={section.id} className="mb-4">
-                          <h6 className="fw-bold mb-3">{section.title}</h6>
-                          {section.questions && section.questions.length > 0 ? (
-                            section.questions.map((question, index) => (
-                              <div key={question.id} className="mb-3 border-bottom pb-3">
-                                <p className="mb-2 fw-medium">{index + 1}. {question.text}</p>
-                                {question.type === 'radio' && question.options && (
-                                  <div className="ps-4">
-                                    {question.options.map((option) => (
-                                      <div key={option.id} className="form-check">
-                                        <input 
-                                          className="form-check-input" 
-                                          type="radio" 
-                                          name={`question_${question.id}`} 
-                                          id={`option_${option.id}`} 
-                                          value={option.label}
-                                          disabled
-                                        />
-                                        <label className="form-check-label" htmlFor={`option_${option.id}`}>
-                                          {option.text}
-                                        </label>
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <p className="text-muted">No questions in this section</p>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-muted">No sections found in this survey</p>
-                    )}
+                    </div> */}
                   </div>
                 </div>
               </div>
