@@ -38,6 +38,8 @@ import CreateQEC from "../pages/Admin/Create-QEC";
 import QECList from "../pages/Admin/QEC-list";
 import QECView from "../pages/Admin/QEC-view";
 import QECReport from "../pages/Admin/QEC-report";
+import QECAssignments from "../pages/Admin/QEC-assignments";
+import QECAssignmentDetails from "../pages/Admin/QEC-assignment-details";
 
 // SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
@@ -367,63 +369,79 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            {
+                path: "/qec/assignments/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECAssignments />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/assignment-details/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECAssignmentDetails />
+                    </ProtectedRoute>
+                )
+            },
 
-            {
-                path: "/faculty-dashboard",
-                element: (
-                    <ProtectedRoute requiredRole="faculty">
-                        <FacultyDashboard />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/student-dashboard",
-                element: (
-                    <ProtectedRoute requiredRole="student">
-                        <StudentDashboard />
-                    </ProtectedRoute>
-                )
-            },
-            // Example of a route that requires minimum role level
-            {
-                path: "/admin-area",
-                element: (
-                    <ProtectedRoute minimumRole="admin">
-                        <Analytics />
-                    </ProtectedRoute>
-                )
-            },
-            // Unauthorized page
-            {
-                path: "/unauthorized",
-                element: <Unauthorized />
-            },
-            {
-                path: "/widgets/lists",
-                element: <WidgetsLists />
-            },
-            {
-                path: "/widgets/tables",
-                element: <WidgetsTables />
-            },
-            {
-                path: "/widgets/charts",
-                element: <WidgetsCharts/>
-            },
-            {
-                path: "/widgets/statistics",
-                element: <WidgetsStatistics/>
-            },
-            {
-                path: "/widgets/miscellaneous",
-                element: <WidgetsMiscellaneous/>
-            },
-            {
-                path: "/help/knowledgebase",
-                element: <HelpKnowledgebase />
-            },
-        ]
-    },
+{
+    path: "/faculty-dashboard",
+    element: (
+        <ProtectedRoute requiredRole="faculty">
+            <FacultyDashboard />
+        </ProtectedRoute>
+    )
+},
+{
+    path: "/student-dashboard",
+    element: (
+        <ProtectedRoute requiredRole="student">
+            <StudentDashboard />
+        </ProtectedRoute>
+    )
+},
+// Example of a route that requires minimum role level
+{
+    path: "/admin-area",
+    element: (
+        <ProtectedRoute minimumRole="admin">
+            <Analytics />
+        </ProtectedRoute>
+    )
+},
+// Unauthorized page
+{
+    path: "/unauthorized",
+    element: <Unauthorized />
+},
+{
+    path: "/widgets/lists",
+    element: <WidgetsLists />
+},
+{
+    path: "/widgets/tables",
+    element: <WidgetsTables />
+},
+{
+    path: "/widgets/charts",
+    element: <WidgetsCharts/>
+},
+{
+    path: "/widgets/statistics",
+    element: <WidgetsStatistics/>
+},
+{
+    path: "/widgets/miscellaneous",
+    element: <WidgetsMiscellaneous/>
+},
+{
+    path: "/help/knowledgebase",
+    element: <HelpKnowledgebase />
+},
+]
+},
 
     {
         path: "/authentication",

@@ -4,11 +4,13 @@ import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Pagination from '@/components/shared/Pagination';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
+import { FiEye, FiEdit, FiTrash, FiSearch, FiCheckSquare } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { FaDownLong, FaRegHandPointRight } from 'react-icons/fa6';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import Dropdown from '@/components/shared/Dropdown';
+import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
+import { useQuery } from '@tanstack/react-query';
 
 
 const QECTable = ({ title }) => {
@@ -18,27 +20,19 @@ const QECTable = ({ title }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // Static QEC data for demonstration
-    const qecData = [
-        {
-            id: 1,
-            title: "Student Course Evaluation Questionnaire",
-            status: "unassigned",
-            description: "For Students at the time of Course Completion",
-        },
-        {
-            id: 2,
-            title: "Survey of Graduating Students",
-            description: "For Graduating Students",
-            status: "unassigned"
-        },
-        {
-            id: 3,
-            title: "Teacher Evaluation Form",
-            description: "For Students",
-            status: "unassigned"
-        },
-    ];
+    // Fetch QEC data using React Query
+    const { 
+        data: qecResponse, 
+        isLoading, 
+        error, 
+        refetch 
+    } = useQuery({
+        queryKey: ['surveys'],
+        queryFn: () => GetApi('/surveys')
+    });
+
+    // Process the API response
+    const qecData = qecResponse?.data || [];
 
 
     const statusOptions = [
@@ -55,15 +49,30 @@ const QECTable = ({ title }) => {
         return matchesSearch;
     });
 
-    // Pagination logic
+    // Pagination logic - use API pagination if available
+    const paginationInfo = qecResponse?.data?.pagination || {
+        total: filteredQEC.length,
+        count: filteredQEC.length,
+        per_page: itemsPerPage,
+        current_page: currentPage,
+        total_pages: Math.ceil(filteredQEC.length / itemsPerPage)
+    };
+    
+    // For client-side pagination if not handled by the API
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredQEC.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredQEC.length / itemsPerPage);
+    const currentItems = paginationInfo.total_pages > 1 
+        ? filteredQEC.slice(indexOfFirstItem, indexOfLastItem) 
+        : filteredQEC;
+    const totalPages = paginationInfo.total_pages;
 
     // Handle page change
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+        // If the API supports pagination, refetch with the new page
+        if (qecResponse?.data?.pagination) {
+            // Implement API pagination call if needed
+        }
     };
 
     // Handle QEC actions
@@ -96,6 +105,10 @@ const QECTable = ({ title }) => {
         navigate(`/qec/view/${id}`);
     };
 
+    const handleViewAssignmentDetails = (id) => {
+        navigate(`/qec/assignments/${id}`);
+    };
+
     const handleDeleteQEC = (id) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -107,13 +120,15 @@ const QECTable = ({ title }) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Static deletion logic
+                // Would be replaced with actual API call in production
+                // DeleteApi(`/surveys/${id}`)
                 Swal.fire(
                     'Deleted!',
                     'QEC record has been deleted.',
                     'success'
                 );
-                // In real implementation, you would update the state here
+                // After successful deletion, refetch the data
+                refetch();
             }
         });
     };
@@ -127,7 +142,7 @@ const QECTable = ({ title }) => {
             <div className={`card stretch stretch-full widget-tasks-content ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
 
-                {refreshKey && <CardLoader />}
+                {(refreshKey || isLoading) && <CardLoader />}
 
                 <div className="card-body">
                     <div className="row mb-3">
@@ -160,48 +175,61 @@ const QECTable = ({ title }) => {
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
-                                    <th>Assigned To</th>      
+                                    <th>Description</th>      
                                     <th>Status</th>
-                                    <th>Report</th>                               
+                                    <th>Report</th>
+                                    <th>Assignments</th>                               
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredQEC.length > 0 ? (
+                                {isLoading ? (
+                                    <tr>
+                                        <td colSpan="7" className="text-center">
+                                            Loading QEC data...
+                                        </td>
+                                    </tr>
+                                ) : error ? (
+                                    <tr>
+                                        <td colSpan="7" className="text-center text-danger">
+                                            Error loading QEC data. Please try again.
+                                        </td>
+                                    </tr>
+                                ) : filteredQEC.length > 0 ? (
                                     currentItems.map((qec) => (
                                         <tr key={qec.id}>
                                             <td>{qec.id || 'N/A'}</td>
                                             <td>{qec.title || 'N/A'}</td>
                                             <td>
                                                 {qec.description 
-                                                    ? (qec.description.length > 50 
-                                                        ? `${qec.description.substring(0, 50)}...` 
+                                                    ? (qec.description.length > 30 
+                                                        ? `${qec.description.substring(0, 30)}...` 
                                                         : qec.description) 
-                                                        : 'N/A'}
+                                                    : 'N/A'}
                                             </td>
-
-
                                             <td>
-                                            <span className={`badge bg-soft-${qec.status === "Assigned" ? "success" : "danger"} text-${qec.status === "Assigned" ? "primary" : "danger"}`}>{qec.status}</span>
+                                                <span className={`badge bg-soft-${qec.status === "assigned" ? "success" : "danger"} text-${qec.status === "assigned" ? "primary" : "danger"}`}>
+                                                    {qec.status || "unassigned"}
+                                                </span>
                                             </td>
-
-
                                             <td>
                                                 <button 
                                                     className="btn btn-sm btn-outline-secondary" 
                                                     onClick={() => navigate(`/qec/report/${qec.id}`)}
-                                                    title="View"
+                                                    title="View Report"
                                                 >
-                                                    
                                                     Report
                                                 </button>
                                             </td>
-
-
-
-                                            
-
-
+                                            <td>
+                                                <button 
+                                                    className="btn btn-sm btn-outline-primary" 
+                                                    onClick={() => handleViewAssignmentDetails(qec.id)}
+                                                    title="View Assignment Details"
+                                                >
+                                                    <FiCheckSquare className="me-1" /> Assignments
+                                                </button>
+                                            </td>
                                             <td>
                                                 <div className="d-flex gap-2">
                                                     <button 
@@ -214,27 +242,17 @@ const QECTable = ({ title }) => {
                                                     <button 
                                                         className="btn btn-sm btn-outline-info" 
                                                         onClick={() => handleQECDownload(qec.id)}
-                                                        title="View"
+                                                        title="Download"
                                                     >
                                                         <FaDownLong />
                                                     </button>
-                                                    {/* <button 
-                                                        className="btn btn-sm btn-outline-danger" 
-                                                        onClick={() => handleDeleteQEC(qec.id)}
-                                                        title="Delete"
-                                                    >
-                                                        <FiTrash />
-                                                    </button> */}
                                                 </div>
                                             </td>
-
-
-
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="6" className="text-center">
+                                        <td colSpan="7" className="text-center">
                                             No QEC records found
                                         </td>
                                     </tr>
