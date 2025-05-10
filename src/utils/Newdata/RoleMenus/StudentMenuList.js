@@ -135,7 +135,7 @@ export const StudentMenuList = [
             {
                 id: 1,
                 name: "QEC Questionnaires",
-                path: "/qec-list",
+                path: "/student-qec-list",
                 subdropdownMenu: []
             },
             // {

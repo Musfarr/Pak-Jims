@@ -40,6 +40,8 @@ import QECView from "../pages/Admin/QEC-view";
 import QECReport from "../pages/Admin/QEC-report";
 import QECAssignments from "../pages/Admin/QEC-assignments";
 import QECAssignmentDetails from "../pages/Admin/QEC-assignment-details";
+import StudentQECList from "../pages/Student/StudentQECList";
+import QECFill from "../pages/Student/QECFill";
 
 // SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
@@ -342,6 +344,22 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <QECList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/student-qec-list",
+                element: (
+                    <ProtectedRoute requiredRole="student">
+                        <StudentQECList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec-fill/:id",
+                element: (
+                    <ProtectedRoute requiredRole="student">
+                        <QECFill />
                     </ProtectedRoute>
                 )
             },
