@@ -171,8 +171,8 @@ const AdminList = () => {
                                                                     <div><FiPhone size={14} className="me-1" /> {admin.phone}</div>
                                                                 </div>
                                                             </td>
-                                                            <td>{admin.branch_name}</td>
-                                                            <td>{admin.institute_name}</td>
+                                                            <td>{admin.branch?.name}</td>
+                                                            <td>{admin.institute?.name}</td>
                                                             <td>
                                                                 <div className="d-flex gap-2">
                                                                     <Link 
@@ -201,9 +201,9 @@ const AdminList = () => {
                                     </>
                                 )}
                             </div>
-                            <div className="card-footer">
+                            {/* <div className="card-footer">
                                 <Pagination />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

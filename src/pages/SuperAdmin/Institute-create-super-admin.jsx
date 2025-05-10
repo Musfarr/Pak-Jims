@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import { FiSave, FiX } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -7,11 +7,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
+
 const InstituteCreateSuperAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
+
+  const location = useLocation();
+  const instituteID = location.state?.instituteID;
+
+  console.log(instituteID)
   // React Hook Form setup
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     defaultValues: {
@@ -22,18 +27,19 @@ const InstituteCreateSuperAdmin = () => {
       password: '',
       password_confirmation: '',
       branch_id: id,
-      user_type: 'admin'
+      user_type: 'admin',
+      institute_id: instituteID,
     }
   });
   
-  // Fetch branch data
-  const { data: branchResponse, isLoading } = useQuery({
-    queryKey: ['branch', id],
-    queryFn: () => GetApi(`/branches/${id}`),
-    enabled: !!id
-  });
+  // // Fetch branch data
+  // const { data: branchResponse, isLoading } = useQuery({
+  //   queryKey: ['branch', id],
+  //   queryFn: () => GetApi(`/branches/${id}`),
+  //   enabled: !!id
+  // });
   
-  const branch = branchResponse?.data;
+  // const branch = branchResponse?.data;
   
   // Create admin mutation
   const createAdminMutation = useMutation({
@@ -46,7 +52,7 @@ const InstituteCreateSuperAdmin = () => {
         text: 'Administrator created successfully',
         confirmButtonColor: '#3085d6'
       }).then(() => {
-        navigate('/branch/list');
+        history.push('/branch/list');
       });
     },
     onError: (error) => {
@@ -62,10 +68,10 @@ const InstituteCreateSuperAdmin = () => {
   
   // Handle form submission
   const onSubmit = (data) => {
-    // Add institute_id from branch data
-    if (branch?.institute_id) {
-      data.institute_id = branch.institute_id;
-    }
+    // // Add institute_id from branch data
+    // if (branch?.institute_id) {
+    //   data.institute_id = branch.institute_id;
+    // }
     
     createAdminMutation.mutate(data);
   };
@@ -75,21 +81,21 @@ const InstituteCreateSuperAdmin = () => {
     navigate('/branch/list');
   };
   
-  if (isLoading) {
-    return (
-      <div className="d-flex justify-content-center m-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="d-flex justify-content-center m-5">
+  //       <div className="spinner-border" role="status">
+  //         <span className="visually-hidden">Loading...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
-      <PageHeader>
+      {/* <PageHeader>
         <h4 className="mb-0">Create Admin for {branch?.name || 'Branch'}</h4>
-      </PageHeader>
+      </PageHeader> */}
       <div className='main-content'>
         <div className='row'>
           <div className='col-12'>

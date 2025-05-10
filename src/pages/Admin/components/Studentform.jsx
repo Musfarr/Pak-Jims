@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { FiCalendar, FiCamera, FiUser, FiBookOpen, FiPhone, FiMail, FiLock } from 'react-icons/fi'
 
-import useLocationData from '@/hooks/useLocationData'
-import useDatePicker from '@/hooks/useDatePicker'
 import { useQuery } from '@tanstack/react-query'
 import { GetApi, PostApi } from '@/utils/Api/ApiServices'
 import { useForm } from 'react-hook-form'
@@ -12,22 +10,11 @@ import Swal from 'sweetalert2'
 const Studentform = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
     const [enrollmentType, setEnrollmentType] = useState("1");
     const [imagePreview, setImagePreview] = useState("/images/avatar/default.png");
-    const { startDate, endDate, setStartDate, setEndDate, renderFooter } = useDatePicker();
-    const { countries, states, cities, loading: locationLoading, error, fetchStates, fetchCities, } = useLocationData();
+    const [currentStep, setCurrentStep] = useState(0);
     
   
-
-    // Define student program/course options
-    const programOptions = [
-        { value: 'computer-science', label: 'Computer Science' },
-        { value: 'business-admin', label: 'Business Administration' },
-        { value: 'engineering', label: 'Engineering' },
-        { value: 'medicine', label: 'Medicine' }
-    ];
-
     // Fetch domiciles using React Query
     const { data: domicilesResponse, isLoading: isDomicilesLoading } = useQuery({
         queryKey: ['domiciles'],
@@ -76,64 +63,118 @@ const Studentform = () => {
 
 
     // React Hook Form setup
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, watch, formState: { errors } , trigger } = useForm({
         defaultValues: {
-            enrollment_no: '',
-            admission_date: new Date().toISOString().split('T')[0],
-            rf_id: '',
-            enroll_no_ii: '',
-            shift_id: '',
-            course_id: '',
-            depart_id: '',
-            batch_id: '',
-            name: '',
-            surname: '',
-            father_name: '',
-            gender: 'male',
-            dob: new Date().toISOString().split('T')[0],
-            cnic: '',
-            mobile_1: '',
-            mobile_2: '',
-            father_mobile: '',
-            emergency_contact: '',
-            email: '',
-            religion: '',
-            nationality: 'Pakistani',
-            domicile_id: '',
-            category_id: '',
-            current_address: '',
-            permanent_address: '',
-            remarks: '',
-            enrollment_type: '1',
+             // Profile Tab - Personal Information
+                name: '',
+                surname: '',
+                father_name: '',
+                gender: 'male',
+                dob: new Date().toISOString().split('T')[0],
+                cnic: '',
+                mobile_1: '',
+                mobile_2: '',
+                father_mobile: '',
+                email: '',
+                religion: '',
+                nationality: 'Pakistani',
+                domicile_id: '',
+                category_id: '',
+                current_address: '',
+                permanent_address: '',
+                remarks: '',
+                // Enrollment Details
+                enrollment_type: '1',
+                migrated_from: '',
+                last_examination: '',
+                division_grade: '',
+                university_board: '',
+                eligibility_certificate_no: '',
+                seat_no: '',
+                year: new Date().getFullYear().toString(),
+                result_status: '0',
+                photo: null,
 
 
-            // status 1 
-            migrated_from: '',
-            last_examination: '',
-            division_grade: '',
-            university_board: '',
-            eligibility_certificate_no: '',
-            seat_no: '',
-            year: new Date().getFullYear().toString(),
-            result_status: '0',
-            
-            
-            username: '',
-            password: '',
-            confirmPassword: '',
-            photo: null,
+                // Academic Tab
+                enrollment_no: '',
+                admission_date: new Date().toISOString().split('T')[0],
+                rf_id: '',
+                enroll_no_ii: '',
+                shift_id: '',
+                course_id: '',
+                depart_id: '',
+                batch_id: '',
 
 
-            // emergency 
-            emergency_contact_name: '',
-            emergency_contact_phone: '',
-            emergency_contact_email: '',
-            emergency_contact_relationship: '',
+
+                    
+                // Profile Tab - Emergency Contact
+                emergency_contact_name: '',
+                emergency_contact_phone: '',
+                emergency_contact_email: '',
+                emergency_contact_relationship: '',
+
+                // Profile Tab - Login Credentials
+                username: '',
+                password: '',
+                confirmPassword: '',
+    
         }
     });
 
     // Watch password for confirmation validation
     const password = watch('password');
+
+
+
+    const stepFields = [
+        ['name', 'surname', 'father_name', 'gender', 'dob', 'cnic', 'mobile_1', 'mobile_2', 'father_mobile', 'email', 'religion', 'nationality', 'domicile_id', 'category_id', 'current_address', 'permanent_address'],
+        ['enrollment_no', 'admission_date', 'rf_id', 'enroll_no_ii', 'shift_id', 'course_id', 'depart_id', 'batch_id'],
+        ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_email', 'emergency_contact_relationship'],
+        ['username', 'password', 'confirmPassword'],
+    ];
+     
+    
+    const tabfields = [ 'profileTab', 'academicTab', 'emergencyTab', 'passwordTab' ];
+
+
+    const getTabLabel = (step) => {
+        const labels = {
+            profileTab: 'PROFILE',
+            academicTab: 'ACADEMICS DETAILS',
+            emergencyTab: 'EMERGENCY CONTACT',
+            passwordTab: 'PASSWORD'
+        };
+        return labels[step];
+    };
+
+
+    const handlenextStep = async () => {
+        console.log(currentStep)
+        const isValid =  await trigger(stepFields[currentStep]);
+
+        if (isValid) {
+                    if (currentStep < stepFields.length - 1) {
+                        setCurrentStep(currentStep + 1);
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Validation Failed',
+                        text: 'Please fill in all required fields.',
+                        confirmButtonText: 'OK'
+                    });
+                    // Optionally, focus on the first invalid field
+                }
+    };
+
+    const handleprevStep = () => {
+        setCurrentStep((prevStep) => prevStep - 1);
+    };
+
+
+
 
     // Handle file input change
     const handleFileChange = (e) => {
@@ -143,9 +184,6 @@ const Studentform = () => {
             setImagePreview(URL.createObjectURL(file));
         }
     };
-
-    // Watch enrollment type for conditional rendering
-    const watchEnrollmentType = watch('enrollment_type');
 
     // Handle form submission
     const onSubmit = (data) => {
@@ -193,22 +231,29 @@ const Studentform = () => {
             <div className="card border-top-0">
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link active" data-bs-toggle="tab" data-bs-target="#profileTab" role="tab">Profile</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#academicTab" role="tab">Academic</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#emergencyTab" role="tab">Emergency Contact</a>
-                        </li>
-                        <li className="nav-item flex-fill border-top" role="presentation">
-                            <a href="#" className="nav-link" data-bs-toggle="tab" data-bs-target="#passwordTab" role="tab">Password</a>
-                        </li>
+                    {tabfields.map((step, index) => (
+                    <li 
+                        key={step}
+                        className={`nav-item flex-fill border-top ${currentStep === index ? 'active' : ''}`} 
+                        role="presentation"
+                    >
+                        <button
+                            type="button"
+                            className={`nav-link ${currentStep === index ? 'active' : ''}`}
+                            // onClick={() => setCurrentStep(index)}
+                            // disabled={currentStep < index} // Optional: prevent jumping ahead
+                        >
+                            {getTabLabel(step)}
+                        </button>
+                    </li>
+        ))}
                     </ul>
                 </div>
+
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="tab-content">
                     {/* Profile Tab */}
+                    {currentStep === 0 && 
                     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
                         <div className="card-body personal-info">
                             <h6 className="fw-bold mb-3">PERSONAL INFORMATION</h6>
@@ -278,7 +323,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="mobileInput">Mobile No</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <input type="text" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="03XX-XXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', pattern: { value: /^03\d{2}-\d{7}$/, message: 'Mobile number must be in format: 03XX-XXXXXXX' } })} />
+                                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', pattern: { value: /^0\d{10}$/, message: 'Mobile number must be in format: 033XXXXXXXX' ,maxLength: { value: 11, message: 'Mobile number must be 11 digits' } } })} />
                                         {errors.mobile_1 && <div className="invalid-feedback">{errors.mobile_1.message}</div>}
                                     </div>
                                 </div>
@@ -714,8 +759,11 @@ const Studentform = () => {
                             
                         </div>
                     </div>
+                    } 
+
 
                     {/* Academic Tab */}
+                    {currentStep === 1 &&                    
                     <div className="tab-pane fade" id="academicTab" role="tabpanel">
                         <div className="card-body academic-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -900,8 +948,13 @@ const Studentform = () => {
                             </div>
                         </div>
                     </div>
+                    }   
+
+
 
                     {/* Emergency Contact Tab */}
+
+                    {currentStep === 2 &&
                     <div className="tab-pane fade" id="emergencyTab" role="tabpanel">
                         <div className="card-body emergency-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -996,8 +1049,11 @@ const Studentform = () => {
                             </div>
                         </div>
                     </div>
+                    }       
 
                     {/* Password Tab */}
+
+                    {currentStep === 3 &&
                     <div className="tab-pane fade" id="passwordTab" role="tabpanel">
                         <div className="card-body password-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -1083,7 +1139,44 @@ const Studentform = () => {
 
                         </div>
                     </div>
+                    }       
                 </div>
+
+
+                <div className="card-footer d-flex justify-content-between p-3">
+                        <button 
+                            type="button" 
+                            className="btn btn-secondary" 
+                            onClick={handleprevStep} 
+                            disabled={currentStep === 0}
+                        >
+                            Previous
+                        </button>
+
+                        {currentStep < stepFields.length - 1 ? (
+                            <button 
+                                type="button" 
+                                className="btn btn-primary" 
+                                onClick={handlenextStep}
+                            >
+                                Next
+                            </button>
+                        ) : (
+                            <button 
+                                type="submit" 
+                                className="btn btn-success"
+                            >
+                                Submit
+                            </button>
+                        )}
+                    </div> 
+
+                </form>
+
+
+
+
+
             </div>
         </div>
     )

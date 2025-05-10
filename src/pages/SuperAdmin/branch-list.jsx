@@ -108,6 +108,7 @@ const BranchList = () => {
                                                                 </Link>
                                                                 <Link 
                                                                     to={`/branch/create-admin/${branch.id}`} 
+                                                                    state={{ instituteID : branch.institute_id }}
                                                                     className="btn btn-sm btn-success"
                                                                     title="Create Admin"
                                                                 >
