@@ -115,12 +115,12 @@ const SearchModal = () => {
                         }
                     </div> */}
                     {/* <div className="dropdown-divider my-3"></div> */}
-                    <div className="users-result px-4 py-2">
+                    {/* <div className="users-result px-4 py-2">
                         <Title name={"Users"} number={"5"} />
                         {
                             userSearch.map(({ name, id, email, src }) => <Card key={id} src={src} subTitle={email} title={name} badge={<FiChevronRight size={12} />} />)
                         }
-                    </div>
+                    </div> */}
                     <div className="dropdown-divider my-3"></div>
                     {/* <div className="file-result px-4 py-2">
                         <Title name={"Files"} number={"3"} />

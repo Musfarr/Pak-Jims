@@ -3,7 +3,7 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets'
 import Footer from '@/components/shared/Footer'
 import { useParams } from 'react-router-dom'
-import { FiCheckCircle, FiFileText, FiList, FiTarget, FiUser } from 'react-icons/fi'
+import { FiCheckCircle, FiFileText, FiList, FiTarget, FiUser, FiAlertCircle } from 'react-icons/fi'
 import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
 import { useQuery } from '@tanstack/react-query';
 
@@ -29,58 +29,50 @@ const QECView = () => {
     queryKey: ['courses'],
     queryFn: () => GetApi('/courses')
   });
-  const courses = courseResponse?.data.data || [];
+  const courses = courseResponse?.data?.data || [];
 
-  // Static QEC data for demonstration
-  const qecData = {
-    id: id || '1',
-    title: "Annual Faculty Evaluation Survey",
-    description: "Comprehensive evaluation of teaching faculty performance across all departments. This survey helps identify strengths and areas for improvement in teaching methodologies, course content delivery, and faculty engagement with students.",
-    target_audience: "students",
-    start_date: "2025-05-01",
-    end_date: "2025-05-15",
-    department: "",
-    course: "",
-    program: "",
-    status: "active",
-    created_at: "2025-04-22",
-    questions: [
-      {
-        id: 1,
-        text: "How satisfied are you with the teaching methodology used in this course?",
-        type: "mcq",
-        options: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"]
-      },
-      {
-        id: 2,
-        text: "Which aspects of the course content were most beneficial to your learning?",
-        type: "mcq",
-        options: ["Lectures", "Practical Sessions", "Assignments", "Group Discussions", "Course Materials"]
-      },
-      {
-        id: 3,
-        text: "Please provide your feedback on the course structure and organization.",
-        type: "textarea",
-        options: []
-      },
-      {
-        id: 4,
-        text: "What suggestions do you have for improving this course in the future?",
-        type: "textarea",
-        options: []
+  // Fetch survey details using React Query
+  const { 
+    data: surveyResponse, 
+    isLoading: isSurveyLoading, 
+    error: surveyError 
+  } = useQuery({
+    queryKey: ['survey', id],
+    queryFn: () => GetApi(`/surveys/${id}`),
+    enabled: !!id // Only run query if id is available
+  });
+
+  // Process survey data from API response
+  const surveyData = surveyResponse?.data || null;
+  
+  // Get all questions from all sections
+  const getAllQuestions = () => {
+    if (!surveyData || !surveyData.sections) return [];
+    
+    let allQuestions = [];
+    surveyData.sections.forEach(section => {
+      if (section.questions && section.questions.length > 0) {
+        allQuestions = [...allQuestions, ...section.questions.map(q => ({
+          ...q,
+          sectionTitle: section.title // Add section title to each question
+        }))];
       }
-    ]
+    });
+    
+    return allQuestions;
   };
+  
+  const questions = getAllQuestions();
 
   // Function to render question based on type
   const renderQuestion = (question, index) => {
     switch (question.type) {
-      case 'mcq':
+      case 'radio':
         return (
           <div className="mb-4" key={question.id}>
             <label className="form-label fw-semibold">{index + 1}. {question.text}</label>
             <div className="ps-4 mt-2">
-              {question.options.map((option, idx) => (
+              {question.options && question.options.map((option, idx) => (
                 <div key={idx} className="form-check mb-2">
                   <input 
                     className="form-check-input" 
@@ -90,7 +82,29 @@ const QECView = () => {
                     disabled
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
-                    {option}
+                    {option.text} ({option.label})
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case 'checkbox':
+        return (
+          <div className="mb-4" key={question.id}>
+            <label className="form-label fw-semibold">{index + 1}. {question.text}</label>
+            <div className="ps-4 mt-2">
+              {question.options && question.options.map((option, idx) => (
+                <div key={idx} className="form-check mb-2">
+                  <input 
+                    className="form-check-input" 
+                    type="checkbox" 
+                    name={`question_${question.id}`} 
+                    id={`option_${question.id}_${idx}`}
+                    disabled
+                  />
+                  <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
+                    {option.text} ({option.label})
                   </label>
                 </div>
               ))}
@@ -118,6 +132,20 @@ const QECView = () => {
         );
     }
   };
+  
+  // Group questions by section for display
+  const renderQuestionsBySection = () => {
+    if (!surveyData || !surveyData.sections) return null;
+    
+    return surveyData.sections.map((section, sectionIndex) => (
+      <div key={section.id} className="mb-5">
+        <h6 className="fw-bold mb-3 bg-light p-2 rounded">{sectionIndex + 1}. {section.title}</h6>
+        {section.questions && section.questions.map((question, questionIndex) => 
+          renderQuestion(question, questionIndex)
+        )}
+      </div>
+    ));
+  };
 
   return (
     <>
@@ -136,7 +164,7 @@ const QECView = () => {
             <div className="card mb-4">
               <div className="card-header">
                 <h5 className="card-title">Quality Enhancement Cell (QEC) Questionnaire</h5>
-                {/* <p className="card-subtitle text-muted mb-0">{qecData.description}</p> */}
+                {surveyData && <p className="card-subtitle text-muted mb-0">{surveyData.title} - {surveyData.description}</p>}
               </div>
               <div className="card-body">
                 {/* <div className="row mb-4">
@@ -255,25 +283,51 @@ const QECView = () => {
                       <div className="card-header bg-light d-flex justify-content-between align-items-center">
                         <h6 className="mb-0">Questionnaire Preview</h6>
                         <div className="text-muted small">
-                          <FiFileText className="me-1" /> Total Questions: {qecData.questions.length}
+                          <FiFileText className="me-1" /> Total Questions: {questions.length}
                         </div>
                       </div>
                       <div className="card-body">
-                        <div className="alert alert-info">
-                          <FiCheckCircle className="me-2" />
-                          This is a preview mode. The form is not fillable here. You can view how the questionnaire will appear to respondents.
-                        </div>
-
-                        <div className="mt-4">
-                          <h6 className="fw-bold mb-3">Instructions</h6>
-                          <p className="mb-4">Please answer all questions honestly. Your feedback is anonymous and will be used to improve teaching quality.</p>
-                          
-                          <div className="mb-4 border-bottom pb-3">
-                            <h6 className="fw-bold">Questionnaire Items</h6>
+                        {isSurveyLoading ? (
+                          <div className="text-center py-5">
+                            <div className="spinner-border text-primary" role="status">
+                              <span className="visually-hidden">Loading...</span>
+                            </div>
+                            <p className="mt-3">Loading survey questions...</p>
                           </div>
+                        ) : surveyError ? (
+                          <div className="alert alert-danger">
+                            <FiAlertCircle className="me-2" />
+                            Error loading survey: {surveyError.message || 'Failed to load survey data'}
+                          </div>
+                        ) : !surveyData ? (
+                          <div className="alert alert-warning">
+                            <FiAlertCircle className="me-2" />
+                            No survey found with ID: {id}
+                          </div>
+                        ) : (
+                          <>
+                            <div className="alert alert-info">
+                              <FiCheckCircle className="me-2" />
+                              This is a preview mode. The form is not fillable here. You can view how the questionnaire will appear to respondents.
+                            </div>
 
-                          {qecData.questions.map((question, index) => renderQuestion(question, index))}
-                        </div>
+                            <div className="mt-4">
+                              <h6 className="fw-bold mb-3">Instructions</h6>
+                              <p className="mb-4">Please answer all questions honestly. Your feedback is anonymous and will be used to improve teaching quality.</p>
+                              
+                              <div className="mb-4 border-bottom pb-3">
+                                <h6 className="fw-bold">Questionnaire Items</h6>
+                                <p className="text-muted small">
+                                  <FiFileText className="me-1" /> 
+                                  Total Sections: {surveyData.sections?.length || 0} | 
+                                  Total Questions: {questions.length}
+                                </p>
+                              </div>
+
+                              {renderQuestionsBySection()}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -57,7 +57,7 @@ const QECAssignmentDetails = () => {
  
 
   // Process data from API response
-  const assignment = assignmentResponse?.data?.data || {
+  const assignment = assignmentResponse?.data || {
     survey_id: id,
     term: assignmentTerm,
     course_ids: [],
@@ -66,6 +66,7 @@ const QECAssignmentDetails = () => {
   };
   
   // Extract IDs directly from assignment data when needed
+  // These are the actual IDs from the API response
   const selectedDepartments = assignment?.depart_ids || [];
   const selectedBatches = assignment?.batch_ids || [];
   const selectedCourses = assignment?.course_ids || [];
@@ -94,16 +95,27 @@ const QECAssignmentDetails = () => {
   // Initialize edit states only when data actually changes
   const [dataInitialized, setDataInitialized] = useState(false);
   
+
+  useEffect(() => {
+    console.log("departmentsData", departmentsData);
+    console.log("batchesData", batchesData);
+    console.log("coursesData", coursesData);
+    console.log("assignment", assignment);
+    console.log("selectedDepartments", selectedDepartments);
+    console.log("selectedBatches", selectedBatches);
+    console.log("selectedCourses", selectedCourses);
+  }, []);
+
   useEffect(() => {
     // Only update if we have assignment data and it hasn't been initialized yet
     // or if the assignment data has changed (based on the query key)
-    if (assignmentResponse?.data?.data && (!dataInitialized || assignmentResponse)) {
-      setEditedDepartments(assignmentResponse.data.data.depart_ids || []);
-      setEditedBatches(assignmentResponse.data.data.batch_ids || []);
-      setEditedCourses(assignmentResponse.data.data.course_ids || []);
-      setDataInitialized(true);
+    if (assignmentResponse?.data) {
+      // Make sure we're storing the IDs exactly as they come from the API
+      setEditedDepartments(assignmentResponse.data.depart_ids );
+      setEditedBatches(assignmentResponse.data.batch_ids );
+      setEditedCourses(assignmentResponse.data.course_ids );
     }
-  }, [assignmentResponse, dataInitialized]);
+  }, [assignmentResponse]);
 
   // Handle save changes
   const handleSaveChanges = () => {
@@ -275,12 +287,15 @@ const QECAssignmentDetails = () => {
                                   label: dept.name
                                 }))}
                                 value={departmentsData
-                                  .filter(dept => editedDepartments.includes(dept.id.toString()))
+                                  .filter(dept => {
+                                    return editedDepartments.some(id => id.toString() === dept.id.toString());
+                                  })
                                   .map(dept => ({
                                     value: dept.id.toString(),
                                     label: dept.name
                                   }))}
                                 onChange={(selected) => {
+                                  // Store the IDs as strings to match the API format
                                   setEditedDepartments(selected.map(item => item.value));
                                 }}
                                 placeholder="Select departments..."
@@ -295,12 +310,15 @@ const QECAssignmentDetails = () => {
                                     <span className="visually-hidden">Loading...</span>
                                   </div>
                                 </div>
-                              ) : editedDepartments.length === 0 ? (
+                              ) : selectedDepartments.length === 0 ? (
                                 <div className="text-muted">No departments assigned</div>
                               ) : (
                                 <ul className="list-group list-group-flush">
                                   {departmentsData
-                                    .filter(dept => editedDepartments.includes(dept.id.toString()))
+                                    .filter(dept => {
+                                      // Convert both to strings for comparison
+                                      return selectedDepartments.some(id => id.toString() === dept.id.toString());
+                                    })
                                     .map(dept => (
                                       <li key={dept.id} className="list-group-item py-2">
                                         <FiCheckCircle className="text-success me-2" />
@@ -327,12 +345,15 @@ const QECAssignmentDetails = () => {
                                   label: batch.name
                                 }))}
                                 value={batchesData
-                                  .filter(batch => editedBatches.includes(batch.id.toString()))
+                                  .filter(batch => {
+                                    return editedBatches.some(id => id.toString() === batch.id.toString());
+                                  })
                                   .map(batch => ({
                                     value: batch.id.toString(),
                                     label: batch.name
                                   }))}
                                 onChange={(selected) => {
+                                  // Store the IDs as strings to match the API format
                                   setEditedBatches(selected.map(item => item.value));
                                 }}
                                 placeholder="Select batches..."
@@ -347,12 +368,15 @@ const QECAssignmentDetails = () => {
                                     <span className="visually-hidden">Loading...</span>
                                   </div>
                                 </div>
-                              ) : editedBatches.length === 0 ? (
+                              ) : selectedBatches.length === 0 ? (
                                 <div className="text-muted">No batches assigned</div>
                               ) : (
                                 <ul className="list-group list-group-flush">
                                   {batchesData
-                                    .filter(batch => editedBatches.includes(batch.id.toString()))
+                                    .filter(batch => {
+                                      // Convert both to strings for comparison
+                                      return selectedBatches.some(id => id.toString() === batch.id.toString());
+                                    })
                                     .map(batch => (
                                       <li key={batch.id} className="list-group-item py-2">
                                         <FiCheckCircle className="text-success me-2" />
@@ -379,12 +403,15 @@ const QECAssignmentDetails = () => {
                                   label: course.name
                                 }))}
                                 value={coursesData
-                                  .filter(course => editedCourses.includes(course.id.toString()))
+                                  .filter(course => {
+                                    return editedCourses.some(id => id.toString() === course.id.toString());
+                                  })
                                   .map(course => ({
                                     value: course.id.toString(),
                                     label: course.name
                                   }))}
                                 onChange={(selected) => {
+                                  // Store the IDs as strings to match the API format
                                   setEditedCourses(selected.map(item => item.value));
                                 }}
                                 placeholder="Select courses..."
@@ -399,12 +426,15 @@ const QECAssignmentDetails = () => {
                                     <span className="visually-hidden">Loading...</span>
                                   </div>
                                 </div>
-                              ) : editedCourses.length === 0 ? (
+                              ) : selectedCourses.length === 0 ? (
                                 <div className="text-muted">No courses assigned</div>
                               ) : (
                                 <ul className="list-group list-group-flush">
                                   {coursesData
-                                    .filter(course => editedCourses.includes(course.id.toString()))
+                                    .filter(course => {
+                                      // Convert both to strings for comparison
+                                      return selectedCourses.some(id => id.toString() === course.id.toString());
+                                    })
                                     .map(course => (
                                       <li key={course.id} className="list-group-item py-2">
                                         <FiCheckCircle className="text-success me-2" />
