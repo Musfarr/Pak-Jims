@@ -20,7 +20,7 @@ const NavigationManu = () => {
                     <Link to="/" className="b-brand">
                         {/* <!-- ========   change your logo hear   ============ --> */}
 
-                        <img src="/images/logo1.jpg" alt="logo" className="logo logo-lg" />
+                        <img src="/images/logo1.jpg" alt="logo" className="logo logo-lg" style={{ width: "30%" }} />
                         <img src="/images/logo1.jpg" alt="logo" className="logo logo-sm" />
                     </Link>
                 </div>
