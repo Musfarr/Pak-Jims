@@ -176,7 +176,7 @@ const QECTable = ({ title }) => {
                                     <th>ID</th>
                                     <th>Title</th>
                                     <th>Description</th>      
-                                    <th>Status</th>
+                                    {/* <th>Status</th> */}
                                     <th>Assignments</th>                               
                                     <th>Actions</th>
                                 </tr>
@@ -206,11 +206,11 @@ const QECTable = ({ title }) => {
                                                         : qec.description) 
                                                     : 'N/A'}
                                             </td>
-                                            <td>
+                                            {/* <td>
                                                 <span className={`badge bg-soft-${qec.status === "assigned" ? "success" : "danger"} text-${qec.status === "assigned" ? "primary" : "danger"}`}>
                                                     {qec.status || "unassigned"}
                                                 </span>
-                                            </td>
+                                            </td> */}
                                             
                                             <td>
                                                 <button 

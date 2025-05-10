@@ -40,6 +40,7 @@ import QECView from "../pages/Admin/QEC-view";
 import QECReport from "../pages/Admin/QEC-report";
 import QECAssignments from "../pages/Admin/QEC-assignments";
 import QECAssignmentDetails from "../pages/Admin/QEC-assignment-details";
+import QECAssign from "../pages/Admin/QECAssign";
 import StudentQECList from "../pages/Student/StudentQECList";
 import QECFill from "../pages/Student/QECFill";
 
@@ -392,6 +393,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <QECAssignments />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/assign/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECAssign />
                     </ProtectedRoute>
                 )
             },
