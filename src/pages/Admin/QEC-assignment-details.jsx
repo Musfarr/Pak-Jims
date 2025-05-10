@@ -135,7 +135,7 @@ const QECAssignmentDetails = () => {
   const handleUnassign = () => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'This will unassign the survey. Users will no longer be able to access it.',
+      text: 'This will unassign the survey from all Departments, Batches and Courses.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -144,14 +144,26 @@ const QECAssignmentDetails = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // This would be replaced with an actual API call in production
-        // DeleteApi(`/survey-assign/${id}`)
-        Swal.fire(
-          'Unassigned!',
-          'Survey has been unassigned.',
-          'success'
-        );
-        // Navigate back to the assignments list
-        navigate('/qec/assignments');
+
+        DeleteApi(`/survey-assignments/revoke`, { survey_id: id, term: assignmentTerm })
+        .then(() => {
+          Swal.fire(
+            'Unassigned!',
+            'Survey has been unassigned.',
+            'success'
+          );
+          navigate(`/qec/assignments/${id}`);
+        })
+        .catch(error => {
+          console.error('Error unassigning survey:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Failed to unassign survey. Please try again.',
+            confirmButtonColor: '#3085d6'
+          });
+        });
+        
       }
     });
   };

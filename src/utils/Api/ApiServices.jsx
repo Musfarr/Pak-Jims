@@ -107,13 +107,14 @@ export const PostApi = async (endpoint, payload) => {
     }
  }
     
-export const DeleteApi = async (endpoint) => {
+export const DeleteApi = async (endpoint , payload) => {
 
     try {
         const result = await axios(
             {
                 method : "DELETE",
                 url : baseurl + endpoint,
+                data : payload || {},
                 headers:{
                     authorization : `Bearer ${localStorage.getItem("token")}`
                 }
