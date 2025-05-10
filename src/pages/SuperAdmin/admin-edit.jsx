@@ -7,12 +7,13 @@ import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
-
+import { useLocation } from 'react-router-dom';
 const AdminEdit = () => {
   const { id } = useParams(); // Admin ID
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { institute_id } = useAuth(); // Get institute_id from auth context
+  const location = useLocation();
+  const { institute_id } = location.state || useAuth(); // Get institute_id from auth context
   
   // Form setup with validation
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -261,7 +262,7 @@ const AdminEdit = () => {
                       {errors.password_confirmation && <div className="invalid-feedback">{errors.password_confirmation.message}</div>}
                     </div>
                     
-                    <div className="col-md-6 mb-3">
+                    {/* <div className="col-md-6 mb-3">
                       <label htmlFor="branch_id" className="form-label">Branch*</label>
                       <select
                         className={`form-select ${errors.branch_id ? 'is-invalid' : ''}`}
@@ -276,9 +277,9 @@ const AdminEdit = () => {
                         ))}
                       </select>
                       {errors.branch_id && <div className="invalid-feedback">{errors.branch_id.message}</div>}
-                    </div>
+                    </div> */}
                     
-                    {!institute_id && (
+                    {/* {!institute_id && (
                       <div className="col-md-6 mb-3">
                         <label htmlFor="institute_id" className="form-label">Institute*</label>
                         <select
@@ -301,7 +302,7 @@ const AdminEdit = () => {
                         </select>
                         {errors.institute_id && <div className="invalid-feedback">{errors.institute_id.message}</div>}
                       </div>
-                    )}
+                    )} */}
                   </div>
                   
                   <div className="d-flex justify-content-end gap-2 mt-4">

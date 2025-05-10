@@ -177,6 +177,7 @@ const AdminList = () => {
                                                                 <div className="d-flex gap-2">
                                                                     <Link 
                                                                         to={`/super-admin/admin/edit/${admin.id}`} 
+                                                                        state={{ InstituteId: admin.institute_id }}
                                                                         className="btn btn-sm btn-warning"
                                                                         title="Edit Admin"
                                                                     >

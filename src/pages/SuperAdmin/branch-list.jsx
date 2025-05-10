@@ -28,7 +28,7 @@ const BranchList = () => {
     // Filter branches based on selected institute
     const filteredBranches = selectedInstitute === 'all' 
         ? branches 
-        : branches.filter(branch => branch.institute_id === parseInt(selectedInstitute));
+        : branches.filter(branch => branch.institute.id === parseInt(selectedInstitute));
     
     // Handle institute filter change
     const handleInstituteChange = (e) => {
@@ -100,7 +100,7 @@ const BranchList = () => {
                                                         <td>{branch.id}</td>
                                                         <td>{branch.name}</td>
                                                         <td>{branch.address}</td>
-                                                        <td>{branch.institute_name || 'N/A'}</td>
+                                                        <td>{branch.institute.name || 'N/A'}</td>
                                                         <td>
                                                             <div className="d-flex gap-2">
                                                                 <Link to={`/branch/edit/${branch.id}`} className="btn btn-sm btn-warning">
