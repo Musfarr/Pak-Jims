@@ -44,7 +44,7 @@ export const salesPipelineChartOption = (series, colors, maxValue) => {
             size: 0
         },
         xaxis: {
-            categories: ["JAN/23", "FEB/23", "MAR/23", "APR/23", "MAY/23", "JUN/23", "JUL/23", "AUG/23", "SEP/23", "OCT/23", "NOV/23", "DEC/23"],
+            categories: ["Admins", "Branches", "Faculties", "Institutes"],
             axisBorder: {
                 show: !1
             },
@@ -64,7 +64,7 @@ export const salesPipelineChartOption = (series, colors, maxValue) => {
             tickAmount: 5,
             labels: {
                 formatter: function (e) {
-                    return +e + "K"
+                    return e 
                 },
                 offsetX: 0,
                 offsetY: 0,
@@ -92,7 +92,7 @@ export const salesPipelineChartOption = (series, colors, maxValue) => {
         tooltip: {
             y: {
                 formatter: function (e) {
-                    return +e + "K"
+                    return e
                 }
             },
             style: {

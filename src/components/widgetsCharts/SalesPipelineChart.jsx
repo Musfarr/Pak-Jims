@@ -17,10 +17,10 @@ const SalesPipelineChart = ({ isFooterShow }) => {
     return (
         <div className="col-xxl-8">
             <div className={`card stretch stretch-full ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
-                <CardHeader title={"Sales Pipeline"} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
-                <div className="card-body custom-card-action">
+                <CardHeader title={"Role Breakdown "} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
+                <div className="card-body custom-card-action mb-8">
                     <ul className="nav mb-4 gap-4 sales-pipeline-tabs" role="tablist">
-                        {
+                        {/* {
                             salesPipelineData.map(({ deals, name, revenue }) => {
                                 return (
                                     <li key={name} className="nav-item" role="presentation">
@@ -38,7 +38,7 @@ const SalesPipelineChart = ({ isFooterShow }) => {
                                     </li>
                                 )
                             })
-                        }
+                        } */}
                     </ul>
                     <div className="tab-content">
                         {
