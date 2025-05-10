@@ -1,7 +1,17 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
 import { FiCalendar, FiHome, FiBriefcase, FiAward, FiMap, FiUser, FiPhone, FiMapPin, FiUsers } from 'react-icons/fi';
 
 const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
+    // Fetch departments using React Query (same as in Studentform)
+    const { data: departmentsResponse, isLoading: isDepartmentsLoading } = useQuery({
+        queryKey: ['departments'],
+        queryFn: () => GetApi('/departments')
+    });
+    // Support both possible API shapes
+    const departmentsData = departmentsResponse?.data?.data || departmentsResponse?.data || [];
+
     return (
         <div className="card-body job-family-info">
             <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -9,7 +19,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                     <span className="d-block mb-2">Job / Family Details:</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">Employment and family information</span>
                 </h5>
-                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
             </div>
 
             <div className="row g-3 mb-4">
@@ -78,13 +88,17 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                     <label htmlFor="departmentInput" className="form-label">Department</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiMap /></div>
-                        <input
-                            type="text"
-                            className={`form-control ${errors.department ? 'is-invalid' : ''}`}
+                        <select
+                            className={`form-select ${errors.department ? 'is-invalid' : ''}`}
                             id="departmentInput"
-                            placeholder="Department"
                             {...register('department', { required: 'Department is required' })}
-                        />
+                        >
+                            <option value="">Select Department</option>
+                            {/* Department options from API */}
+                            {departmentsData && departmentsData.map(dept => (
+                                <option key={dept.id || dept._id} value={dept.id || dept._id}>{dept.name}</option>
+                            ))}
+                        </select>
                         {errors.department && <div className="invalid-feedback">{errors.department.message}</div>}
                     </div>
                 </div>

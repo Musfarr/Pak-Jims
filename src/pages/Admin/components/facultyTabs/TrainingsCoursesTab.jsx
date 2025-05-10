@@ -42,7 +42,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                     <span className="d-block mb-2">Trainings & Courses:</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">Professional development and special training courses</span>
                 </h5>
-                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
             </div>
 
             {fields.map((item, index) => (

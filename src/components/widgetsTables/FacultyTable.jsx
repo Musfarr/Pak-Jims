@@ -42,41 +42,7 @@ const FacultyTable = ({ title }) => {
 
 
 
-    
 
-
-
-
-    // Department options for filter
-    const departmentOptions = [
-        { value: '', label: 'All Departments' },
-        { value: 'Medicine', label: 'Medicine' },
-        { value: 'Computer Science', label: 'Computer Science' },
-        { value: 'Engineering', label: 'Engineering' },
-        { value: 'Business', label: 'Business' },
-        { value: 'Arts & Humanities', label: 'Arts & Humanities' },
-    ];
-
-    // Designation options for filter
-    const designationOptions = [
-        { value: '', label: 'All Designations' },
-        { value: 'Professor', label: 'Professor' },
-        { value: 'Associate Professor', label: 'Associate Professor' },
-        { value: 'Assistant Professor', label: 'Assistant Professor' },
-        { value: 'Lecturer', label: 'Lecturer' },
-        { value: 'Instructor', label: 'Instructor' },
-    ];
-
-   
-
-    // Handle faculty actions
-    const handleViewFaculty = (id) => {
-        window.location.href = `/faculty/view/${id}`;
-    };
-
-    const handleEditFaculty = (id) => {
-        window.location.href = `/faculty/edit/${id}`;
-    };
 
     const handleDeleteFaculty = (id) => {
         if (window.confirm('Are you sure you want to delete this faculty member?')) {
@@ -110,7 +76,7 @@ const FacultyTable = ({ title }) => {
                                 />
                             </div>
                         </div>
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                             <select 
                                 className="form-select"
                                 value={departmentFilter}
@@ -123,7 +89,7 @@ const FacultyTable = ({ title }) => {
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                         {/* <div className="col-md-4">
                             <select 
                                 className="form-select"

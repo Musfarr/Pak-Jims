@@ -14,6 +14,22 @@ export const FacultyMenuList = [
             }
         ]
     },
+    {
+        id: 1,
+        name: "qec-list",
+        path: "/general-qec-list",
+        icon: 'feather-award',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "QEC List",
+                path: "/general-qec-list",
+                subdropdownMenu: []
+            }
+        ]
+    },
+
+
     // {
     //     id: 2,
     //     name: "applications",

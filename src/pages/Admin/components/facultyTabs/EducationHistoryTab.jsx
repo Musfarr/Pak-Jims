@@ -46,7 +46,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                     <span className="d-block mb-2">Education History:</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">List your degrees and certifications</span>
                 </h5>
-                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
             </div>
 
             {fields.map((item, index) => (

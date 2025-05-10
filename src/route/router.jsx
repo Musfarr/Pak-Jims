@@ -349,9 +349,9 @@ export const router = createBrowserRouter([
                 )
             },
             {
-                path: "/student-qec-list",
+                path: "/general-qec-list",
                 element: (
-                    <ProtectedRoute requiredRole="student">
+                    <ProtectedRoute requiredRole={["student", "faculty"]}>
                         <StudentQECList />
                     </ProtectedRoute>
                 )
@@ -359,7 +359,7 @@ export const router = createBrowserRouter([
             {
                 path: "/qec-fill/:id",
                 element: (
-                    <ProtectedRoute requiredRole="student">
+                    <ProtectedRoute requiredRole={["student", "faculty"]}>
                         <QECFill />
                     </ProtectedRoute>
                 )

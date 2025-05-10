@@ -30,7 +30,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <span className="d-block mb-2">Faculty Information:</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">Basic information about the faculty member</span>
                 </h5>
-                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
             </div>
 
             {/* Profile Picture */}

@@ -64,7 +64,7 @@ const QECAssign = () => {
           timer: 2000,
           showConfirmButton: false
         }).then(() => {
-          navigate(`/qec-assignments/${id}`);
+          navigate(`/qec/assignments/${id}`);
         });
       })
       .catch(() => {
