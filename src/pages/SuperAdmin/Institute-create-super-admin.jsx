@@ -15,6 +15,7 @@ const InstituteCreateSuperAdmin = () => {
 
   const location = useLocation();
   const instituteID = location.state?.instituteID;
+  const [loading, setLoading] = useState(false);
 
   console.log(instituteID)
   // React Hook Form setup
@@ -43,26 +44,31 @@ const InstituteCreateSuperAdmin = () => {
   
   // Create admin mutation
   const createAdminMutation = useMutation({
+
     mutationFn: (data) => PostApi('/users', data),
     onSuccess: () => {
       queryClient.invalidateQueries(['users']);
+      setLoading(false)
       Swal.fire({
         icon: 'success',
         title: 'Success!',
         text: 'Administrator created successfully',
         confirmButtonColor: '#3085d6'
       }).then(() => {
-        history.push('/branch/list');
+        navigate('/branch/list');
       });
     },
     onError: (error) => {
       console.error('Error creating admin:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: error.message || 'Failed to create administrator',
-        confirmButtonColor: '#d33'
-      });
+      setLoading(false)
+      if(error.status !== 422){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: error.message || 'Failed to create administrator',
+          confirmButtonColor: '#d33'
+        });
+      }
     }
   });
   
@@ -72,7 +78,7 @@ const InstituteCreateSuperAdmin = () => {
     // if (branch?.institute_id) {
     //   data.institute_id = branch.institute_id;
     // }
-    
+    setLoading(true)
     createAdminMutation.mutate(data);
   };
   
@@ -209,10 +215,10 @@ const InstituteCreateSuperAdmin = () => {
                     <button 
                       type="submit" 
                       className="btn btn-primary"
-                      disabled={createAdminMutation.isLoading}
+                      disabled={loading}
                     >
                       <FiSave className="me-1" /> 
-                      {createAdminMutation.isLoading ? 'Creating...' : 'Create Admin'}
+                      {loading ? 'Creating...' : 'Create Admin'}
                     </button>
                   </div>
                 </form>

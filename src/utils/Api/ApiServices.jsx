@@ -23,13 +23,16 @@ axios.interceptors.response.use(
                     localStorage.clear();
                     window.location.href = "/";
                 } else if(error.response.status === 422) {
-                    // Swal.fire({
-                    //     icon: 'error',
-                    //     title: 'Error!',
-                    //     text: error.response.data.message,
-                    //     confirmButtonColor: '#d33'
-                    // })
-                    toast.error("Field Already Exists ")
+                    const errors = error.response.data.errors;
+
+                        for (const field in errors) {
+                            if (Array.isArray(errors[field])) {
+                                errors[field].forEach(msg => {
+                                    toast.error(msg);
+                                });
+                            }
+                        }
+
                 }
             }
             
