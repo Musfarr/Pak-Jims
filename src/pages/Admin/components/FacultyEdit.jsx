@@ -399,7 +399,7 @@ const FacultyEdit = () => {
                                 onClick={handleDelete}
                                 disabled={isSubmitting}
                             >
-                                Delete
+                                Delete Faculty
                             </button>
                             {currentStep < steps.length - 1 ? (
                                 <button

@@ -46,6 +46,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                                 <i aria-hidden="true" className='camera-icon'><FiCamera /></i>
                             </div>
                             <input 
+                            {...register('photo')}
                                 className="file-upload" 
                                 type="file" 
                                 accept="image/*" 

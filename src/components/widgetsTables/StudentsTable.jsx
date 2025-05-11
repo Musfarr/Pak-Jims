@@ -173,7 +173,7 @@ const StudentsTable = ({ title }) => {
                                         <th>Email</th>
                                         <th>Program</th>
                                         <th>Batch</th>
-                                        <th>Status</th>
+                                        {/* <th>Status</th> */}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -204,11 +204,11 @@ const StudentsTable = ({ title }) => {
                                                 <td>{student.email || 'N/A'}</td>
                                                 <td>{student.course?.name || student.course_id || 'N/A'}</td>
                                                 <td>{student.batch?.name || student.batch_id || 'N/A'}</td>
-                                                <td>
+                                                {/* <td>
                                                     <span className={`badge ${student.status === 'active' ? 'bg-success' : 'bg-secondary'}`}>
                                                         {student.status || 'N/A'}
                                                     </span>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className="d-flex gap-2">
                                                         <Link to={`/students/view/${student.id}`} className="btn btn-sm btn-info">
