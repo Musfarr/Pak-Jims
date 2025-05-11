@@ -104,7 +104,7 @@ const QECAssign = () => {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">Batches</label>
+              <label className="form-label">Batches (Select Only For Students)</label>
               <Select
                 isMulti
                 isClearable
