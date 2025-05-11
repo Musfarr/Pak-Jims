@@ -495,7 +495,7 @@ const Studentform = () => {
                                                 onChange={() => setEnrollmentType("2")}
                                             />
                                             <label className="form-check-label" htmlFor="larkanaRadio">
-                                                Larkana Board
+                                                Larkana/Hyderabad Board
                                             </label>
                                         </div>
                                         <div className="form-check">

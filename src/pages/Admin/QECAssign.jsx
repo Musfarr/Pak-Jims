@@ -38,7 +38,7 @@ const QECAssign = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!term || selectedDepartments.length === 0 || selectedBatches.length === 0 || selectedCourses.length === 0) {
+    if (!term || selectedDepartments.length === 0 || selectedCourses.length === 0) {
       Swal.fire({
         icon: 'error',
         title: 'Incomplete!',
