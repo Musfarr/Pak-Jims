@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
 import { useAuth } from '../../../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
@@ -81,10 +82,10 @@ const ProfileModal = () => {
 
 
                 {/* <div className="dropdown-divider"></div> */}
-                <a href="#" className="dropdown-item">
-                    <i ><FiUser /></i>
-                    <span>Profile Details</span>
-                </a>
+                <Link to="/my-profile" className="dropdown-item">
+    <i><FiUser /></i>
+    <span>Profile Details</span>
+</Link>
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>

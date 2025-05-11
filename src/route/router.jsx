@@ -60,6 +60,7 @@ import LayoutAuth from "../layout/layoutAuth";
 import LoginCover from "../pages/login-cover";
 import LoginMinimal from "../pages/login-minimal";
 import RegisterMinimal from "../pages/register-minimal";
+import MyProfile from '../pages/MyProfile';
 import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
 import StudentEdit from "../pages/Admin/components/StudentEdit";
@@ -105,6 +106,14 @@ export const router = createBrowserRouter([
             },
             
             //////////////Super Admin  routes////////////////////////////////////////////////////////////////////////////////
+            {
+                path: "/my-profile",
+                element: (
+                    <ProtectedRoute>
+                        <MyProfile />
+                    </ProtectedRoute>
+                )
+            },
             
             {
                 path: "/super-admin-dashboard",
