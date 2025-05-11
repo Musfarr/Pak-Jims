@@ -18,6 +18,7 @@ import { PostApi } from '@/utils/Api/ApiServices'
 
 const Facultyform = () => {
     const [currentStep, setCurrentStep] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     const steps = [
         "personalDetailsTab",
@@ -195,6 +196,7 @@ const Facultyform = () => {
     };
 
     const onSubmit = (data) => {
+        setIsSubmitting(true);
         console.log('Form Submitted:', data);
 
 
@@ -253,7 +255,7 @@ const Facultyform = () => {
         
         
         PostApi('/faculties', formdata).then((res) => {
-            console.log('Faculty added successfully:', res);
+            setIsSubmitting(false);
             Swal.fire({
                 icon: 'success',
                 title: 'Faculty added successfully',
@@ -268,6 +270,7 @@ const Facultyform = () => {
                 text: 'Failed to add faculty',
                 confirmButtonText: 'OK'
             });
+            setIsSubmitting(false);
         });
     };
 
