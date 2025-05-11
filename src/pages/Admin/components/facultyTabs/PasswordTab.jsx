@@ -11,7 +11,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                     <span className="d-block mb-2">Login Credentials:</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">Set faculty login credentials</span>
                 </h5>
-                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
             </div>
             
             <div className="row g-3 mb-4">

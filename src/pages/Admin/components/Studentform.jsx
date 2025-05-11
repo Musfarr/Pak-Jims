@@ -142,7 +142,7 @@ const Studentform = () => {
     const getTabLabel = (step) => {
         const labels = {
             profileTab: 'PROFILE',
-            academicTab: 'ACADEMICS DETAILS',
+            academicTab: 'ACADEMIC DETAILS',
             emergencyTab: 'EMERGENCY CONTACT',
             passwordTab: 'PASSWORD'
         };
@@ -152,7 +152,8 @@ const Studentform = () => {
 
     const handlenextStep = async () => {
         console.log(currentStep)
-        const isValid =  await trigger(stepFields[currentStep]);
+        const fieldstovalidate = stepFields[currentStep];
+        const isValid =  await trigger(fieldstovalidate);
 
         if (isValid) {
                     if (currentStep < stepFields.length - 1) {
@@ -240,7 +241,7 @@ const Studentform = () => {
                         <button
                             type="button"
                             className={`nav-link ${currentStep === index ? 'active' : ''}`}
-                            // onClick={() => setCurrentStep(index)}
+                            onClick={() => setCurrentStep(index)}
                             // disabled={currentStep < index} // Optional: prevent jumping ahead
                         >
                             {getTabLabel(step)}
@@ -354,7 +355,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="mobileInput">Mobile No</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', pattern: { value: /^0\d{10}$/, message: 'Mobile number must be in format: 033XXXXXXXX' ,maxLength: { value: 11, message: 'Mobile number must be 11 digits' } } })} />
+                                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', maxLength: { value: 11, message: 'Mobile number must be 11 digits' } })} />
                                         {errors.mobile_1 && <div className="invalid-feedback">{errors.mobile_1.message}</div>}
                                     </div>
                                 </div>
@@ -795,7 +796,7 @@ const Studentform = () => {
 
                     {/* Academic Tab */}
                     {currentStep === 1 &&                    
-                    <div className="tab-pane fade" id="academicTab" role="tabpanel">
+                    <div className="tab-pane fade show active" id="academicTab" role="tabpanel">
                         <div className="card-body academic-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
                                 <h5 className="fw-bold mb-0 me-4">
@@ -986,7 +987,7 @@ const Studentform = () => {
                     {/* Emergency Contact Tab */}
 
                     {currentStep === 2 &&
-                    <div className="tab-pane fade" id="emergencyTab" role="tabpanel">
+                    <div className="tab-pane fade show active" id="emergencyTab" role="tabpanel">
                         <div className="card-body emergency-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
                                 <h5 className="fw-bold mb-0 me-4">
@@ -1085,14 +1086,14 @@ const Studentform = () => {
                     {/* Password Tab */}
 
                     {currentStep === 3 &&
-                    <div className="tab-pane fade" id="passwordTab" role="tabpanel">
+                    <div className="tab-pane fade show active" id="passwordTab" role="tabpanel">
                         <div className="card-body password-info">
                             <div className="mb-4 d-flex align-items-center justify-content-between">
                                 <h5 className="fw-bold mb-0 me-4">
                                     <span className="d-block mb-2">Login Credentials:</span>
                                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">Set student login credentials</span>
                                 </h5>
-                                <button type="button" className="btn btn-sm btn-primary">Save</button>
+                                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
                             </div>
 
                             <div className="row mb-4 align-items-center">
@@ -1154,7 +1155,7 @@ const Studentform = () => {
 
 
 
-            <div className="row mt-4 mb-4 float-end ">
+            {/* <div className="row mt-4 mb-4 float-end ">
                 <div className="col-12 text-center">
                     <button 
                         type="submit" 
@@ -1165,7 +1166,7 @@ const Studentform = () => {
                         {isSubmitting ? 'Saving...' : 'Save Student'}
                     </button>
                 </div>
-            </div>
+            </div> */}
 
 
                         </div>
@@ -1196,8 +1197,9 @@ const Studentform = () => {
                             <button 
                                 type="submit" 
                                 className="btn btn-success"
+                                disabled={isSubmitting}
                             >
-                                Submit
+                                {isSubmitting ? 'Submitting...' : 'Submit'}
                             </button>
                         )}
                     </div> 
