@@ -63,6 +63,7 @@ import RegisterMinimal from "../pages/register-minimal";
 import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
 import StudentEdit from "../pages/Admin/components/StudentEdit";
+import FacultyEdit from "../pages/Admin/components/FacultyEdit";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -435,6 +436,22 @@ export const router = createBrowserRouter([
     element: (
         <ProtectedRoute requiredRole="student">
             <StudentDashboard />
+        </ProtectedRoute>
+    )
+},
+{
+    path: "/students/edit/:id",
+    element: (
+        <ProtectedRoute requiredRole="admin">
+            <StudentEdit />
+        </ProtectedRoute>
+    )
+},
+{
+    path: "/faculty/edit/:id",
+    element: (
+        <ProtectedRoute requiredRole="admin">
+            <FacultyEdit />
         </ProtectedRoute>
     )
 },

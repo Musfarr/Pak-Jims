@@ -149,10 +149,10 @@ const FacultyTable = ({ title }) => {
                                                 <div className="d-flex gap-2">
                                                     {/* <Link to={`/faculty/view/${faculty.id}`} className="btn btn-sm btn-info">
                                                         <FiEye size={16} />
-                                                    </Link>
+                                                    </Link> */}
                                                     <Link to={`/faculty/edit/${faculty.id}`} className="btn btn-sm btn-warning">
                                                         <FiEdit size={16} />
-                                                    </Link> */}
+                                                    </Link>
                                                     <button 
                                                         className="btn btn-sm btn-danger"
                                                         onClick={() => handleDeleteFaculty(faculty.id)}
