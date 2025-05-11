@@ -20,7 +20,6 @@ const LoginForm = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        console.log("Form data:", data);
 
         PostApi('auth/login', data)
         .then(
@@ -42,6 +41,7 @@ const LoginForm = () => {
                 }
             }
         ).catch((error) => {
+            console.log("asdkjasbdkjabsd")
             console.log(error)
             // toast.error(error.response.data.message);
             setIsLoading(false);

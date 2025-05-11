@@ -20,8 +20,14 @@ axios.interceptors.response.use(
             if(error.response) {
                 if(error.response.status === 401) {
                     // Clear token and redirect to login page
-                    localStorage.clear();
-                    window.location.href = "/";
+                    // localStorage.clear();
+                    // window.location.href = "/";
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Invalid credentials',
+                        confirmButtonColor: '#d33'
+                    });
                 } else if(error.response.status === 422) {
                     const errors = error.response.data.errors;
 
