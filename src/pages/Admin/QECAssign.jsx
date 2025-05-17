@@ -9,6 +9,7 @@ const QECAssign = () => {
   const { id } = useParams(); // survey_id from URL
   const navigate = useNavigate();
   const [term, setTerm] = useState('');
+  const [userType, setUserType] = useState('student'); // New state for type
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [selectedBatches, setSelectedBatches] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
@@ -20,21 +21,30 @@ const QECAssign = () => {
     queryFn: () => GetApi('/departments')
   });
   const departmentsData = departmentsResponse?.data?.data || [];
-  const departmentOptions = departmentsData.map(dep => ({ value: dep.id, label: dep.name }));
+  const departmentOptions = [
+    { value: 'all', label: 'All Departments' },
+    ...departmentsData.map(dep => ({ value: dep.id, label: dep.name }))
+  ];
   // Fetch batches
   const { data: batchesResponse, isLoading: isBatchesLoading } = useQuery({
     queryKey: ['batches'],
     queryFn: () => GetApi('/batches')
   });
   const batchesData = batchesResponse?.data || [];
-  const batchOptions = batchesData.map(batch => ({ value: batch.id, label: batch.name }));
+  const batchOptions = [
+    { value: 'all', label: 'All Batches' },
+    ...batchesData.map(batch => ({ value: batch.id, label: batch.name }))
+  ];
   // Fetch courses
   const { data: coursesResponse, isLoading: isCoursesLoading } = useQuery({
     queryKey: ['courses'],
     queryFn: () => GetApi('/courses')
   });
   const coursesData = coursesResponse?.data?.data || [];
-  const courseOptions = coursesData.map(course => ({ value: course.id, label: course.name }));
+  const courseOptions = [
+    { value: 'all', label: 'All Courses' },
+    ...coursesData.map(course => ({ value: course.id, label: course.name }))
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,9 +61,9 @@ const QECAssign = () => {
     const payload = {
       survey_id: id,
       term,
-      course_ids: selectedCourses.map(opt => opt.value),
+      course_ids: userType === 'faculty' ? [] : selectedCourses.map(opt => opt.value),
       depart_ids: selectedDepartments.map(opt => opt.value),
-      batch_ids: selectedBatches.map(opt => opt.value)
+      batch_ids: userType === 'faculty' ? [] : selectedBatches.map(opt => opt.value)
     };
     PostApi('/survey-assign', payload)
       .then(() => {
@@ -88,6 +98,17 @@ const QECAssign = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
+              <label className="form-label">Type</label>
+              <select
+                className="form-select"
+                value={userType}
+                onChange={e => setUserType(e.target.value)}
+              >
+                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
+              </select>
+            </div>
+            <div className="mb-3">
               <label className="form-label">Term</label>
               <input type="text" className="form-control" value={term} onChange={e => setTerm(e.target.value)} placeholder="e.g., 2024-spring" required />
             </div>
@@ -103,30 +124,34 @@ const QECAssign = () => {
                 placeholder="Select departments..."
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Batches (Select Only For Students)</label>
-              <Select
-                isMulti
-                isClearable
-                options={batchOptions}
-                value={selectedBatches}
-                onChange={setSelectedBatches}
-                isLoading={isBatchesLoading}
-                placeholder="Select batches..."
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Courses</label>
-              <Select
-                isMulti
-                isClearable
-                options={courseOptions}
-                value={selectedCourses}
-                onChange={setSelectedCourses}
-                isLoading={isCoursesLoading}
-                placeholder="Select courses..."
-              />
-            </div>
+            {userType === 'student' && (
+              <>
+                <div className="mb-3">
+                  <label className="form-label">Batches (Select Only For Students)</label>
+                  <Select
+                    isMulti
+                    isClearable
+                    options={batchOptions}
+                    value={selectedBatches}
+                    onChange={setSelectedBatches}
+                    isLoading={isBatchesLoading}
+                    placeholder="Select batches..."
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Courses</label>
+                  <Select
+                    isMulti
+                    isClearable
+                    options={courseOptions}
+                    value={selectedCourses}
+                    onChange={setSelectedCourses}
+                    isLoading={isCoursesLoading}
+                    placeholder="Select courses..."
+                  />
+                </div>
+              </>
+            )}
             <button type="submit" className="btn btn-primary float-end" disabled={isSubmitting}>{isSubmitting ? 'Assigning...' : 'Assign Survey'}</button>
           </form>
         </div>
