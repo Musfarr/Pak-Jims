@@ -5,7 +5,7 @@ import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiEye, FiTrash, FiSearch, FiPlus } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
+import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
 const DepartmentList = () => {
@@ -69,6 +69,57 @@ const DepartmentList = () => {
       }
     });
   };
+
+  // Handle department editing
+  const handleEditDepartment = (department) => {
+    Swal.fire({
+      title: 'Edit Department',
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Prefix" value="${department.prefix || ''}" />
+        <input id="swal-input2" class="swal2-input" placeholder="Name" value="${department.name || ''}" />
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      preConfirm: () => {
+        const prefix = document.getElementById('swal-input1').value.trim();
+        const name = document.getElementById('swal-input2').value.trim();
+        if (!prefix || !name) {
+          Swal.showValidationMessage('Both fields are required');
+          return false;
+        }
+        return { prefix, name };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        setIsDeleting(true);
+        const payload = { ...result.value, course_id: department.course_id };
+        PostApi(`/departments/${department.id}`, payload)
+          .then(() => {
+            refetch();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Department updated successfully',
+              confirmButtonColor: '#3085d6'
+            });
+          })
+          .catch(error => {
+            console.error('Error updating department:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: error.message || 'Failed to update department',
+              confirmButtonColor: '#d33'
+            });
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
+  };
+
 
   return (
     <>
@@ -136,9 +187,13 @@ const DepartmentList = () => {
                                 <td>{department?.course?.name}</td>
                                 <td>
                                   <div className='d-flex gap-2'>
-                                    {/* <Link to={`/departments/edit/${department.id}`} className='btn btn-sm btn-warning'>
+                                    <button 
+                                      className='btn btn-sm btn-warning'
+                                      onClick={() => handleEditDepartment(department)}
+                                      disabled={isDeleting}
+                                    >
                                       <FiEdit size={16} />
-                                    </Link> */}
+                                    </button>
                                     <button 
                                       className='btn btn-sm btn-danger'
                                       onClick={() => handleDeleteDepartment(department.id)}

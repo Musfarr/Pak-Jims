@@ -5,7 +5,7 @@ import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiEye, FiTrash, FiSearch, FiFilter, FiPlus } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
+import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
 const CourseList = () => {
@@ -67,6 +67,57 @@ const CourseList = () => {
       }
     });
   };
+
+  // Handle course editing
+  const handleEditCourse = (course) => {
+    Swal.fire({
+      title: 'Edit Course',
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Prefix" value="${course.prefix || ''}" />
+        <input id="swal-input2" class="swal2-input" placeholder="Name" value="${course.name || ''}" />
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      preConfirm: () => {
+        const prefix = document.getElementById('swal-input1').value.trim();
+        const name = document.getElementById('swal-input2').value.trim();
+        if (!prefix || !name) {
+          Swal.showValidationMessage('Both fields are required');
+          return false;
+        }
+        return { prefix, name };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        setIsDeleting(true);
+        const payload = { ...result.value, program_id: course.program_id };
+        PostApi(`/courses/${course.id}`, payload)
+          .then(() => {
+            refetch();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Course updated successfully',
+              confirmButtonColor: '#3085d6'
+            });
+          })
+          .catch(error => {
+            console.error('Error updating course:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: error.message || 'Failed to update course',
+              confirmButtonColor: '#d33'
+            });
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
+  };
+
 
   return (
     <>
@@ -151,9 +202,14 @@ const CourseList = () => {
                                 <td>{course?.program?.name || 'Unknown'}</td>
                                 <td>
                                   <div className='d-flex gap-2'>
-                                    {/* <Link to={`/courses/edit/${course.id}`} className='btn btn-sm btn-warning'>
+                                    
+                                    <button 
+                                      className='btn btn-sm btn-warning'
+                                      onClick={() => handleEditCourse(course)}
+                                      disabled={isDeleting}
+                                    >
                                       <FiEdit size={16} />
-                                    </Link> */}
+                                    </button>
                                     <button 
                                       className='btn btn-sm btn-danger'
                                       onClick={() => handleDeleteCourse(course.id)}

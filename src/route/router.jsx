@@ -303,14 +303,14 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            {
-                path: "/academic-years/list",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <AcademicYearList />
-                    </ProtectedRoute>
-                )
-            },
+            // {
+            //     path: "/academic-years/list",
+            //     element: (
+            //         <ProtectedRoute requiredRole="admin">
+            //             <AcademicYearList />
+            //         </ProtectedRoute>
+            //     )
+            // },
             {
                 path: "/academic-years/add",
                 element: (

@@ -5,8 +5,9 @@ import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiPlus, FiTrash, FiSearch } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
+import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+
 
 const ProgramList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,6 +69,57 @@ const ProgramList = () => {
       }
     });
   };
+
+  // Handle program editing
+  const handleEditProgram = (program) => {
+    Swal.fire({
+      title: 'Edit Program',
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Prefix" value="${program.prefix || ''}" />
+        <input id="swal-input2" class="swal2-input" placeholder="Name" value="${program.name || ''}" />
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      preConfirm: () => {
+        const prefix = document.getElementById('swal-input1').value.trim();
+        const name = document.getElementById('swal-input2').value.trim();
+        if (!prefix || !name) {
+          Swal.showValidationMessage('Both fields are required');
+          return false;
+        }
+        return { prefix, name };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        setIsDeleting(true);
+        const payload = { ...result.value };
+        PostApi(`/programs/${program.id}`, payload)
+          .then(() => {
+            refetch();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Program updated successfully',
+              confirmButtonColor: '#3085d6'
+            });
+          })
+          .catch(error => {
+            console.error('Error updating program:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: error.message || 'Failed to update program',
+              confirmButtonColor: '#d33'
+            });
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
+  };
+
 
   return (
     <>
@@ -132,9 +184,14 @@ const ProgramList = () => {
                               <td>{program.name}</td>
                               <td>
                                 <div className='d-flex gap-2'>
-                                  {/* <Link to={`/programs/edit/${program.id}`} className='btn btn-sm btn-warning'>
-                                    <FiEdit size={16} />
-                                  </Link> */}
+                                  
+                                  <button 
+  className='btn btn-sm btn-warning'
+  onClick={() => handleEditProgram(program)}
+  disabled={isDeleting}
+>
+  <FiEdit size={16} />
+</button>
                                   <button 
                                     className='btn btn-sm btn-danger'
                                     onClick={() => handleDeleteProgram(program.id)}

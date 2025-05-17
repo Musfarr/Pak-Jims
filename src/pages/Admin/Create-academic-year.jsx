@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { FiX, FiPlus, FiCalendar, FiTrash } from 'react-icons/fi';
-import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
+import { FiX, FiPlus, FiCalendar, FiTrash, FiEdit } from 'react-icons/fi';
+import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+
 
 
 
@@ -37,6 +38,54 @@ const CreateAcademicYear = () => {
     }
   };
 
+
+  // Handle academic year editing
+  const handleEditAcademicYear = (year) => {
+    Swal.fire({
+      title: 'Edit Academic Year',
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Academic Year" value="${year.name || ''}" />
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      preConfirm: () => {
+        const name = document.getElementById('swal-input1').value.trim();
+        if (!name) {
+          Swal.showValidationMessage('Name is required');
+          return false;
+        }
+        return { name };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        setIsDeleting(true);
+        const payload = { ...result.value };
+        PostApi(`/academic-years/${year.id}`, payload)
+          .then(() => {
+            refetch();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Academic year updated successfully',
+              confirmButtonColor: '#3085d6'
+            });
+          })
+          .catch(error => {
+            console.error('Error updating academic year:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: error.message || 'Failed to update academic year',
+              confirmButtonColor: '#d33'
+            });
+          })
+          .finally(() => {
+            setIsDeleting(false);
+          });
+      }
+    });
+  };
 
   const handleDeleteAcademicYear = (id) => {
     Swal.fire({
@@ -146,8 +195,15 @@ const CreateAcademicYear = () => {
                           <td>{year.id}</td>
                           <td>{year.name}</td>
                           <td>
-                            <div className=''>
+                            <div className='d-flex gap-2'>
                               
+                              <button 
+                                className='btn btn-sm btn-warning'
+                                onClick={() => handleEditAcademicYear(year)}
+                                disabled={isDeleting}
+                              >
+                                <FiEdit size={16} />
+                              </button>
                               <button 
                                 className='btn btn-sm btn-danger'
                                 onClick={() => handleDeleteAcademicYear(year.id)}
