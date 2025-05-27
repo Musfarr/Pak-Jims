@@ -498,10 +498,10 @@ export const router = createBrowserRouter([
     path: "/widgets/miscellaneous",
     element: <WidgetsMiscellaneous/>
 },
-{
-    path: "/help/knowledgebase",
-    element: <HelpKnowledgebase />
-},
+// {
+//     path: "/help/knowledgebase",
+//     element: <HelpKnowledgebase />
+// },
 ]
 },
 
