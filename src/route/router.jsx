@@ -338,7 +338,7 @@ export const router = createBrowserRouter([
             {
                 path: "/students/view/:id",
                 element: (
-                    <ProtectedRoute requiredRole={{ minLevel: "admin" }}>
+                    <ProtectedRoute requiredRole="admin">
                         <StudentView />
                     </ProtectedRoute>
                 )
@@ -346,7 +346,7 @@ export const router = createBrowserRouter([
             {
                 path: "/faculty/view/:id",
                 element: (
-                    <ProtectedRoute requiredRole={{ minLevel: "admin" }}>
+                    <ProtectedRoute requiredRole="admin">
                         <FacultyView />
                     </ProtectedRoute>
                 )

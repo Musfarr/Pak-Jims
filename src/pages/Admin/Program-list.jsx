@@ -132,7 +132,7 @@ const ProgramList = () => {
             <div className='card'>
               <div className='card-header d-flex justify-content-between align-items-center'>
                 <h5 className='mb-0'>Program List</h5>
-                <Link to="/programs/create" className='btn btn-primary'>
+                <Link to="/programs/add" className='btn btn-primary'>
                   <FiPlus className="me-1" /> Add New Program
                 </Link>
               </div>

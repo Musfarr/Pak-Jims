@@ -130,7 +130,7 @@ const CourseList = () => {
             <div className='card'>
               <div className='card-header d-flex justify-content-between align-items-center'>
                 <h5 className='mb-0'>Course List</h5>
-                <Link to="/courses/create" className='btn btn-primary'>
+                <Link to="/courses/add" className='btn btn-primary'>
                   <FiPlus className="me-1" /> Add New Course
                 </Link>
               </div>

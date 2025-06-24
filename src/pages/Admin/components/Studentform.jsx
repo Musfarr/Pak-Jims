@@ -806,7 +806,7 @@ const Studentform = () => {
                                 {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
                             </div>
 
-                            <div className="row mb-4 align-items-center">
+                            {/* <div className="row mb-4 align-items-center">
                                 <div className="col-lg-4">
                                     <label className="fw-semibold">Student ID: </label>
                                 </div>
@@ -823,7 +823,7 @@ const Studentform = () => {
                                         {errors.student_id && <div className="invalid-feedback">{errors.student_id.message}</div>}
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="row mb-4 align-items-center">
                                 <div className="col-lg-4">
