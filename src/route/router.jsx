@@ -34,6 +34,8 @@ import BatchList from "../pages/Admin/Batch-list";
 import CreateBatch from "../pages/Admin/Create-batch";
 import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
+import StudentSimpleView from "../pages/Admin/StudentSimpleView";
+import FacultySimpleView from "../pages/Admin/FacultySimpleView";
 import CreateQEC from "../pages/Admin/Create-QEC";
 import QECList from "../pages/Admin/QEC-list";
 import QECView from "../pages/Admin/QEC-view";
@@ -65,6 +67,8 @@ import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
 import StudentEdit from "../pages/Admin/components/StudentEdit";
 import FacultyEdit from "../pages/Admin/components/FacultyEdit";
+import ClassSimpleView from "../pages/Admin/ClassSimpleView";
+import ClassEdit from "../pages/Admin/ClassEdit";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -207,38 +211,8 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            {
-                path: "/create-student",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <Createstudent />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/student-list",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <Studentlist />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/create-faculty",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <Createfaculty />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/faculty-list",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <Facultylist />
-                    </ProtectedRoute>
-                )
-            },
+            
+            
             {
                 path: "/courses/list",
                 element: (
@@ -303,6 +277,22 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            {
+                path: "/classes/view/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ClassSimpleView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/classes/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ClassEdit />
+                    </ProtectedRoute>
+                )
+            },
             // {
             //     path: "/academic-years/list",
             //     element: (
@@ -335,22 +325,100 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+
+            // Student Routes
+            {
+                path: "/create-student",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Createstudent />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/student-list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Studentlist />
+                    </ProtectedRoute>
+                )
+            },
+            // ADVANCED STUDENT VIEW (commented out for now)
+            // {
+            //     path: "/students/view/:id",
+            //     element: (
+            //         <ProtectedRoute requiredRole="admin">
+            //             <StudentView />
+            //         </ProtectedRoute>
+            //     )
+            // },
+            // SIMPLE STUDENT VIEW
             {
                 path: "/students/view/:id",
                 element: (
                     <ProtectedRoute requiredRole="admin">
-                        <StudentView />
+                        <StudentSimpleView />
                     </ProtectedRoute>
                 )
             },
             {
-                path: "/faculty/view/:id",
+                path: "/students/edit/:id",
                 element: (
                     <ProtectedRoute requiredRole="admin">
-                        <FacultyView />
+                        <StudentEdit />
                     </ProtectedRoute>
                 )
             },
+
+            // Faculty Routes
+
+            {
+                path: "/create-faculty",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Createfaculty />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/faculty-list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <Facultylist />
+                    </ProtectedRoute>
+                )
+            },
+            
+            {
+                path: "/faculty/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <FacultyEdit />
+                    </ProtectedRoute>
+                )
+            },
+            // ADVANCED FACULTY VIEW (commented out for now)
+            // {
+            //     path: "/faculty/view/:id",
+            //     element: (
+            //         <ProtectedRoute requiredRole="admin">
+            //             <FacultyView />
+            //         </ProtectedRoute>
+            //     )
+            // },
+            // SIMPLE FACULTY VIEW
+            {
+                path: "/faculty/view/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <FacultySimpleView />
+                    </ProtectedRoute>
+                )
+            },
+
+
+
+            // QEC Routes
             {
                 path: "/qec-list",
                 element: (
@@ -423,14 +491,7 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            {
-                path: "/students/edit/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <StudentEdit />
-                    </ProtectedRoute>
-                )
-            },
+            
 
 {
     path: "/faculty-dashboard",
@@ -448,31 +509,16 @@ export const router = createBrowserRouter([
         </ProtectedRoute>
     )
 },
-{
-    path: "/students/edit/:id",
-    element: (
-        <ProtectedRoute requiredRole="admin">
-            <StudentEdit />
-        </ProtectedRoute>
-    )
-},
-{
-    path: "/faculty/edit/:id",
-    element: (
-        <ProtectedRoute requiredRole="admin">
-            <FacultyEdit />
-        </ProtectedRoute>
-    )
-},
+
 // Example of a route that requires minimum role level
-{
-    path: "/admin-area",
-    element: (
-        <ProtectedRoute minimumRole="admin">
-            <Analytics />
-        </ProtectedRoute>
-    )
-},
+// {
+//     path: "/admin-area",
+//     element: (
+//         <ProtectedRoute minimumRole="admin">
+//             <Analytics />
+//         </ProtectedRoute>
+//     )
+// },
 // Unauthorized page
 {
     path: "/unauthorized",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi, PostApi } from '@/utils/Api/ApiServices';
+import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
 const tabfields = [ 'profileTab', 'academicTab', 'emergencyTab', 'passwordTab' ];
@@ -228,7 +228,40 @@ const StudentEdit = () => {
     }
 
     return (
-        <div className="col-lg-12">
+        <div className="main-content">
+            <div className="row">
+            <div className="col-lg-12">
+
+            {/* <div className="d-flex justify-content-end align-items-center gap-2 p-3">
+                <button
+                    type="button"
+                    className="btn btn-danger btn-sm"
+                    onClick={() => {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'This will permanently delete the student record.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                PostApi(`/students/delete/${id}`)
+                                    .then(() => {
+                                        Swal.fire('Deleted!', 'Student has been deleted.', 'success');
+                                        navigate('/students-list');
+                                    })
+                                    .catch(() => {
+                                        Swal.fire('Error', 'Failed to delete student.', 'error');
+                                    });
+                            }
+                        });
+                    }}
+                >
+                    Delete
+                </button>
+            </div> */}
             <div className="card border-top-0">
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
@@ -790,7 +823,7 @@ const StudentEdit = () => {
         <div className="card-body academic-info">
             <h6 className="fw-bold mb-3">ACADEMIC DETAILS</h6>
 
-            <div className="row mb-4 align-items-center">
+            {/* <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                     <label className="fw-semibold">Student ID: </label>
                 </div>
@@ -805,7 +838,7 @@ const StudentEdit = () => {
                         {errors.student_id && <div className="invalid-feedback">{errors.student_id.message}</div>}
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
@@ -1015,17 +1048,49 @@ const StudentEdit = () => {
     </div>
 )}
                     </div>
-                    <div className="card-footer d-flex justify-content-between">
-                        <button type="button" className="btn btn-secondary" onClick={handleprevStep} disabled={currentStep === 0}>Previous</button>
-                        {currentStep < tabfields.length - 1 ? (
-                            <button type="button" className="btn btn-primary" onClick={handlenextStep}>Next</button>
-                        ) : (
-                            <button type="submit" className="btn btn-success" disabled={isSubmitting}>Update Student</button>
-                        )}
-                    </div>
+                    <div className="card-footer d-flex justify-content-between align-items-center">
+    <button
+        type="button"
+        className="btn btn-danger"
+        onClick={() => {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will permanently delete the student record.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    DeleteApi(`/students/${id}`)
+                        .then(() => {
+                            Swal.fire('Deleted!', 'Student has been deleted.', 'success');
+                            navigate('/student-list');
+                        })
+                        .catch(() => {
+                            Swal.fire('Error', 'Failed to delete student.', 'error');
+                        });
+                }
+            });
+        }}
+    >
+        Delete
+    </button>
+    <div className="d-flex gap-2">
+        <button type="button" className="btn btn-secondary" onClick={handleprevStep} disabled={currentStep === 0}>Previous</button>
+        {currentStep < tabfields.length - 1 ? (
+            <button type="button" className="btn btn-primary" onClick={handlenextStep}>Next</button>
+        ) : (
+            <button type="submit" className="btn btn-success" disabled={isSubmitting}>Update Student</button>
+        )}
+    </div>
+</div>
                 </form>
             </div>
         </div>
+        </div>
+    </div>
     );
 };
 

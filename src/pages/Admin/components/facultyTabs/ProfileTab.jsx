@@ -11,7 +11,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
         queryKey: ['domiciles'],
         queryFn: () => GetApi('/domiciles')
     });
-    const domiciles = domicilesResponse?.data || [];
+    const domiciles = Array.isArray(domicilesResponse?.data) ? domicilesResponse.data : [];
 
     // Handle file input change
     const handleFileChange = (e) => {
@@ -42,7 +42,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="mb-4 mb-md-0 d-flex gap-4 your-brand">
                         <label htmlFor='img' className="wd-100 ht-100 position-relative overflow-hidden border border-gray-2 rounded">
                             <img src={imagePreview} className="upload-pic img-fluid rounded h-100 w-100" alt="" />
-                            <div className="position-absolute start-50 top-50 end-0 bottom-0 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
+                            <div style={{marginTop:"50px"}} className="position-absolute start-50 top-50 end-0 bottom-0 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
                                 <i aria-hidden="true" className='camera-icon'><FiCamera /></i>
                             </div>
                             <input 
@@ -67,7 +67,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
 
             {/* Faculty ID and Name */}
             <div className="row g-3 mb-4">
-                <div className="col-lg-6">
+                {/* <div className="col-lg-6">
                     <label htmlFor="facultyIdInput" className="form-label">Faculty ID <span className="text-danger">*</span></label>
                     <div className="input-group">
                         <div className="input-group-text"><FiUserCheck /></div>
@@ -80,8 +80,8 @@ const ProfileTab = ({ register, errors, setValue }) => {
                         />
                         {errors?.facultyId && <div className="invalid-feedback">{errors.facultyId.message}</div>}
                     </div>
-                </div>
-                <div className="col-lg-6">
+                </div> */}
+                <div className="col-lg-12">
                     <label htmlFor="facultyNameInput" className="form-label">Faculty Name <span className="text-danger">*</span></label>
                     <div className="input-group">
                         <div className="input-group-text"><FiUser /></div>

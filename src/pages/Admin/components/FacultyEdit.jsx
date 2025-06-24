@@ -351,8 +351,27 @@ const FacultyEdit = () => {
     };
 
     return (
-        <div className="col-lg-12">
+
+        <div className='main-content'>
+            <div className="row">
+            <div className="col-lg-12">
             <div className="card border-top-0">
+                <div className="d-flex justify-content-end align-items-center gap-2 p-3">
+                    <button
+                        type="button"
+                        className="btn btn-info btn-sm"
+                        onClick={() => navigate(`/faculty/view/${id}`)}
+                    >
+                        View
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </button>
+                </div>
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">
                         {steps.map((step, index) => (
@@ -421,6 +440,8 @@ const FacultyEdit = () => {
                         </div>
                     </div>
                 </form>
+            </div>
+            </div>
             </div>
         </div>
     );

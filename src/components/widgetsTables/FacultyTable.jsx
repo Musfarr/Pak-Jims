@@ -147,18 +147,18 @@ const FacultyTable = ({ title }) => {
                                             
                                             <td>
                                                 <div className="d-flex gap-2">
-                                                    {/* <Link to={`/faculty/view/${faculty.id}`} className="btn btn-sm btn-info">
+                                                    <Link to={`/faculty/view/${faculty.id}`} className="btn btn-sm btn-info">
                                                         <FiEye size={16} />
-                                                    </Link> */}
+                                                    </Link>
                                                     <Link to={`/faculty/edit/${faculty.id}`} className="btn btn-sm btn-warning">
                                                         <FiEdit size={16} />
                                                     </Link>
-                                                    <button 
+                                                    {/* <button 
                                                         className="btn btn-sm btn-danger"
                                                         onClick={() => handleDeleteFaculty(faculty.id)}
                                                     >
                                                         <FiTrash size={16} />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </td>
                                         </tr>
@@ -174,7 +174,7 @@ const FacultyTable = ({ title }) => {
                 </div>
 
                 <div className="card-footer">
-                    <Pagination />
+                    {/* <Pagination /> */}
                 </div>
                 <CardLoader refreshKey={refreshKey} />
             </div>
