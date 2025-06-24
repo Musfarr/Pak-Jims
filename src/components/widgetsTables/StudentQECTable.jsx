@@ -109,7 +109,7 @@ const StudentQECTable = ({ title }) => {
                         <td>{survey.survey.title}</td>
                         <td>{survey.survey?.description?.slice(0, 50)  || 'No description available'}</td>
                         {/* <td>{formatDate(survey.assigned_date)}</td> */}
-                        <td>{formatDate(survey.due_date)}</td>
+                        <td>{formatDate(survey.created_at)}</td>
                         <td>{getStatusBadge(survey.status)}</td>
                         <td>
                           <div className="d-flex gap-2">

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import RoleNavigation from '../components/RoleNavigation';
 
+
 const StudentDashboard = () => {
   const { user } = useAuth();
 
@@ -16,7 +17,7 @@ const StudentDashboard = () => {
           <div className='col-12'>
             {/* <RoleNavigation /> */}
             
-            <div className='card'>
+            {/* <div className='card'>
               <div className='card-body'>
                 <h5 className="card-title">Welcome, {user?.name || 'Student'}</h5>
                 <p className="card-text">This is the Student dashboard with learning resources.</p>
@@ -48,7 +49,7 @@ const StudentDashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

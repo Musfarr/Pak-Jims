@@ -106,26 +106,26 @@ export const StudentMenuList = [
     //         }
     //     ]
     // },
-    {
-        id: 5,
-        name: "profile",
-        path: "#",
-        icon: 'feather-user',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "View Profile",
-                path: "/profile/view",
-                subdropdownMenu: []
-            },
-            // {
-            //     id: 2,
-            //     name: "Edit Profile",
-            //     path: "/profile/edit",
-            //     subdropdownMenu: []
-            // }
-        ]
-    },
+    // {
+    //     id: 5,
+    //     name: "profile",
+    //     path: "#",
+    //     icon: 'feather-user',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "View Profile",
+    //             path: "/profile/view",
+    //             subdropdownMenu: []
+    //         },
+    //         // {
+    //         //     id: 2,
+    //         //     name: "Edit Profile",
+    //         //     path: "/profile/edit",
+    //         //     subdropdownMenu: []
+    //         // }
+    //     ]
+    // },
     {
         id: 6,
         name: "QEC",
