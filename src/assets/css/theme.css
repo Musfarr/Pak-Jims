@@ -12344,6 +12344,7 @@ body.full-screen-helper .full-screen-switcher span .minimize {
 .nxl-container .nxl-content .main-content {
   overflow-x: hidden;
   padding: 30px 30px 5px;
+  height: calc(100vh - 140px);
 }
 .nxl-container .nxl-content .main-content .content-sidebar,
 .nxl-container .nxl-content .main-content .content-area {

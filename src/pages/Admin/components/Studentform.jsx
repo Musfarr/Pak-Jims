@@ -1104,7 +1104,7 @@ const Studentform = () => {
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
                                         <input 
-                                            type='text' 
+                                            type='email' 
                                             className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                                             id="usernameInput"
                                             {...register('username', { required: 'Username is required' })}

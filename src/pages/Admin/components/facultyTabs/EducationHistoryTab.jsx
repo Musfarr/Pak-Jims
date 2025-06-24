@@ -130,11 +130,11 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     type="text"
                                     className={`form-control ${errors?.education?.[index]?.grade ? 'is-invalid' : ''}`}
                                     id={`education-${index}-grade`}
-                                    placeholder="e.g., 3.8/4.0, A+, First Division"
+                                    placeholder="e.g., A+"
                                     {...register(`education.${index}.grade`, { required: 'Grade is required' ,
                                         pattern: {
-                                            value: /^[a-zA-Z0-9+]{2}$/,
-                                            message: 'Please enter a valid grade'
+                                            value: /^[A-F][+-]?$|^[0-9](\.\d{1,2})?$/i,
+                                            message: 'Please enter a valid grade (e.g., A, B+, C-, 3.5)'
                                         }
                                      })}
                                 />

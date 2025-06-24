@@ -329,7 +329,7 @@ const QECAssignmentDetails = () => {
                                   {departmentsData
                                     .filter(dept => {
                                       // Convert both to strings for comparison
-                                      return selectedDepartments.some(id => id.toString() === dept.id.toString());
+                                      return selectedDepartments?.some(id => id?.toString() === dept?.id?.toString());
                                     })
                                     .map(dept => (
                                       <li key={dept.id} className="list-group-item py-2">
@@ -344,8 +344,8 @@ const QECAssignmentDetails = () => {
                         </div>
                       </div>
                       
-                      <div className="col-md-4">
-                        <h6 className="fw-bold mb-3">Batches</h6>
+                      {/* <div className="col-md-4">
+                       {batchesData?.length > 0 && <h6 className="fw-bold mb-3">Batches</h6>}
                         <div className="border rounded p-3">
                           {isEditing ? (
                             <div>
@@ -358,7 +358,7 @@ const QECAssignmentDetails = () => {
                                 }))}
                                 value={batchesData
                                   .filter(batch => {
-                                    return editedBatches.some(id => id.toString() === batch.id.toString());
+                                    return editedBatches?.some(id => id?.toString() === batch?.id?.toString());
                                   })
                                   .map(batch => ({
                                     value: batch.id.toString(),
@@ -387,7 +387,7 @@ const QECAssignmentDetails = () => {
                                   {batchesData
                                     .filter(batch => {
                                       // Convert both to strings for comparison
-                                      return selectedBatches.some(id => id.toString() === batch.id.toString());
+                                      return selectedBatches?.some(id => id?.toString() === batch?.id?.toString());
                                     })
                                     .map(batch => (
                                       <li key={batch.id} className="list-group-item py-2">
@@ -400,7 +400,7 @@ const QECAssignmentDetails = () => {
                             </div>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       
                       <div className="col-md-4">
                         <h6 className="fw-bold mb-3">Courses</h6>
@@ -416,7 +416,7 @@ const QECAssignmentDetails = () => {
                                 }))}
                                 value={coursesData
                                   .filter(course => {
-                                    return editedCourses.some(id => id.toString() === course.id.toString());
+                                    return editedCourses?.some(id => id?.toString() === course?.id?.toString());
                                   })
                                   .map(course => ({
                                     value: course.id.toString(),
@@ -445,7 +445,7 @@ const QECAssignmentDetails = () => {
                                   {coursesData
                                     .filter(course => {
                                       // Convert both to strings for comparison
-                                      return selectedCourses.some(id => id.toString() === course.id.toString());
+                                      return selectedCourses?.some(id => id?.toString() === course?.id?.toString());
                                     })
                                     .map(course => (
                                       <li key={course.id} className="list-group-item py-2">

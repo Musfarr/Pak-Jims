@@ -22,7 +22,7 @@ const QECAssign = () => {
   });
   const departmentsData = departmentsResponse?.data?.data || [];
   const departmentOptions = [
-    { value: 'all', label: 'All Departments' },
+    // { value: 'all', label: 'All Departments' },
     ...departmentsData.map(dep => ({ value: dep.id, label: dep.name }))
   ];
   // Fetch batches
@@ -32,7 +32,7 @@ const QECAssign = () => {
   });
   const batchesData = batchesResponse?.data || [];
   const batchOptions = [
-    { value: 'all', label: 'All Batches' },
+    // { value: 'all', label: 'All Batches' },
     ...batchesData.map(batch => ({ value: batch.id, label: batch.name }))
   ];
   // Fetch courses
@@ -42,7 +42,7 @@ const QECAssign = () => {
   });
   const coursesData = coursesResponse?.data?.data || [];
   const courseOptions = [
-    { value: 'all', label: 'All Courses' },
+    // { value: 'all', label: 'All Courses' },
     ...coursesData.map(course => ({ value: course.id, label: course.name }))
   ];
 
@@ -61,9 +61,9 @@ const QECAssign = () => {
     const payload = {
       survey_id: id,
       term,
-      course_ids: userType === 'faculty' ? [] : selectedCourses.map(opt => opt.value),
+      course_ids: selectedCourses.map(opt => opt.value),
       depart_ids: selectedDepartments.map(opt => opt.value),
-      batch_ids: userType === 'faculty' ? [] : selectedBatches.map(opt => opt.value)
+      ...(userType !== 'student' ? {} : { batch_ids: selectedBatches.map(opt => opt.value) })
     };
     PostApi('/survey-assign', payload)
       .then(() => {
@@ -138,6 +138,8 @@ const QECAssign = () => {
                     placeholder="Select batches..."
                   />
                 </div>
+              </>
+            )}
                 <div className="mb-3">
                   <label className="form-label">Courses</label>
                   <Select
@@ -150,8 +152,6 @@ const QECAssign = () => {
                     placeholder="Select courses..."
                   />
                 </div>
-              </>
-            )}
             <button type="submit" className="btn btn-primary float-end" disabled={isSubmitting}>{isSubmitting ? 'Assigning...' : 'Assign Survey'}</button>
           </form>
         </div>
