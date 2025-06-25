@@ -45,6 +45,7 @@ import QECAssignmentDetails from "../pages/Admin/QEC-assignment-details";
 import QECAssign from "../pages/Admin/QECAssign";
 import StudentQECList from "../pages/Student/StudentQECList";
 import QECFill from "../pages/Student/QECFill";
+import QECFilledView from "../pages/Student/QECFilledView";
 
 // SuperAdmin pages
 import MasterAdminDashboard from "../pages/MasterAdmin/Dashboard";
@@ -440,6 +441,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole={["student", "faculty"]}>
                         <QECFill />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec-filled-view/:survey_id/:assignment_id",
+                element: (
+                    <ProtectedRoute requiredRole={["student", "faculty"]}>
+                        <QECFilledView />
                     </ProtectedRoute>
                 )
             },

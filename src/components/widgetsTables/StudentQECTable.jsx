@@ -129,7 +129,16 @@ const StudentQECTable = ({ title }) => {
                                 Fill
                               </Link>
                             ) : (
-                              <span className="badge bg-success">Filled</span>
+                              <div className="d-flex gap-2 align-items-center">
+                                {/* <span className="badge bg-success">Filled</span> */}
+                                <Link 
+                                  to={`/qec-filled-view/${survey.survey_id}/${survey.id}`} 
+                                  className="btn btn-sm btn-info"
+                                  title="View Responses"
+                                >
+                                  <FiEye size={16} />
+                                </Link>
+                              </div>
                             )}
                           </div>
                         </td>
