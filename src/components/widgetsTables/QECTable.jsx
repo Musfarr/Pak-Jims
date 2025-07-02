@@ -179,6 +179,7 @@ const QECTable = ({ title }) => {
                                     {/* <th>Status</th> */}
                                     <th>Assignments</th>                               
                                     <th>Actions</th>
+                                    <th>Assign</th>
                                 </tr>
                             </thead>
                             <tbody >
@@ -230,13 +231,33 @@ const QECTable = ({ title }) => {
                                                     >
                                                         <FiEye />
                                                     </button>
-                                                    <button 
+                                                    {/* <button 
                                                         className="btn btn-sm btn-outline-info" 
                                                         onClick={() => handleQECDownload(qec.id)}
                                                         title="Download"
                                                     >
                                                         <FaDownLong />
+                                                    </button> */}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex gap-2">
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-success" 
+                                                        onClick={() => navigate(`/qec/assign/${qec.id}`)}
+                                                        title="View Report"
+                                                    >
+                                                        Assign
                                                     </button>
+                                          
+                                                    {/* <button 
+                                                        className="btn btn-sm btn-outline-secondary" 
+                                                        onClick={() => navigate(`/qec/report/${assignment.survey_id}`)}
+                                                        title="View Report"
+                                                    >
+                                                        Report
+                                                    </button> */}
+
                                                 </div>
                                             </td>
                                         </tr>

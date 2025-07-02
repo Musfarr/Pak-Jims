@@ -105,7 +105,7 @@ const QECAssignments = ({ title }) => {
                           <th>Term</th>
                           <th>Survey</th>
                           <th>Assigned Details</th>
-                          <th>Action</th>
+                          {/* <th>Action</th> */}
                           
                         </tr>
                       </thead>
@@ -124,27 +124,7 @@ const QECAssignments = ({ title }) => {
                                 <FiEye /> Details
                               </button>
                             </td>
-                            <td>
-
-                            <div className="d-flex gap-2">
-                              <button 
-                                className="btn btn-sm btn-outline-success" 
-                                onClick={() => navigate(`/qec/assign/${assignment.survey_id}`)}
-                                title="View Report"
-                              >
-                                Assign
-                              </button>
-                    
-                              {/* <button 
-                                className="btn btn-sm btn-outline-secondary" 
-                                onClick={() => navigate(`/qec/report/${assignment.survey_id}`)}
-                                title="View Report"
-                              >
-                                Report
-                              </button> */}
-
-                            </div>
-                            </td>
+                           
                           </tr>
                         ))}
                       </tbody>
