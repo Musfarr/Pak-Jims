@@ -19,6 +19,7 @@ const QECTable = ({ title }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Fetch QEC data using React Query
     const { 
@@ -120,16 +121,30 @@ const QECTable = ({ title }) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Would be replaced with actual API call in production
-                // DeleteApi(`/surveys/${id}`)
-                Swal.fire(
-                    'Deleted!',
-                    'QEC record has been deleted.',
-                    'success'
-                );
-                // After successful deletion, refetch the data
-                refetch();
-            }
+                    setIsDeleting(true);
+                    DeleteApi(`/surveys/${id}`)
+                      .then(() => {
+                        refetch(); // Refresh the programs list
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Success!',
+                          text: 'QEC deleted successfully',
+                          confirmButtonColor: '#3085d6'
+                        });
+                      })
+                      .catch(error => {
+                        console.error('Error deleting QEC:', error);
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error!',
+                          text: error.message || 'Failed to delete QEC',
+                          confirmButtonColor: '#d33'
+                        });
+                      })
+                      .finally(() => {
+                        setIsDeleting(false);
+                      });
+                  }
         });
     };
 
@@ -225,24 +240,6 @@ const QECTable = ({ title }) => {
                                             <td>
                                                 <div className="d-flex gap-2">
                                                     <button 
-                                                        className="btn btn-sm btn-outline-primary" 
-                                                        onClick={() => handleViewQEC(qec.id)}
-                                                        title="View"
-                                                    >
-                                                        <FiEye />
-                                                    </button>
-                                                    {/* <button 
-                                                        className="btn btn-sm btn-outline-info" 
-                                                        onClick={() => handleQECDownload(qec.id)}
-                                                        title="Download"
-                                                    >
-                                                        <FaDownLong />
-                                                    </button> */}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="d-flex gap-2">
-                                                    <button 
                                                         className="btn btn-sm btn-outline-success" 
                                                         onClick={() => navigate(`/qec/assign/${qec.id}`)}
                                                         title="View Report"
@@ -258,6 +255,33 @@ const QECTable = ({ title }) => {
                                                         Report
                                                     </button> */}
 
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex gap-2">
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-primary" 
+                                                        onClick={() => handleViewQEC(qec.id)}
+                                                        title="View"
+                                                    >
+                                                        <FiEye />
+                                                    </button>
+                                                    <button 
+                                            className='btn btn-sm btn-danger'
+                                            onClick={() => handleDeleteQEC(qec.id)}
+                                            disabled={isDeleting}
+                                            >
+                                            <FiTrash size={16} />
+                                            </button>
+
+                                                    {/* <button 
+                                                        className="btn btn-sm btn-outline-info" 
+                                                        onClick={() => handleQECDownload(qec.id)}
+                                                        title="Download"
+                                                    >
+                                                        <FaDownLong />
+                                                    </button> */}
                                                 </div>
                                             </td>
                                         </tr>

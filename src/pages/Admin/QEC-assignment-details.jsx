@@ -235,10 +235,10 @@ const QECAssignmentDetails = () => {
                                 <td className="fw-medium">Term:</td>
                                 <td>{assignment.term}</td>
                               </tr>
-                              <tr>
+                              {/* <tr>
                                 <td className="fw-medium">Created On:</td>
                                 <td>{assignment.created_at || 'N/A'}</td>
-                              </tr>
+                              </tr> */}
                             </tbody>
                           </table>
                         </div>

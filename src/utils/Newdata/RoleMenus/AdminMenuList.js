@@ -207,12 +207,12 @@ export const AdminMenuList = [
                 path: "/qec-list",
                 subdropdownMenu: []
             },
-            // {
-            //     id: 2,
-            //     name: "Create New Questionnaire",
-            //     path: "/qec/add",
-            //     subdropdownMenu: []
-            // }
+            {
+                id: 2,
+                name: "Create New Questionnaire",
+                path: "/qec/add",
+                subdropdownMenu: []
+            }
         ]
     },
 
