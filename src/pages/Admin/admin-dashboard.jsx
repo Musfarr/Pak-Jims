@@ -10,7 +10,7 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const { data: response, isLoading, isError } = useQuery({
     queryKey: ['institutes'],
-    queryFn: () => GetApi('/dashboard')
+    queryFn: () => GetApi('dashboard')
   });
 
   const institutes = response?.data || [];

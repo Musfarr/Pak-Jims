@@ -32,10 +32,10 @@ const QECform = () => {
     const [newOptionLabel, setNewOptionLabel] = useState('');
     const [newOptionText, setNewOptionText] = useState('');
     const [tempOptions, setTempOptions] = useState([
-        { label: 'Agree', text: 'A' },
-        { label: 'Neutral', text: 'B' },
-        { label: 'Disagree', text: 'C' },
-        { label: 'Strongly Disagree', text: 'D' }
+        { label: 'A', text: 'A' },
+        { label: 'B', text: 'B' },
+        { label: 'C', text: 'C' },
+        { label: 'D', text: 'D' }
     ]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -93,19 +93,29 @@ const QECform = () => {
             Swal.fire({ icon: 'error', title: 'At least 2 options required' });
             return;
         }
-        const newQ = { id: Date.now(), text: newQuestionText, type: 'radio', options: [...tempOptions] };
+        const newQ = { 
+            id: Date.now(), 
+            text: newQuestionText, 
+            type: 'radio', 
+            options: tempOptions.map(opt => ({
+                label: opt.text,
+                text: opt.text
+            }))
+        };
         setSections(sections.map(s => s.id === activeSectionId ? { ...s, questions: [...s.questions, newQ] } : s));
         setNewQuestionText('');
         setTempOptions([
-            { label: 'Agree', text: 'A' },
-            { label: 'Neutral', text: 'B' },
-            { label: 'Disagree', text: 'C' },
-            { label: 'Strongly Disagree', text: 'D' }
+            { label: 'A', text: 'A' },
+            { label: 'B', text: 'B' },
+            { label: 'C', text: 'C' },
+            { label: 'D', text: 'D' }
         ]);
     };
     const removeQuestion = (sectionId, questionId) => {
         setSections(sections.map(s => s.id === sectionId ? { ...s, questions: s.questions.filter(q => q.id !== questionId) } : s));
     };
+
+ 
 
     // Submit
     const onSubmit = (data) => {
@@ -121,11 +131,20 @@ const QECform = () => {
         const payload = {
             title: data.title,
             description: data.description,
-            sections: sections.map(s => ({
-                title: s.title,
-                questions: s.questions.map(q => ({ text: q.text, type: q.type, options: q.options }))
-            })),
+            sections: sections.map(section => ({
+                title: section.title,
+                questions: section.questions.map(question => ({
+                    text: question.text,
+                    type: question.type,
+                    options: question.options.map(opt => ({
+                        label: opt.text,
+                        text: opt.text
+                    }))
+                }))
+            }))
         };
+        
+        console.log('Sending payload:', JSON.stringify(payload, null, 2));
 
         PostApi('/surveys', payload)
             .then(() => {
