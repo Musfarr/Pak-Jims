@@ -50,7 +50,7 @@ const LoginForm = () => {
 
     return (
         <>
-            <h2 className="fs-20 fw-bolder mb-4">Login</h2>
+            <h2 className="fs-40 fw-bold mb-4">Login</h2>
             
             <form onSubmit={handleSubmit(onSubmit)} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
@@ -82,7 +82,7 @@ const LoginForm = () => {
                 </div>
 
 
-                <div className="d-flex align-items-center justify-content-between">
+                {/* <div className="d-flex align-items-center justify-content-between">
                     <div>
                         <div className="custom-control custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="rememberMe" />
@@ -92,7 +92,7 @@ const LoginForm = () => {
                     <div>
                         <Link to="/" className="fs-11 text-primary">Forget password?</Link>
                     </div>
-                </div>
+                </div> */}
 
 
                 <div className="mt-5">
