@@ -20,8 +20,9 @@ const QECFilledView = () => {
     enabled: !!survey_id && !!assignment_id // Only run query if both IDs are available
   });
 
-  // Process survey data from API response
-  const surveyData = surveyResponse?.data || [];
+  // Process survey data and metadata from API response
+  const surveyData = surveyResponse?.data?.responses || [];
+  const metadata = surveyResponse?.data?.metadata || {};
 
   // Count total questions across all sections
   const getTotalQuestions = () => {
@@ -96,7 +97,7 @@ const QECFilledView = () => {
       <div className='main-content'>
         <div className='row'>
           <div className='col-12'>
-            <div className="page-title-box d-flex align-items-center justify-content-between">
+            <div className=" mb-3 page-title-box d-flex align-items-center justify-content-between">
               <div className="page-title-left">
                 <h5 className="mb-0">Submitted QEC Survey</h5>
               </div>
@@ -110,15 +111,79 @@ const QECFilledView = () => {
 
           <div className="col-lg-12">
             <div className="card mb-4">
-              <div className="card-header d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 className="card-title">Quality Enhancement Cell (QEC) Response</h5>
-                  <p className="card-subtitle text-muted mb-0">Submitted Survey Responses</p>
+              <div className="card-header">
+                <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+                  <div>
+                    <h5 className="card-title mb-0">Quality Enhancement Cell (QEC) Response</h5>
+                    <p className="text-muted small mb-0">Submitted Survey Responses</p>
+                  </div>
+                  <div className="badge bg-success p-2">
+                    <FiCheckCircle className="me-1" /> Completed
+                  </div>
                 </div>
-                <div className="badge bg-success p-2">
-                  <FiCheckCircle className="me-1" /> Completed
-                </div>
+                
               </div>
+              <div className='card-header'>
+                {metadata && (
+                  <div className="mt-3 w-100">
+                    <div className="row g-3">
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Course</span>
+                          <span className="fw-medium">
+                            {metadata.course_title} <span className="text-muted">({metadata.course_id})</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Department</span>
+                          <span className="fw-medium">{metadata.department_name}</span>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Instructor</span>
+                          <span className="fw-medium">{metadata.instructor_name}</span>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Program</span>
+                          <span className="fw-medium">{metadata.program_name}</span>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Semester</span>
+                          <span className="fw-medium">{metadata.semester}</span>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="d-flex flex-column">
+                          <span className="text-muted small">Session</span>
+                          <span className="fw-medium">{metadata.year_of_student}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {metadata.submitted_at && (
+                      <div className="pt-3 mt-3 border-top text-end">
+                        <small className="text-muted">
+                          Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
+                        </small>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+              </div>
+              
               <div className="card-body">
                 <div className="row">
                   <div className="col-12">

@@ -144,7 +144,6 @@ const QECform = () => {
             }))
         };
         
-        console.log('Sending payload:', JSON.stringify(payload, null, 2));
 
         PostApi('/surveys', payload)
             .then(() => {

@@ -22,6 +22,8 @@ const QECFill = () => {
     enabled: !!id
   });
 
+
+  console.log(surveyResponse ,"surveyResponse");
   // Extract survey assignment and survey object from API response
   const surveyAssignment = surveyResponse?.data?.[0] || null;
   const survey = surveyAssignment?.survey || null;
@@ -202,7 +204,7 @@ const QECFill = () => {
       Swal.fire({
         icon: 'error',
         title: 'Incomplete!',
-        text: 'Please answer all questions before submitting.',
+        text: 'Please answerr all questions before submitting.',
         confirmButtonColor: '#3085d6'
       });
       setIsSubmitting(false);
@@ -237,7 +239,14 @@ const QECFill = () => {
     const payload = {
       survey_id: survey.id,
       survey_assignment_id: surveyAssignment.id,
-      responses: responsesArray
+      responses: responsesArray,
+      course_id:surveyResponse?.data[0]?.meta?.course?.id,
+      instructor_id:surveyResponse?.data[0]?.meta?.faculty?.id,
+      semester_id:surveyResponse?.data[0]?.meta?.course?.id,
+      depart_id:surveyResponse?.data[0]?.meta?.department?.id,
+      program_id:surveyResponse?.data[0]?.meta?.course?.program_id,
+      year_of_student:surveyResponse?.data[0]?.term,
+      
     };
     PostApi(`/submit-survey`, payload)
       .then(() => {
@@ -248,7 +257,7 @@ const QECFill = () => {
           timer: 2000,
           showConfirmButton: false
         }).then(() => {
-          navigate('/student-qec-list');
+          navigate('/general-qec-list');
         });
       })
       .catch(error => {
