@@ -212,6 +212,12 @@ export const AdminMenuList = [
                 name: "Create New Questionnaire",
                 path: "/qec/add",
                 subdropdownMenu: []
+            },
+            {
+                id: 3,
+                name: "Templates",
+                path: "/templates",
+                subdropdownMenu: []
             }
         ]
     },

@@ -54,10 +54,39 @@ const QECFilledView = () => {
                 disabled
               />
               <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                {option.text} ({option.label})
+                {option.text} {option.label ? `(${option.label})` : ''}
               </label>
             </div>
           ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Function to render a checkbox question with selected options
+  const renderCheckboxQuestion = (question, questionIndex) => {
+    return (
+      <div className="mb-4" key={question.question_id}>
+        <label className="form-label fw-semibold">{questionIndex + 1}. {question.question_text}</label>
+        <div className="ps-4 mt-2">
+          {question.options && question.options.length > 0 ? (
+            question.options.map((option) => (
+              <div key={option.option_id} className="form-check mb-2">
+                <input 
+                  className="form-check-input" 
+                  type="checkbox" 
+                  checked={option.selected || false}
+                  readOnly
+                  disabled
+                />
+                <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
+                  {option.text} {option.label ? `(${option.label})` : ''}
+                </label>
+              </div>
+            ))
+          ) : (
+            <div className="text-muted">No options available</div>
+          )}
         </div>
       </div>
     );
@@ -69,7 +98,11 @@ const QECFilledView = () => {
       <div className="mb-4" key={question.question_id}>
         <label className="form-label fw-semibold">{questionIndex + 1}. {question.question_text}</label>
         <div className="border rounded p-3 bg-light">
-          {question.text_response || <em className="text-muted">No response provided</em>}
+          {question.text_response ? (
+            <div className="text-break">{question.text_response}</div>
+          ) : (
+            <em className="text-muted">No response provided</em>
+          )}
         </div>
       </div>
     );
@@ -80,6 +113,9 @@ const QECFilledView = () => {
     switch (question.type) {
       case 'radio':
         return renderRadioQuestion(question, questionIndex);
+      case 'checkbox':
+        return renderCheckboxQuestion(question, questionIndex);
+      case 'text':
       case 'textarea':
         return renderTextQuestion(question, questionIndex);
       default:
@@ -87,6 +123,29 @@ const QECFilledView = () => {
           <div className="mb-4" key={question.question_id}>
             <label className="form-label fw-semibold">{questionIndex + 1}. {question.question_text}</label>
             <p className="text-muted small">Question type: {question.type}</p>
+            {question.text_response && (
+              <div className="border rounded p-3 bg-light mt-2">
+                {question.text_response}
+              </div>
+            )}
+            {question.options && question.options.length > 0 && (
+              <div className="ps-4 mt-2">
+                {question.options.map((option, idx) => (
+                  <div key={idx} className="form-check mb-2">
+                    <input 
+                      className="form-check-input" 
+                      type={question.type === 'checkbox' ? 'checkbox' : 'radio'}
+                      checked={option.selected || false}
+                      readOnly
+                      disabled
+                    />
+                    <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
+                      {option.text} {option.label ? `(${option.label})` : ''}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
     }

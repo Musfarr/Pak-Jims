@@ -44,8 +44,8 @@ const QECTable = ({ title }) => {
     // Filter QEC records based on search term
     const filteredQEC = qecData.filter(qec => {
         const matchesSearch = 
-            (qec.title && qec.title.toLowerCase().includes(searchTerm.toLowerCase())) || 
-            (qec.description && qec.description.toLowerCase().includes(searchTerm.toLowerCase()));
+            (qec?.title && qec?.title.toLowerCase().includes(searchTerm.toLowerCase())) || 
+            (qec?.description && qec?.description.toLowerCase().includes(searchTerm.toLowerCase()));
         
         return matchesSearch;
     });
@@ -212,14 +212,14 @@ const QECTable = ({ title }) => {
                                     </tr>
                                 ) : filteredQEC.length > 0 ? (
                                     currentItems.map((qec) => (
-                                        <tr key={qec.id}>
-                                            <td>{qec.id || 'N/A'}</td>
-                                            <td>{qec.title || 'N/A'}</td>
+                                        <tr key={qec?.id}>
+                                            <td>{qec?.id || 'N/A'}</td>
+                                            <td>{qec?.title || 'N/A'}</td>
                                             <td>
-                                                {qec.description 
-                                                    ? (qec.description.length > 30 
-                                                        ? `${qec.description.substring(0, 30)}...` 
-                                                        : qec.description) 
+                                                {qec?.description 
+                                                    ? (qec?.description.length > 30 
+                                                        ? `${qec?.description.substring(0, 30)}...` 
+                                                        : qec?.description) 
                                                     : 'N/A'}
                                             </td>
                                             {/* <td>

@@ -27,6 +27,11 @@ const QECFill = () => {
   // Extract survey assignment and survey object from API response
   const surveyAssignment = surveyResponse?.data?.[0] || null;
   const survey = surveyAssignment?.survey || null;
+  const metadata = surveyAssignment?.meta || null;
+  const payloadrequiremt = surveyAssignment?.meta?.requirements ;
+
+  console.log(metadata,"metadata");
+  console.log(payloadrequiremt,"payloadrequiremt");
 
   // Helper to get all questions
   const getAllQuestions = () => {
@@ -44,19 +49,37 @@ const QECFill = () => {
   };
   const questions = getAllQuestions();
 
-  // Handle input change
+  // Handle input change for radio and text inputs
   const handleInputChange = (question, value) => {
-    setResponses(prev => ({ ...prev, [question.id]: value }));
+    setResponses(prev => ({
+      ...prev,
+      [question.id]: {
+        type: question.type,
+        value: value
+      }
+    }));
   };
 
   // Handle checkbox change
   const handleCheckboxChange = (question, option, checked) => {
     setResponses(prev => {
-      const prevVals = prev[question.id] || [];
+      const currentResponse = prev[question.id] || { type: 'checkbox', value: [] };
       if (checked) {
-        return { ...prev, [question.id]: [...prevVals, option] };
+        return {
+          ...prev,
+          [question.id]: {
+            ...currentResponse,
+            value: [...(currentResponse.value || []), option]
+          }
+        };
       } else {
-        return { ...prev, [question.id]: prevVals.filter(v => v !== option) };
+        return {
+          ...prev,
+          [question.id]: {
+            ...currentResponse,
+            value: (currentResponse.value || []).filter(v => v !== option)
+          }
+        };
       }
     });
   };
@@ -85,6 +108,9 @@ const QECFill = () => {
 
   // Render question with input controls
   const renderQuestion = (question, index) => {
+    const response = responses[question.id] || {};
+    const responseValue = response.value;
+
     switch (question.type) {
       case 'radio':
         return (
@@ -98,9 +124,9 @@ const QECFill = () => {
                     type="radio"
                     name={`question_${question.id}`}
                     id={`option_${question.id}_${idx}`}
-                    value={option.value || option.text}
-                    checked={responses[question.id] === (option.value || option.text)}
-                    onChange={() => handleInputChange(question, option.value || option.text)}
+                    value={option.id}
+                    checked={responseValue === option.id}
+                    onChange={() => handleInputChange(question, option.id)}
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
                     {option.text} {option.label ? `(${option.label})` : ''}
@@ -122,9 +148,9 @@ const QECFill = () => {
                     type="checkbox"
                     name={`question_${question.id}`}
                     id={`option_${question.id}_${idx}`}
-                    value={option.value || option.text}
-                    checked={Array.isArray(responses[question.id]) && responses[question.id].includes(option.value || option.text)}
-                    onChange={e => handleCheckboxChange(question, option.value || option.text, e.target.checked)}
+                    value={option.id}
+                    checked={Array.isArray(responseValue) && responseValue.includes(option.id)}
+                    onChange={e => handleCheckboxChange(question, option.id, e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
                     {option.text} {option.label ? `(${option.label})` : ''}
@@ -134,6 +160,7 @@ const QECFill = () => {
             </div>
           </div>
         );
+      case 'text':
       case 'textarea':
         return (
           <div className="mb-4" key={question.id}>
@@ -141,7 +168,7 @@ const QECFill = () => {
             <textarea
               className="form-control"
               rows="3"
-              value={responses[question.id] || ''}
+              value={responseValue || ''}
               onChange={e => handleInputChange(question, e.target.value)}
               placeholder="Type your response here..."
             ></textarea>
@@ -176,6 +203,7 @@ const QECFill = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
     if (!surveyAssignment || !survey) {
       Swal.fire({
         icon: 'error',
@@ -186,68 +214,87 @@ const QECFill = () => {
       setIsSubmitting(false);
       return;
     }
+
     // Validate all questions answered
     let allAnswered = true;
-    for (const section of survey.sections) {
-      for (const question of section.questions) {
-        const answer = responses[question.id];
-        if (question.type === 'radio') {
-          if (!answer) allAnswered = false;
-        } else if (question.type === 'checkbox') {
-          if (!Array.isArray(answer) || answer.length === 0) allAnswered = false;
-        } else if (question.type === 'textarea') {
-          if (!answer || answer.trim() === "") allAnswered = false;
+    const missingQuestions = [];
+    
+    survey.sections.forEach((section, sIndex) => {
+      section.questions.forEach((question, qIndex) => {
+        const response = responses[question.id];
+        const hasAnswer = response && 
+          ((question.type === 'radio' && response.value !== undefined) ||
+           (question.type === 'checkbox' && Array.isArray(response.value) && response.value.length > 0) ||
+           (question.type === 'text' && response.value && response.value.trim() !== ''));
+        
+        if (!hasAnswer) {
+          allAnswered = false;
+          missingQuestions.push(`Section ${sIndex + 1}, Question ${qIndex + 1}`);
         }
-      }
-    }
+      });
+    });
+
     if (!allAnswered) {
       Swal.fire({
         icon: 'error',
-        title: 'Incomplete!',
-        text: 'Please answerr all questions before submitting.',
+        title: 'Incomplete Form',
+        html: `Please answer all questions before submitting.<br>Missing answers: ${missingQuestions.join(', ')}`,
         confirmButtonColor: '#3085d6'
       });
       setIsSubmitting(false);
       return;
     }
+
     // Build responses array as required by API
     const responsesArray = [];
+    
     survey.sections.forEach(section => {
       section.questions.forEach(question => {
-        const answer = responses[question.id];
-        if (answer !== undefined && answer !== null && answer !== "") {
-          if (question.type === 'radio') {
-            const selectedOption = question.options.find(opt => (opt.value || opt.text) === answer);
-            if (selectedOption) {
-              responsesArray.push({ question_id: question.id, option_id: selectedOption.id });
-            }
-          } else if (question.type === 'checkbox') {
-            if (Array.isArray(answer)) {
-              answer.forEach(ans => {
-                const selectedOption = question.options.find(opt => (opt.value || opt.text) === ans);
-                if (selectedOption) {
-                  responsesArray.push({ question_id: question.id, option_id: selectedOption.id });
-                }
+        const response = responses[question.id];
+        if (!response) return;
+
+        switch (question.type) {
+          case 'radio':
+            responsesArray.push({
+              question_id: question.id,
+              option_id: response.value
+            });
+            break;
+            
+          case 'checkbox':
+            if (Array.isArray(response.value)) {
+              response.value.forEach(optionId => {
+                responsesArray.push({
+                  question_id: question.id,
+                  option_id: optionId
+                });
               });
             }
-          } else if (question.type === 'textarea') {
-            responsesArray.push({ question_id: question.id, text_response: answer });
-          }
+            break;
+            
+          case 'text':
+          case 'textarea':
+            responsesArray.push({
+              question_id: question.id,
+              text_response: response.value
+            });
+            break;
         }
       });
     });
+
     const payload = {
       survey_id: survey.id,
       survey_assignment_id: surveyAssignment.id,
       responses: responsesArray,
-      course_id:surveyResponse?.data[0]?.meta?.course?.id,
-      instructor_id:surveyResponse?.data[0]?.meta?.faculty?.id,
-      semester_id:surveyResponse?.data[0]?.meta?.course?.id,
-      depart_id:surveyResponse?.data[0]?.meta?.department?.id,
-      program_id:surveyResponse?.data[0]?.meta?.course?.program_id,
-      year_of_student:surveyResponse?.data[0]?.term,
-      
+      course_id: surveyResponse?.data[0]?.meta?.course?.id,
+      instructor_id: surveyResponse?.data[0]?.meta?.faculty?.id,
+      semester_id: surveyResponse?.data[0]?.term,
+      depart_id: surveyResponse?.data[0]?.meta?.department?.id,
+      program_id: surveyResponse?.data[0]?.meta?.course?.program_id,
+      // year_of_student: surveyResponse?.data[0]?.term,
     };
+
     PostApi(`/submit-survey`, payload)
       .then(() => {
         Swal.fire({
@@ -261,10 +308,11 @@ const QECFill = () => {
         });
       })
       .catch(error => {
+        console.error('Submission error:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error!',
-          text: 'Failed to submit survey. Please try again.',
+          text: error.response?.data?.message || 'Failed to submit survey. Please try again.',
           confirmButtonColor: '#3085d6'
         });
       })
@@ -290,6 +338,85 @@ const QECFill = () => {
               <div className="card-header">
                 <h5 className="card-title">Quality Enhancement Cell (QEC) Questionnaire</h5>
                 {survey && <p className="card-subtitle text-muted mb-0">{survey.title} - {survey.description}</p>}
+              </div>
+              <div className='card-header'>
+                {metadata && (
+                  <div className="mt-3 w-100">
+                    <div className="row g-3">
+                      {metadata.requirements?.includes('department') && metadata.department && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Department</span>
+                            <span className="fw-medium">
+                              {metadata.department.name} <span className="text-muted">({metadata.department.prefix})</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {metadata.requirements?.includes('course') && metadata.course && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Course</span>
+                            <span className="fw-medium">
+                              {metadata.course.name} <span className="text-muted">({metadata.course.prefix})</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {metadata.requirements?.includes('faculty') && metadata.faculty && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Instructor</span>
+                            <span className="fw-medium">{metadata.faculty.name}</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {metadata.requirements?.includes('degree') && metadata.degree && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Program</span>
+                            <span className="fw-medium">
+                              {metadata.degree.name} <span className="text-muted">({metadata.degree.prefix})</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {metadata.requirements?.includes('year_of_study') && Array.isArray(metadata.year_of_study) && metadata.year_of_study.length > 0 && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Session</span>
+                            <span className="fw-medium">
+                              {metadata.year_of_study[0]?.name || 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {metadata.requirements?.includes('semester') && (
+                        <div className="col-md-4">
+                          <div className="d-flex flex-column">
+                            <span className="text-muted small">Semester</span>
+                            <span className="fw-medium">
+                              {metadata.semester || 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {metadata.created_at && (
+                      <div className="pt-3 mt-3 border-top text-end">
+                        <small className="text-muted">
+                          Created: {new Date(metadata.created_at).toLocaleString()}
+                        </small>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="card-body">
                 {isSurveyLoading ? (

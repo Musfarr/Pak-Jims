@@ -111,7 +111,8 @@ const QECView = () => {
             </div>
           </div>
         );
-      case 'textarea':
+      case 'text':
+      case 'textarea':  // Handle both 'text' and 'textarea' types
         return (
           <div className="mb-4" key={question.id}>
             <label className="form-label fw-semibold">{index + 1}. {question.text}</label>
@@ -120,6 +121,7 @@ const QECView = () => {
               rows="3" 
               disabled 
               placeholder="Response area (not fillable in preview mode)"
+              style={{ resize: 'vertical' }}
             ></textarea>
           </div>
         );
@@ -313,7 +315,7 @@ const QECView = () => {
 
                             <div className="mt-4">
                               <h6 className="fw-bold mb-3">Instructions</h6>
-                              <p className="mb-4">Please answer all questions honestly. Your feedback is anonymous and will be used to improve teaching quality.</p>
+                              <p className="mb-4">{surveyData?.instructions}</p>
                               
                               <div className="mb-4 border-bottom pb-3">
                                 <h6 className="fw-bold">Questionnaire Items</h6>

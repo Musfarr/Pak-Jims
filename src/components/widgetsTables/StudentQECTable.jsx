@@ -106,11 +106,11 @@ const StudentQECTable = ({ title }) => {
                     {currentItems.map((survey, index) => (
                       <tr key={survey.id}>
                         <th scope="row">{indexOfFirstItem + index + 1}</th>
-                        <td>{survey.survey.title}</td>
-                        <td>{survey.survey?.description?.slice(0, 50)  || 'No description available'}</td>
+                        <td>{survey?.survey?.title}</td>
+                        <td>{survey?.survey?.description?.slice(0, 50)  || 'No description available'}</td>
                         {/* <td>{formatDate(survey.assigned_date)}</td> */}
-                        <td>{formatDate(survey.created_at)}</td>
-                        <td>{getStatusBadge(survey.status)}</td>
+                        <td>{formatDate(survey?.created_at)}</td>
+                        <td>{getStatusBadge(survey?.status)}</td>
                         <td>
                           <div className="d-flex gap-2">
                             {/* <Link 
@@ -120,9 +120,9 @@ const StudentQECTable = ({ title }) => {
                             >
                               <FiEye size={16} />
                             </Link> */}
-                            {survey.status !== 'completed' ? (
+                            {survey?.status !== 'completed' ? (
                               <Link 
-                                to={`/qec-fill/${survey.id}`} 
+                                to={`/qec-fill/${survey?.id}`} 
                                 className="btn btn-sm btn-primary"
                                 title="Fill Survey"
                               >
@@ -132,7 +132,7 @@ const StudentQECTable = ({ title }) => {
                               <div className="d-flex gap-2 align-items-center">
                                 {/* <span className="badge bg-success">Filled</span> */}
                                 <Link 
-                                  to={`/qec-filled-view/${survey.survey_id}/${survey.id}`} 
+                                  to={`/qec-filled-view/${survey?.survey_id}/${survey?.id}`} 
                                   className="btn btn-sm btn-info"
                                   title="View Responses"
                                 >

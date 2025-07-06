@@ -70,6 +70,8 @@ import StudentEdit from "../pages/Admin/components/StudentEdit";
 import FacultyEdit from "../pages/Admin/components/FacultyEdit";
 import ClassSimpleView from "../pages/Admin/ClassSimpleView";
 import ClassEdit from "../pages/Admin/ClassEdit";
+import TemplatesList from "../pages/Admin/Templates/TemplatesList";
+import TemplateForm from "../pages/Admin/Templates/TemplateForm";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -500,6 +502,30 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            {
+                path: "/templates",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <TemplatesList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/templates/add",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <TemplateForm />
+                    </ProtectedRoute>
+                )
+            },
+            // {
+            //     path: "/templates/edit/:id",
+            //     element: (
+            //         <ProtectedRoute requiredRole="admin">
+            //             <TemplateForm />
+            //         </ProtectedRoute>
+            //     )
+            // },
             
 
 {
