@@ -11,6 +11,16 @@ const QECFill = () => {
   const navigate = useNavigate();
   const [responses, setResponses] = useState({});
 
+  const [semester, setSemester] = useState('');
+  const [selectedFacultyId, setSelectedFacultyId] = useState('');
+
+  // Set default faculty if only one exists
+  useEffect(() => {
+    if (metadata?.faculty?.length === 1) {
+      setSelectedFacultyId(metadata.faculty[0].id);
+    }
+  }, [metadata?.faculty]);
+
   // Fetch survey details using React Query
   const {
     data: surveyResponse,
@@ -30,8 +40,7 @@ const QECFill = () => {
   const metadata = surveyAssignment?.meta || null;
   const payloadrequiremt = surveyAssignment?.meta?.requirements ;
 
-  console.log(metadata,"metadata");
-  console.log(payloadrequiremt,"payloadrequiremt");
+
 
   // Helper to get all questions
   const getAllQuestions = () => {
@@ -203,6 +212,28 @@ const QECFill = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    if (metadata.requirements?.includes('semester') && !semester) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Please enter a semester.',
+        confirmButtonColor: '#3085d6'
+      });
+      setIsSubmitting(false);
+      return;
+    }
+    
+    if (metadata.requirements?.includes('faculty') && !selectedFacultyId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Please select an instructor.',
+        confirmButtonColor: '#3085d6'
+      });
+      setIsSubmitting(false);
+      return;
+    }
     
     if (!surveyAssignment || !survey) {
       Swal.fire({
@@ -288,11 +319,10 @@ const QECFill = () => {
       survey_assignment_id: surveyAssignment.id,
       responses: responsesArray,
       course_id: surveyResponse?.data[0]?.meta?.course?.id,
-      instructor_id: surveyResponse?.data[0]?.meta?.faculty?.id,
-      semester_id: surveyResponse?.data[0]?.term,
+      instructor_id: selectedFacultyId || surveyResponse?.data[0]?.meta?.faculty?.id,
+      semester_id: metadata.requirements?.includes('semester') ? semester : surveyResponse?.data[0]?.term,
       depart_id: surveyResponse?.data[0]?.meta?.department?.id,
       program_id: surveyResponse?.data[0]?.meta?.course?.program_id,
-      // year_of_student: surveyResponse?.data[0]?.term,
     };
 
     PostApi(`/submit-survey`, payload)
@@ -342,7 +372,7 @@ const QECFill = () => {
               <div className='card-header'>
                 {metadata && (
                   <div className="mt-3 w-100">
-                    <div className="row g-3">
+                    <div className="row align-items-center g-3">
                       {metadata.requirements?.includes('department') && metadata.department && (
                         <div className="col-md-4">
                           <div className="d-flex flex-column">
@@ -368,8 +398,20 @@ const QECFill = () => {
                       {metadata.requirements?.includes('faculty') && metadata.faculty && (
                         <div className="col-md-4">
                           <div className="d-flex flex-column">
-                            <span className="text-muted small">Instructor</span>
-                            <span className="fw-medium">{metadata.faculty.name}</span>
+                            <label className="text-muted small">Instructor <span className="text-danger">*</span></label>
+                            <select 
+                              className="form-select form-select-sm"
+                              value={selectedFacultyId}
+                              onChange={(e) => setSelectedFacultyId(e.target.value)}
+                              required
+                            >
+                              <option value="">Select Instructor</option>
+                              {metadata.faculty.map((faculty) => (
+                                <option key={faculty.id} value={faculty.id}>
+                                  {faculty.name}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                         </div>
                       )}
@@ -387,9 +429,9 @@ const QECFill = () => {
 
                       {metadata.requirements?.includes('year_of_study') && Array.isArray(metadata.year_of_study) && metadata.year_of_study.length > 0 && (
                         <div className="col-md-4">
-                          <div className="d-flex flex-column">
+                          <div className="d-flex flex-column ">
                             <span className="text-muted small">Session</span>
-                            <span className="fw-medium">
+                            <span className="fw-medium ">
                               {metadata.year_of_study[0]?.name || 'N/A'}
                             </span>
                           </div>
@@ -397,12 +439,16 @@ const QECFill = () => {
                       )}
 
                       {metadata.requirements?.includes('semester') && (
-                        <div className="col-md-4">
+                        <div className="col-md-2">
                           <div className="d-flex flex-column">
-                            <span className="text-muted small">Semester</span>
-                            <span className="fw-medium">
-                              {metadata.semester || 'N/A'}
-                            </span>
+                            <label className="text-muted small">Semester <span className="text-danger">*</span></label>
+                            <input
+                              type="text"
+                              className="form-control form-control-sm"
+                              value={semester}
+                              onChange={(e) => setSemester(e.target.value)}
+                              required
+                            />
                           </div>
                         </div>
                       )}
