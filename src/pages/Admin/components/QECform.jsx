@@ -9,23 +9,23 @@ import { FiPlus, FiTrash2, FiFile, FiFileText } from 'react-icons/fi';
 const QECform = () => {
     const navigate = useNavigate();
     const [sections, setSections] = useState([
-        {
-            id: 1,
-            title: 'Instructor',
-            questions: [
-                // {
-                //     id: 1,
-                //     text: 'The Instructor is prepared for each class',
-                //     type: 'radio',
-                //     options: [
-                //         { label: 'Agree', text: 'A' },
-                //         { label: 'Neutral', text: 'B' },
-                //         { label: 'Disagree', text: 'C' },
-                //         { label: 'Strongly Disagree', text: 'D' }
-                //     ]
-                // }
-            ]
-        }
+        // {
+        //     id: 1,
+        //     title: 'Instructor',
+        //     questions: [
+        //         {
+        //             id: 1,
+        //             text: 'The Instructor is prepared for each class',
+        //             type: 'radio',
+        //             options: [
+        //                 { label: 'Agree', text: 'A' },
+        //                 { label: 'Neutral', text: 'B' },
+        //                 { label: 'Disagree', text: 'C' },
+        //                 { label: 'Strongly Disagree', text: 'D' }
+        //             ]
+        //         }
+        //     ]
+        // }
     ]);
     const [activeSectionId, setActiveSectionId] = useState(1);
     const [newSectionTitle, setNewSectionTitle] = useState('');
@@ -34,7 +34,7 @@ const QECform = () => {
     const [newOptionLabel, setNewOptionLabel] = useState('');
     const [newOptionText, setNewOptionText] = useState('');
     const [tempOptions, setTempOptions] = useState([
-        { label: 'A', text: 'A' },
+        
     ]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
