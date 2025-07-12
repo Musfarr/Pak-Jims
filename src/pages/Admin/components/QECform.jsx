@@ -34,7 +34,26 @@ const QECform = () => {
     const [newOptionLabel, setNewOptionLabel] = useState('');
     const [newOptionText, setNewOptionText] = useState('');
     const [tempOptions, setTempOptions] = useState([
-        
+        {
+            label: 'A',
+            text: 'Strongly Agree'
+        },
+        {
+            label: 'B',
+            text: 'Agree'
+        },
+        {
+            label: 'C',
+            text: 'Neutral'
+        },
+        {
+            label: 'D',
+            text: 'Disagree'
+        },
+        {
+            label: 'E',
+            text: 'Strongly Disagree'
+        }
     ]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -128,7 +147,13 @@ const QECform = () => {
         
         setNewQuestionText('');
         setNewQuestionType('radio');
-        setTempOptions([{ label: 'A', text: 'A' }]);
+        setTempOptions([
+            { label: 'A', text: 'Strongly Agree' },
+            { label: 'B', text: 'Agree' },
+            { label: 'C', text: 'Neutral' },
+            { label: 'D', text: 'Disagree' },
+            { label: 'E', text: 'Strongly Disagree' }
+        ]);
     };
     const removeQuestion = (sectionId, questionId) => {
         setSections(sections.map(s => s.id === sectionId ? { ...s, questions: s.questions.filter(q => q.id !== questionId) } : s));
