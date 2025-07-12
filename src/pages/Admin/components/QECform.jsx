@@ -44,7 +44,7 @@ const QECform = () => {
         },
         {
             label: 'C',
-            text: 'Neutral'
+            text: 'Uncertain'
         },
         {
             label: 'D',
@@ -150,7 +150,7 @@ const QECform = () => {
         setTempOptions([
             { label: 'A', text: 'Strongly Agree' },
             { label: 'B', text: 'Agree' },
-            { label: 'C', text: 'Neutral' },
+            { label: 'C', text: 'Uncertain' },
             { label: 'D', text: 'Disagree' },
             { label: 'E', text: 'Strongly Disagree' }
         ]);
