@@ -400,7 +400,7 @@ const QECFill = () => {
                         </div>
                       )}
 
-                      {/* {metadata.requirements?.includes('faculty') && metadata.faculty && (
+                      {metadata.requirements?.includes('faculty') && metadata.faculty && (
                         <div className="col-md-4">
                           <div className="d-flex flex-column">
                             <label className="text-muted small">Instructor <span className="text-danger">*</span></label>
@@ -419,7 +419,7 @@ const QECFill = () => {
                             </select>
                           </div>
                         </div>
-                      )} */}
+                      )}
 
                       {metadata.requirements?.includes('degree') && metadata.degree && (
                         <div className="col-md-4">
