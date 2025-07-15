@@ -4,6 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import Footer from '@/components/shared/Footer';
 import { FiCheckCircle, FiFileText, FiAlertCircle, FiArrowLeft } from 'react-icons/fi';
+import { FaPrint } from 'react-icons/fa6';
+import Swal from 'sweetalert2';
+import html2pdf from 'html2pdf.js';
+import { FaCheck } from 'react-icons/fa';
+import logo1 from '/images/logo1.jpg';
+
 
 const QECFilledView = () => {
   const { survey_id, assignment_id } = useParams();
@@ -43,7 +49,7 @@ const QECFilledView = () => {
     return (
       <div className="mb-4" key={question.question_id}>
         <label className="form-label fw-semibold">{questionIndex + 1}. {question.question_text}</label>
-        <div className="ps-4 mt-2">
+        <div className="ps-4 mt-2 d-flex justify-content-between">
           {question.options && question.options.map((option) => (
             <div key={option.option_id} className="form-check mb-2">
               <input 
@@ -129,7 +135,7 @@ const QECFilledView = () => {
               </div>
             )}
             {question.options && question.options.length > 0 && (
-              <div className="ps-4 mt-2">
+              <div className="ps-4 mt-2 d-flex justify-content-between">
                 {question.options.map((option, idx) => (
                   <div key={idx} className="form-check mb-2">
                     <input 
@@ -151,8 +157,170 @@ const QECFilledView = () => {
     }
   };
 
+  // PDF Export Handler
+  const handleDownloadPDF = () => {
+    const element = document.getElementById('qec-pdf-print');
+    const opt = {
+      margin:       [2, 2, 2, 2],
+      filename:     `QEC_Survey_${survey_id}_${assignment_id}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+    html2pdf().set(opt).from(element).save();
+  };
+
+  // PDF-styled renderers
+  const renderPDFRadio = (question, questionIndex) => (
+    <div key={question.question_id} className="qec-pdf-question">
+      <div className="qec-pdf-question-label">{questionIndex + 1}. {question.question_text}</div>
+      <div className="qec-pdf-options">
+        {question.options && question.options.map((option, idx) => (
+          <span key={option.option_id} className="qec-pdf-option">
+            <span className=  {` qec-pdf-radio`}> {option.selected ? <FaCheck size={18} /> : '' } </span>
+            <span>{option.text} {option.label ? `(${option.label})` : ''}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderPDFCheckbox = (question, questionIndex) => (
+    <div key={question.question_id} className="qec-pdf-question">
+      <div className="qec-pdf-question-label">{questionIndex + 1}. {question.question_text}</div>
+      <div className="qec-pdf-options">
+        {question.options && question.options.map((option, idx) => (
+          <span key={option.option_id} className="qec-pdf-option">
+            <span className={`qec-pdf-checkbox`}> {option.selected ? <FaCheck size={18} /> : '' } </span>
+            <span>{option.text} {option.label ? `(${option.label})` : ''}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderPDFText = (question, questionIndex) => (
+    <div key={question.question_id} className="qec-pdf-question">
+      <div className="qec-pdf-question-label">{questionIndex + 1}. {question.question_text}</div>
+      <div className="qec-pdf-text">
+        {question.text_response ? (
+          <span>{question.text_response}</span>
+        ) : (
+          <em style={{ color: '#888' }}>No response provided</em>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderPDFQuestion = (question, questionIndex) => {
+    switch (question.type) {
+      case 'radio': return renderPDFRadio(question, questionIndex);
+      case 'checkbox': return renderPDFCheckbox(question, questionIndex);
+      case 'text':
+      case 'textarea': return renderPDFText(question, questionIndex);
+      default: return renderPDFText(question, questionIndex);
+    }
+  };
+
+  // Modal preview state
+  const [showPdfPreview, setShowPdfPreview] = React.useState(false);
+
   return (
     <>
+      {/* Modal PDF Preview */}
+      {showPdfPreview && (
+        <div className="modal fade show" tabIndex="-1" style={{ display: 'block', background: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-xl modal-dialog-centered" style={{ maxWidth: '900px' }}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">PDF Preview (A4 Style)</h5>
+                <button type="button" className="btn-close" onClick={() => setShowPdfPreview(false)}></button>
+              </div>
+              <div className="modal-body" style={{ overflowY: 'auto', maxHeight: '80vh', background: '#f6f6f6' }}>
+                <div className="qec-pdf-print" style={{ margin: '0 auto', boxShadow: '0 0 12px #bbb', background: '#fff' }}>
+                  <div className="qec-pdf-header">
+                    <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
+                    <div>
+                      <h2 className="qec-pdf-title">Performa 1</h2>
+                      <div className="qec-pdf-subtitle">Submitted Survey Responses</div>
+                    </div>
+                    <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
+                  </div>
+                  <div className="qec-pdf-meta">
+                    <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
+                    <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
+                    <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
+                    <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
+                    <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester}</div>
+                    <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
+                  </div>
+                  {/* {metadata.submitted_at && (
+                    <div className="qec-pdf-date">
+                      Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
+                    </div>
+                  )} */}
+                  <div>
+                    {/* <div className="qec-pdf-section-title"></div> */}
+                    {surveyData && surveyData.map((section, sectionIndex) => (
+                      <div key={section.section_id} className="qec-pdf-section">
+                        <div className="qec-pdf-section-title">
+                          {section.section_title}
+                        </div>
+                        {section.questions && section.questions.map((question, questionIndex) => (
+                          renderPDFQuestion(question, questionIndex)
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowPdfPreview(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div style={{ display: 'none' }}>
+        {/* Hidden printable PDF container */}
+        <div id="qec-pdf-print" className="qec-pdf-print">
+        <div className="qec-pdf-header">
+                    <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
+                    <div>
+                      <h2 className="qec-pdf-title">Performa 1</h2>
+                      <div className="qec-pdf-subtitle">Submitted Survey Responses</div>
+                    </div>
+                    <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
+                  </div>
+          <div className="qec-pdf-meta">
+            <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
+            <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
+            <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
+            <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
+            <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester}</div>
+            <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
+          </div>
+          {/* {metadata.submitted_at && (
+            <div className="qec-pdf-date">
+              Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
+            </div>
+          )} */}
+          <div>
+            {/* <div className="qec-pdf-section-title">Survey Responses</div> */}
+            {surveyData && surveyData.map((section, sectionIndex) => (
+              <div key={section.section_id} className="qec-pdf-section">
+                <div className="qec-pdf-section-title">
+                  {section.section_title}
+                </div>
+                {section.questions && section.questions.map((question, questionIndex) => (
+                  renderPDFQuestion(question, questionIndex)
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       <div className='main-content'>
         <div className='row'>
           <div className='col-12'>
@@ -160,10 +328,17 @@ const QECFilledView = () => {
               <div className="page-title-left">
                 <h5 className="mb-0">Submitted QEC Survey</h5>
               </div>
-              <div>
+              <div className="d-flex gap-2">
                 <Link to="/general-qec-list" className="btn btn-secondary btn-sm">
                   <FiArrowLeft className="me-1" /> Back to Surveys
                 </Link>
+
+                <button onClick={() => setShowPdfPreview(true)} className="btn btn-outline-primary btn-sm">
+                  <FaPrint size={16} color="blue" /> Preview PDF
+                </button>
+                <button onClick={handleDownloadPDF} className="btn btn-outline-success btn-sm">
+                  <FaPrint size={16} color="green" /> Download PDF
+                </button>
               </div>
             </div>
           </div>

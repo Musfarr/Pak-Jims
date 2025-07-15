@@ -14,6 +14,7 @@ import ThemeCustomizer from './components/shared/ThemeCustomizer';
 import AuthProvider from './context/AuthContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
+import './index.css';
 
 const queryClient = new QueryClient()
 const App = () => {

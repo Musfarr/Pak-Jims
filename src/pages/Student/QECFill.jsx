@@ -5,6 +5,7 @@ import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import { FiCheckCircle, FiFileText, FiAlertCircle } from 'react-icons/fi';
 import Footer from '@/components/shared/Footer';
 import Swal from 'sweetalert2';
+import { useEffect } from 'react';
 
 const QECFill = () => {
   const { id } = useParams();
@@ -13,14 +14,7 @@ const QECFill = () => {
 
   const [semester, setSemester] = useState('');
   const [selectedFacultyId, setSelectedFacultyId] = useState('');
-
-  // Set default faculty if only one exists
-  useEffect(() => {
-    if (metadata?.faculty?.length === 1) {
-      setSelectedFacultyId(metadata.faculty[0].id);
-    }
-  }, [metadata?.faculty]);
-
+  
   // Fetch survey details using React Query
   const {
     data: surveyResponse,
@@ -32,13 +26,24 @@ const QECFill = () => {
     enabled: !!id
   });
 
-
   console.log(surveyResponse ,"surveyResponse");
   // Extract survey assignment and survey object from API response
   const surveyAssignment = surveyResponse?.data?.[0] || null;
   const survey = surveyAssignment?.survey || null;
   const metadata = surveyAssignment?.meta || null;
   const payloadrequiremt = surveyAssignment?.meta?.requirements ;
+
+
+
+  // Set default faculty if only one exists
+  useEffect(() => {
+    if (metadata?.faculty?.length === 1) {
+      setSelectedFacultyId(metadata.faculty[0].id);
+    }
+  }, [metadata?.faculty]);
+
+
+
 
 
 
@@ -224,16 +229,16 @@ const QECFill = () => {
       return;
     }
     
-    if (metadata.requirements?.includes('faculty') && !selectedFacultyId) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Please select an instructor.',
-        confirmButtonColor: '#3085d6'
-      });
-      setIsSubmitting(false);
-      return;
-    }
+    // if (metadata.requirements?.includes('faculty') && !selectedFacultyId) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error!',
+    //     text: 'Please select an instructor.',
+    //     confirmButtonColor: '#3085d6'
+    //   });
+    //   setIsSubmitting(false);
+    //   return;
+    // }
     
     if (!surveyAssignment || !survey) {
       Swal.fire({
@@ -395,7 +400,7 @@ const QECFill = () => {
                         </div>
                       )}
 
-                      {metadata.requirements?.includes('faculty') && metadata.faculty && (
+                      {/* {metadata.requirements?.includes('faculty') && metadata.faculty && (
                         <div className="col-md-4">
                           <div className="d-flex flex-column">
                             <label className="text-muted small">Instructor <span className="text-danger">*</span></label>
@@ -414,7 +419,7 @@ const QECFill = () => {
                             </select>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
                       {metadata.requirements?.includes('degree') && metadata.degree && (
                         <div className="col-md-4">

@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi } from '@/utils/Api/ApiServices';
+import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { FaDownLong } from 'react-icons/fa6';
+import { BsDownload } from 'react-icons/bs';
+import { FaPrint } from 'react-icons/fa';
+
 
 const StudentQECTable = ({ title }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,6 +57,10 @@ const StudentQECTable = ({ title }) => {
         return <span className="badge bg-secondary">Not Started</span>;
     }
   };
+
+
+
+
 
   return (
     <div className="col-lg-12">
@@ -138,6 +146,13 @@ const StudentQECTable = ({ title }) => {
                                 >
                                   <FiEye size={16} />
                                 </Link>
+                                <button 
+                                    className="btn btn-sm btn-outline-secondary" 
+                                    onClick={() => HandleQecPrint(survey?.survey_id , survey?.id)}
+                                    title="Download"
+                                >
+                                    <FaPrint size={16} color="maroon" />
+                                </button> 
                               </div>
                             )}
                           </div>

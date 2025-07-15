@@ -1,0 +1,102 @@
+/* PDF Export Styles for QECFilledView */
+
+.qec-pdf-print {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 24px;
+  background: #fff;
+  color: #222;
+  font-family: Arial, sans-serif;
+}
+.qec-pdf-print .qec-pdf-header {
+  border-bottom: 2px solid #222;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+.qec-pdf-print .qec-pdf-title {
+  margin: 0;
+  font-size: 22px;
+}
+.qec-pdf-print .qec-pdf-subtitle {
+  font-size: 13px;
+  color: #555;
+}
+.qec-pdf-print .qec-pdf-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.qec-pdf-print .qec-pdf-meta-item {
+  font-size: 14px;
+}
+.qec-pdf-print .qec-pdf-date {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+}
+.qec-pdf-print .qec-pdf-section {
+  margin-bottom: 24px;
+}
+.qec-pdf-print .qec-pdf-section-title {
+  font-weight: 700;
+  background: #f4f4f4;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.qec-pdf-print .qec-pdf-question {
+  margin-bottom: 16px;
+}
+.qec-pdf-print .qec-pdf-question-label {
+  font-weight: 600;
+}
+.qec-pdf-print .qec-pdf-options {
+  margin-left: 24px;
+  margin-top: 6px;
+  display: flex;
+  gap: 16px;
+}
+.qec-pdf-print .qec-pdf-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.qec-pdf-print .qec-pdf-radio {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #222;
+  border-radius: 20%;
+  /* display: inline-block; */
+  margin-right: 4px;
+  background: #fff;
+  display: flex;    
+  justify-content: center;
+  align-items: center;
+}
+.qec-pdf-print .qec-pdf-radio.checked {
+  background: #222;
+}
+.qec-pdf-print .qec-pdf-checkbox {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #222;
+  display: inline-block;
+  margin-right: 4px;
+  background: #fff;
+}
+.qec-pdf-print .qec-pdf-checkbox.checked {
+  background: #222;
+}
+.qec-pdf-print .qec-pdf-text {
+      margin-top: 6px;
+      padding: 5px 8px;
+      color: #222;
+      border-bottom: 1px solid;
+      margin: 5px 15px;
+}

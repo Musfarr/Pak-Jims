@@ -183,7 +183,7 @@ const QECform = () => {
                     text: question.text,
                     type: question.type,
                     options: question.options.map(opt => ({
-                        label: opt.text,
+                        label: opt.label,
                         text: opt.text
                     }))
                 }))

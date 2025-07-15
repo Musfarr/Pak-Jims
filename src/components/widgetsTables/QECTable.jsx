@@ -76,20 +76,22 @@ const QECTable = ({ title }) => {
         }
     };
 
-    // Handle QEC actions
-    const handleQECDownload = (id) => {
+    // // Handle QEC actions
+    // const handleQECDownload = (id) => {
         
-        const url = `./src/assets/pdfs/${id}.pdf`;
+    //     const url = `./src/assets/pdfs/${id}.pdf`;
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `QEC-${id}.pdf`;
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.download = `QEC-${id}.pdf`;
 
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    // };
+
+
 
 
 
@@ -274,10 +276,9 @@ const QECTable = ({ title }) => {
                                             >
                                             <FiTrash size={16} />
                                             </button>
-
                                                     {/* <button 
                                                         className="btn btn-sm btn-outline-info" 
-                                                        onClick={() => handleQECDownload(qec.id)}
+                                                        onClick={() => HandleQecPrint(qec.id)}
                                                         title="Download"
                                                     >
                                                         <FaDownLong />
