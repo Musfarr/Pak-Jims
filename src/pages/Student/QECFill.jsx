@@ -143,7 +143,7 @@ const QECFill = () => {
                     onChange={() => handleInputChange(question, option.id)}
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
-                    {option.text} {option.label ? `(${option.label})` : ''}
+                    {option.text} 
                   </label>
                 </div>
               ))}
@@ -167,7 +167,7 @@ const QECFill = () => {
                     onChange={e => handleCheckboxChange(question, option.id, e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
-                    {option.text} {option.label ? `(${option.label})` : ''}
+                    {option.text} 
                   </label>
                 </div>
               ))}

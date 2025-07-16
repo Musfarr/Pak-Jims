@@ -71,7 +71,7 @@ const QECView = () => {
         return (
           <div className="mb-4" key={question.id}>
             <label className="form-label fw-semibold">{index + 1}. {question.text}</label>
-            <div className="ps-4 mt-2">
+            <div className="ps-4 mt-2 ">
               {question.options && question.options.map((option, idx) => (
                 <div key={idx} className="form-check mb-2">
                   <input 
@@ -82,7 +82,7 @@ const QECView = () => {
                     disabled
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
-                    {option.text} ({option.label})
+                    {option.text} 
                   </label>
                 </div>
               ))}
@@ -104,7 +104,7 @@ const QECView = () => {
                     disabled
                   />
                   <label className="form-check-label" htmlFor={`option_${question.id}_${idx}`}>
-                    {option.text} ({option.label})
+                    {option.text} 
                   </label>
                 </div>
               ))}

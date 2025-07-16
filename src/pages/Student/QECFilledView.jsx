@@ -60,7 +60,8 @@ const QECFilledView = () => {
                 disabled
               />
               <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                {option.text} {option.label ? `(${option.label})` : ''}
+                {/* {option.text} {option.label ? `(${option.label})` : ''} */}
+                {option.text}
               </label>
             </div>
           ))}
@@ -86,7 +87,7 @@ const QECFilledView = () => {
                   disabled
                 />
                 <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                  {option.text} {option.label ? `(${option.label})` : ''}
+                  {option.text}
                 </label>
               </div>
             ))
@@ -146,7 +147,7 @@ const QECFilledView = () => {
                       disabled
                     />
                     <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                      {option.text} {option.label ? `(${option.label})` : ''}
+                      {option.text} 
                     </label>
                   </div>
                 ))}
@@ -175,11 +176,11 @@ const QECFilledView = () => {
   const renderPDFRadio = (question, questionIndex) => (
     <div key={question.question_id} className="qec-pdf-question">
       <div className="qec-pdf-question-label">{questionIndex + 1}. {question.question_text}</div>
-      <div className="qec-pdf-options">
+      <div className="qec-pdf-options d-flex justify-content-around">
         {question.options && question.options.map((option, idx) => (
           <span key={option.option_id} className="qec-pdf-option">
             <span className=  {` qec-pdf-radio`}> {option.selected ? <FaCheck size={18} /> : '' } </span>
-            <span>{option.text} {option.label ? `(${option.label})` : ''}</span>
+            <span>{option.text}</span>
           </span>
         ))}
       </div>
@@ -252,7 +253,7 @@ const QECFilledView = () => {
                     <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
                     <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
                     <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-                    <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester}</div>
+                    <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester_id}</div>
                     <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
                   </div>
                   {/* {metadata.submitted_at && (
@@ -298,7 +299,7 @@ const QECFilledView = () => {
             <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
             <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
             <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-            <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester}</div>
+            <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester_id}</div>
             <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
           </div>
           {/* {metadata.submitted_at && (
@@ -394,7 +395,7 @@ const QECFilledView = () => {
                       <div className="col-md-4">
                         <div className="d-flex flex-column">
                           <span className="text-muted small">Semester</span>
-                          <span className="fw-medium">{metadata.semester}</span>
+                          <span className="fw-medium">{metadata.semester_id}</span>
                         </div>
                       </div>
 

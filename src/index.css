@@ -27,9 +27,11 @@
 }
 .qec-pdf-print .qec-pdf-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid;
 }
 .qec-pdf-print .qec-pdf-meta-item {
   font-size: 14px;
@@ -97,6 +99,6 @@
       margin-top: 6px;
       padding: 5px 8px;
       color: #222;
-      border-bottom: 1px solid;
+      border-bottom: 2px solid;
       margin: 5px 15px;
 }
