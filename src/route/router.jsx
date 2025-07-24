@@ -72,6 +72,11 @@ import ClassSimpleView from "../pages/Admin/ClassSimpleView";
 import ClassEdit from "../pages/Admin/ClassEdit";
 import TemplatesList from "../pages/Admin/Templates/TemplatesList";
 import TemplateForm from "../pages/Admin/Templates/TemplateForm";
+import ReportsList from "../pages/Admin/Reports-list";
+import QecReports from "../pages/Admin/QecReports";
+
+
+
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -518,14 +523,22 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            // {
-            //     path: "/templates/edit/:id",
-            //     element: (
-            //         <ProtectedRoute requiredRole="admin">
-            //             <TemplateForm />
-            //         </ProtectedRoute>
-            //     )
-            // },
+            {
+                path: "/reports/list",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QecReports />
+                    </ProtectedRoute>
+                )
+            },
             
 
 {

@@ -221,6 +221,32 @@ export const AdminMenuList = [
             }
         ]
     },
+    {
+        id: 13,
+        name: "Reporting",
+        path: "#",
+        icon: 'feather-award',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Performa 1",
+                path: "/reports/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 2,
+                name: "Performan 2",
+                path: "/reports/2",
+                subdropdownMenu: []
+            },
+            {
+                id: 3,
+                name: "Performance 3",
+                path: "/reports/3",
+                subdropdownMenu: []
+            }
+        ]
+    },
 
     // {
     //     id: 8,
