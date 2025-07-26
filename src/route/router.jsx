@@ -1,14 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import RootLayout from "../layout/root";
-import Home from "../pages/home";
-import Analytics from "../pages/analytics";
+// import Home from "../pages/home";
 import ErrorMinimal from "../pages/error-minimal";
-import HelpKnowledgebase from "../pages/help-knowledgebase";
-import WidgetsLists from "../pages/widgets-lists";
-import WidgetsTables from "../pages/widgets-tables";
-import WidgetsCharts from "../pages/widgets-charts";
-import WidgetsStatistics from "../pages/widgets-statistics";
-import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Unauthorized from "../pages/unauthorized";
 import SuperAdminDashboard from "../pages/SuperAdmin/super-admin-dashboard";
@@ -104,10 +97,10 @@ export const router = createBrowserRouter([
                 path: "/",
                 element: <Navigate to="/Authentication/login" replace />
             },
-            {
-                path: "/dashboard",
-                element: <Home />
-            },
+            // {
+            //     path: "/dashboard",
+            //     element: <Home />
+            // },
 
             // Role-specific dashboards
             {
@@ -600,30 +593,6 @@ export const router = createBrowserRouter([
     path: "/unauthorized",
     element: <Unauthorized />
 },
-{
-    path: "/widgets/lists",
-    element: <WidgetsLists />
-},
-{
-    path: "/widgets/tables",
-    element: <WidgetsTables />
-},
-{
-    path: "/widgets/charts",
-    element: <WidgetsCharts/>
-},
-{
-    path: "/widgets/statistics",
-    element: <WidgetsStatistics/>
-},
-{
-    path: "/widgets/miscellaneous",
-    element: <WidgetsMiscellaneous/>
-},
-// {
-//     path: "/help/knowledgebase",
-//     element: <HelpKnowledgebase />
-// },
 ]
 },
 
