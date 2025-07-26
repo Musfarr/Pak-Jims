@@ -157,7 +157,7 @@ export function getAdminMenuList(permissions = []) {
 
 
     {
-        id: 5,
+        id: 14,
         name: "Students",
         path: "#",
         icon: 'feather-users',
@@ -225,7 +225,7 @@ export function getAdminMenuList(permissions = []) {
             }
         ].filter(Boolean)
     },
-    permissions.includes("view_Reporting") && {
+    permissions.includes("view_Batches") && {
     
         id: 13,
         name: "Reporting",
@@ -234,20 +234,26 @@ export function getAdminMenuList(permissions = []) {
         dropdownMenu: [
             {
                 id: 1,
-                name: "Performa 1",
+                name: "Proforma 1",
                 path: "/reports/list",
                 subdropdownMenu: []
             },
             {
                 id: 2,
-                name: "Performan 2",
-                path: "/reports/2",
+                name: "Proforma 3",
+                path: "/reports/list",
                 subdropdownMenu: []
             },
             {
                 id: 3,
-                name: "Performance 3",
-                path: "/reports/3",
+                name: "Proforma 5",
+                path: "/reports/list",
+                subdropdownMenu: []
+            },
+            {
+                id: 4,
+                name: "Proforma 7",
+                path: "/reports/list",
                 subdropdownMenu: []
             }
         ]

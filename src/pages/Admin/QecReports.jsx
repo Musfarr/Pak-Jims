@@ -5,12 +5,12 @@ import { GetApi , PostApi } from '@/utils/Api/ApiServices';
 import ReactApexChart from 'react-apexcharts';
 import CardLoader from '@/components/shared/CardLoader';
 import SocialMediaStatisticsChart from '@/components/widgetsCharts/SocialMediaStatisticsChart';
+import WebAnalyticsChart from '@/components/widgetsCharts/WebAnalyticsChart';
 
 
 const QecReports = () => {
     const location = useLocation();
     const { survey_assignment_ids } = location.state;
-    console.log(survey_assignment_ids , "survey_assignment_ids") ;
 
 
 
@@ -26,6 +26,7 @@ const QecReports = () => {
     const RadarLabels = reports?.data?.spider_chart;
     const series1 = Object.entries(RadarLabels).map(([key, value]) => ({ name: key, data: [value] }));
     const Questions = reports?.data?.question_stats;
+    const TextResponse = reports?.data?.comments;
 
     const chartOptions = {
         series: series1,
@@ -51,19 +52,52 @@ const QecReports = () => {
         <div className="main-content">
             
             <div className="row">
-                <div className="col-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2>QEC Reports</h2>
-                            <p>This is the QEC Reports page layout. Content coming soon...</p>
-                        </div>
-                    </div>
-                </div>
+                <div className="col-12 mb-4">
+  <div className="card border rounded-3 shadow-sm">
+    <div className="card-header bg-secondary text-white py-3">
+      <h2 className="mb-0 h4 text-white ">QEC Evaluation Report</h2>
+    </div>
+    <div className="card-body">
+      <div className="row">
+        {reports?.data?.department && (
+          <div className="col-md-6 mb-2">
+            <strong >Department:</strong> {reports.data.department}
+          </div>
+        )}
+        {reports?.data?.course_number && (
+          <div className="col-md-6 mb-2">
+            <strong>Course Number:</strong> {reports.data.course_number}
+          </div>
+        )}
+        {reports?.data?.course_title && (
+          <div className="col-md-6 mb-2">
+            <strong>Course Title:</strong> {reports.data.course_title}
+          </div>
+        )}
+        {reports?.data?.teacher_name && (
+          <div className="col-md-6 mb-2">
+            <strong>Teacher Name:</strong> {reports.data.teacher_name}
+          </div>
+        )}
+        {reports?.data?.term && (
+          <div className="col-md-6 mb-2">
+            <strong>Term:</strong> {reports.data.term}
+          </div>
+        )}
+        {reports?.data?.total_submissions && (
+          <div className="col-md-6 mb-2">
+            <strong>Total Submissions:</strong> {reports.data.total_submissions}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
                 <div className="col-4">
-                    <div className="card">
+                    <div className="card ">
                         <div className="card-header">
                             <h5 className="card-title">Response Radar </h5>
                         </div>
@@ -82,11 +116,8 @@ const QecReports = () => {
 
 
                 <div className="col">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2>QEC Reports</h2>
-                            <p>This is the QEC Reports page layout. Content coming soon...</p>
-                        </div>
+                    <div className="card ">
+                    <WebAnalyticsChart/>
                     </div>
                 </div>
 
@@ -127,6 +158,43 @@ const QecReports = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* <h2>Comments</h2> */}
+
+                { Object.entries(TextResponse)?.map(([key , value] , index) => (
+                    <div className="col-12">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5 className="card-title">{key}</h5>
+                            </div>
+
+                            {value.map((item , index) => (
+                                <div className="card-sm">
+                                <div className="card-body">
+                                    {/* <h5>{item?.question}</h5> */}
+                                    <table className="table table-bordered textcenter fs-16 ">
+                                        <thead className="table-light ">
+                                            <tr>
+                                                <th colSpan={2}>{item?.question}</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {item?.responses?.map((resp , index) => (
+                                        <tr>
+                                            {/* <td  >{index + 1}</td>                                         */}
+                                            <td>{resp}</td>                                        
+                                        </tr>
+                                    ))}
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

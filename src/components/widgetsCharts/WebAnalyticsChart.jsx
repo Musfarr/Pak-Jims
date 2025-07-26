@@ -13,16 +13,19 @@ const WebAnalyticsChart = () => {
         return null;
     }
     return (
-        <div className="col-xxl-8">
-            <div className={`card stretch stretch-full ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
-                <CardHeader title={"Website Analytics"} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
+        <div className="">
+            <div className={`card ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
+                {/* <CardHeader title={"QEC Analytics"} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} /> */}
 
+                <div className="card-header">
+                    <h5 className="card-title">QEC Analytics</h5>
+                </div>
                 <div className="card-body custom-card-action">
                     <ReactApexChart
                         type='bar'
                         options={chartOption}
                         series={chartOption.series}
-                        height={425}
+                        height={350}
                     />
                 </div>
                 <CardLoader refreshKey={refreshKey} />
