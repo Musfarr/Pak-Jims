@@ -16,6 +16,14 @@ const InstituteCreateSuperAdmin = () => {
   const location = useLocation();
   const instituteID = location.state?.instituteID;
   const [loading, setLoading] = useState(false);
+  
+  // Fetch roles for dropdown
+  const { data: rolesResponse, isLoading: rolesLoading } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => GetApi('/roles')
+  });
+  
+  const roles = rolesResponse?.data || [];
 
   console.log(instituteID)
   // React Hook Form setup
@@ -28,6 +36,7 @@ const InstituteCreateSuperAdmin = () => {
       password: '',
       password_confirmation: '',
       branch_id: id,
+      role_id: '',
       user_type: 'admin',
       institute_id: instituteID,
     }
@@ -201,6 +210,27 @@ const InstituteCreateSuperAdmin = () => {
                         placeholder="Confirm password"
                       />
                       {errors.password_confirmation && <div className="invalid-feedback">{errors.password_confirmation.message}</div>}
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="role_id" className="form-label">Role*</label>
+                      <select
+                        className={`form-select ${errors.role_id ? 'is-invalid' : ''}`}
+                        id="role_id"
+                        {...register('role_id', { required: 'Role is required' })}
+                      >
+                        <option value="">Select Role</option>
+                        {rolesLoading ? (
+                          <option disabled>Loading roles...</option>
+                        ) : (
+                          roles.map(role => (
+                            <option key={role.id} value={role.id}>
+                              {role.name}
+                            </option>
+                          ))
+                        )}
+                      </select>
+                      {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
                     </div>
                     
                     {/* Hidden fields */}

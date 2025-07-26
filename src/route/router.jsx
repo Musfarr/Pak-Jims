@@ -75,8 +75,10 @@ import TemplateForm from "../pages/Admin/Templates/TemplateForm";
 import ReportsList from "../pages/Admin/Reports-list";
 import QecReports from "../pages/Admin/QecReports";
 
-
-
+// Roles & Permissions Management
+import Modules from "../pages/SuperAdmin/Modules";
+import Roles from "../pages/SuperAdmin/Roles";
+import CreateRole from "../pages/SuperAdmin/CreateRole";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -206,6 +208,32 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="super_admin">
                         <InstituteCreateSuperAdmin />
+                    </ProtectedRoute>
+                )
+            },
+
+            // Roles & Permissions Management Routes
+            {
+                path: "/modules",
+                element: (
+                    <ProtectedRoute requiredRole="super_admin">
+                        <Modules />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/roles",
+                element: (
+                    <ProtectedRoute requiredRole="super_admin">
+                        <Roles />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/roles/create",
+                element: (
+                    <ProtectedRoute requiredRole="super_admin">
+                        <CreateRole />
                     </ProtectedRoute>
                 )
             },

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import html2pdf from 'html2pdf.js';
 import { FaCheck } from 'react-icons/fa';
 import logo1 from '/images/logo1.jpg';
+import logo2 from '/images/QEClogo.png';
 
 
 const QECFilledView = () => {
@@ -246,7 +247,7 @@ const QECFilledView = () => {
                       <h2 className="qec-pdf-title">Performa 1</h2>
                       <div className="qec-pdf-subtitle">Submitted Survey Responses</div>
                     </div>
-                    <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
+                    <img style={{ width: '90px', height: '90px' }} src={logo2} alt="" />
                   </div>
                   <div className="qec-pdf-meta">
                     <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>

@@ -25,7 +25,7 @@ export const AdminMenuList = [
         id: 7,
         name: "programs",
         path: "#",
-        icon: 'feather-award',
+        icon: 'feather-file-text',
         dropdownMenu: [
             {
                 id: 1,
@@ -49,7 +49,7 @@ export const AdminMenuList = [
         id: 6,
         name: "courses",
         path: "#",
-        icon: 'feather-award',
+        icon: 'feather-layers',
         dropdownMenu: [
             {
                 id: 1,
@@ -70,7 +70,7 @@ export const AdminMenuList = [
         id: 8,
         name: "departments",
         path: "#",
-        icon: 'feather-briefcase',
+        icon: 'fa-building',
         dropdownMenu: [
             {
                 id: 1,
@@ -112,7 +112,7 @@ export const AdminMenuList = [
         id: 10,
         name: "academic years",
         path: "#",
-        icon: 'feather-briefcase',
+        icon: 'feather-framer',
         dropdownMenu: [
             // {
             //     id: 1,
@@ -178,7 +178,7 @@ export const AdminMenuList = [
         id: 5,
         name: "Faculty",
         path: "#",
-        icon: 'feather-users',
+        icon: 'feather-user-check',
         dropdownMenu: [
             {
                 id: 1,
@@ -199,7 +199,7 @@ export const AdminMenuList = [
         id: 12,
         name: "QEC",
         path: "#",
-        icon: 'feather-award',
+        icon: 'feather-clipboard',
         dropdownMenu: [
             {
                 id: 1,
@@ -225,7 +225,7 @@ export const AdminMenuList = [
         id: 13,
         name: "Reporting",
         path: "#",
-        icon: 'feather-award',
+        icon: 'feather-bar-chart-2',
         dropdownMenu: [
             {
                 id: 1,

@@ -79,4 +79,30 @@ export const SuperAdminMenuList = [
     },
    
     
+    {
+        id: 200,
+        name: "Roles & Permissions",
+        path: "#",
+        icon: 'feather-shield',
+        dropdownMenu: [
+            {
+                id: 201,
+                name: "Modules",
+                path: "/modules",
+                subdropdownMenu: []
+            },
+            {
+                id: 202,
+                name: "Roles",
+                path: "/roles",
+                subdropdownMenu: []
+            },
+            {
+                id: 203,
+                name: "Create Role",
+                path: "/roles/create",
+                subdropdownMenu: []
+            }
+        ]
+    }
 ];

@@ -33,7 +33,14 @@ const AdminEdit = () => {
     queryFn: () => GetApi('/branches')
   });
   
+  // Fetch roles for dropdown
+  const { data: rolesResponse, isLoading: rolesLoading } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => GetApi('/roles')
+  });
+  
   const branches = branchesResponse?.data || [];
+  const roles = rolesResponse?.data || [];
   
   // Filter branches by institute_id if available
   const filteredBranches = institute_id 
@@ -50,6 +57,7 @@ const AdminEdit = () => {
         username: admin.username,
         branch_id: admin.branch_id,
         institute_id: admin.institute_id,
+        role_id: admin.role_id,
         // Don't reset password fields
       });
     }
@@ -278,6 +286,27 @@ const AdminEdit = () => {
                       </select>
                       {errors.branch_id && <div className="invalid-feedback">{errors.branch_id.message}</div>}
                     </div> */}
+                    
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="role_id" className="form-label">Role*</label>
+                      <select
+                        className={`form-select ${errors.role_id ? 'is-invalid' : ''}`}
+                        id="role_id"
+                        {...register('role_id', { required: 'Role is required' })}
+                      >
+                        <option value="">Select Role</option>
+                        {rolesLoading ? (
+                          <option disabled>Loading roles...</option>
+                        ) : (
+                          roles.map(role => (
+                            <option key={role.id} value={role.id}>
+                              {role.name}
+                            </option>
+                          ))
+                        )}
+                      </select>
+                      {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
+                    </div>
                     
                     {/* {!institute_id && (
                       <div className="col-md-6 mb-3">
