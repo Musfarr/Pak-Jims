@@ -1,5 +1,9 @@
 // Admin has access to management menus but limited settings
-export const AdminMenuList = [
+
+// Admin has access to management menus but limited settings
+
+export function getAdminMenuList(permissions = []) {
+    return [
     {
         id: 0,
         name: "dashboards",
@@ -27,19 +31,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-file-text',
         dropdownMenu: [
-            {
+            permissions.includes("view_Programs") && {
                 id: 1,
                 name: "Program List",
                 path: "/programs/list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_Programs") && {
                 id: 2,
                 name: "Add Program",
                 path: "/programs/add",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
 
@@ -51,19 +55,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-layers',
         dropdownMenu: [
-            {
+            permissions.includes("view_Courses") && {
                 id: 1,
                 name: "Course List",
                 path: "/courses/list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_Courses") && {
                 id: 2,
                 name: "Add Course",
                 path: "/courses/add",
                 subdropdownMenu: []
-            },
-        ]
+            }
+        ].filter(Boolean)
     },
 
     {
@@ -72,19 +76,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'fa-building',
         dropdownMenu: [
-            {
+            permissions.includes("view_Departments") && {
                 id: 1,
                 name: "Department List",
                 path: "/departments/list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_Departments") && {
                 id: 2,
                 name: "Add Department",
                 path: "/departments/add",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
     {
@@ -93,22 +97,22 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-users',
         dropdownMenu: [
-            {
+            permissions.includes("view_Batches") && {
                 id: 1,
                 name: "Batch List",
                 path: "/batches/list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_Batches") && {
                 id: 2,
                 name: "Add Batch",
                 path: "/batches/add",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
-    {
+    permissions.includes("view_Academic Years") && {
         id: 10,
         name: "academic years",
         path: "#",
@@ -120,13 +124,13 @@ export const AdminMenuList = [
             //     path: "/academic-years/list",
             //     subdropdownMenu: []
             // },
-            {
+            permissions.includes("add_Academic Years") && {
                 id: 2,
                 name: "Add Academic Year",
                 path: "/academic-years/add",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
     
     {
@@ -135,19 +139,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-layers',
         dropdownMenu: [
-            {
+            permissions.includes("view_Classes") && {
                 id: 1,
                 name: "Class List",
                 path: "/classes/list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_Classes") && {
                 id: 2,
                 name: "Add Class",
                 path: "/classes/add",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
 
@@ -158,19 +162,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-users',
         dropdownMenu: [
-            {
+            permissions.includes("add_Students") && {
                 id: 1,
-                name: " Student Create",
+                name: "Student Create",
                 path: "/create-student",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("view_Students") && {
                 id: 2,
-                name: "Student List",   
+                name: "Student List",
                 path: "/student-list",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
 
@@ -180,19 +184,19 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-user-check',
         dropdownMenu: [
-            {
+            permissions.includes("add_Faculty") && {
                 id: 1,
                 name: "Faculty Create",
                 path: "/create-faculty",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("view_Faculty") && {
                 id: 2,
                 name: "Faculty List",
                 path: "/faculty-list",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
 
     {
@@ -201,13 +205,13 @@ export const AdminMenuList = [
         path: "#",
         icon: 'feather-clipboard',
         dropdownMenu: [
-            {
+            permissions.includes("view_QEC") && {
                 id: 1,
                 name: "QEC Questionnaires",
                 path: "/qec-list",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_QEC") && {
                 id: 2,
                 name: "Create New Questionnaire",
                 path: "/qec/add",
@@ -219,9 +223,10 @@ export const AdminMenuList = [
                 path: "/templates",
                 subdropdownMenu: []
             }
-        ]
+        ].filter(Boolean)
     },
-    {
+    permissions.includes("view_Reporting") && {
+    
         id: 13,
         name: "Reporting",
         path: "#",
@@ -247,6 +252,7 @@ export const AdminMenuList = [
             }
         ]
     },
+    
 
     // {
     //     id: 8,
@@ -268,4 +274,5 @@ export const AdminMenuList = [
     //         }
     //     ]
     // }
-];
+    ].filter(Boolean);
+}

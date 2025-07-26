@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { GetApi } from '../../utils/Api/ApiServices';
+import { GetApi, DeleteApi } from '../../utils/Api/ApiServices';
+import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 
 const Roles = () => {
@@ -30,7 +31,34 @@ const Roles = () => {
       .join('; ');
   };
 
+  // Delete role handler
+  const handleDeleteRole = async (id) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this role?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    });
+    if (!result.isConfirmed) return;
+    try {
+      const response = await DeleteApi(`roles/${id}`);
+      if (response.status) {
+        toast.success('Role deleted successfully');
+        fetchRoles();
+      } else {
+        toast.error(response.message || 'Failed to delete role');
+      }
+    } catch (error) {
+      toast.error('Failed to delete role');
+    }
+  };
+
+
   return (
+    <div className="main-content">
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
@@ -61,12 +89,27 @@ const Roles = () => {
                         <tr key={role.id}>
                           <td>{role.id}</td>
                           <td>{role.name}</td>
-                          <td>
-                            <small>{getPermissionsString(role.modules)}</small>
+                          <td className="text-wrap ">
+                            <p>
+                              {getPermissionsString(role.modules)
+                                .split('delete;')
+                                .filter(line => line.trim() !== '')
+                                .map((line, idx, arr) => (
+                                  <React.Fragment key={idx}>
+                                    {line.trim()}{idx !== arr.length - 1 && 'delete;'}<br />
+                                  </React.Fragment>
+                                ))}
+                            </p>
                           </td>
                           <td>
-                            <button className="btn btn-sm btn-warning">
+                            {/* <button className="btn btn-sm btn-warning mr-2">
                               Edit
+                            </button> */}
+                            <button
+                              className="btn btn-sm btn-danger"
+                              onClick={() => handleDeleteRole(role.id)}
+                            >
+                              Delete
                             </button>
                           </td>
                         </tr>
@@ -85,6 +128,7 @@ const Roles = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

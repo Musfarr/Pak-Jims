@@ -178,15 +178,19 @@ const ClassList = () => {
                                   <Link to={`/classes/view/${classItem.id}`} className='btn btn-sm btn-info'>
                                     <FiEye size={16} />
                                   </Link>
-                                  <Link to={`/classes/edit/${classItem.id}`} className='btn btn-sm btn-warning'>
-                                    <FiEdit size={16} />
-                                  </Link>
-                                  {/* <button 
-                                    className='btn btn-sm btn-danger'
-                                    onClick={() => handleDeleteClass(classItem.id)}
-                                  >
-                                    <FiTrash size={16} />
-                                  </button> */}
+                                  {permissions.includes('edit_Classes') && (
+                                    <Link to={`/classes/edit/${classItem.id}`} className='btn btn-sm btn-warning'>
+                                      <FiEdit size={16} />
+                                    </Link>
+                                  )}
+                                  {permissions.includes('delete_Classes') && (
+                                    <button 
+                                      className='btn btn-sm btn-danger'
+                                      onClick={() => handleDeleteClass(classItem.id)}
+                                    >
+                                      <FiTrash size={16} />
+                                    </button>
+                                  )}
                                 </div>
                               </td>
                             </tr>

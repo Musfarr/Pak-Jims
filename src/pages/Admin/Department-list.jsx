@@ -187,20 +187,24 @@ const DepartmentList = () => {
                                 <td>{department?.course?.name}</td>
                                 <td>
                                   <div className='d-flex gap-2'>
-                                    <button 
-                                      className='btn btn-sm btn-warning'
-                                      onClick={() => handleEditDepartment(department)}
-                                      disabled={isDeleting}
-                                    >
-                                      <FiEdit size={16} />
-                                    </button>
-                                    <button 
-                                      className='btn btn-sm btn-danger'
-                                      onClick={() => handleDeleteDepartment(department.id)}
-                                      disabled={isDeleting}
-                                    >
-                                      <FiTrash size={16} />
-                                    </button>
+                                    {permissions.includes('edit_Departments') && (
+                                      <button 
+                                        className='btn btn-sm btn-warning'
+                                        onClick={() => handleEditDepartment(department)}
+                                        disabled={isDeleting}
+                                      >
+                                        <FiEdit size={16} />
+                                      </button>
+                                    )}
+                                    {permissions.includes('delete_Departments') && (
+                                      <button 
+                                        className='btn btn-sm btn-danger'
+                                        onClick={() => handleDeleteDepartment(department.id)}
+                                        disabled={isDeleting}
+                                      >
+                                        <FiTrash size={16} />
+                                      </button>
+                                    )}
                                   </div>
                                 </td>
                               </tr>

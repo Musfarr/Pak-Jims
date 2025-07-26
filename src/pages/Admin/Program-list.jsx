@@ -9,7 +9,10 @@ import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
 
+import { useAuth } from '../../context/AuthContext';
+
 const ProgramList = () => {
+  const { permissions = [] } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -184,21 +187,24 @@ const ProgramList = () => {
                               <td>{program.name}</td>
                               <td>
                                 <div className='d-flex gap-2'>
-                                  
-                                  <button 
-  className='btn btn-sm btn-warning'
-  onClick={() => handleEditProgram(program)}
-  disabled={isDeleting}
->
-  <FiEdit size={16} />
-</button>
-                                  <button 
-                                    className='btn btn-sm btn-danger'
-                                    onClick={() => handleDeleteProgram(program.id)}
-                                    disabled={isDeleting}
-                                  >
-                                    <FiTrash size={16} />
-                                  </button>
+                                  {permissions.includes('edit_Programs') && (
+                                    <button 
+                                      className='btn btn-sm btn-warning'
+                                      onClick={() => handleEditProgram(program)}
+                                      disabled={isDeleting}
+                                    >
+                                      <FiEdit size={16} />
+                                    </button>
+                                  )}
+                                  {permissions.includes('delete_Programs') && (
+                                    <button 
+                                      className='btn btn-sm btn-danger'
+                                      onClick={() => handleDeleteProgram(program.id)}
+                                      disabled={isDeleting}
+                                    >
+                                      <FiTrash size={16} />
+                                    </button>
+                                  )}
                                 </div>
                               </td>
                             </tr>

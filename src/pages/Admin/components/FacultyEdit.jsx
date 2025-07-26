@@ -12,6 +12,7 @@ import EducationHistoryTab from './facultyTabs/EducationHistoryTab';
 import WorkExperiencesTab from './facultyTabs/WorkExperiencesTab';
 import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab';
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab';
+import { useAuth } from '../../../context/AuthContext';
 
 const steps = [
     'personalDetailsTab',
@@ -62,6 +63,7 @@ const FacultyEdit = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { permissions } = useAuth();
 
     // Fetch faculty data by id
     const { data: facultyResponse, isLoading } = useQuery({
@@ -364,13 +366,15 @@ const FacultyEdit = () => {
                     >
                         View
                     </button>
-                    <button
-                        type="button"
-                        className="btn btn-danger btn-sm"
-                        onClick={handleDelete}
-                    >
-                        Delete
-                    </button>
+                    {permissions.includes('delete_Faculty') && (
+    <button
+        type="button"
+        className="btn btn-danger btn-sm"
+        onClick={handleDelete}
+    >
+        Delete
+    </button>
+)}
                 </div>
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">

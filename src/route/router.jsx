@@ -252,7 +252,7 @@ export const router = createBrowserRouter([
             {
                 path: "/courses/list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Courses">
                         <CourseList />
                     </ProtectedRoute>
                 )
@@ -260,7 +260,7 @@ export const router = createBrowserRouter([
             {
                 path: "/courses/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Courses">
                         <CreateCourse />
                     </ProtectedRoute>
                 )
@@ -268,7 +268,7 @@ export const router = createBrowserRouter([
             {
                 path: "/programs/list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Programs">
                         <ProgramList />
                     </ProtectedRoute>
                 )
@@ -276,7 +276,7 @@ export const router = createBrowserRouter([
             {
                 path: "/programs/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Programs">
                         <CreateProgram />
                     </ProtectedRoute>
                 )
@@ -284,7 +284,7 @@ export const router = createBrowserRouter([
             {
                 path: "/departments/list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Departments">
                         <DepartmentList />
                     </ProtectedRoute>
                 )
@@ -292,7 +292,7 @@ export const router = createBrowserRouter([
             {
                 path: "/departments/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Departments">
                         <CreateDepartment />
                     </ProtectedRoute>
                 )
@@ -300,7 +300,7 @@ export const router = createBrowserRouter([
             {
                 path: "/classes/list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Classes">
                         <ClassList />
                     </ProtectedRoute>
                 )
@@ -308,7 +308,7 @@ export const router = createBrowserRouter([
             {
                 path: "/classes/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Classes">
                         <CreateClass />
                     </ProtectedRoute>
                 )
@@ -316,7 +316,7 @@ export const router = createBrowserRouter([
             {
                 path: "/classes/view/:id",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Classes">
                         <ClassSimpleView />
                     </ProtectedRoute>
                 )
@@ -340,7 +340,7 @@ export const router = createBrowserRouter([
             {
                 path: "/academic-years/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Academic Years">
                         <CreateAcademicYear />
                     </ProtectedRoute>
                 )
@@ -348,7 +348,7 @@ export const router = createBrowserRouter([
             {
                 path: "/batches/list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Batches">
                         <BatchList />
                     </ProtectedRoute>
                 )
@@ -356,7 +356,7 @@ export const router = createBrowserRouter([
             {
                 path: "/batches/add",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Batches">
                         <CreateBatch />
                     </ProtectedRoute>
                 )
@@ -366,7 +366,7 @@ export const router = createBrowserRouter([
             {
                 path: "/create-student",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Students">
                         <Createstudent />
                     </ProtectedRoute>
                 )
@@ -374,7 +374,7 @@ export const router = createBrowserRouter([
             {
                 path: "/student-list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Students">
                         <Studentlist />
                     </ProtectedRoute>
                 )
@@ -392,7 +392,7 @@ export const router = createBrowserRouter([
             {
                 path: "/students/view/:id",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Students">
                         <StudentSimpleView />
                     </ProtectedRoute>
                 )
@@ -400,7 +400,7 @@ export const router = createBrowserRouter([
             {
                 path: "/students/edit/:id",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="edit_Students">
                         <StudentEdit />
                     </ProtectedRoute>
                 )
@@ -411,7 +411,7 @@ export const router = createBrowserRouter([
             {
                 path: "/create-faculty",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="add_Faculty">
                         <Createfaculty />
                     </ProtectedRoute>
                 )
@@ -419,7 +419,7 @@ export const router = createBrowserRouter([
             {
                 path: "/faculty-list",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Faculty">
                         <Facultylist />
                     </ProtectedRoute>
                 )
@@ -428,7 +428,7 @@ export const router = createBrowserRouter([
             {
                 path: "/faculty/edit/:id",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
+                    <ProtectedRoute requiredRole="admin" requiredPermission="edit_Faculty">
                         <FacultyEdit />
                     </ProtectedRoute>
                 )

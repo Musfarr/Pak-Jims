@@ -7,10 +7,10 @@ import getIcon from "@/utils/getIcon";
 import { 
     MasterAdminMenuList, 
     SuperAdminMenuList, 
-    AdminMenuList, 
     FacultyMenuList, 
     StudentMenuList 
 } from "@/utils/Newdata/RoleMenus";
+import { getAdminMenuList } from "@/utils/Newdata/RoleMenus/AdminMenuList";
 import { useAuth } from "../../../context/AuthContext";
 
 const Menus = () => {
@@ -19,36 +19,27 @@ const Menus = () => {
     const [activeParent, setActiveParent] = useState("");
     const [activeChild, setActiveChild] = useState("");
     const pathName = useLocation().pathname;
-    const { role } = useAuth();
+    const { role, permissions } = useAuth();
     
     console.log("Current user role:", role);
 
     // Get the appropriate menu list based on user role
     const getMenuListByRole = () => {
-        console.log("Getting menu list for role:", role);
-        
         // Convert role to lowercase for case-insensitive comparison
         const roleLC = role ? role.toLowerCase() : '';
-        
         switch(roleLC) {
             case "masteradmin":
-                console.log("Using Master Admin menu list");
                 return MasterAdminMenuList;
             case "super_admin":
-                console.log("Using Super Admin menu list");
                 return SuperAdminMenuList;
             case "admin":
-                console.log("Using Admin menu list");
-                return AdminMenuList;
+                return getAdminMenuList(permissions);
             case "faculty":
-                console.log("Using Faculty menu list");
                 return FacultyMenuList;
             case "student":
-                console.log("Using Student menu list");
                 return StudentMenuList;
             default:
-                console.log("Using default Student menu list, role not recognized:", roleLC);
-                return StudentMenuList; // Default to student menu if role not recognized
+                return StudentMenuList;
         }
     };
 

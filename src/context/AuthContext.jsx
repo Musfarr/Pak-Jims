@@ -6,11 +6,13 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [permissions, setPermissions] = useState(null);
 
   // Load authentication state from cookies on component mount
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
+    const Permissions = localStorage.getItem('permissions');
     
     if (storedToken && storedUser) {
       try {
@@ -19,6 +21,7 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
         setUser(userData);
         setRole(userData.user_type);
+        setPermissions(Permissions)
       } catch (error) {
         console.error('Error parsing user data from cookie:', error);
         // Clear invalid cookies
@@ -28,15 +31,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (userData, apiToken) => {
+  const login = (userData, apiToken , permissions) => {
     // Store in cookies (expires in 7 days)
     localStorage.setItem('token', apiToken);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('permissions', JSON.stringify(permissions));
     
     setIsAuthenticated(true);
     setToken(apiToken);
     setUser(userData);
     setRole(userData.user_type);
+    setPermissions(permissions)
     
     // Determine redirect based on user type
     let redirectTo = '/dashboard';
@@ -57,12 +62,14 @@ export const AuthProvider = ({ children }) => {
     // Clear cookies
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('permissions')
     
     // Reset state
     setIsAuthenticated(false);
     setToken(null);
     setUser(null);
     setRole(null);
+    setPermissions(null);
     
     return '/authentication/login';
   };
@@ -75,6 +82,7 @@ export const AuthProvider = ({ children }) => {
     role,
     login,
     logout,
+    permissions,
     institute_id: user?.institute_id
   };
 

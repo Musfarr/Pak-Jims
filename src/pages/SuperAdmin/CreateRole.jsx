@@ -91,7 +91,21 @@ const CreateRole = () => {
     return moduleData ? moduleData.permissions : [];
   };
 
+  // Select/Deselect all permissions for a module
+  const handleSelectAll = (moduleId, allPermissionIds, selectAll) => {
+    setSelectedModules(prev => {
+      const updated = { ...prev };
+      if (selectAll) {
+        updated[moduleId] = allPermissionIds;
+      } else {
+        updated[moduleId] = [];
+      }
+      return updated;
+    });
+  };
+
   return (
+    <div className="main-content">
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
@@ -127,8 +141,21 @@ const CreateRole = () => {
                         const modulePermissions = getPermissionsForModule(module.id);
                         return (
                           <div key={module.id} className="card mb-3">
-                            <div className="card-header">
+                            <div className="card-header d-flex justify-content-between align-items-center">
                               <h6 className="mb-0">{module.name}</h6>
+                              {modulePermissions.length > 0 && (
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-outline-primary"
+                                  onClick={() => handleSelectAll(
+                                    module.id,
+                                    modulePermissions.map(p => p.id),
+                                    !selectedModules[module.id] || selectedModules[module.id].length !== modulePermissions.length
+                                  )}
+                                >
+                                  {selectedModules[module.id] && selectedModules[module.id].length === modulePermissions.length ? 'Deselect All' : 'Select All'}
+                                </button>
+                              )}
                             </div>
                             <div className="card-body">
                               <div className="row">
@@ -168,7 +195,7 @@ const CreateRole = () => {
                   </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary float-end">
                   Create Role
                 </button>
               </form>
@@ -176,6 +203,7 @@ const CreateRole = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

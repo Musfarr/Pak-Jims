@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../../context/AuthContext';
 
 const tabfields = [ 'profileTab', 'academicTab', 'emergencyTab', 'passwordTab' ];
 const stepFields = [
@@ -1049,6 +1050,7 @@ const StudentEdit = () => {
 )}
                     </div>
                     <div className="card-footer d-flex justify-content-between align-items-center">
+    {permissions.includes('delete_Students') && (
     <button
         type="button"
         className="btn btn-danger"
@@ -1077,6 +1079,7 @@ const StudentEdit = () => {
     >
         Delete
     </button>
+)}
     <div className="d-flex gap-2">
         <button type="button" className="btn btn-secondary" onClick={handleprevStep} disabled={currentStep === 0}>Previous</button>
         {currentStep < tabfields.length - 1 ? (
