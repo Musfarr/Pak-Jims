@@ -191,6 +191,7 @@ const QECTable = ({ title }) => {
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Name</th>
                                     <th>Title</th>
                                     <th>Description</th>      
                                     {/* <th>Status</th> */}
@@ -215,14 +216,15 @@ const QECTable = ({ title }) => {
                                 ) : filteredQEC.length > 0 ? (
                                     currentItems.map((qec) => (
                                         <tr key={qec?.id}>
-                                            <td>{qec?.id || 'N/A'}</td>
-                                            <td>{qec?.title || 'N/A'}</td>
+                                            <td>{qec?.id || '-'}</td>
+                                            <td>{qec?.name || '-'}</td>
+                                            <td>{qec?.title || '-'}</td>
                                             <td>
                                                 {qec?.description 
                                                     ? (qec?.description.length > 30 
                                                         ? `${qec?.description.substring(0, 30)}...` 
                                                         : qec?.description) 
-                                                    : 'N/A'}
+                                                    : '-'}
                                             </td>
                                             {/* <td>
                                                 <span className={`badge bg-soft-${qec.status === "assigned" ? "success" : "danger"} text-${qec.status === "assigned" ? "primary" : "danger"}`}>
@@ -268,6 +270,13 @@ const QECTable = ({ title }) => {
                                                         title="View"
                                                     >
                                                         <FiEye />
+                                                    </button>
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-warning" 
+                                                        onClick={() => handleEditQEC(qec.id)}
+                                                        title="Edit"
+                                                    >
+                                                        <FiEdit />
                                                     </button>
                                                     <button 
                                             className='btn btn-sm btn-danger'

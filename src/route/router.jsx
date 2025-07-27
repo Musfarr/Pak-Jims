@@ -37,6 +37,7 @@ import FacultyView from "../pages/Admin/Faculty-view";
 import StudentSimpleView from "../pages/Admin/StudentSimpleView";
 import FacultySimpleView from "../pages/Admin/FacultySimpleView";
 import CreateQEC from "../pages/Admin/Create-QEC";
+import EditQEC from "../pages/Admin/Edit-QEC";
 import QECList from "../pages/Admin/QEC-list";
 import QECView from "../pages/Admin/QEC-view";
 import QECReport from "../pages/Admin/QEC-report";
@@ -500,6 +501,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <QECView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/edit/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <EditQEC />
                     </ProtectedRoute>
                 )
             },
