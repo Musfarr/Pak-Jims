@@ -235,25 +235,25 @@ export function getAdminMenuList(permissions = []) {
             {
                 id: 1,
                 name: "Proforma 1",
-                path: "/reports/list",
+                path: "/reports/list/proforma1",
                 subdropdownMenu: []
             },
             {
                 id: 2,
                 name: "Proforma 3",
-                path: "/reports/list",
+                path: "/reports/list/proforma3",
                 subdropdownMenu: []
             },
             {
                 id: 3,
                 name: "Proforma 5",
-                path: "/reports/list",
+                path: "/reports/list/proforma5",
                 subdropdownMenu: []
             },
             {
                 id: 4,
                 name: "Proforma 7",
-                path: "/reports/list",
+                path: "/reports/list/proforma7",
                 subdropdownMenu: []
             }
         ]

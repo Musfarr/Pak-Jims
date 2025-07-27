@@ -154,6 +154,14 @@ const QecReports = () => {
                                     </tbody>
                                 </table>
                             </div>
+                            <div className="card-footer">
+                                <div className="d-flex justify-content-around">
+                                    <h5 className="text-center pr-2">Labels : </h5>
+                                {reports?.data?.label_rest.map((label , index) => (
+                                    <p className="" key={index}>{label}</p>
+                                ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -562,6 +562,43 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/reports/list",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma1",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma3",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma5",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma7",
+                
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <ReportsList />
