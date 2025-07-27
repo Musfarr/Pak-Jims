@@ -7,10 +7,13 @@ import { FiEdit, FiEye, FiTrash, FiSearch, FiFilter, FiPlus } from 'react-icons/
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
+
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const { permissions } = useAuth();
 
   const { data: coursesResponse, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['courses'],

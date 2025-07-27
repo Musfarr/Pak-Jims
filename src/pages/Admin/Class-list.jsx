@@ -7,6 +7,8 @@ import Footer from '@/components/shared/Footer';
 import { Link } from 'react-router-dom';
 import { FiEdit, FiEye, FiTrash, FiSearch } from 'react-icons/fi';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
+
 
 const ClassList = () => {
   // Fetch classes data using React Query
@@ -21,6 +23,7 @@ const ClassList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
   const [filterShift, setFilterShift] = useState('');
+  const { permissions } = useAuth();
 
   // Filter classes based on search term
   const filteredClasses = classesData.filter(classItem => {

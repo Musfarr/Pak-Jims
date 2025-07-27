@@ -244,8 +244,9 @@ const QECFilledView = () => {
                   <div className="qec-pdf-header">
                     <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
                     <div>
-                      <h2 className="qec-pdf-title">Performa 1</h2>
-                      <div className="qec-pdf-subtitle">Submitted Survey Responses</div>
+                      <h2 className="qec-pdf-title">{metadata.survey.name}</h2>
+                      <div className="qec-pdf-subtitle">{metadata.survey.title}</div>
+                      <div className="qec-pdf-subtitle">{metadata.survey.description}</div>
                     </div>
                     <img style={{ width: '90px', height: '90px' }} src={logo2} alt="" />
                   </div>
@@ -254,8 +255,8 @@ const QECFilledView = () => {
                     <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
                     <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
                     <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-                    <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester_id}</div>
-                    <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
+                    <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
+                    <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
                   </div>
                   {/* {metadata.submitted_at && (
                     <div className="qec-pdf-date">
@@ -263,7 +264,9 @@ const QECFilledView = () => {
                     </div>
                   )} */}
                   <div>
-                    {/* <div className="qec-pdf-section-title"></div> */}
+                    <div className="qec-pdf-section-title fs-16">
+                     Instruction:  {metadata.survey?.instructions}
+                    </div>
                     {surveyData && surveyData.map((section, sectionIndex) => (
                       <div key={section.section_id} className="qec-pdf-section">
                         <div className="qec-pdf-section-title">
@@ -300,8 +303,8 @@ const QECFilledView = () => {
             <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
             <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
             <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-            <div className="qec-pdf-meta-item"><b>Semester:</b> {metadata.semester_id}</div>
-            <div className="qec-pdf-meta-item"><b>Session:</b> {metadata.year_of_student}</div>
+            <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
+            <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
           </div>
           {/* {metadata.submitted_at && (
             <div className="qec-pdf-date">
@@ -309,6 +312,9 @@ const QECFilledView = () => {
             </div>
           )} */}
           <div>
+          <div className="qec-pdf-section-title fs-16">
+                     Instruction:  {metadata.survey?.instructions}
+                    </div>
             {/* <div className="qec-pdf-section-title">Survey Responses</div> */}
             {surveyData && surveyData.map((section, sectionIndex) => (
               <div key={section.section_id} className="qec-pdf-section">
@@ -400,12 +406,12 @@ const QECFilledView = () => {
                         </div>
                       </div>
 
-                      <div className="col-md-4">
+                      {/* <div className="col-md-4">
                         <div className="d-flex flex-column">
                           <span className="text-muted small">Session</span>
                           <span className="fw-medium">{metadata.year_of_student}</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     {metadata.submitted_at && (

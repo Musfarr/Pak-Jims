@@ -7,10 +7,13 @@ import { FiEdit, FiEye, FiTrash, FiSearch, FiPlus } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
+
 
 const DepartmentList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const { permissions } = useAuth();
 
   // Fetch departments from API
   const { data: departmentsResponse, isLoading, isError, error, refetch } = useQuery({
