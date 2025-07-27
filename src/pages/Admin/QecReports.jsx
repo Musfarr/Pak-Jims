@@ -145,11 +145,10 @@ const QecReports = () => {
                                         <tr>
                                             <td>{index + 1}</td>
                                             <td >{question?.text}</td>
-                                            <td>{index + 1}</td>
-                                            <td>{index + 1}</td>
-                                            <td>{index + 1}</td>
-                                            <td>10</td>
-                                            {/* <td>100</td> */}
+                                            <td>{question?.counts['A']}</td>
+                                            <td>{question?.counts['B']}</td>
+                                            <td>{question?.counts['C']}</td>
+                                            <td>{question?.counts['D']}</td>
                                         </tr>
                                     ))}
                                     </tbody>
