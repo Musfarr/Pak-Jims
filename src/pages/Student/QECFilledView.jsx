@@ -10,6 +10,8 @@ import html2pdf from 'html2pdf.js';
 import { FaCheck } from 'react-icons/fa';
 import logo1 from '/images/logo1.jpg';
 import logo2 from '/images/QEClogo.png';
+import { BsEyeFill } from 'react-icons/bs';
+
 
 
 const QECFilledView = () => {
@@ -163,14 +165,61 @@ const QECFilledView = () => {
   const handleDownloadPDF = () => {
     const element = document.getElementById('qec-pdf-print');
     const opt = {
-      margin:       [2, 2, 2, 2],
-      filename:     `QEC_Survey_${survey_id}_${assignment_id}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+      margin: [2, 2, 2, 2],
+      filename: `QEC_Survey_${survey_id}_${assignment_id}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: true
+      },
+      jsPDF: { 
+        unit: 'mm', 
+        format: 'a4', 
+        orientation: 'portrait' 
+      },
+      pagebreak: { 
+        mode: ['css'],
+        before: '.page-break-before',
+        after: '.page-break-after',
+        avoid: '.avoid-break' 
+      }
     };
-    html2pdf().set(opt).from(element).save();
+    
+    // Add print-specific styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @media print {
+        .qec-pdf-print {
+          box-shadow: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        .qec-pdf-section {
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        .qec-pdf-meta {
+          margin: 10px 0 !important;
+          padding: 5px 0 !important;
+        }
+        .qec-pdf-header {
+          margin-bottom: 15px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Generate PDF
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        // Clean up the style element
+        document.head.removeChild(style);
+      });
   };
 
   // PDF-styled renderers
@@ -240,7 +289,7 @@ const QECFilledView = () => {
                 <button type="button" className="btn-close" onClick={() => setShowPdfPreview(false)}></button>
               </div>
               <div className="modal-body" style={{ overflowY: 'auto', maxHeight: '80vh', background: '#f6f6f6' }}>
-                <div className="qec-pdf-print" style={{ margin: '0 auto', boxShadow: '0 0 12px #bbb', background: '#fff' }}>
+                <div id="qec-pdf-print" className="qec-pdf-print" style={{ margin: '0 auto', boxShadow: '0 0 12px #bbb', background: '#fff', maxWidth: '210mm', padding: '20px' }}>
                   <div className="qec-pdf-header">
                     <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
                     <div>
@@ -250,7 +299,18 @@ const QECFilledView = () => {
                     </div>
                     <img style={{ width: '90px', height: '90px' }} src={logo2} alt="" />
                   </div>
-                  <div className="qec-pdf-meta">
+                  <div className="qec-pdf-meta" style={{ 
+                    margin: '15px 0', 
+                    padding: '12px',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '4px',
+                    backgroundColor: '#f9f9f9',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '8px 20px',
+                    pageBreakInside: 'avoid',
+                    breakInside: 'avoid'
+                  }}>
                     <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
                     <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
                     <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
@@ -263,9 +323,17 @@ const QECFilledView = () => {
                       Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
                     </div>
                   )} */}
-                  <div>
-                    <div className="qec-pdf-section-title fs-16">
-                     Instruction:  {metadata.survey?.instructions}
+                  <div style={{ pageBreakBefore: 'avoid', breakBefore: 'avoid' }}>
+                    <div className="qec-pdf-section-title fs-16" style={{ 
+                      margin: '15px 0 20px 0',
+                      padding: '12px',
+                      backgroundColor: '#f0f7ff',
+                      borderRadius: '4px',
+                      borderLeft: '4px solid #4a89dc',
+                      pageBreakAfter: 'avoid',
+                      breakAfter: 'avoid'
+                    }}>
+                      <strong>Instruction:</strong> {metadata.survey?.instructions}
                     </div>
                     {surveyData && surveyData.map((section, sectionIndex) => (
                       <div key={section.section_id} className="qec-pdf-section">
@@ -342,10 +410,10 @@ const QECFilledView = () => {
                 </Link>
 
                 <button onClick={() => setShowPdfPreview(true)} className="btn btn-outline-primary btn-sm">
-                  <FaPrint size={16} color="blue" /> Preview PDF
+                  <BsEyeFill size={16} className="m-1" color="green" /> Preview PDF
                 </button>
                 <button onClick={handleDownloadPDF} className="btn btn-outline-success btn-sm">
-                  <FaPrint size={16} color="green" /> Download PDF
+                  <FaPrint size={16} className="m-1" color="green" /> Download PDF
                 </button>
               </div>
             </div>

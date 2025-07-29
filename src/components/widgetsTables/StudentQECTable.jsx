@@ -146,13 +146,13 @@ const StudentQECTable = ({ title }) => {
                                 >
                                   <FiEye size={16} />
                                 </Link>
-                                <button 
+                                {/* <button 
                                     className="btn btn-sm btn-outline-secondary" 
                                     onClick={() => HandleQecPrint(survey?.survey_id , survey?.id)}
                                     title="Download"
                                 >
                                     <FaPrint size={16} color="maroon" />
-                                </button> 
+                                </button>  */}
                               </div>
                             )}
                           </div>

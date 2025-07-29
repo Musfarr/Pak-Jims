@@ -8,10 +8,13 @@ const ReportsList = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const isProforma1 = location.pathname.includes('proforma1')
-    
+    const isProforma3 = location.pathname.includes('proforma3')
+    const isProforma5 = location.pathname.includes('proforma5')
+    const isProforma7 = location.pathname.includes('proforma7')
+
     const { data: reportsList } = useQuery({
-        queryKey: ['reportsList', isProforma1],
-        queryFn: () => GetApi(isProforma1 ? 'report/student-evaluation' : 'report/dynamic-evaluation')
+        queryKey: ['reportsList', isProforma1 , isProforma3 , isProforma5 , isProforma7],
+        queryFn: () => GetApi(isProforma1 ? 'report/student-evaluation' : isProforma3 ? 'report/performa3-evaluation' : isProforma5 ? 'report/performa5-evaluation' : 'report/performa7-evaluation')
     })
 
     const handleViewReport = (id , survey_assignment_ids) => {
