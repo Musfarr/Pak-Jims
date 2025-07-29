@@ -6,11 +6,14 @@ import ReactApexChart from 'react-apexcharts';
 import CardLoader from '@/components/shared/CardLoader';
 import SocialMediaStatisticsChart from '@/components/widgetsCharts/SocialMediaStatisticsChart';
 import WebAnalyticsChart from '@/components/widgetsCharts/WebAnalyticsChart';
+import html2pdf from 'html2pdf.js';
+import { BsEyeFill } from 'react-icons/bs';
+import { FaPrint } from 'react-icons/fa6';
 
 
 const QecReports = () => {
     const location = useLocation();
-    const { survey_assignment_ids } = location.state;
+    const { survey_assignment_ids } = location?.state;
 
 
 
@@ -48,11 +51,49 @@ const QecReports = () => {
         return <CardLoader />
     }
 
+
+    const handleDownloadPDF = () => {
+        
+        const options = {
+            margin: [2, 2, 2, 2],
+            filename: `QEC_Reports.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+              scale: 2,
+              useCORS: true,
+              allowTaint: true,
+              logging: true
+            },
+            jsPDF: { 
+              unit: 'mm', 
+              format: 'a4', 
+              orientation: 'portrait' 
+            },
+            pagebreak: { 
+              mode: ['css'],
+              before: '.page-break-before',
+              after: '.page-break-after',
+              avoid: '.avoid-break' 
+            }
+          };
+
+        html2pdf().set(options).from(document.querySelector('.qec-report-pdf-print')).save();
+    }
     return (
         <div className="main-content">
-            
             <div className="row">
                 <div className="col-12 mb-4">
+                    {/* <button onClick={() => setShowPdfPreview(true)} className="btn btn-outline-primary btn-sm">
+                        <BsEyeFill size={16} className="m-1" color="green" /> Preview PDF
+                      </button> */}
+                      <button onClick={handleDownloadPDF} className="btn btn-outline-success btn-sm float-end">
+                        <FaPrint size={16} className="m-1" color="green" /> Download Report
+                      </button>
+                </div>
+            </div>
+            
+            <div className="row qec-report-pdf-print">
+    <div className="col-12 mb-4">
   <div className="card border rounded-3 shadow-sm">
     <div className="card-header bg-secondary text-white py-3">
       <h2 className="mb-0 h4 text-white ">QEC Evaluation Report</h2>
@@ -115,7 +156,7 @@ const QecReports = () => {
 
 
 
-                <div className="col">
+                <div className="col-8">
                     <div className="card ">
                     <WebAnalyticsChart/>
                     </div>
