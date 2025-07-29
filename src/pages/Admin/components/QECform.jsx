@@ -173,6 +173,7 @@ const QECform = () => {
         }
         setIsSubmitting(true);
         const payload = {
+            name: data.name,
             title: data.title,
             description: data.description,
             instructions: data.instructions || null,
@@ -216,6 +217,14 @@ const QECform = () => {
                 <div className="card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row g-3 mb-4">
+                            <div className="col-lg-6">
+                                <label className="form-label">Survey Name</label>
+                                <div className="input-group">
+                                    <div className="input-group-text"><FiFile /></div>
+                                    <input type="text" className={`form-control${errors.name ? ' is-invalid' : ''}`} {...register('name', { required: true })} />
+                                    {errors.name && <div className="invalid-feedback">Name is required</div>}
+                                </div>
+                            </div>
                             <div className="col-lg-6">
                                 <label className="form-label">Survey Title</label>
                                 <div className="input-group">
