@@ -131,15 +131,15 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <label className="form-label">Gender <span className="text-danger">*</span></label>
                     <div className="d-flex gap-3 align-items-center mt-1">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="male" value="male" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="male" value="Male" {...register('gender', { required: 'Gender is required' })} />
                             <label className="form-check-label" htmlFor="male">Male</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="female" value="female" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="female" value="Female" {...register('gender', { required: 'Gender is required' })} />
                             <label className="form-check-label" htmlFor="female">Female</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="other" value="other" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="other" value="Other" {...register('gender', { required: 'Gender is required' })} />
                             <label className="form-check-label" htmlFor="other">Other</label>
                         </div>
                     </div>
@@ -212,10 +212,10 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             {...register('marital_status', { required: 'Marital Status is required' })}
                         >
                             <option value="">Select Marital Status</option>
-                            <option value="married">MARRIED</option>
-                            <option value="single">SINGLE</option>
-                            <option value="divorced">DIVORCED</option>
-                            <option value="widowed">WIDOWED</option>
+                            <option value="Married">MARRIED</option>
+                            <option value="Single">SINGLE</option>
+                            <option value="Divorced">DIVORCED</option>
+                            <option value="Widowed">WIDOWED</option>
                         </select>
                         {errors?.marital_status && <div className="invalid-feedback">{errors.marital_status.message}</div>}
                     </div>
@@ -364,15 +364,15 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiCreditCard /></div>
                         <input
-                            type="number"
+                            type="text"
                             className={`form-control ${errors?.cnic_no ? 'is-invalid' : ''}`}
                             id="cnicNoInput"
                             placeholder="CNIC No"
                             {...register('cnic_no', { required: 'CNIC No is required' , 
                                 pattern: {
-                                    value: /^[0-9]{13}$/, 
-                                    message: 'CNIC No must be 13 digits'
-                                }
+                                    value: /^[0-9]{13}$/,
+                                    message: 'CNIC No must be exactly 13 digits (no dashes)'
+                                  }
                              })}
                         />
                         {errors?.cnic_no && <div className="invalid-feedback">{errors.cnic_no.message}</div>}
@@ -444,11 +444,16 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiPhone /></div>
                         <input
-                            type="number"
+                            type="text"
                             className={`form-control ${errors?.phone ? 'is-invalid' : ''}`}
                             id="phoneInput"
                             placeholder="Phone"
-                            {...register('phone')}
+                            {...register('phone' , {
+                                pattern: {
+                                    value: /^[0-9]{11}$/, 
+                                    message: 'Phone No must be 11 digits'
+                                }
+                            })}
                         />
                         {errors?.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                     </div>
@@ -458,11 +463,16 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiSmartphone /></div>
                         <input
-                            type="number"
+                            type="text"
                             className={`form-control ${errors?.mobile_no ? 'is-invalid' : ''}`}
                             id="mobileNoInput"
                             placeholder="Mobile No"
-                            {...register('mobile_no')}
+                            {...register('mobile_no' , {
+                                pattern: {
+                                    value: /^[0-9]{11}$/, 
+                                    message: 'Mobile No must be 11 digits'
+                                }
+                            })}
                         />
                         {errors?.mobile_no && <div className="invalid-feedback">{errors.mobile_no.message}</div>}
                     </div>
@@ -472,7 +482,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     <div className="input-group">
                         <div className="input-group-text"><FiAlertCircle /></div>
                         <input
-                            type="number"
+                            type="text"
                             className={`form-control ${errors?.emergency_no ? 'is-invalid' : ''}`}
                             id="emergencyNoInput"
                             placeholder="Emergency No"

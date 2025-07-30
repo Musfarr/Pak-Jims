@@ -165,7 +165,8 @@ const FacultyEdit = () => {
             emergency_address: '',
             username: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            role_id: '',
         }
     });
 
@@ -306,7 +307,7 @@ const FacultyEdit = () => {
                     title: 'Faculty updated successfully',
                     text: 'Faculty has been updated successfully',
                     confirmButtonText: 'OK'
-                }).then(() => navigate('/faculty/list'));
+                }).then(() => navigate('/faculty-list'));
             })
             .catch((error) => {
                 console.error('Error updating faculty:', error);
@@ -335,7 +336,7 @@ const FacultyEdit = () => {
                 DeleteApi(`/faculties/${id}`)
                     .then(() => {
                         Swal.fire('Deleted!', 'Faculty has been deleted.', 'success');
-                        navigate('/faculty/list');
+                        navigate('/faculty-list');
                     })
                     .catch(() => {
                         Swal.fire('Error', 'Failed to delete faculty.', 'error');

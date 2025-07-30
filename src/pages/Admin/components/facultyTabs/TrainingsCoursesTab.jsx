@@ -23,16 +23,16 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
 
     // Country options for dropdown
     const countryOptions = [
-        { value: 'pakistan', label: 'Pakistan' },
-        { value: 'china', label: 'China' },
-        { value: 'uk', label: 'United Kingdom' },
-        { value: 'usa', label: 'United States' },
-        { value: 'germany', label: 'Germany' },
-        { value: 'france', label: 'France' },
-        { value: 'japan', label: 'Japan' },
-        { value: 'australia', label: 'Australia' },
-        { value: 'canada', label: 'Canada' },
-        { value: 'india', label: 'India' }
+        { value: 'Pakistan', label: 'Pakistan' },
+        { value: 'China', label: 'China' },
+        { value: 'UK', label: 'United Kingdom' },
+        { value: 'USA', label: 'United States' },
+        { value: 'Germany', label: 'Germany' },
+        { value: 'France', label: 'France' },
+        { value: 'Japan', label: 'Japan' },
+        { value: 'Australia', label: 'Australia' },
+        { value: 'Canada', label: 'Canada' },
+        { value: 'India', label: 'India' }
     ];
 
     return (

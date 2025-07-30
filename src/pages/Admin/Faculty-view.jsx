@@ -68,7 +68,7 @@ const FacultyView = () => {
                 {/* <div className='row mb-4'>
                     <div className='col-12'>
                         <div className='d-flex justify-content-between align-items-center'>
-                            <Link to="/faculty/list" className='btn btn-outline-secondary'>
+                            <Link to="/faculty-list" className='btn btn-outline-secondary'>
                                 <FiArrowLeft className="me-2" /> Back to Faculty
                             </Link>
                         </div>
