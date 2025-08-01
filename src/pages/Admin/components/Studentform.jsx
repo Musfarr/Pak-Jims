@@ -59,6 +59,13 @@ const Studentform = () => {
     });
     const coursesData = coursesResponse?.data?.data || [];
 
+    // Fetch roles using React Query
+    const { data: rolesResponse, isLoading: isRolesLoading } = useQuery({
+        queryKey: ['roles'],
+        queryFn: () => GetApi('/roles')
+    });
+    const roles = rolesResponse?.data || [];
+
 
 
 
@@ -119,7 +126,7 @@ const Studentform = () => {
                 username: '',
                 password: '',
                 confirmPassword: '',
-    
+                role_id: '',
         }
     });
 
@@ -132,7 +139,7 @@ const Studentform = () => {
         ['name', 'surname', 'father_name', 'gender', 'dob', 'cnic', 'mobile_1', 'mobile_2', 'father_mobile', 'email', 'religion', 'nationality', 'domicile_id', 'category_id', 'current_address', 'permanent_address'],
         ['enrollment_no', 'admission_date', 'rf_id', 'enroll_no_ii', 'shift_id', 'course_id', 'depart_id', 'batch_id'],
         ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_email', 'emergency_contact_relationship'],
-        ['username', 'password', 'confirmPassword'],
+        ['username', 'password', 'confirmPassword', 'role_id'],
     ];
      
     
@@ -1149,6 +1156,33 @@ const Studentform = () => {
                                             })}
                                         />
                                         {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Role Dropdown */}
+                            <div className="row mb-4 align-items-center">
+                                <div className="col-lg-4">
+                                    <label htmlFor="roleInput" className="fw-semibold">Role: </label>
+                                </div>
+                                <div className="col-lg-8">
+                                    <div className="input-group">
+                                        <div className="input-group-text"><FiUser /></div>
+                                        <select
+                                            className={`form-select ${errors.role_id ? 'is-invalid' : ''}`}
+                                            id="roleInput"
+                                            {...register('role_id', { required: 'Role is required' })}
+                                            disabled={isRolesLoading}
+                                        >
+                                            <option value="">Select Role</option>
+                                            {roles.map((role) => (
+                                                <option key={role.id} value={role.id}>
+                                                    {role.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
+                                        {isRolesLoading && <div className="text-info mt-1">Loading roles...</div>}
                                     </div>
                                 </div>
                             </div>

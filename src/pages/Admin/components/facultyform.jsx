@@ -138,7 +138,8 @@ const Facultyform = () => {
             // Password Details
             username: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            role_id: ''
         }
     });
 
