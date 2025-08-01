@@ -15,15 +15,23 @@ const CourseList = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const { permissions } = useAuth();
 
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
   const { data: coursesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['courses'],
-    queryFn: () => GetApi('/courses')
+    queryKey: ['courses', page, perPage],
+    queryFn: () => GetApi(`/courses?per_page=${perPage}&page=${page}`)
   });
 
-  const courses = coursesResponse?.data.data || [];
+  const courses = coursesResponse?.data?.data || [];
+  const pagination = coursesResponse?.data?.pagination || {};
+  const currentPage = pagination.current_page || page;
+  const lastPage = pagination.total_pages || 1;
+  const total = pagination.total || 0;
+  const perPageFromApi = pagination.per_page || perPage;
 
-  // Filter courses based on search term
-  const filteredCourses = courses?.filter(course => {
+  // Client-side search on current page only
+  const filteredCourses = courses.filter(course => {
     return (
       (course.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
        course.prefix?.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -199,7 +207,7 @@ const CourseList = () => {
                           filteredCourses.map((course, index) => {
                             return (
                               <tr key={course.id}>
-                                <td>{index + 1}</td>
+                                <td>{(currentPage - 1) * perPageFromApi + index + 1}</td>
                                 <td>{course.prefix}</td>
                                 <td>{course.name}</td>
                                 <td>{course?.program?.name || 'Unknown'}</td>
@@ -239,6 +247,33 @@ const CourseList = () => {
                     </table>
                   </div>
                 )}
+                {/* Pagination Controls */}
+                <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                  <div className="text-muted small">
+                    Page {currentPage} of {lastPage}
+                  </div>
+                  <div className="d-flex align-items-center gap-2 mx-auto">
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === 1} 
+                      onClick={() => setPage(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === lastPage} 
+                      onClick={() => setPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div>
+                    <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+                      {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

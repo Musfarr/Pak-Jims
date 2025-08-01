@@ -18,7 +18,7 @@ const QECTable = ({ title }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [perPage, setPerPage] = useState(10);
     const [isDeleting, setIsDeleting] = useState(false);
 
     // Fetch QEC data using React Query
@@ -28,12 +28,17 @@ const QECTable = ({ title }) => {
         error, 
         refetch 
     } = useQuery({
-        queryKey: ['surveys'],
-        queryFn: () => GetApi('/surveys')
+        queryKey: ['surveys', currentPage, perPage],
+        queryFn: () => GetApi(`/surveys?per_page=${perPage}&page=${currentPage}`)
     });
 
     // Process the API response
     const qecData = qecResponse?.data || [];
+    const pagination = qecResponse?.pagination || qecResponse?.data?.pagination || {};
+    const totalPages = pagination.total_pages || 1;
+    const total = pagination.total || qecData.length;
+    const perPageFromApi = pagination.per_page || perPage;
+    const currentPageFromApi = pagination.current_page || currentPage;
 
 
     const statusOptions = [
@@ -41,7 +46,7 @@ const QECTable = ({ title }) => {
         { value: "Unassigned", label: "Unassigned" },
     ];
 
-    // Filter QEC records based on search term
+    // Filter QEC records based on search term (current page only)
     const filteredQEC = qecData.filter(qec => {
         const matchesSearch = 
             (qec?.title && qec?.title.toLowerCase().includes(searchTerm.toLowerCase())) || 
@@ -50,30 +55,12 @@ const QECTable = ({ title }) => {
         return matchesSearch;
     });
 
-    // Pagination logic - use API pagination if available
-    const paginationInfo = qecResponse?.data?.pagination || {
-        total: filteredQEC.length,
-        count: filteredQEC.length,
-        per_page: itemsPerPage,
-        current_page: currentPage,
-        total_pages: Math.ceil(filteredQEC.length / itemsPerPage)
-    };
-    
-    // For client-side pagination if not handled by the API
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = paginationInfo.total_pages > 1 
-        ? filteredQEC.slice(indexOfFirstItem, indexOfLastItem) 
-        : filteredQEC;
-    const totalPages = paginationInfo.total_pages;
+    // No need for client-side pagination logic, backend handles it
+    const currentItems = filteredQEC;
 
     // Handle page change
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // If the API supports pagination, refetch with the new page
-        if (qecResponse?.data?.pagination) {
-            // Implement API pagination call if needed
-        }
     };
 
     // // Handle QEC actions
@@ -307,15 +294,32 @@ const QECTable = ({ title }) => {
                         </table>
                     </div>
 
-                    {filteredQEC.length > itemsPerPage && (
-                        <div className="d-flex justify-content-end mt-3">
-                            <Pagination 
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
-                            />
+                    <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                        <div className="text-muted small">
+                            Page {currentPageFromApi} of {totalPages}
                         </div>
-                    )}
+                        <div className="d-flex align-items-center gap-2 mx-auto">
+                            <button 
+                                className="btn btn-outline-primary btn-sm" 
+                                disabled={currentPageFromApi === 1} 
+                                onClick={() => setCurrentPage(currentPageFromApi - 1)}
+                            >
+                                Previous
+                            </button>
+                            <button 
+                                className="btn btn-outline-primary btn-sm" 
+                                disabled={currentPageFromApi === totalPages} 
+                                onClick={() => setCurrentPage(currentPageFromApi + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                        <div>
+                            <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setCurrentPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+                                {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

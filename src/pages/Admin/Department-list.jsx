@@ -14,23 +14,31 @@ const DepartmentList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const { permissions } = useAuth();
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
-  // Fetch departments from API
+  // Fetch departments from API with pagination
   const { data: departmentsResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['departments'],
-    queryFn: () => GetApi('/departments')
+    queryKey: ['departments', page, perPage],
+    queryFn: () => GetApi(`/departments?per_page=${perPage}&page=${page}`)
   });
 
-  // Extract departments from response
+  // Extract departments and pagination info from response
   const departments = departmentsResponse?.data?.data || [];
+  const pagination = departmentsResponse?.data?.pagination || {};
+  const currentPage = pagination.current_page || page;
+  const lastPage = pagination.total_pages || 1;
+  const total = pagination.total || 0;
+  const perPageFromApi = pagination.per_page || perPage;
 
-  // Filter departments based on search term
+  // Client-side filtering for search (current page only)
   const filteredDepartments = departments.filter(department => {
     return (
       department.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
       department.prefix?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
 
   // Handle department deletion
   const handleDeleteDepartment = (id) => {
@@ -184,7 +192,7 @@ const DepartmentList = () => {
                           filteredDepartments.map((department, index) => {
                             return (
                               <tr key={department.id}>
-                                <td>{index + 1}</td>
+                                <td>{(currentPage - 1) * perPageFromApi + index + 1}</td>
                                 <td>{department.prefix}</td>
                                 <td>{department.name}</td>
                                 <td>{department?.course?.name}</td>
@@ -224,6 +232,33 @@ const DepartmentList = () => {
                     </table>
                   </div>
                 )}
+                {/* Pagination Controls */}
+                <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                  <div className="text-muted small">
+                    Page {currentPage} of {lastPage}
+                  </div>
+                  <div className="d-flex align-items-center gap-2 mx-auto">
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === 1} 
+                      onClick={() => setPage(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === lastPage} 
+                      onClick={() => setPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div>
+                    <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+                      {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
