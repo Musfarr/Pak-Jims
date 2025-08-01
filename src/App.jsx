@@ -12,20 +12,24 @@ import NavigationProvider from './contentApi/navigationProvider';
 import SideBarToggleProvider from './contentApi/sideBarToggleProvider';
 import ThemeCustomizer from './components/shared/ThemeCustomizer';
 import AuthProvider from './context/AuthContext';
+import { SurveyProvider } from './context/SurveyContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
 import './index.css';
 
 const queryClient = new QueryClient()
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <NavigationProvider>
-          <SideBarToggleProvider>
-          <RouterProvider router={router} />
-        </SideBarToggleProvider>
-      </NavigationProvider>
+        <SurveyProvider>
+          <NavigationProvider>
+            <SideBarToggleProvider>
+              <RouterProvider router={router} />
+            </SideBarToggleProvider>
+          </NavigationProvider>
+        </SurveyProvider>
       </AuthProvider>
       <ToastContainer />
     </QueryClientProvider>

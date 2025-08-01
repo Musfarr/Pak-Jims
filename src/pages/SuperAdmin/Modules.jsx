@@ -11,7 +11,7 @@ const Modules = () => {
   const fetchModules = async () => {
     try {
       setLoading(true);
-      const response = await GetApi('modules');
+      const response = await GetApi('modules' , {per_page : 100} );
       if (response.status) {
         setModules(response.data);
       }

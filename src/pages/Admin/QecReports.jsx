@@ -1,32 +1,67 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { GetApi , PostApi } from '@/utils/Api/ApiServices';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import ReactApexChart from 'react-apexcharts';
 import CardLoader from '@/components/shared/CardLoader';
 import SocialMediaStatisticsChart from '@/components/widgetsCharts/SocialMediaStatisticsChart';
 import WebAnalyticsChart from '@/components/widgetsCharts/WebAnalyticsChart';
 import html2pdf from 'html2pdf.js';
-import { BsEyeFill } from 'react-icons/bs';
 import { FaPrint } from 'react-icons/fa6';
-
+import { useSurvey } from '../../context/SurveyContext';
 
 const QecReports = () => {
-    const location = useLocation();
-    const { survey_assignment_ids } = location?.state;
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { surveyAssignmentIds, currentReportId, setSurveyData } = useSurvey();
+
+    // If no survey data is available, redirect back
+    useEffect(() => {
+        if (!surveyAssignmentIds || !currentReportId || currentReportId !== id) {
+            navigate('/reports');
+        }
+    }, [surveyAssignmentIds, currentReportId, id, navigate]);
 
 
 
-    const { data: reports , isLoading , isError , error , refetch } = useQuery({
-        queryKey: ['reports'],
-        queryFn: () => PostApi('report/student-evaluation' , { survey_assignment_ids })
-    })
-    
-    if(isLoading){
-        return <CardLoader />
+    const { data: reports, isLoading, isError, error, refetch } = useQuery({
+        queryKey: ['reports', surveyAssignmentIds],
+        queryFn: () => {
+            if (!surveyAssignmentIds) {
+                throw new Error('No survey assignment IDs available');
+            }
+            return PostApi('report/student-evaluation', { survey_assignment_ids: surveyAssignmentIds });
+        },
+        enabled: !!surveyAssignmentIds && currentReportId === id
+    });
+
+    if (isLoading) {
+        return <CardLoader />;
     }
 
-    const RadarLabels = reports?.data?.spider_chart;
+    if (isError) {
+        return (
+            <div className="alert alert-danger m-3">
+                Error loading report: {error.message}
+                <button 
+                    onClick={() => refetch()} 
+                    className="btn btn-sm btn-outline-primary ms-2"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
+
+    if (!reports?.data) {
+        return (
+            <div className="alert alert-warning m-3">
+                No report data available
+            </div>
+        );
+    }
+
+    const RadarLabels = reports?.data?.spider_chart || {};
     const series1 = Object.entries(RadarLabels).map(([key, value]) => ({ name: key, data: [value] }));
     const Questions = reports?.data?.question_stats;
     const TextResponse = reports?.data?.comments;

@@ -147,7 +147,7 @@ const StudentsTable = ({ title }) => {
 
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h6 className="mb-0">Total Students: {filteredStudents.length}</h6>
-                        <Link to="/students/add" className="btn btn-primary btn-sm">
+                        <Link to="/create-student" className="btn btn-primary btn-sm">
                             Add New Student
                         </Link>
                     </div>
