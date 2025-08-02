@@ -14,22 +14,27 @@ import { useQuery } from '@tanstack/react-query';
 const FacultyTable = ({ title }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
     const [searchTerm, setSearchTerm] = useState('');
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
     const [departmentFilter, setDepartmentFilter] = useState('');
     const [designationFilter, setDesignationFilter] = useState('');
 
 
 
     const { data :facultyresponse , isLoading , isError , error , refetch } = useQuery({
-        queryKey : ['faculty'] ,
-        queryFn : () => GetApi('/faculties')
+        queryKey : ['faculty', page, perPage] ,
+        queryFn : () => GetApi(`/faculties?per_page=${perPage}&page=${page}`)
     })
-    const facultydata = facultyresponse?.data?.data || []
+    const faculty = facultyresponse?.data?.data || [];
+    const pagination = facultyresponse?.data?.pagination || {};
+    const currentPage = pagination.current_page || page;
+    const lastPage = pagination.total_pages || 1;
+    const perPageFromApi = pagination.per_page || perPage;
 
-    const filteredfaculty = facultydata.filter((faculty) => 
+    const filteredfaculty = faculty.filter((faculty) => 
     faculty.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faculty.pmdc_no?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faculty.personal_email?.toLowerCase().includes(searchTerm.toLowerCase()))
-
 
     
     const { data :departmentresponse , isLoading : isDepartmentLoading , isError : isDepartmentError , error : departmentError , refetch : departmentRefetch } = useQuery({
@@ -37,11 +42,6 @@ const FacultyTable = ({ title }) => {
         queryFn : () => GetApi('/departments')
     })
     const departmentdata = departmentresponse?.data?.data || []
-
-
-
-
-
 
 
     const handleDeleteFaculty = (id) => {
@@ -174,7 +174,32 @@ const FacultyTable = ({ title }) => {
                 </div>
 
                 <div className="card-footer">
-                    {/* <Pagination /> */}
+                    <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                        <div className="text-muted small">
+                            Page {currentPage} of {lastPage}
+                        </div>
+                        <div className="d-flex align-items-center gap-2 mx-auto">
+                            <button 
+                                className="btn btn-outline-primary btn-sm" 
+                                disabled={currentPage === 1} 
+                                onClick={() => setPage(currentPage - 1)}
+                            >
+                                Previous
+                            </button>
+                            <button 
+                                className="btn btn-outline-primary btn-sm" 
+                                disabled={currentPage === lastPage} 
+                                onClick={() => setPage(currentPage + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                        <div>
+                            <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+                                {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <CardLoader refreshKey={refreshKey} />
             </div>

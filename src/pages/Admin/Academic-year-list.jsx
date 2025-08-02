@@ -84,17 +84,21 @@ const AcademicYearList = () => {
                             <td>{year.academicYear}</td>
                             <td>
                               <div className='d-flex gap-2'>
-                                <Link to={`/academic-years/edit/${year.id}`} className='btn btn-sm btn-warning'>
-                                  <FiEdit size={16} />
-                                </Link>
-                                <button 
-                                  className='btn btn-sm btn-danger'
-                                  onClick={() => handleDeleteAcademicYear(year.id)}
-                                  disabled={year.isActive}
-                                  title={year.isActive ? "Cannot delete active academic year" : "Delete academic year"}
-                                >
-                                  <FiTrash size={16} />
-                                </button>
+                                {permissions.includes('edit_Academic Years') && (
+                                  <Link to={`/academic-years/edit/${year.id}`} className='btn btn-sm btn-warning'>
+                                    <FiEdit size={16} />
+                                  </Link>
+                                )}
+                                {permissions.includes('delete_Academic Years') && (
+                                  <button 
+                                    className='btn btn-sm btn-danger'
+                                    onClick={() => handleDeleteAcademicYear(year.id)}
+                                    disabled={isDeleting || year.isActive}
+                                    title={year.isActive ? "Cannot delete active academic year" : "Delete academic year"}
+                                  >
+                                    <FiTrash size={16} />
+                                  </button>
+                                )}
                               </div>
                             </td>
                           </tr>

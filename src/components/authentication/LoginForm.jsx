@@ -29,10 +29,11 @@ const LoginForm = () => {
                 if (response.code === 200) {
 
 
-                    const userData = response.data.user;
-                    const token = response.data.token;
+                    const userData = response.data?.user;
+                    const token = response.data?.token;
+                    const permissions = response.data?.permissions
                     
-                    const { success, redirectTo } = login(userData, token);
+                    const { success, redirectTo } = login(userData, token ,permissions);
                     
                     if (success) {
                         toast.success('Login successful');
@@ -41,7 +42,6 @@ const LoginForm = () => {
                 }
             }
         ).catch((error) => {
-            console.log("asdkjasbdkjabsd")
             console.log(error)
             // toast.error(error.response.data.message);
             setIsLoading(false);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GetApi, PostApi } from '../../utils/Api/ApiServices';
+import { GetApi, PostApi, DeleteApi } from '../../utils/Api/ApiServices';
 import { toast } from 'react-toastify';
 
 const Modules = () => {
@@ -11,7 +11,7 @@ const Modules = () => {
   const fetchModules = async () => {
     try {
       setLoading(true);
-      const response = await GetApi('modules');
+      const response = await GetApi('modules' , {per_page : 100} );
       if (response.status) {
         setModules(response.data);
       }
@@ -46,7 +46,24 @@ const Modules = () => {
     fetchModules();
   }, []);
 
+  // Delete module handler
+  const handleDeleteModule = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this module?')) return;
+    try {
+      const response = await DeleteApi(`modules/${id}`);
+      if (response.status) {
+        toast.success('Module deleted successfully');
+        fetchModules();
+      } else {
+        toast.error(response.message || 'Failed to delete module');
+      }
+    } catch (error) {
+      toast.error('Failed to delete module');
+    }
+  };
+
   return (
+    <div className='main-content'>
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
@@ -54,7 +71,7 @@ const Modules = () => {
             <div className="card-header">
               <h4 className="card-title">Modules Management</h4>
             </div>
-            <div className="card-body">
+            <div className="card-body ">
               {/* Create Module Form */}
               <div className="row mb-4">
                 <div className="col-md-6">
@@ -78,13 +95,14 @@ const Modules = () => {
               </div>
 
               {/* Modules Table */}
-              <div className="table-responsive">
-                <table className="table table-striped">
+              <div className="table-responsive ">
+                <table className="table table-striped ">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Module Name</th>
                       <th>Created At</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -100,6 +118,14 @@ const Modules = () => {
                           <td>{module.id}</td>
                           <td>{module.name}</td>
                           <td>{new Date(module.created_at).toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => handleDeleteModule(module.id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
                         </tr>
                       ))
                     ) : (
@@ -116,6 +142,7 @@ const Modules = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

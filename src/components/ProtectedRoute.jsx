@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children, requiredRole }) => {
-  const { isAuthenticated, role } = useAuth();
+const ProtectedRoute = ({ children, requiredRole, requiredPermission }) => {
+  const { isAuthenticated, role, permissions } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,16 +24,22 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/authentication/login" replace />;
   }
 
+  // Role check
   if (requiredRole) {
     if (Array.isArray(requiredRole)) {
       if (!requiredRole.includes(role)) {
         return <Navigate to="/unauthorized" replace />;
       }
     } else {
-      if (role !== requiredRole) {
+      if (role?.toLowerCase() !== requiredRole.toLowerCase()) {
         return <Navigate to="/unauthorized" replace />;
       }
     }
+  }
+
+  // Permission check
+  if (requiredPermission && (!permissions || !permissions.includes(requiredPermission))) {
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return children;

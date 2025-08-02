@@ -1,8 +1,16 @@
 import React from 'react';
 import { FiUser, FiLock, FiCheckCircle } from 'react-icons/fi';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
 
 const PasswordTab = ({ register, errors, watch }) => {
     const password = watch('password');
+
+    const { data: rolesResponse, isLoading: rolesLoading } = useQuery({
+        queryKey: ['roles'],
+        queryFn: () => GetApi('/roles')
+      });
+      const roles = rolesResponse?.data || [];
 
     return (
         <div className="card-body password-info">
@@ -29,6 +37,21 @@ const PasswordTab = ({ register, errors, watch }) => {
                         {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                     </div>
                 </div>
+                {/* <div className="col-lg-6">
+                    <label className="form-label" htmlFor="roleInput">Role</label>
+                    <select
+                        className={`form-control ${errors.role_id ? 'is-invalid' : ''}`}
+                        id="roleInput"
+                        {...register('role_id', { required: 'Role is required' })}
+                        disabled={rolesLoading}
+                    >
+                        <option value="">Select Role</option>
+                        {roles.map((role) => (
+                        <option key={role.id} value={role.id}>{role.name}</option>
+                        ))}
+                    </select>
+                    {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
+                    </div> */}
                 <div className="col-lg-6">
                     <label htmlFor="passwordInput" className="form-label">Password</label>
                     <div className="input-group">
@@ -43,8 +66,6 @@ const PasswordTab = ({ register, errors, watch }) => {
                         {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                     </div>
                 </div>
-            </div>
-            <div className="row g-3 mb-4">
                 <div className="col-lg-6">
                     <label htmlFor="confirmPasswordInput" className="form-label">Confirm Password</label>
                     <div className="input-group">
@@ -62,6 +83,8 @@ const PasswordTab = ({ register, errors, watch }) => {
                         {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
                     </div>
                 </div>
+            </div>
+            <div className="row g-3 mb-4">
             </div>
         </div>
     );

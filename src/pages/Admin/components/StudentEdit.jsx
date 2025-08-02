@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../../context/AuthContext';     
 
 const tabfields = [ 'profileTab', 'academicTab', 'emergencyTab', 'passwordTab' ];
 const stepFields = [
@@ -33,6 +34,8 @@ const StudentEdit = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [imagePreview, setImagePreview] = useState('/images/avatar/default.png');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { user ,permissions } = useAuth();
+
 
     // Fetch dropdown data (reuse logic from Studentform)
     const { data: domicilesResponse } = useQuery({
@@ -78,6 +81,15 @@ const StudentEdit = () => {
         enabled: !!id
     });
     const student = studentResponse?.data;
+
+
+    const { data: rolesResponse, isLoading: rolesLoading } = useQuery({
+        queryKey: ['roles'],
+        queryFn: () => GetApi('/roles')
+      });
+      const roles = rolesResponse?.data || [];
+
+
 
     // React Hook Form setup
     const { register, handleSubmit, setValue, watch, formState: { errors }, trigger, reset } = useForm();
@@ -131,6 +143,7 @@ const StudentEdit = () => {
                 username: student.username || '',
                 password: '',
                 confirmPassword: '',
+                role_id: student.role_id || '',
             });
             // Set enrollmentType state from API value
             const apiEnrollmentType = student.entrollment_type || student.enrollment_type || '';
@@ -202,7 +215,7 @@ const StudentEdit = () => {
                     text: 'Student updated successfully',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
-                    navigate('/students-list');
+                    navigate('/student-list');
                 });
             })
             .catch(error => {
@@ -250,7 +263,7 @@ const StudentEdit = () => {
                                 PostApi(`/students/delete/${id}`)
                                     .then(() => {
                                         Swal.fire('Deleted!', 'Student has been deleted.', 'success');
-                                        navigate('/students-list');
+                                        navigate('/student-list');
                                     })
                                     .catch(() => {
                                         Swal.fire('Error', 'Failed to delete student.', 'error');
@@ -1029,13 +1042,29 @@ const StudentEdit = () => {
                     <input type="text" className={`form-control ${errors.username ? 'is-invalid' : ''}`} id="usernameInput" {...register('username', { required: 'Username is required' })} />
                     {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                 </div>
+
+                {/* <div className="col-lg-6">
+                    <label className="form-label" htmlFor="roleInput">Role</label>
+                    <select
+                        className={`form-control ${errors.role_id ? 'is-invalid' : ''}`}
+                        id="roleInput"
+                    {...register('role_id', { required: 'Role is required' })}
+                        disabled={rolesLoading}
+                    >
+                        <option value="">Select Role</option>
+                        {roles.map((role) => (
+                        <option key={role.id} value={role.id}>{role.name}</option>
+                        ))}
+                    </select>
+                    {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
+                    </div> */}
+
+
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="passwordInput">Password</label>
                     <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="passwordInput" {...register('password', { minLength: { value: 6, message: 'Password must be at least 6 characters' } })} />
                     {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                 </div>
-            </div>
-            <div className="row g-3 mb-4">
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="confirmPasswordInput">Confirm Password</label>
                     <input type="password" className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} id="confirmPasswordInput" {...register('confirmPassword', {
@@ -1044,11 +1073,14 @@ const StudentEdit = () => {
                     {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
                 </div>
             </div>
+            <div className="row g-3 mb-4">
+            </div>
         </div>
     </div>
 )}
                     </div>
                     <div className="card-footer d-flex justify-content-between align-items-center">
+    {permissions.includes('delete_Students') && (
     <button
         type="button"
         className="btn btn-danger"
@@ -1077,6 +1109,7 @@ const StudentEdit = () => {
     >
         Delete
     </button>
+)}
     <div className="d-flex gap-2">
         <button type="button" className="btn btn-secondary" onClick={handleprevStep} disabled={currentStep === 0}>Previous</button>
         {currentStep < tabfields.length - 1 ? (

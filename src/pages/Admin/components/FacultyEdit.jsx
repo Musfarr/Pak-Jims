@@ -12,6 +12,7 @@ import EducationHistoryTab from './facultyTabs/EducationHistoryTab';
 import WorkExperiencesTab from './facultyTabs/WorkExperiencesTab';
 import TrainingsCoursesTab from './facultyTabs/TrainingsCoursesTab';
 import ForeignVisitsTab from './facultyTabs/ForeignVisitsTab';
+import { useAuth } from '../../../context/AuthContext';
 
 const steps = [
     'personalDetailsTab',
@@ -62,6 +63,7 @@ const FacultyEdit = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { permissions } = useAuth();
 
     // Fetch faculty data by id
     const { data: facultyResponse, isLoading } = useQuery({
@@ -163,7 +165,8 @@ const FacultyEdit = () => {
             emergency_address: '',
             username: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            role_id: '',
         }
     });
 
@@ -304,7 +307,7 @@ const FacultyEdit = () => {
                     title: 'Faculty updated successfully',
                     text: 'Faculty has been updated successfully',
                     confirmButtonText: 'OK'
-                }).then(() => navigate('/faculty/list'));
+                }).then(() => navigate('/faculty-list'));
             })
             .catch((error) => {
                 console.error('Error updating faculty:', error);
@@ -333,7 +336,7 @@ const FacultyEdit = () => {
                 DeleteApi(`/faculties/${id}`)
                     .then(() => {
                         Swal.fire('Deleted!', 'Faculty has been deleted.', 'success');
-                        navigate('/faculty/list');
+                        navigate('/faculty-list');
                     })
                     .catch(() => {
                         Swal.fire('Error', 'Failed to delete faculty.', 'error');
@@ -364,13 +367,15 @@ const FacultyEdit = () => {
                     >
                         View
                     </button>
-                    <button
-                        type="button"
-                        className="btn btn-danger btn-sm"
-                        onClick={handleDelete}
-                    >
-                        Delete
-                    </button>
+                    {permissions.includes('delete_Faculty') && (
+    <button
+        type="button"
+        className="btn btn-danger btn-sm"
+        onClick={handleDelete}
+    >
+        Delete
+    </button>
+)}
                 </div>
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">

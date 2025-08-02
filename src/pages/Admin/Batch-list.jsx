@@ -7,16 +7,24 @@ import { FiEdit, FiEye, FiTrash, FiSearch, FiLoader } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
 
 const BatchList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  
+  // Permissions
+  const { permissions = [] } = useAuth();
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // Fetch batches and programs data
   const { data: batchesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['batches'],
-    queryFn: () => GetApi('/batches')
+    queryKey: ['batches', page, perPage],
+    queryFn: () => GetApi(`/batches?per_page=${perPage}&page=${page}`)
   });
 
   const { data: programsResponse, isLoading: programsLoading } = useQuery({
@@ -24,7 +32,12 @@ const BatchList = () => {
     queryFn: () => GetApi('/programs')
   });
 
+  // Extract paginated batches and pagination info
   const batches = batchesResponse?.data || [];
+  const pagination = batchesResponse?.data?.pagination || {};
+  const currentPage = pagination.current_page || page;
+  const lastPage = pagination.total_pages || 1;
+  const perPageFromApi = pagination.per_page || perPage;
   const programs = programsResponse?.data || [];
 
   // Create program options for filter
@@ -36,7 +49,7 @@ const BatchList = () => {
     })) || [])
   ];
 
-  // Filter batches based on search term and program filter
+  // Filter batches based on search term and program filter (current page only)
   const filteredBatches = batches.filter(batch => {
     const matchesSearch = 
       batch.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -152,9 +165,11 @@ const BatchList = () => {
             <div className='card'>
               <div className='card-header d-flex justify-content-between align-items-center'>
                 <h5 className='mb-0'>Batch List</h5>
-                <Link to="/batches/add" className='btn btn-primary'>
-                  Add New Batch
-                </Link>
+                {permissions.includes("add_Batches") && (
+                  <Link to="/batches/add" className='btn btn-primary'>
+                    Add New Batch
+                  </Link>
+                )}
               </div>
               <div className='card-body'>
                 <div className='row mb-3'>
@@ -217,21 +232,25 @@ const BatchList = () => {
                               <td>{getProgramName(batch.program_id)}</td>
                               <td>
                                 <div className='d-flex gap-2'>
-                                  <button 
-                                    className='btn btn-sm btn-warning'
-                                    onClick={() => handleEditBatch(batch)}
-                                    disabled={isDeleting}
-                                  >
-                                    <FiEdit size={16} />
-                                  </button>
-                                  <button 
-                                    className='btn btn-sm btn-danger'
-                                    onClick={() => handleDeleteBatch(batch.id)}
-                                    disabled={isDeleting}
-                                  >
-                                    <FiTrash size={16} />
-                                  </button>
-                                </div>
+                                      {permissions.includes("edit_Batches") && (
+                                        <button 
+                                          className='btn btn-sm btn-warning'
+                                          onClick={() => handleEditBatch(batch)}
+                                          disabled={isDeleting}
+                                        >
+                                          <FiEdit size={16} />
+                                        </button>
+                                      )}
+                                      {permissions.includes("delete_Batches") && (
+                                        <button 
+                                          className='btn btn-sm btn-danger'
+                                          onClick={() => handleDeleteBatch(batch.id)}
+                                          disabled={isDeleting}
+                                        >
+                                          <FiTrash size={16} />
+                                        </button>
+                                      )}
+                                    </div>
                               </td>
                             </tr>
                           ))
@@ -244,6 +263,33 @@ const BatchList = () => {
                     </table>
                   </div>
                 )}
+      {/* Pagination Controls */}
+      <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+        <div className="text-muted small">
+          Page {currentPage} of {lastPage}
+        </div>
+        <div className="d-flex align-items-center gap-2 mx-auto">
+          <button 
+            className="btn btn-outline-primary btn-sm" 
+            disabled={currentPage === 1} 
+            onClick={() => setPage(currentPage - 1)}
+          >
+            Previous
+          </button>
+          <button 
+            className="btn btn-outline-primary btn-sm" 
+            disabled={currentPage === lastPage} 
+            onClick={() => setPage(currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
+        <div>
+          <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+            {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+          </select>
+        </div>
+      </div>
               </div>
             </div>
           </div>

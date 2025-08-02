@@ -26,17 +26,17 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
 
     // Country options for dropdown
     const countryOptions = [
-        { value: 'pakistan', label: 'Pakistan' },
-        { value: 'usa', label: 'United States' },
-        { value: 'uk', label: 'United Kingdom' },
-        { value: 'canada', label: 'Canada' },
-        { value: 'australia', label: 'Australia' },
-        { value: 'germany', label: 'Germany' },
-        { value: 'france', label: 'France' },
-        { value: 'japan', label: 'Japan' },
-        { value: 'china', label: 'China' },
-        { value: 'uae', label: 'United Arab Emirates' },
-        { value: 'saudi-arabia', label: 'Saudi Arabia' }
+        { value: 'Pakistan', label: 'Pakistan' },
+        { value: 'USA', label: 'United States' },
+        { value: 'UK', label: 'United Kingdom' },
+        { value: 'Canada', label: 'Canada' },
+        { value: 'Australia', label: 'Australia' },
+        { value: 'Germany', label: 'Germany' },
+        { value: 'France', label: 'France' },
+        { value: 'Japan', label: 'Japan' },
+        { value: 'China', label: 'China' },
+        { value: 'UAE', label: 'United Arab Emirates' },
+        { value: 'Saudi Arabia', label: 'Saudi Arabia' }
     ];
 
     return (
@@ -91,12 +91,12 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     {...register(`education.${index}.degree`, { required: 'Degree is required' })}
                                 >
                                     <option value="">Select Degree</option>
-                                    <option value="phd">Ph.D</option>
-                                    <option value="masters">Masters</option>
-                                    <option value="bachelors">Bachelors</option>
-                                    <option value="associate">Associate</option>
-                                    <option value="diploma">Diploma</option>
-                                    <option value="certificate">Certificate</option>
+                                    <option value="PhD">Ph.D</option>
+                                    <option value="Masters">Masters</option>
+                                    <option value="Bachelors">Bachelors</option>
+                                    <option value="Associate">Associate</option>
+                                    <option value="Diploma">Diploma</option>
+                                    <option value="Certificate">Certificate</option>
                                 </select>
                                 {errors?.education?.[index]?.degree && (
                                     <div className="invalid-feedback">{errors.education[index].degree.message}</div>

@@ -1,31 +1,70 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { GetApi , PostApi } from '@/utils/Api/ApiServices';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import ReactApexChart from 'react-apexcharts';
 import CardLoader from '@/components/shared/CardLoader';
 import SocialMediaStatisticsChart from '@/components/widgetsCharts/SocialMediaStatisticsChart';
-
+import WebAnalyticsChart from '@/components/widgetsCharts/WebAnalyticsChart';
+import html2pdf from 'html2pdf.js';
+import { FaPrint } from 'react-icons/fa6';
+import { useSurvey } from '../../context/SurveyContext';
 
 const QecReports = () => {
-    const location = useLocation();
-    const { survey_assignment_ids } = location.state;
-    console.log(survey_assignment_ids , "survey_assignment_ids") ;
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { surveyAssignmentIds, currentReportId, setSurveyData } = useSurvey();
+
+    // If no survey data is available, redirect back
+    useEffect(() => {
+        if (!surveyAssignmentIds || !currentReportId || currentReportId !== id) {
+            navigate('/reports');
+        }
+    }, [surveyAssignmentIds, currentReportId, id, navigate]);
 
 
 
-    const { data: reports , isLoading , isError , error , refetch } = useQuery({
-        queryKey: ['reports'],
-        queryFn: () => PostApi('report/student-evaluation' , { survey_assignment_ids })
-    })
-    
-    if(isLoading){
-        return <CardLoader />
+    const { data: reports, isLoading, isError, error, refetch } = useQuery({
+        queryKey: ['reports', surveyAssignmentIds],
+        queryFn: () => {
+            if (!surveyAssignmentIds) {
+                throw new Error('No survey assignment IDs available');
+            }
+            return PostApi('report/student-evaluation', { survey_assignment_ids: surveyAssignmentIds });
+        },
+        enabled: !!surveyAssignmentIds && currentReportId === id
+    });
+
+    if (isLoading) {
+        return <CardLoader />;
     }
 
-    const RadarLabels = reports?.data?.spider_chart;
+    if (isError) {
+        return (
+            <div className="alert alert-danger m-3">
+                Error loading report: {error.message}
+                <button 
+                    onClick={() => refetch()} 
+                    className="btn btn-sm btn-outline-primary ms-2"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
+
+    if (!reports?.data) {
+        return (
+            <div className="alert alert-warning m-3">
+                No report data available
+            </div>
+        );
+    }
+
+    const RadarLabels = reports?.data?.spider_chart || {};
     const series1 = Object.entries(RadarLabels).map(([key, value]) => ({ name: key, data: [value] }));
     const Questions = reports?.data?.question_stats;
+    const TextResponse = reports?.data?.comments;
 
     const chartOptions = {
         series: series1,
@@ -47,23 +86,94 @@ const QecReports = () => {
         return <CardLoader />
     }
 
+
+    const handleDownloadPDF = () => {
+        
+        const options = {
+            margin: [2, 2, 2, 2],
+            filename: `QEC_Reports.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+              scale: 2,
+              useCORS: true,
+              allowTaint: true,
+              logging: true
+            },
+            jsPDF: { 
+              unit: 'mm', 
+              format: 'a4', 
+              orientation: 'portrait' 
+            },
+            pagebreak: { 
+              mode: ['css'],
+              before: '.page-break-before',
+              after: '.page-break-after',
+              avoid: '.avoid-break' 
+            }
+          };
+
+        html2pdf().set(options).from(document.querySelector('.qec-report-pdf-print')).save();
+    }
     return (
         <div className="main-content">
-            
             <div className="row">
-                <div className="col-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2>QEC Reports</h2>
-                            <p>This is the QEC Reports page layout. Content coming soon...</p>
-                        </div>
-                    </div>
+                <div className="col-12 mb-4">
+                    {/* <button onClick={() => setShowPdfPreview(true)} className="btn btn-outline-primary btn-sm">
+                        <BsEyeFill size={16} className="m-1" color="green" /> Preview PDF
+                      </button> */}
+                      <button onClick={handleDownloadPDF} className="btn btn-outline-success btn-sm float-end">
+                        <FaPrint size={16} className="m-1" color="green" /> Download Report
+                      </button>
                 </div>
+            </div>
+            
+            <div className="row qec-report-pdf-print">
+    <div className="col-12 mb-4">
+  <div className="card border rounded-3 shadow-sm">
+    <div className="card-header bg-secondary text-white py-3">
+      <h2 className="mb-0 h4 text-white ">QEC Evaluation Report</h2>
+    </div>
+    <div className="card-body">
+      <div className="row">
+        {reports?.data?.department && (
+          <div className="col-md-6 mb-2">
+            <strong >Department:</strong> {reports.data.department}
+          </div>
+        )}
+        {reports?.data?.course_number && (
+          <div className="col-md-6 mb-2">
+            <strong>Course Number:</strong> {reports.data.course_number}
+          </div>
+        )}
+        {reports?.data?.course_title && (
+          <div className="col-md-6 mb-2">
+            <strong>Course Title:</strong> {reports.data.course_title}
+          </div>
+        )}
+        {reports?.data?.teacher_name && (
+          <div className="col-md-6 mb-2">
+            <strong>Teacher Name:</strong> {reports.data.teacher_name}
+          </div>
+        )}
+        {reports?.data?.term && (
+          <div className="col-md-6 mb-2">
+            <strong>Term:</strong> {reports.data.term}
+          </div>
+        )}
+        {reports?.data?.total_submissions && (
+          <div className="col-md-6 mb-2">
+            <strong>Total Submissions:</strong> {reports.data.total_submissions}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
                 <div className="col-4">
-                    <div className="card">
+                    <div className="card ">
                         <div className="card-header">
                             <h5 className="card-title">Response Radar </h5>
                         </div>
@@ -81,12 +191,9 @@ const QecReports = () => {
 
 
 
-                <div className="col">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2>QEC Reports</h2>
-                            <p>This is the QEC Reports page layout. Content coming soon...</p>
-                        </div>
+                <div className="col-8">
+                    <div className="card ">
+                    <WebAnalyticsChart/>
                     </div>
                 </div>
 
@@ -114,19 +221,63 @@ const QecReports = () => {
                                         <tr>
                                             <td>{index + 1}</td>
                                             <td >{question?.text}</td>
-                                            <td>{index + 1}</td>
-                                            <td>{index + 1}</td>
-                                            <td>{index + 1}</td>
-                                            <td>10</td>
-                                            {/* <td>100</td> */}
+                                            <td>{question?.counts['A']}</td>
+                                            <td>{question?.counts['B']}</td>
+                                            <td>{question?.counts['C']}</td>
+                                            <td>{question?.counts['D']}</td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
                             </div>
+                            <div className="card-footer">
+                                <div className="d-flex justify-content-around">
+                                    <h5 className="text-center pr-2">Labels : </h5>
+                                {reports?.data?.label_rest.map((label , index) => (
+                                    <p className="" key={index}>{label}</p>
+                                ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                {/* <h2>Comments</h2> */}
+
+                { Object.entries(TextResponse)?.map(([key , value] , index) => (
+                    <div className="col-12">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5 className="card-title">{key}</h5>
+                            </div>
+
+                            {value.map((item , index) => (
+                                <div className="card-sm">
+                                <div className="card-body">
+                                    {/* <h5>{item?.question}</h5> */}
+                                    <table className="table table-bordered textcenter fs-16 ">
+                                        <thead className="table-light ">
+                                            <tr>
+                                                <th colSpan={2}>{item?.question}</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {item?.responses?.map((resp , index) => (
+                                        <tr>
+                                            {/* <td  >{index + 1}</td>                                         */}
+                                            <td>{resp}</td>                                        
+                                        </tr>
+                                    ))}
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

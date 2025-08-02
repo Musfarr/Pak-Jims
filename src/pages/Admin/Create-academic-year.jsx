@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiX, FiPlus, FiCalendar, FiTrash, FiEdit } from 'react-icons/fi';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
 
 
 
@@ -13,6 +14,9 @@ const CreateAcademicYear = () => {
 
 
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Permissions
+  const { permissions = [] } = useAuth();
 
   // React Hook Form
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
@@ -196,21 +200,24 @@ const CreateAcademicYear = () => {
                           <td>{year.name}</td>
                           <td>
                             <div className='d-flex gap-2'>
-                              
-                              <button 
-                                className='btn btn-sm btn-warning'
-                                onClick={() => handleEditAcademicYear(year)}
-                                disabled={isDeleting}
-                              >
-                                <FiEdit size={16} />
-                              </button>
-                              <button 
-                                className='btn btn-sm btn-danger'
-                                onClick={() => handleDeleteAcademicYear(year.id)}
-                                disabled={isDeleting}
-                              >
-                                <FiTrash size={16} />
-                              </button>
+                              {permissions.includes("edit_Academic Years") && (
+                                <button 
+                                  className='btn btn-sm btn-warning'
+                                  onClick={() => handleEditAcademicYear(year)}
+                                  disabled={isDeleting}
+                                >
+                                  <FiEdit size={16} />
+                                </button>
+                              )}
+                              {permissions.includes("delete_Academic Years") && (
+                                <button 
+                                  className='btn btn-sm btn-danger'
+                                  onClick={() => handleDeleteAcademicYear(year.id)}
+                                  disabled={isDeleting}
+                                >
+                                  <FiTrash size={16} />
+                                </button>
+                              )}
                             </div>
                           </td>
                         </tr>

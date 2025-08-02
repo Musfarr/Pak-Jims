@@ -9,22 +9,32 @@ import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 
 
+import { useAuth } from '../../context/AuthContext';
+
 const ProgramList = () => {
+  const { permissions = [] } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Fetch programs from API
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
+  // Fetch programs from API with pagination
   const { data: response, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
+    queryKey: ['programs', page, perPage],
+    queryFn: () => GetApi(`/programs?per_page=${perPage}&page=${page}`)
   });
 
-  // Extract programs from response
+  // Extract programs and pagination info from response
   const programs = response?.data || [];
+  const pagination = response?.pagination || {};
+  const currentPage = pagination.current_page || page;
+  const lastPage = pagination.total_pages || 1;
+  const total = pagination.total || 0;
+  const perPageFromApi = pagination.per_page || perPage;
 
-  // Filter programs based on search term
+  // Client-side search on current page only
   const filteredPrograms = programs.filter(program => {
-    if (!searchTerm) return true;
     return (
       program.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
       program.prefix?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -179,26 +189,29 @@ const ProgramList = () => {
                         {filteredPrograms.length > 0 ? (
                           filteredPrograms.map((program, index) => (
                             <tr key={program.id}>
-                              <td>{index + 1}</td>
+                              <td>{(currentPage - 1) * perPageFromApi + index + 1}</td>
                               <td>{program.prefix}</td>
                               <td>{program.name}</td>
                               <td>
                                 <div className='d-flex gap-2'>
-                                  
-                                  <button 
-  className='btn btn-sm btn-warning'
-  onClick={() => handleEditProgram(program)}
-  disabled={isDeleting}
->
-  <FiEdit size={16} />
-</button>
-                                  <button 
-                                    className='btn btn-sm btn-danger'
-                                    onClick={() => handleDeleteProgram(program.id)}
-                                    disabled={isDeleting}
-                                  >
-                                    <FiTrash size={16} />
-                                  </button>
+                                  {permissions.includes('edit_Programs') && (
+                                    <button 
+                                      className='btn btn-sm btn-warning'
+                                      onClick={() => handleEditProgram(program)}
+                                      disabled={isDeleting}
+                                    >
+                                      <FiEdit size={16} />
+                                    </button>
+                                  )}
+                                  {permissions.includes('delete_Programs') && (
+                                    <button 
+                                      className='btn btn-sm btn-danger'
+                                      onClick={() => handleDeleteProgram(program.id)}
+                                      disabled={isDeleting}
+                                    >
+                                      <FiTrash size={16} />
+                                    </button>
+                                  )}
                                 </div>
                               </td>
                             </tr>
@@ -214,6 +227,33 @@ const ProgramList = () => {
                     </table>
                   </div>
                 )}
+                {/* Pagination Controls */}
+                <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                  <div className="text-muted small">
+                    Page {currentPage} of {lastPage}
+                  </div>
+                  <div className="d-flex align-items-center gap-2 mx-auto">
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === 1} 
+                      onClick={() => setPage(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button 
+                      className="btn btn-outline-primary btn-sm" 
+                      disabled={currentPage === lastPage} 
+                      onClick={() => setPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div>
+                    <select value={perPage} onChange={e => { setPerPage(Number(e.target.value)); setPage(1); }} className="form-select form-select-sm w-auto d-inline-block">
+                      {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

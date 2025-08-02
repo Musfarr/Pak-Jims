@@ -1,33 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { PostApi, GetApi } from '@/utils/Api/ApiServices';
-import { FiPlus, FiTrash2, FiFile, FiFileText } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiFile, FiFileText, FiArrowLeft } from 'react-icons/fi';
 
-const QECform = () => {
+const QECEditForm = () => {
     const navigate = useNavigate();
-    const [sections, setSections] = useState([
-        // {
-        //     id: 1,
-        //     title: 'Instructor',
-        //     questions: [
-        //         {
-        //             id: 1,
-        //             text: 'The Instructor is prepared for each class',
-        //             type: 'radio',
-        //             options: [
-        //                 { label: 'Agree', text: 'A' },
-        //                 { label: 'Neutral', text: 'B' },
-        //                 { label: 'Disagree', text: 'C' },
-        //                 { label: 'Strongly Disagree', text: 'D' }
-        //             ]
-        //         }
-        //     ]
-        // }
-    ]);
-    const [activeSectionId, setActiveSectionId] = useState(1);
+    const { id } = useParams();
+    const [sections, setSections] = useState([]);
+    const [activeSectionId, setActiveSectionId] = useState(null);
     const [newSectionTitle, setNewSectionTitle] = useState('');
     const [newQuestionText, setNewQuestionText] = useState('');
     const [newQuestionType, setNewQuestionType] = useState('radio');
@@ -57,6 +40,21 @@ const QECform = () => {
     ]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Fetch existing QEC data
+    const { data: qecData, isLoading: isLoadingQEC, error: qecError } = useQuery({
+        queryKey: ['survey', id],
+        queryFn: () => GetApi(`/surveys/${id}`),
+        enabled: !!id,
+        onError: (error) => {
+            console.error('Error fetching QEC data:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error loading QEC',
+                text: 'Failed to load QEC data. Please try again.'
+            });
+        }
+    });
+
     // Fetch templates
     const { data: templates, isLoading: isLoadingTemplates } = useQuery({
         queryKey: ['templates'],
@@ -72,14 +70,54 @@ const QECform = () => {
     });
 
     // Form
-    const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
         defaultValues: {
+            name: '',
             title: '',
             description: '',
             instructions: '',
             template_id: ''
         }
     });
+
+    // Load existing data when QEC data is fetched
+    useEffect(() => {
+        if (qecData?.data) {
+            const survey = qecData.data;
+            
+            // Set form values
+            reset({
+                name: survey.name || '',
+                title: survey.title || '',
+                description: survey.description || '',
+                instructions: survey.instructions || '',
+                template_id: survey.template_id || ''
+            });
+
+            // Set sections with proper structure
+            if (survey.sections && survey.sections.length > 0) {
+                const formattedSections = survey.sections.map((section, sectionIndex) => ({
+                    id: section.id || Date.now() + sectionIndex,
+                    title: section.title || section.section_title,
+                    questions: section.questions ? section.questions.map((question, questionIndex) => ({
+                        id: question.id || question.question_id || Date.now() + questionIndex,
+                        text: question.text || question.question_text,
+                        type: question.type || 'radio',
+                        options: question.options ? question.options.map((option, optionIndex) => ({
+                            id: option.id || option.option_id || Date.now() + optionIndex,
+                            label: option.label,
+                            text: option.text
+                        })) : []
+                    })) : []
+                }));
+                
+                setSections(formattedSections);
+                if (formattedSections.length > 0) {
+                    setActiveSectionId(formattedSections[0].id);
+                }
+            }
+        }
+    }, [qecData, reset]);
 
     // Section logic
     const addSection = () => {
@@ -92,6 +130,7 @@ const QECform = () => {
         setActiveSectionId(newSection.id);
         setNewSectionTitle('');
     };
+
     const removeSection = (sectionId) => {
         Swal.fire({ title: 'Are you sure?', icon: 'warning', showCancelButton: true }).then((result) => {
             if (result.isConfirmed) {
@@ -113,6 +152,7 @@ const QECform = () => {
         setNewOptionLabel('');
         setNewOptionText('');
     };
+
     const removeOption = (idx) => {
         setTempOptions(tempOptions.filter((_, i) => i !== idx));
     };
@@ -155,11 +195,10 @@ const QECform = () => {
             { label: 'E', text: 'Strongly Disagree' }
         ]);
     };
+
     const removeQuestion = (sectionId, questionId) => {
         setSections(sections.map(s => s.id === sectionId ? { ...s, questions: s.questions.filter(q => q.id !== questionId) } : s));
     };
-
- 
 
     // Submit
     const onSubmit = (data) => {
@@ -171,6 +210,7 @@ const QECform = () => {
             Swal.fire({ icon: 'error', title: 'Each section needs at least one question' });
             return;
         }
+        
         setIsSubmitting(true);
         const payload = {
             name: data.name,
@@ -190,29 +230,68 @@ const QECform = () => {
                 }))
             }))
         };
-        
 
-        PostApi('/surveys', payload)
+        PostApi(`/surveys/${id}`, payload)
             .then(() => {
-                Swal.fire({ icon: 'success', title: 'Created!' }).then(() => navigate('/qec-list'));
+                Swal.fire({ icon: 'success', title: 'Updated!' }).then(() => navigate('/qec-list'));
             })
             .catch((error) => {
-                console.error('Error creating survey:', error);
+                console.error('Error updating survey:', error);
                 Swal.fire({ 
                     icon: 'error', 
-                    title: 'Failed to create QEC',
-                    text: error.response?.data?.message || 'An error occurred while creating the survey.'
+                    title: 'Failed to update QEC',
+                    text: error.response?.data?.message || 'An error occurred while updating the survey.'
                 });
             })
             .finally(() => setIsSubmitting(false));
     };
 
+    if (isLoadingQEC) {
+        return (
+            <div className="col-lg-12">
+                <div className="card">
+                    <div className="card-body text-center py-5">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="mt-3">Loading QEC data...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (qecError) {
+        return (
+            <div className="col-lg-12">
+                <div className="card">
+                    <div className="card-body">
+                        <div className="alert alert-danger">
+                            <h5>Error Loading QEC</h5>
+                            <p>Failed to load QEC data. Please try again.</p>
+                            <button className="btn btn-secondary" onClick={() => navigate('/qec-list')}>
+                                <FiArrowLeft className="me-1" /> Back to QEC List
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // UI
     return (
         <div className="col-lg-12">
             <div className="card">
-                <div className="card-header">
-                    <h5 className="card-title">Create QEC Survey</h5>
+                <div className="card-header d-flex justify-content-between align-items-center">
+                    <h5 className="card-title mb-0">Edit QEC Survey</h5>
+                    <button 
+                        type="button" 
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => navigate('/qec-list')}
+                    >
+                        <FiArrowLeft className="me-1" /> Back to List
+                    </button>
                 </div>
                 <div className="card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -449,7 +528,7 @@ const QECform = () => {
                                                                         </tr>
                                                                     ))}
                                                                     {sections.find(s => s.id === activeSectionId)?.questions.length === 0 && (
-                                                                        <tr><td colSpan="4" className="text-center">No questions added to this section yet</td></tr>
+                                                                        <tr><td colSpan="5" className="text-center">No questions added to this section yet</td></tr>
                                                                     )}
                                                                 </tbody></table>
                                                             </div>
@@ -464,7 +543,16 @@ const QECform = () => {
                         </div>
                         <div className="row mt-4">
                             <div className="col-12 text-end">
-                                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Creating...' : 'Create Survey'}</button>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-secondary me-2"
+                                    onClick={() => navigate('/qec-list')}
+                                >
+                                    Cancel
+                                </button>
+                                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Updating...' : 'Update Survey'}
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -474,5 +562,4 @@ const QECform = () => {
     );
 }
 
-export default QECform;
- 
+export default QECEditForm;
