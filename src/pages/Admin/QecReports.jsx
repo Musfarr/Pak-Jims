@@ -16,11 +16,11 @@ const QecReports = () => {
     const { surveyAssignmentIds, currentReportId, setSurveyData } = useSurvey();
 
     // If no survey data is available, redirect back
-    useEffect(() => {
-        if (!surveyAssignmentIds || !currentReportId || currentReportId !== id) {
-            navigate('/reports');
-        }
-    }, [surveyAssignmentIds, currentReportId, id, navigate]);
+    // useEffect(() => {
+    //     if (!surveyAssignmentIds || !currentReportId || currentReportId !== id) {
+    //         navigate();
+    //     }
+    // }, [surveyAssignmentIds, currentReportId]);
 
 
 
@@ -32,7 +32,7 @@ const QecReports = () => {
             }
             return PostApi('report/student-evaluation', { survey_assignment_ids: surveyAssignmentIds });
         },
-        enabled: !!surveyAssignmentIds && currentReportId === id
+        enabled: !!surveyAssignmentIds
     });
 
     if (isLoading) {

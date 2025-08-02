@@ -33,7 +33,7 @@ const ReportsList = () => {
                         <table className="table">
                             <thead className="table-light">
                                 <tr>
-                                    <th>Faculty</th>
+                                    {isProforma1 && <th>Faculty</th>}
                                     <th>Department</th>
                                     <th>Term</th>
                                     <th>Total Submissions</th>
@@ -44,7 +44,7 @@ const ReportsList = () => {
                                 {reportsList?.data?.length > 0 ? (
                                     reportsList.data.map((report, index) => (
                                         <tr key={index}>
-                                            <td>{report.faculty}</td>
+                                            {isProforma1 && <td>{report.faculty}</td>}
                                             <td>{report.department}</td>
                                             <td>{report.term}</td>
                                             <td>{report.total_submissions}</td>

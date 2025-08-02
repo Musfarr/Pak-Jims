@@ -176,7 +176,7 @@ const CreateAcademicYear = () => {
         <div className='col'>
           <div className='card mt-4'>
             <div className='card-header'>Academic Years List</div>
-            <div className='card-body' style={{ height: "280px", overflow: "scroll" }}>
+            <div className='card-body' style={{ height: "380px", overflow: "scroll" }}>
               {isLoading ? (
                 <div>Loading...</div>
               ) : isError ? (

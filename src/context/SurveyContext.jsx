@@ -3,13 +3,23 @@ import React, { createContext, useContext, useState } from 'react';
 const SurveyContext = createContext();
 
 export const SurveyProvider = ({ children }) => {
-  const [surveyAssignmentIds, setSurveyAssignmentIds] = useState(null);
-  const [currentReportId, setCurrentReportId] = useState(null);
+  // Initialize from localStorage if present
+  const [surveyAssignmentIds, setSurveyAssignmentIds] = useState(() => {
+    const stored = localStorage.getItem('surveyAssignmentIds');
+    return stored ? JSON.parse(stored) : null;
+  });
+  const [currentReportId, setCurrentReportId] = useState(() => {
+    return localStorage.getItem('currentReportId') || null;
+  });
 
+  // Persist to localStorage when set
   const setSurveyData = (ids, reportId) => {
     setSurveyAssignmentIds(ids);
     setCurrentReportId(reportId);
+    localStorage.setItem('surveyAssignmentIds', JSON.stringify(ids));
+    localStorage.setItem('currentReportId', reportId);
   };
+
 
   return (
     <SurveyContext.Provider 
