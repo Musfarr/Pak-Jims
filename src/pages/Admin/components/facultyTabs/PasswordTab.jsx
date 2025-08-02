@@ -37,7 +37,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                         {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                     </div>
                 </div>
-                <div className="col-lg-6">
+                {/* <div className="col-lg-6">
                     <label className="form-label" htmlFor="roleInput">Role</label>
                     <select
                         className={`form-control ${errors.role_id ? 'is-invalid' : ''}`}
@@ -51,7 +51,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                         ))}
                     </select>
                     {errors.role_id && <div className="invalid-feedback">{errors.role_id.message}</div>}
-                    </div>
+                    </div> */}
                 <div className="col-lg-6">
                     <label htmlFor="passwordInput" className="form-label">Password</label>
                     <div className="input-group">

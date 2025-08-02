@@ -16,37 +16,42 @@ const StudentsTable = ({ title }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [programFilter, setProgramFilter] = useState('');
     const [batchFilter, setBatchFilter] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    // Pagination state
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
 
-    // Fetch students data using React Query
+    // Fetch students data using React Query with pagination
     const { data: studentsResponse, isLoading, isError, error, refetch } = useQuery({
-        queryKey: ['students'],
-        queryFn: () => GetApi('/students')
+        queryKey: ['students', page, perPage],
+        queryFn: () => GetApi(`/students?per_page=${perPage}&page=${page}`)
     });
 
-    // Extract students data from the response
+    // Extract students data and pagination info from the response
     const studentsData = studentsResponse?.data?.data || [];
+    const pagination = studentsResponse?.data?.pagination || {};
+    const currentPage = pagination.current_page || page;
+    const lastPage = pagination.total_pages || 1;
+    const total = pagination.total || 0;
+    const perPageFromApi = pagination.per_page || perPage;
 
-    // Filter students based on search term
+    // Filter students based on search term (client-side, current page only)
     const filteredStudents = studentsData.filter(student => {
-        const matchesSearch = 
-            (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
+        const matchesSearch =
+            (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (student.enrollment_no && student.enrollment_no.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase()));
-        
         return matchesSearch;
     });
 
-    // Pagination logic
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
-
     // Handle page change
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        setPage(pageNumber);
+    };
+
+    // Handle per page change
+    const handlePerPageChange = (e) => {
+        setPerPage(Number(e.target.value));
+        setPage(1);
     };
 
     // Handle student actions
@@ -237,15 +242,33 @@ const StudentsTable = ({ title }) => {
                         </div>
                     )}
 
-                    {filteredStudents.length > itemsPerPage && (
-                        <div className="d-flex justify-content-end mt-3">
-                            <Pagination 
-                                currentPage={currentPage} 
-                                totalPages={totalPages} 
-                                onPageChange={handlePageChange} 
-                            />
+                    {/* Pagination Controls */}
+                    <div className="d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap">
+                        <div className="text-muted small">
+                            Page {currentPage} of {lastPage}
                         </div>
-                    )}
+                        <div className="d-flex align-items-center gap-2 mx-auto">
+                            <button
+                                className="btn btn-outline-primary btn-sm"
+                                disabled={currentPage === 1}
+                                onClick={() => setPage(currentPage - 1)}
+                            >
+                                Previous
+                            </button>
+                            <button
+                                className="btn btn-outline-primary btn-sm"
+                                disabled={currentPage === lastPage}
+                                onClick={() => setPage(currentPage + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                        <div>
+                            <select value={perPage} onChange={handlePerPageChange} className="form-select form-select-sm w-auto d-inline-block">
+                                {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

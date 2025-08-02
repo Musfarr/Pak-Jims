@@ -1161,7 +1161,7 @@ const Studentform = () => {
                             </div>
 
                             {/* Role Dropdown */}
-                            <div className="row mb-4 align-items-center">
+                            {/* <div className="row mb-4 align-items-center">
                                 <div className="col-lg-4">
                                     <label htmlFor="roleInput" className="fw-semibold">Role: </label>
                                 </div>
@@ -1185,7 +1185,7 @@ const Studentform = () => {
                                         {isRolesLoading && <div className="text-info mt-1">Loading roles...</div>}
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
 
 
