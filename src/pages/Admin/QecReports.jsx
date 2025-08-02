@@ -62,25 +62,37 @@ const QecReports = () => {
     }
 
     const RadarLabels = reports?.data?.spider_chart || {};
-    const series1 = Object.entries(RadarLabels).map(([key, value]) => ({ name: key, data: [value] }));
+    // const series1 = Object.entries(RadarLabels).map(([key, value]) => ({ name: key, data: [value] }));
     const Questions = reports?.data?.question_stats;
     const TextResponse = reports?.data?.comments;
 
+
+    const data = Object.values(RadarLabels);
+    const series1 = [{ name: "Responses", data }];
+
     const chartOptions = {
-        series: series1,
-        chart: {
-            type: 'radar',
-            height: 350,
-            toolbar: { show: false }
-        },
-        colors: ["#3454D1", "#41B2C4", "#EA4D4D"],
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-        },
-        yaxis: { show: false },
-        stroke: { width: 2 },
-        markers: { size: 4 }
-    };
+      series: series1,
+      chart: {
+          type: 'radar',
+          height: 350,
+          toolbar: { show: false }
+      },
+      colors: ["#3454D1", "#41B2C4", "#EA4D4D", "#FFC107", "#FF5722", "#673AB7"],
+      xaxis: {
+          categories: Object.keys(RadarLabels),
+          labels: {
+              show: true,
+              style: {
+                  colors: ["#3454D1", "#41B2C4", "#EA4D4D", "#FFC107", "#FF5722", "#673AB7"],
+                  fontSize: '16px',
+                  fontWeight: 600,
+              }
+          }
+      },
+      yaxis: { show: false },
+      stroke: { width: 2 },
+      markers: { size: 4 }
+  };
 
     if(isLoading){
         return <CardLoader />
