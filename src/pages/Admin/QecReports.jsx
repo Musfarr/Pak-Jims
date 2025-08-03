@@ -232,7 +232,7 @@ const QecReports = () => {
                                     <tbody>
                                     {Questions?.map((question , index) => (
                                         <tr>
-                                            <td>{index + 1}</td>
+                                            <td>{question?.qno}</td>
                                             <td >{question?.text}</td>
                                             <td>{question?.counts['A']}</td>
                                             <td>{question?.counts['B']}</td>
