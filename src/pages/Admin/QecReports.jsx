@@ -267,7 +267,7 @@ const QecReports = () => {
 
                             {value.map((item , index) => (
                                 <div className="card-sm">
-                                <div className="card-body">
+                                <div className="card-body py-2">
                                     {/* <h5>{item?.question}</h5> */}
                                     <table className="table table-bordered textcenter fs-16 ">
                                         <thead className="table-light ">
