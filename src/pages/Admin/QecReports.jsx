@@ -251,6 +251,16 @@ const QecReports = () => {
                                     <p className="" key={index}>{label}</p>
                                 ))}
                                 </div>
+                                <div className="d-flex  justify-content-around">
+                                { Object.entries(reports?.data?.remaning_differnt_labels).map(([key , value] , index) => (
+                                    <>
+                                    <h5 className="text-center pr-2">{key} </h5>
+                                    <p className="" key={index}>
+                                        <span className="fw-bold">{value}</span> 
+                                    </p>
+                                    </>
+                                ))}
+                                </div>
                             </div>
                         </div>
                     </div>
