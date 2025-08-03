@@ -104,6 +104,7 @@ const StudentQECTable = ({ title }) => {
                       <th scope="col">#</th>
                       <th scope="col">Title</th>
                       <th scope="col">Description</th>
+                      <th scope="col">Term</th>
                       <th scope="col">Assigned Date</th>
                       {/* <th scope="col">Due Date</th> */}
                       <th scope="col">Status</th>
@@ -116,6 +117,7 @@ const StudentQECTable = ({ title }) => {
                         <th scope="row">{indexOfFirstItem + index + 1}</th>
                         <td>{survey?.survey?.title}</td>
                         <td>{survey?.survey?.description?.slice(0, 50)  || 'No description available'}</td>
+                        <td>{survey?.term}</td>
                         {/* <td>{formatDate(survey.assigned_date)}</td> */}
                         <td>{formatDate(survey?.created_at)}</td>
                         <td>{getStatusBadge(survey?.status)}</td>
