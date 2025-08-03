@@ -143,9 +143,9 @@ const QecReports = () => {
     <div className="col-12 mb-4">
   <div className="card border rounded-3 shadow-sm">
     <div className="card-header bg-secondary text-white py-3">
-      <h2 className="mb-0 h4 text-white ">QEC Evaluation Report ({reports?.data?.survey_name})
+      <h2 className="mb-0 h4 text-white ">{reports?.data?.survey_title} ({reports?.data?.survey_name})
 
-      <p className="mt-2 h6 text-white ">({reports?.data?.survey_title})</p>
+      {/* <p className="mt-2 h6 text-white ">QEC Evaluation Report</p> */}
       </h2>
     </div>
     <div className="card-body">
