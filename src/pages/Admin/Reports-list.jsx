@@ -24,6 +24,19 @@ const ReportsList = () => {
         navigate(`/reports/${id}`);
     };
 
+    // PerformaType: '1' | '3' | '5' | '7'
+    const getPerformaType = () => {
+        if (isProforma1) return '1';
+        if (isProforma3) return '3';
+        if (isProforma5) return '5';
+        if (isProforma7) return '7';
+        return '1'; // fallback
+    };
+    const handleViewSubmissions = (id) => {
+        const performa = getPerformaType();
+        navigate(`/qec/submissions/${performa}/${id}`);
+    };
+
   return (
     <div className="main-content">
         <div className="row">
@@ -38,6 +51,7 @@ const ReportsList = () => {
                                     <th>Term</th>
                                     <th>Total Submissions</th>
                                     <th>Actions</th>
+                                    <th>Submissions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,11 +67,16 @@ const ReportsList = () => {
                                                     View Report
                                                 </button>
                                             </td>
+                                            <td>
+                                                <button className="btn btn-outline-success btn-sm" onClick={() => handleViewSubmissions(report.id)}>
+                                                    View Submissions
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="5" className="text-center py-4">
+                                        <td colSpan="6" className="text-center py-4">
                                             <div className="text-muted">
                                                 <i className="fas fa-inbox me-2"></i>
                                                 No reports found

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { GetApi, PostApi } from '@/utils/Api/ApiServices';
+import { PostApi } from '@/utils/Api/ApiServices';
 import Footer from '@/components/shared/Footer';
 import { FiCheckCircle, FiFileText, FiAlertCircle, FiArrowLeft } from 'react-icons/fi';
 import { FaPrint } from 'react-icons/fa6';
@@ -12,21 +12,32 @@ import logo1 from '/images/logo1.jpg';
 import logo2 from '/images/QEClogo.png';
 import { BsEyeFill } from 'react-icons/bs';
 
+const QECSubmissionView = () => {
+  // params: performa, survey_assignment_id, userid
+  const { performa = '1', survey_assignment_id, userid } = useParams();
 
-
-const QECFilledView = () => {
-  const { survey_id, assignment_id } = useParams();
+  // Compose payload for API
+  const surveyNameMap = {
+    '1': 'Performa 1',
+    '3': 'Performa 3',
+    '5': 'Performa 5',
+    '7': 'Performa 7',
+  };
+  const payload = {
+    survey_name: surveyNameMap[performa] || 'Performa 1',
+    survey_assignment_id,
+    userid,
+  };
 
   // Fetch submitted survey data using React Query
-  const { 
-    data: surveyResponse, 
-    isLoading, 
-    error 
+  const {
+    data: surveyResponse,
+    isLoading,
+    error,
   } = useQuery({
-    queryKey: ['submitted-survey', survey_id, assignment_id],
-    queryFn: () => PostApi(`/submitted-survey`, { survey_id : survey_id, survey_assignment_id : assignment_id }),
-
-    enabled: !!survey_id && !!assignment_id // Only run query if both IDs are available
+    queryKey: ['submitted-survey-view', performa, survey_assignment_id, userid],
+    queryFn: () => PostApi('/submitted-survey-view', payload),
+    enabled: !!performa && !!survey_assignment_id && !!userid,
   });
 
   // Process survey data and metadata from API response
@@ -36,14 +47,12 @@ const QECFilledView = () => {
   // Count total questions across all sections
   const getTotalQuestions = () => {
     if (!surveyData || !Array.isArray(surveyData)) return 0;
-    
     let count = 0;
     surveyData.forEach(section => {
       if (section.questions && Array.isArray(section.questions)) {
         count += section.questions.length;
       }
     });
-    
     return count;
   };
 
@@ -55,15 +64,14 @@ const QECFilledView = () => {
         <div className="ps-4 mt-2 d-flex justify-content-between">
           {question.options && question.options.map((option) => (
             <div key={option.option_id} className="form-check mb-2">
-              <input 
-                className="form-check-input" 
-                type="radio" 
+              <input
+                className="form-check-input"
+                type="radio"
                 checked={option.selected}
                 readOnly
                 disabled
               />
               <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                {/* {option.text} {option.label ? `(${option.label})` : ''} */}
                 {option.text}
               </label>
             </div>
@@ -82,9 +90,9 @@ const QECFilledView = () => {
           {question.options && question.options.length > 0 ? (
             question.options.map((option) => (
               <div key={option.option_id} className="form-check mb-2">
-                <input 
-                  className="form-check-input" 
-                  type="checkbox" 
+                <input
+                  className="form-check-input"
+                  type="checkbox"
                   checked={option.selected || false}
                   readOnly
                   disabled
@@ -142,15 +150,15 @@ const QECFilledView = () => {
               <div className="ps-4 mt-2 d-flex justify-content-between">
                 {question.options.map((option, idx) => (
                   <div key={idx} className="form-check mb-2">
-                    <input 
-                      className="form-check-input" 
+                    <input
+                      className="form-check-input"
                       type={question.type === 'checkbox' ? 'checkbox' : 'radio'}
                       checked={option.selected || false}
                       readOnly
                       disabled
                     />
                     <label className={`form-check-label ${option.selected ? 'fw-bold text-primary' : ''}`}>
-                      {option.text} 
+                      {option.text}
                     </label>
                   </div>
                 ))}
@@ -166,27 +174,27 @@ const QECFilledView = () => {
     const element = document.getElementById('qec-pdf-print');
     const opt = {
       margin: [2, 2, 2, 2],
-      filename: `QEC_Survey_${survey_id}_${assignment_id}.pdf`,
+      filename: `QEC_Survey_${performa}_${survey_assignment_id}_${userid}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
+      html2canvas: {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        logging: true
+        logging: true,
       },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait' 
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
       },
-      pagebreak: { 
+      pagebreak: {
         mode: ['css'],
         before: '.page-break-before',
         after: '.page-break-after',
-        avoid: '.avoid-break' 
-      }
+        avoid: '.avoid-break',
+      },
     };
-    
+
     // Add print-specific styles
     const style = document.createElement('style');
     style.innerHTML = `
@@ -210,14 +218,12 @@ const QECFilledView = () => {
       }
     `;
     document.head.appendChild(style);
-    
-    // Generate PDF
+
     html2pdf()
       .set(opt)
       .from(element)
       .save()
       .then(() => {
-        // Clean up the style element
         document.head.removeChild(style);
       });
   };
@@ -229,7 +235,7 @@ const QECFilledView = () => {
       <div className="qec-pdf-options d-flex justify-content-around">
         {question.options && question.options.map((option, idx) => (
           <span key={option.option_id} className="qec-pdf-option">
-            <span className=  {` qec-pdf-radio`}> {option.selected ? <FaCheck size={18} /> : '' } </span>
+            <span className={" qec-pdf-radio"}> {option.selected ? <FaCheck size={18} /> : ''} </span>
             <span>{option.text}</span>
           </span>
         ))}
@@ -243,7 +249,7 @@ const QECFilledView = () => {
       <div className="qec-pdf-options">
         {question.options && question.options.map((option, idx) => (
           <span key={option.option_id} className="qec-pdf-option">
-            <span className={`qec-pdf-checkbox`}> {option.selected ? <FaCheck size={18} /> : '' } </span>
+            <span className={`qec-pdf-checkbox`}> {option.selected ? <FaCheck size={18} /> : ''} </span>
             <span>{option.text} {option.label ? `(${option.label})` : ''}</span>
           </span>
         ))}
@@ -274,7 +280,6 @@ const QECFilledView = () => {
     }
   };
 
-  // Modal preview state
   const [showPdfPreview, setShowPdfPreview] = React.useState(false);
 
   return (
@@ -293,14 +298,14 @@ const QECFilledView = () => {
                   <div className="qec-pdf-header">
                     <img style={{ width: '90px', height: '90px' }} src={logo1} alt="" />
                     <div>
-                      <h2 className="qec-pdf-title">{metadata.survey.name}</h2>
-                      <div className="qec-pdf-subtitle">{metadata.survey.title}</div>
-                      <div className="qec-pdf-subtitle">{metadata.survey.description}</div>
+                      <h2 className="qec-pdf-title">{metadata.survey?.name}</h2>
+                      <div className="qec-pdf-subtitle">{metadata.survey?.title}</div>
+                      <div className="qec-pdf-subtitle">{metadata.survey?.description}</div>
                     </div>
                     <img style={{ width: '90px', height: '90px' }} src={logo2} alt="" />
                   </div>
-                  <div className="qec-pdf-meta" style={{ 
-                    margin: '15px 0', 
+                  <div className="qec-pdf-meta" style={{
+                    margin: '15px 0',
                     padding: '12px',
                     border: '1px solid #e0e0e0',
                     borderRadius: '4px',
@@ -309,7 +314,7 @@ const QECFilledView = () => {
                     gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                     gap: '8px 20px',
                     pageBreakInside: 'avoid',
-                    breakInside: 'avoid'
+                    breakInside: 'avoid',
                   }}>
                     <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
                     <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
@@ -318,20 +323,15 @@ const QECFilledView = () => {
                     <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
                     <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
                   </div>
-                  {/* {metadata.submitted_at && (
-                    <div className="qec-pdf-date">
-                      Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
-                    </div>
-                  )} */}
                   <div style={{ pageBreakBefore: 'avoid', breakBefore: 'avoid' }}>
-                    <div className="qec-pdf-section-title fs-16" style={{ 
+                    <div className="qec-pdf-section-title fs-16" style={{
                       margin: '15px 0 20px 0',
                       padding: '12px',
                       backgroundColor: '#f0f7ff',
                       borderRadius: '4px',
                       borderLeft: '4px solid #4a89dc',
                       pageBreakAfter: 'avoid',
-                      breakAfter: 'avoid'
+                      breakAfter: 'avoid',
                     }}>
                       <strong>Instruction:</strong> {metadata.survey?.instructions}
                     </div>
@@ -375,16 +375,10 @@ const QECFilledView = () => {
             <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
             <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
           </div>
-          {/* {metadata.submitted_at && (
-            <div className="qec-pdf-date">
-              Submitted on: {new Date(metadata.submitted_at).toLocaleString()}
-            </div>
-          )} */}
           <div>
           <div className="qec-pdf-section-title fs-16">
                      Instruction:  {metadata.survey?.instructions}
                     </div>
-            {/* <div className="qec-pdf-section-title">Survey Responses</div> */}
             {surveyData && surveyData.map((section, sectionIndex) => (
               <div key={section.section_id} className="qec-pdf-section">
                 <div className="qec-pdf-section-title">
@@ -403,13 +397,12 @@ const QECFilledView = () => {
           <div className='col-12'>
             <div className=" mb-3 page-title-box d-flex align-items-center justify-content-between">
               <div className="page-title-left">
-                <h5 className="mb-0">Submitted QEC Survey</h5>
+                <h5 className="mb-0">Submitted QEC Survey (Admin View)</h5>
               </div>
               <div className="d-flex gap-2">
-                <Link to="/general-qec-list" className="btn btn-secondary btn-sm">
-                  <FiArrowLeft className="me-1" /> Back to Surveys
-                </Link>
-
+                <button className="btn btn-secondary btn-sm" onClick={() => window.history.back()}>
+                  <FiArrowLeft className="me-1" /> Back
+                </button>
                 <button onClick={() => setShowPdfPreview(true)} className="btn btn-outline-primary btn-sm">
                   <BsEyeFill size={16} className="m-1" color="green" /> Preview PDF
                 </button>
@@ -432,7 +425,6 @@ const QECFilledView = () => {
                     <FiCheckCircle className="me-1" /> Completed
                   </div>
                 </div>
-                
               </div>
               <div className='card-header'>
                 {metadata && (
@@ -474,13 +466,6 @@ const QECFilledView = () => {
                           <span className="fw-medium">{metadata.semester_id}</span>
                         </div>
                       </div>
-
-                      {/* <div className="col-md-4">
-                        <div className="d-flex flex-column">
-                          <span className="text-muted small">Session</span>
-                          <span className="fw-medium">{metadata.year_of_student}</span>
-                        </div>
-                      </div> */}
                     </div>
 
                     {metadata.submitted_at && (
@@ -494,7 +479,6 @@ const QECFilledView = () => {
                 )}
 
               </div>
-              
               <div className="card-body">
                 <div className="row">
                   <div className="col-12">
@@ -521,7 +505,7 @@ const QECFilledView = () => {
                         ) : !surveyData || surveyData.length === 0 ? (
                           <div className="alert alert-warning">
                             <FiAlertCircle className="me-2" />
-                            No survey responses found with ID: {id}
+                            No survey responses found with this assignment/user.
                           </div>
                         ) : (
                           <>
@@ -536,7 +520,7 @@ const QECFilledView = () => {
                                   <h6 className="fw-bold mb-3 bg-light p-2 rounded">
                                     {sectionIndex + 1}. {section.section_title}
                                   </h6>
-                                  {section.questions && section.questions.map((question, questionIndex) => 
+                                  {section.questions && section.questions.map((question, questionIndex) =>
                                     renderQuestion(question, questionIndex)
                                   )}
                                 </div>
@@ -558,4 +542,4 @@ const QECFilledView = () => {
   );
 };
 
-export default QECFilledView;
+export default QECSubmissionView;

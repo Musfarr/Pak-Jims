@@ -102,3 +102,19 @@
       border-bottom: 2px solid;
       margin: 5px 15px;
 }
+
+/* @media print {
+  .qec-report-pdf-print .row,
+  .qec-report-pdf-print .col-4,
+  .qec-report-pdf-print .col-8,
+  .qec-report-pdf-print .col-12 {
+    display: block !important;
+    width: 100% !important;
+    float: none !important;
+    max-width: 100% !important;
+  }
+  .qec-report-pdf-print .card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+} */

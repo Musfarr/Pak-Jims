@@ -68,6 +68,8 @@ import TemplatesList from "../pages/Admin/Templates/TemplatesList";
 import TemplateForm from "../pages/Admin/Templates/TemplateForm";
 import ReportsList from "../pages/Admin/Reports-list";
 import QecReports from "../pages/Admin/QecReports";
+import QECSubmissionsList from "../pages/Admin/QECSubmissionsList";
+import QECSubmissionView from "../pages/Admin/QECSubmissionView";
 
 // Roles & Permissions Management
 import Modules from "../pages/SuperAdmin/Modules";
@@ -603,6 +605,22 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <QecReports />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/submissions/:performa/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECSubmissionsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/qec/submission-view/:performa/:survey_assignment_id/:userid",
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <QECSubmissionView />
                     </ProtectedRoute>
                 )
             },

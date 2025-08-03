@@ -249,8 +249,8 @@ const QecReports = () => {
             },
             jsPDF: { 
               unit: 'mm', 
-              format: 'a4', 
-              orientation: 'portrait' 
+              format: 'a3', 
+              orientation: 'landscape' 
             },
             pagebreak: { 
               mode: ['css'],
