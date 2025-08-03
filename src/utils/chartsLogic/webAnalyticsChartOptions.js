@@ -2,8 +2,8 @@ export const webAnalyticsChartOptions = () => {
     const chartOptions = {
         chart: { type: "bar", height: 425, toolbar: { show: !1 } },
         series: [
-            { name: "New Visitors", data: [44, 55, 41, 64, 22, 43, 21, 41, 64, 22, 43, 21] },
-            { name: "Returning Visitors", data: [53, 32, 33, 52, 13, 44, 32, 33, 52, 13, 44, 32] },
+            // { name: "New Visitors", data: [44, 55, 41, 64, 22, 43, 21, 41, 64, 22, 43, 21] },
+            { name: "Returning Visitors", data: [10,20,30,40,50,60,70,80,90,100] },
         ],
         plotOptions: {
             bar: {
@@ -15,12 +15,15 @@ export const webAnalyticsChartOptions = () => {
         },
         dataLabels: { enabled: !1, offsetX: -6, style: { fontSize: "12px", colors: ["#fff"] } },
         stroke: { show: !1, width: 1, colors: ["#fff"] },
-        colors: ["#E1E3EA", "#3454d1"],
-        xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: "#64748b", fontFamily: "Inter" } } },
+        colors: "#3454d1",
+        xaxis: { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: "#64748b", fontFamily: "Inter" } } },
         yaxis: {
+            min: 0,
+            max: 100,
+            tickAmount: 5,
             labels: {
-                formatter: function (e) {
-                    return +e + "K";
+                formatter: function (val) {
+                    return Math.round(val) + "%";
                 },
                 offsetX: -22,
                 offsetY: 0,
@@ -31,7 +34,7 @@ export const webAnalyticsChartOptions = () => {
         tooltip: {
             y: {
                 formatter: function (e) {
-                    return +e + "K";
+                    return +e +"%";
                 },
             },
             style: { colors: "#64748b", fontFamily: "Inter" },
