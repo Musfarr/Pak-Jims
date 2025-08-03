@@ -67,31 +67,167 @@ const QecReports = () => {
     const TextResponse = reports?.data?.comments;
 
 
-    const data = Object.values({...RadarLabels , not_answered: reports?.data?.not_answered});
-    const series1 = [{ name: "Responses", data }];
+    // Get the data values and find the maximum value
+    const dataValues = Object.values(RadarLabels);
+    const maxValue = Math.max(...dataValues, 1); // Ensure at least 1 to avoid division by zero
+    
+    // Calculate appropriate tick amount based on max value
+    let tickAmount = 5;
+    if (maxValue > 1000) {
+      tickAmount = Math.min(5, Math.ceil(maxValue / 250));
+    } else if (maxValue > 100) {
+      tickAmount = Math.min(5, Math.ceil(maxValue / 25));
+    }
+
+    // Format number for display (adds K, M, etc. for large numbers)
+    const formatNumber = (num) => {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toFixed(0);
+    };
+
+    const series1 = [{ 
+      name: "Responses", 
+      data: dataValues,
+      markers: {
+        size: Math.max(3, Math.min(5, 100 / Math.max(1, Math.log10(maxValue)))),
+        hover: {
+          size: Math.max(5, Math.min(7, 120 / Math.max(1, Math.log10(maxValue))))
+        }
+      }
+    }];
 
     const chartOptions = {
       series: series1,
       chart: {
           type: 'radar',
           height: 350,
-          toolbar: { show: false }
+          toolbar: { show: false },
+          dropShadow: {
+            enabled: true,
+            blur: 3,
+            left: 2,
+            top: 2,
+            opacity: 0.2
+          },
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 800,
+            animateGradually: {
+              enabled: true,
+              delay: 150
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 350
+            }
+          }
       },
-      colors: ["#3454D1", "#41B2C4", "#EA4D4D", "#FFC107", "#FF5722", "#673AB7"],
+      colors: ["#3B82F6"],
+      fill: {
+        opacity: 0.3,
+        colors: ["#3B82F6"]
+      },
+      stroke: { 
+        width: 2.5,
+        colors: ["#3B82F6"],
+        dashArray: 0
+      },
+      markers: { 
+        size: 5,
+        colors: ["#3B82F6"],
+        strokeColors: '#fff',
+        strokeWidth: 2,
+        hover: {
+          size: 7,
+          sizeOffset: 2
+        }
+      },
       xaxis: {
           categories: Object.keys(RadarLabels),
           labels: {
               show: true,
               style: {
-                  colors: ["#3454D1", "#41B2C4", "#EA4D4D", "#FFC107", "#FF5722", "#673AB7"],
-                  fontSize: '16px',
-                  fontWeight: 600,
+                  colors: ['#4B5563'],
+                  fontSize: '12px',
+                  fontWeight: 500,
+                  fontFamily: 'Inter, Arial, sans-serif',
+                  cssClass: 'apexcharts-radar-category-label'
               }
           }
       },
-      yaxis: { show: false },
-      stroke: { width: 2 },
-      markers: { size: 4 }
+      yaxis: { 
+        show: true,
+        min: 0,
+        max: Math.ceil(maxValue * 1.1), // Add 10% padding
+        tickAmount: tickAmount,
+        forceNiceScale: true,
+        labels: {
+          formatter: function(val) {
+            return formatNumber(val);
+          },
+          style: {
+            colors: ['#6B7280'],
+            fontSize: '11px',
+            fontFamily: 'Inter, Arial, sans-serif',
+            cssClass: 'apexcharts-radar-yaxis-label'
+          }
+        },
+        axisBorder: {
+          show: false
+        }
+      },
+      tooltip: {
+        theme: 'light',
+        y: {
+          formatter: function(val) {
+            return val.toLocaleString(); // Format with thousands separators
+          },
+          title: {
+            formatter: function(seriesName) {
+              return 'Responses';
+            }
+          }
+        },
+        marker: {
+          show: true
+        },
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Inter, Arial, sans-serif'
+        }
+      },
+      plotOptions: {
+        radar: {
+          size: 120,
+          offsetX: 0,
+          offsetY: 0,
+          polygons: {
+            strokeColors: '#E5E7EB',
+            strokeWidth: 1,
+            connectorColors: '#E5E7EB',
+            fill: {
+              colors: ['#F9FAFB', '#fff']
+            },
+            strokeDashArray: 0
+          }
+        }
+      },
+      states: {
+        hover: {
+          filter: {
+            type: 'darken',
+            value: 0.1
+          }
+        },
+        active: {
+          filter: {
+            type: 'darken',
+            value: 0.1
+          }
+        }
+      }
   };
 
     if(isLoading){
@@ -208,7 +344,7 @@ const QecReports = () => {
 
                 <div className="col-8">
                     <div className="card ">
-                    <WebAnalyticsChart/>
+                    <WebAnalyticsChart data={reports.data.bar_chart}/>
                     </div>
                 </div>
 
