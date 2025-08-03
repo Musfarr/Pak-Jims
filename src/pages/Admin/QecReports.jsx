@@ -225,6 +225,7 @@ const QecReports = () => {
                                             <th>B</th>
                                             <th>C</th>
                                             <th>D</th>
+                                            <th>E</th>
                                             {/* <th>%</th> */}
                                         </tr>
                                     </thead>
@@ -237,6 +238,7 @@ const QecReports = () => {
                                             <td>{question?.counts['B']}</td>
                                             <td>{question?.counts['C']}</td>
                                             <td>{question?.counts['D']}</td>
+                                            <td>{question?.counts['E']}</td>
                                         </tr>
                                     ))}
                                     </tbody>
