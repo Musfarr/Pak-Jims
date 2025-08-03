@@ -67,7 +67,7 @@ const QecReports = () => {
     const TextResponse = reports?.data?.comments;
 
 
-    const data = Object.values(RadarLabels);
+    const data = Object.values({...RadarLabels , not_answered: reports?.data?.not_answered});
     const series1 = [{ name: "Responses", data }];
 
     const chartOptions = {
@@ -143,7 +143,10 @@ const QecReports = () => {
     <div className="col-12 mb-4">
   <div className="card border rounded-3 shadow-sm">
     <div className="card-header bg-secondary text-white py-3">
-      <h2 className="mb-0 h4 text-white ">QEC Evaluation Report</h2>
+      <h2 className="mb-0 h4 text-white ">QEC Evaluation Report ({reports?.data?.survey_name})
+
+      <p className="mt-2 h6 text-white ">({reports?.data?.survey_title})</p>
+      </h2>
     </div>
     <div className="card-body">
       <div className="row">
