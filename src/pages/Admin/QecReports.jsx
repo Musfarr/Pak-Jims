@@ -246,7 +246,7 @@ const QecReports = () => {
                             </div>
                             <div className="card-footer p-3">
                                 <div className="mb-2">
-                                    <span className="fw-semibold me-2">Scale:</span>
+                                    <span className="fw-semibold me-2">Labels:</span>
                                     <div className="d-flex flex-wrap gap-3 mt-1">
                                         {reports?.data?.label_rest?.map((label, index) => (
                                             <span key={`label-${index}`} className="text-dark">{label}</span>
@@ -255,7 +255,7 @@ const QecReports = () => {
                                 </div>
                                 {reports?.data?.remaning_differnt_labels && Object.keys(reports.data.remaning_differnt_labels).length > 0 && (
                                     <div className="mt-2">
-                                        <div className="fw-semibold mb-1">Custom Scales:</div>
+                                        <div className="fw-semibold mb-1">Custom Labels:</div>
                                         <div className="d-flex flex-column gap-1">
                                             {Object.entries(reports.data.remaning_differnt_labels).map(([key, value]) => (
                                                 <div key={key} className="text-dark">
