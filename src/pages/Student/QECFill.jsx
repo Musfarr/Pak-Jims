@@ -130,7 +130,7 @@ const QECFill = () => {
         return (
           <div className="mb-4" key={question.id}>
             <label className="form-label fw-semibold">{index + 1}. {question.text}</label>
-            <div className="ps-4 mt-2">
+            <div className="ps-4 mt-2 d-flex justify-content-between">
               {question.options && question.options.map((option, idx) => (
                 <div key={idx} className="form-check mb-2">
                   <input
