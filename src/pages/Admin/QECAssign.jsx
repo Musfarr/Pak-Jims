@@ -48,7 +48,7 @@ const QECAssign = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!term || selectedDepartments.length === 0 || selectedCourses.length === 0) {
+    if (!term || selectedDepartments.length === 0) {
       Swal.fire({
         icon: 'error',
         title: 'Incomplete!',
@@ -61,7 +61,7 @@ const QECAssign = () => {
     const payload = {
       survey_id: id,
       term,
-      course_ids: selectedCourses.map(opt => opt.value),
+      ...(userType !== 'student' ? {} : { course_ids: selectedCourses.map(opt => opt.value) }),
       depart_ids: selectedDepartments.map(opt => opt.value),
       ...(userType !== 'student' ? {} : { batch_ids: selectedBatches.map(opt => opt.value) })
     };
@@ -140,6 +140,7 @@ const QECAssign = () => {
                 </div>
               </>
             )}
+            {userType === 'student' && (
 
                 <div className="mb-3">
                   <label className="form-label">Courses (Select Only For Students)</label>
@@ -153,6 +154,7 @@ const QECAssign = () => {
                     placeholder="Select courses..."
                   />
                 </div>
+            )}
             <button type="submit" className="btn btn-primary float-end" disabled={isSubmitting}>{isSubmitting ? 'Assigning...' : 'Assign Survey'}</button>
           </form>
         </div>

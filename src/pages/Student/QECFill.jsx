@@ -218,7 +218,8 @@ const QECFill = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (metadata.requirements?.includes('semester') && !semester) {
+
+    if (metadata?.requirements?.includes('semester') && !semester) {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -325,7 +326,7 @@ const QECFill = () => {
       responses: responsesArray,
       course_id: surveyResponse?.data[0]?.meta?.course?.id,
       instructor_id: selectedFacultyId || surveyResponse?.data[0]?.meta?.faculty?.id,
-      semester_id: metadata.requirements?.includes('semester') ? semester : surveyResponse?.data[0]?.term,
+      semester_id: metadata?.requirements?.includes('semester') ? semester : surveyResponse?.data[0]?.term,
       depart_id: surveyResponse?.data[0]?.meta?.department?.id,
       program_id: surveyResponse?.data[0]?.meta?.course?.program_id,
     };
