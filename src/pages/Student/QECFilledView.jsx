@@ -311,12 +311,12 @@ const QECFilledView = () => {
                     pageBreakInside: 'avoid',
                     breakInside: 'avoid'
                   }}>
-                    <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
-                    <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
-                    <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
-                    <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-                    <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
-                    <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
+                    {metadata?.course_title && <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>}
+                    {metadata?.department_name && <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>}
+                    {metadata?.instructor_name && <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>}
+                    {metadata?.program_name && <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>}
+                    {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>}
+                    {metadata?.year_of_student && <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>}
                   </div>
                   {/* {metadata.submitted_at && (
                     <div className="qec-pdf-date">
@@ -368,12 +368,12 @@ const QECFilledView = () => {
                     <img style={{ width: '90px', height: '90px' }} src={logo2} alt="" />
                   </div>
           <div className="qec-pdf-meta">
-            <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>
-            <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>
-            <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>
-            <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>
-            <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>
-            <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>
+           {metadata?.course_title && <div className="qec-pdf-meta-item"><b>Course:</b> {metadata.course_title} ({metadata.course_id})</div>}
+            {metadata?.department_name && <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>}
+            {metadata?.instructor_name && <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>}
+            {metadata?.program_name && <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>}
+            {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>}
+            {metadata?.year_of_student && <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>}
           </div>
           {/* {metadata.submitted_at && (
             <div className="qec-pdf-date">
@@ -438,42 +438,42 @@ const QECFilledView = () => {
                 {metadata && (
                   <div className="mt-3 w-100">
                     <div className="row g-3">
-                      <div className="col-md-4">
+                      {metadata?.course_title && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Course</span>
+                          <span className="fw-bold">Course</span>
                           <span className="fw-medium">
                             {metadata.course_title} <span className="text-muted">({metadata.course_id})</span>
                           </span>
                         </div>
-                      </div>
+                      </div>}
 
-                      <div className="col-md-4">
+                      {metadata?.department_name && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Department</span>
+                          <span className="fw-bold">Department</span>
                           <span className="fw-medium">{metadata.department_name}</span>
                         </div>
-                      </div>
+                      </div>}
 
-                      <div className="col-md-4">
+                      {metadata?.instructor_name && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Instructor</span>
+                          <span className="fw-bold">Instructor</span>
                           <span className="fw-medium">{metadata.instructor_name}</span>
                         </div>
-                      </div>
+                      </div>}
 
-                      <div className="col-md-4">
+                      {metadata?.program_name && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Program</span>
+                          <span className="fw-bold">Program</span>
                           <span className="fw-medium">{metadata.program_name}</span>
                         </div>
-                      </div>
+                      </div>}
 
-                      <div className="col-md-4">
+                      {metadata?.semester_id && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Semester</span>
+                          <span className="fw-bold">Semester/Term</span>
                           <span className="fw-medium">{metadata.semester_id}</span>
                         </div>
-                      </div>
+                      </div>}
 
                       {/* <div className="col-md-4">
                         <div className="d-flex flex-column">
