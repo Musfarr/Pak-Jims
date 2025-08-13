@@ -12,6 +12,7 @@ import { useSurvey } from '../../context/SurveyContext';
 
 const QecReports = () => {
     const { id } = useParams();
+    console.log(id, 'id')
     const navigate = useNavigate();
     const { surveyAssignmentIds, currentReportId, setSurveyData } = useSurvey();
 
@@ -30,7 +31,7 @@ const QecReports = () => {
             if (!surveyAssignmentIds) {
                 throw new Error('No survey assignment IDs available');
             }
-            return PostApi(( id===39 ? `report/student-evaluation` : `report/dynamic-evaluation`), { survey_assignment_ids: surveyAssignmentIds });
+            return PostApi(( id==39 ? `report/student-evaluation` : `report/dynamic-evaluation`), { survey_assignment_ids: surveyAssignmentIds });
         },
         enabled: !!surveyAssignmentIds
     });
