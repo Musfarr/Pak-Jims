@@ -237,31 +237,87 @@ const QecReports = () => {
 
 
     const handleDownloadPDF = () => {
-        
-        const options = {
-            margin: [2, 2, 2, 2],
-            filename: `QEC_Reports.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-              scale: 2,
-              useCORS: true,
-              allowTaint: true,
-              logging: true
-            },
-            jsPDF: { 
-              unit: 'mm', 
-              format: 'a3', 
-              orientation: 'landscape' 
-            },
-            pagebreak: { 
-              mode: ['css'],
-              before: '.page-break-before',
-              after: '.page-break-after',
-              avoid: '.avoid-break' 
+        // Add print-specific styles for charts
+        const printStyles = document.createElement('style');
+        printStyles.innerHTML = `
+            @media print, screen {
+                .qec-report-pdf-print .col-4,
+                .qec-report-pdf-print .col-8 {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    flex: 0 0 100% !important;
+                }
+                
+                .qec-report-pdf-print .row {
+                    flex-direction: column !important;
+                }
+                
+                .qec-report-pdf-print .card {
+                    margin-bottom: 20px !important;
+                    page-break-inside: avoid !important;
+                    break-inside: avoid !important;
+                }
+                
+                .qec-report-pdf-print .apexcharts-canvas {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                }
+                
+                .qec-report-pdf-print .apexcharts-svg {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                }
+                
+                .qec-report-pdf-print table {
+                    font-size: 12px !important;
+                    table-layout: fixed !important;
+                    width: 100% !important;
+                }
+                
+                .qec-report-pdf-print .card-body {
+                    padding: 15px !important;
+                }
             }
-          };
+        `;
+        document.head.appendChild(printStyles);
+        
+        // Wait for styles to apply
+        setTimeout(() => {
+            const options = {
+                margin: [4, 4, 4, 4],
+                filename: `QEC_Reports.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { 
+                  scale: 2,
+                  useCORS: true,
+                  allowTaint: true,
+                  logging: false,
+                  width: 1400,
+                  height: null
+                },
+                jsPDF: { 
+                  unit: 'mm', 
+                  format: 'a4', 
+                  orientation: 'portrait'
+                },
+                pagebreak: { 
+                  mode: ['css'],
+                  before: '.page-break-before',
+                  after: '.page-break-after',
+                  avoid: ['.avoid-break', '.card']
+                }
+              };
 
-        html2pdf().set(options).from(document.querySelector('.qec-report-pdf-print')).save();
+            html2pdf().set(options).from(document.querySelector('.qec-report-pdf-print'))
+                .save()
+                .then(() => {
+                    document.head.removeChild(printStyles);
+                })
+                .catch((error) => {
+                    console.error('PDF generation failed:', error);
+                    document.head.removeChild(printStyles);
+                });
+        }, 100);
     }
     return (
         <div className="main-content">

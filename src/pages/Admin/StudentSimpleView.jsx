@@ -99,7 +99,7 @@ const StudentSimpleView = () => {
         <div className="container-fluid py-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 className="mb-0">{viewData.name || 'Student Details'}</h2>
+                    <h2 className="mb-2">{viewData.name || 'Student Details'}</h2>
                     {viewData.course && <p className="text-muted mb-0">{viewData.course} {viewData.batch && <span className="badge bg-primary ms-2">{viewData.batch}</span>}</p>}
                 </div>
                 <Link to="/student-list" className="btn btn-secondary">Back to List</Link>

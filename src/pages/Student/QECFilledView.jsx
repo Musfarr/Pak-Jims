@@ -52,7 +52,7 @@ const QECFilledView = () => {
     return (
       <div className="mb-4" key={question.question_id}>
         <label className="form-label fw-semibold">{questionIndex + 1}. {question.question_text}</label>
-        <div className="ps-4 mt-2 d-flex justify-content-between">
+        <div className={`ps-4 mt-2 d-flex ${question.options.length <= 3 ? '' : 'justify-content-between'}`}>
           {question.options && question.options.map((option) => (
             <div key={option.option_id} className="form-check mb-2">
               <input 
