@@ -7,7 +7,7 @@ export function getAdminMenuList(permissions = []) {
     {
         id: 0,
         name: "dashboards",
-        path: "#",
+        path: "/admin-dashboard",
         icon: 'feather-airplay',
         dropdownMenu: [
             {
@@ -234,25 +234,25 @@ export function getAdminMenuList(permissions = []) {
         dropdownMenu: [
             {
                 id: 1,
-                name: "Proforma 1",
+                name: "Student Course Evaluation Questionnaire",
                 path: "/reports/list/proforma1",
                 subdropdownMenu: []
             },
             {
                 id: 2,
-                name: "Proforma 3",
+                name: "Faculty Course Evaluation Questionnaire",
                 path: "/reports/list/proforma3",
                 subdropdownMenu: []
             },
             {
                 id: 3,
-                name: "Proforma 5",
+                name: "Faculty Survey",
                 path: "/reports/list/proforma5",
                 subdropdownMenu: []
             },
             {
                 id: 4,
-                name: "Proforma 7",
+                name: "Alumni Survey",
                 path: "/reports/list/proforma7",
                 subdropdownMenu: []
             }

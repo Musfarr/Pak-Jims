@@ -102,8 +102,8 @@ const QECAssignments = ({ title }) => {
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Term</th>
-                          <th>Survey</th>
+                          <th>Semester/Module</th>
+                          <th>Survey Name</th>
                           <th>Assigned Details</th>
                           {/* <th>Action</th> */}
                           
@@ -113,8 +113,8 @@ const QECAssignments = ({ title }) => {
                         {filteredAssignments.map((assignment , index) => (
                           <tr key={assignment.id}>
                             <td>{index + 1}</td>
-                            <td>{assignment.survey.title}</td>
                             <td>{assignment.term}</td>
+                            <td>{assignment.survey.title}</td>
                             <td>
                               <button 
                                 className="btn btn-sm btn-outline-primary" 

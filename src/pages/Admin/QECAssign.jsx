@@ -109,7 +109,7 @@ const QECAssign = () => {
               </select>
             </div>
             <div className="mb-3">
-              <label className="form-label">Term</label>
+              <label className="form-label">Semester/Module</label>
               <input type="text" className="form-control" value={term} onChange={e => setTerm(e.target.value)} placeholder="e.g., 2024-spring" required />
             </div>
             <div className="mb-3">

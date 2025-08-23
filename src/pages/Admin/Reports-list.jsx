@@ -48,7 +48,7 @@ const ReportsList = () => {
                                 <tr>
                                     {isProforma1 && <th>Faculty</th>}
                                     <th>Department</th>
-                                    <th>Term</th>
+                                    <th>Semester/Module</th>
                                     <th>Total Submissions</th>
                                     <th>Actions</th>
                                     <th>Submissions</th>

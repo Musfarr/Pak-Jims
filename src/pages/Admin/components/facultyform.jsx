@@ -83,7 +83,10 @@ const Facultyform = () => {
             place_of_posting: '', 
             size_of_family: '', 
             no_of_sons: '', 
-            no_of_daugther: '', 
+            no_of_daugther: '',
+            faculty_type: '',
+            additional_charge: '',
+            relieving_retirement_date: null,
 
             // Education History
             education: [{ 
@@ -154,7 +157,8 @@ const Facultyform = () => {
         ['working_in', 'current_post', 'scale', 'date_of_joining_current_post', 
          'department', 'supervisory_officer', 'designation_supervisory_officer', 
          'mobile', 'spouse_paqsjims', 'spouse_name', 'spouse_designation', 
-         'place_of_posting', 'size_of_family', 'no_of_sons', 'no_of_daugther'],
+         'place_of_posting', 'size_of_family', 'no_of_sons', 'no_of_daugther',
+         'faculty_type', 'additional_charge', 'relieving_retirement_date'],
         
         ['education'], 
         

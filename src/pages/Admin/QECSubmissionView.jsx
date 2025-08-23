@@ -320,7 +320,7 @@ const QECSubmissionView = () => {
                     {metadata?.department_name && <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>}
                     {metadata?.instructor_name && <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>}
                     {metadata?.program_name && <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>}
-                    {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>}
+                    {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Module:</b> {metadata.semester_id}</div>}
                     {metadata?.year_of_student && <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student || '-'}</div>}
                   </div>
                   <div style={{ pageBreakBefore: 'avoid', breakBefore: 'avoid' }}>
@@ -372,7 +372,7 @@ const QECSubmissionView = () => {
            {metadata?.department_name && <div className="qec-pdf-meta-item"><b>Department:</b> {metadata.department_name}</div>}
            {metadata?.instructor_name && <div className="qec-pdf-meta-item"><b>Instructor:</b> {metadata.instructor_name}</div>}
            {metadata?.program_name && <div className="qec-pdf-meta-item"><b>Program:</b> {metadata.program_name}</div>}
-           {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Term:</b> {metadata.semester_id}</div>}
+           {metadata?.semester_id && <div className="qec-pdf-meta-item"><b>Semester/Module:</b> {metadata.semester_id}</div>}
            {metadata?.year_of_student && <div className="qec-pdf-meta-item"><b>Year of Study:</b> {metadata.year_of_student}</div>}
           </div>
           <div>
@@ -462,7 +462,7 @@ const QECSubmissionView = () => {
 
                       {metadata?.semester_id && <div className="col-md-4">
                         <div className="d-flex flex-column">
-                          <span className="text-muted small">Semester/Term</span>
+                          <span className="text-muted small">Semester/Module</span>
                           <span className="fw-medium">{metadata.semester_id}</span>
                         </div>
                       </div>}

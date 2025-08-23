@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { FaTint } from 'react-icons/fa';
 import { FiCalendar, FiCamera, FiUserCheck, FiUser, FiBriefcase, FiAward, FiHeart, FiFlag, FiBook, FiPhone, FiSmartphone, FiAlertCircle, FiMail, FiMapPin, FiHome, FiEdit, FiMap, FiHash, FiCreditCard, FiGlobe, FiTag, FiActivity, FiAlertTriangle } from 'react-icons/fi';
+import { formatCNIC, cnicRegex, handleCNICInput } from '@/utils/cnicFormatter';
 
 const ProfileTab = ({ register, errors, setValue }) => {
     const [imagePreview, setImagePreview] = useState("/images/avatar/default.png");
@@ -327,12 +328,13 @@ const ProfileTab = ({ register, errors, setValue }) => {
                 </div>
             </div>
 
+
+            {/* PMDC, CNIC, Passport */}
+            <div className="row g-3 mb-4">
             {/* Date of Birth */}
-            <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                    <label htmlFor="dobInput" className="fw-semibold">D.O.B: </label>
-                </div>
-                <div className="col-lg-8">
+            <div className="col-lg-6 mb-4 align-items-center">
+            <label htmlFor="provinceInput" className="form-label">Date of Birth <span className="text-danger">*</span></label>
+                <div className="">
                     <input
                         type="date"
                         className={`form-control ${errors?.dob ? 'is-invalid' : ''}`}
@@ -342,10 +344,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     {errors?.dob && <div className="invalid-feedback">{errors.dob.message}</div>}
                 </div>
             </div>
-
-            {/* PMDC, CNIC, Passport */}
-            <div className="row g-3 mb-4">
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                     <label htmlFor="pmdcNoInput" className="form-label">PMDC No</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiHash /></div>
@@ -359,7 +358,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                         {errors?.pmdc_no && <div className="invalid-feedback">{errors.pmdc_no.message}</div>}
                     </div>
                 </div>
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                     <label htmlFor="cnicNoInput" className="form-label">CNIC No</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiCreditCard /></div>
@@ -367,18 +366,21 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             type="text"
                             className={`form-control ${errors?.cnic_no ? 'is-invalid' : ''}`}
                             id="cnicNoInput"
-                            placeholder="CNIC No"
-                            {...register('cnic_no', { required: 'CNIC No is required' , 
+                            placeholder="41303-2343143224-4"
+                            {...register('cnic_no', { 
+                                required: 'CNIC No is required',
                                 pattern: {
-                                    value: /^[0-9]{13}$/,
-                                    message: 'CNIC No must be exactly 13 digits (no dashes)'
-                                  }
-                             })}
+                                    value: cnicRegex,
+                                    message: 'CNIC format should be 41303-2343143224-4'
+                                }
+                            })}
+                            onChange={(e) => handleCNICInput(e, setValue, 'cnic_no')}
+                            maxLength={15}
                         />
                         {errors?.cnic_no && <div className="invalid-feedback">{errors.cnic_no.message}</div>}
                     </div>
                 </div>
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                     <label htmlFor="passportNoInput" className="form-label">Passport No</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiGlobe /></div>

@@ -1,0 +1,45 @@
+/* Faculty View Styles */
+
+/* Table styles */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-bordered td, .table-bordered th {
+  border-color: #dee2e6;
+}
+
+/* Card styles */
+.card.shadow-sm {
+  transition: all 0.2s ease-in-out;
+}
+
+.card.shadow-sm:hover {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Badge styles */
+.badge {
+  font-weight: 500;
+  padding: 0.4em 0.6em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  
+  .card-header h5 {
+    font-size: 1rem;
+  }
+}

@@ -6,6 +6,7 @@ import { GetApi, PostApi } from '@/utils/Api/ApiServices'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { formatCNIC, cnicRegex, handleCNICInput } from '@/utils/cnicFormatter'
 
 const Studentform = () => {
     const navigate = useNavigate();
@@ -352,7 +353,21 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="cnicInput">C.N.I.C NO</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <input type="text" className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} id="cnicInput" placeholder="00000-0000000-0" {...register('cnic', { required: 'CNIC is required', pattern: { value: /^\d{5}-\d{7}-\d{1}$/, message: 'CNIC must be in format: 00000-0000000-0' } })} />
+                                        <input 
+                                            type="text" 
+                                            className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} 
+                                            id="cnicInput" 
+                                            placeholder="41303-2343143224-4" 
+                                            {...register('cnic', { 
+                                                required: 'CNIC is required', 
+                                                pattern: { 
+                                                    value: cnicRegex, 
+                                                    message: 'CNIC format should be 41303-2343143224-4' 
+                                                } 
+                                            })} 
+                                            onChange={(e) => handleCNICInput(e, setValue, 'cnic')}
+                                            maxLength={15}
+                                        />
                                         {errors.cnic && <div className="invalid-feedback">{errors.cnic.message}</div>}
                                     </div>
                                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi } from '@/utils/Api/ApiServices';
-import { FiCalendar, FiHome, FiBriefcase, FiAward, FiMap, FiUser, FiPhone, FiMapPin, FiUsers } from 'react-icons/fi';
+import { FiCalendar, FiHome, FiBriefcase, FiAward, FiMap, FiUser, FiPhone, FiMapPin, FiUsers, FiClock } from 'react-icons/fi';
 
 const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
     // Fetch departments using React Query (same as in Studentform)
@@ -253,6 +253,53 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             })}
                         />
                         {errors.no_of_daugther && <div className="invalid-feedback">{errors.no_of_daugther.message}</div>}
+                    </div>
+                </div>
+            </div>
+
+            {/* New Fields: Faculty Type, Additional Charge, Relieving/Retirement Date */}
+            <div className="row g-3 mb-4">
+                <div className="col-lg-4">
+                    <label htmlFor="facultyTypeInput" className="form-label">Faculty Type</label>
+                    <div className="input-group">
+                        <div className="input-group-text"><FiBriefcase /></div>
+                        <select
+                            className={`form-select ${errors.faculty_type ? 'is-invalid' : ''}`}
+                            id="facultyTypeInput"
+                            {...register('faculty_type', { required: 'Faculty Type is required' })}
+                        >
+                            <option value="">Select Faculty Type</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
+                        </select>
+                        {errors.faculty_type && <div className="invalid-feedback">{errors.faculty_type.message}</div>}
+                    </div>
+                </div>
+                <div className="col-lg-4">
+                    <label htmlFor="additionalChargeInput" className="form-label">Additional Charge</label>
+                    <div className="input-group">
+                        <div className="input-group-text"><FiAward /></div>
+                        <input
+                            type="text"
+                            className={`form-control ${errors.additional_charge ? 'is-invalid' : ''}`}
+                            id="additionalChargeInput"
+                            placeholder="Same as designation"
+                            {...register('additional_charge')}
+                        />
+                        {errors.additional_charge && <div className="invalid-feedback">{errors.additional_charge.message}</div>}
+                    </div>
+                </div>
+                <div className="col-lg-4">
+                    <label htmlFor="relievingRetirementDateInput" className="form-label">Relieving/Retirement Date</label>
+                    <div className="input-group">
+                        <div className="input-group-text"><FiClock /></div>
+                        <input
+                            type="date"
+                            className={`form-control ${errors.relieving_retirement_date ? 'is-invalid' : ''}`}
+                            id="relievingRetirementDateInput"
+                            {...register('relieving_retirement_date')}
+                        />
+                        {errors.relieving_retirement_date && <div className="invalid-feedback">{errors.relieving_retirement_date.message}</div>}
                     </div>
                 </div>
             </div>

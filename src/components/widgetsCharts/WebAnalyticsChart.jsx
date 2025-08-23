@@ -8,47 +8,90 @@ import { webAnalyticsChartOptions } from '@/utils/chartsLogic/webAnalyticsChartO
 const WebAnalyticsChart = ({data}) => {
     // const chartOption = webAnalyticsChartOptions()
     const chartOptions = {
-        chart: { type: "bar", height: 425, toolbar: { show: !1 } },
+        chart: { 
+            type: "bar", 
+            height: 425, 
+            toolbar: { show: false },
+            fontFamily: "Inter"
+        },
         series: [
-            // { name: "New Visitors", data: [44, 55, 41, 64, 22, 43, 21, 41, 64, 22, 43, 21] },
-            { name: "Questions", data: data?.barChartPercentages
+            { 
+                name: "Score", 
+                data: data?.barChartPercentages || []
             },
         ],
         plotOptions: {
             bar: {
-                horizontal: !1,
-                borderRadius: 0,
-                borderRadiusApplication: "end",
-                columnWidth: "25%"
+                horizontal: false,
+                borderRadius: 4,
+                columnWidth: "40%",
+                distributed: false,
+                dataLabels: {
+                    position: 'top'
+                }
             }
         },
-        dataLabels: { enabled: !1, offsetX: -6, style: { fontSize: "12px", colors: ["#fff"] } },
-        stroke: { show: !1, width: 1, colors: ["#fff"] },
-        colors: "#198754",
-        xaxis: { categories: data?.barChartQuestions, axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: "#64748b", fontFamily: "Inter" } } },
+        dataLabels: { 
+            enabled: true, 
+            formatter: function(val) {
+                return val + "%";
+            },
+            offsetY: -20,
+            style: { 
+                fontSize: "12px", 
+                colors: ["#198754"],
+                fontWeight: "bold" 
+            } 
+        },
+        stroke: { 
+            show: false, 
+            width: 1, 
+            colors: ["#fff"] 
+        },
+        colors: ["#198754"],
+        xaxis: { 
+            categories: data?.barChartQuestions || [], 
+            axisBorder: { show: false }, 
+            axisTicks: { show: false }, 
+            labels: { 
+                style: { 
+                    colors: "#64748b", 
+                    fontFamily: "Inter" 
+                },
+                rotate: -45,
+                trim: true,
+                maxHeight: 120
+            } 
+        },
         yaxis: {
             min: 0,
             max: 100,
-            tickAmount: 5,
+            tickAmount: 4,
             labels: {
                 formatter: function (val) {
-                    return Math.round(val) + "%";
+                    return val + "%";
                 },
-                offsetX: -22,
-                offsetY: 0,
                 style: { color: "#64748b", fontFamily: "Inter" },
             },
         },
-        grid: { padding: { top: 0, right: 0, bottom: 30, left: 0 }, strokeDashArray: 3, borderColor: "#e9ecef" },
+        grid: { 
+            padding: { top: 30, right: 10, bottom: 30, left: 10 }, 
+            strokeDashArray: 3, 
+            borderColor: "#e9ecef" 
+        },
         tooltip: {
             y: {
-                formatter: function (e) {
-                    return +e +"%";
+                formatter: function (val) {
+                    return val + "%";
                 },
             },
             style: { colors: "#64748b", fontFamily: "Inter" },
         },
-        legend: { show: !0, labels: { colors: "#64748b" }, fontFamily: "Inter" },
+        legend: { 
+            show: true, 
+            labels: { colors: "#64748b" }, 
+            fontFamily: "Inter" 
+        },
     }
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 

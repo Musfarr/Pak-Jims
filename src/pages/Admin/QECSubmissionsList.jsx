@@ -86,7 +86,7 @@ const QECSubmissionsList = () => {
                           <th>#</th>
                           {/* <th>Faculty</th> */}
                           <th>Department</th>
-                          <th>Term</th>
+                          <th>Semester/Module</th>
                           <th>Name</th>
                           <th>Course ID</th>
                           <th>Actions</th>

@@ -4,22 +4,42 @@ import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi } from '@/utils/Api/ApiServices';
+import WebAnalyticsChart from '@/components/widgetsCharts/WebAnalyticsChart';
+import ReactApexChart from 'react-apexcharts';
 
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { data: response, isLoading, isError } = useQuery({
     queryKey: ['institutes'],
-    queryFn: () => GetApi('dashboard')
+    queryFn: () => GetApi('admin/dashboard')
   });
 
   const institutes = response?.data || [];
+  
+  // Extract QEC data from API response
+  const qecData = {
+    // Overall institute progress data for bar chart
+    overallProgress: {
+      barChartQuestions: institutes.overall_institute_progress?.chart_data?.labels || [],
+      barChartPercentages: institutes.overall_institute_progress?.chart_data?.scores || []
+    },
+    
+    // Top 10 faculty members based on evaluation scores
+    topFaculty: institutes.top_10_faculty || [],
+    
+    // Top 10 departments based on evaluation scores
+    topDepartments: institutes.top_10_departments || [],
+    
+    // Department-wise scores
+    departmentWiseScores: institutes.department_wise_scores || []
+  };
 
   const statisticsData = [
-    { amount: institutes.totalInstitues || '0', description: 'Total Institutes', icon: 'feather-users', bgColor: 'bg-primary' },
-    { amount: institutes.totalBranches || '0', description: 'Total Branches', icon: 'feather-users', bgColor: 'bg-success' },
-    { amount: institutes.totalAdmins || '0', description: 'Total Admins', icon: 'feather-users', bgColor: 'bg-warning' },
-    { amount: institutes.totalUsers || '0', description: 'Total Users', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+    { amount: institutes.overall_institute_progress?.total_qec_surveys || '0', description: 'Total QEC Surveys', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: institutes.overall_institute_progress?.total_unique_surveys || '0', description: 'Unique Surveys', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: institutes.overall_institute_progress?.overall_score + '%' || '0%', description: 'Overall Score', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: institutes.totalUsers || '0', description: 'Total ', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
   ];  
   return (
     <>
@@ -29,42 +49,161 @@ const AdminDashboard = () => {
       <div className='main-content'>
         <div className='row'>
           <EstimateStatistics statisticsData={statisticsData} />
-
-          {/* <div className='col-12'>  
+          
+          {/* QEC Dashboard Integration */}
+          <div className='col-12 mt-4'>
             <div className='card'>
+              <div className='card-header'>
+                <h5 className='card-title'>QEC Dashboard</h5>
+              </div>
               <div className='card-body'>
-                <h5 className="card-title">Welcome, {user?.name || 'Admin'}</h5>
-                <p className="card-text">This is the Admin dashboard with administrative access.</p>
-                
-                <div className="row mt-4">
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-primary text-white">
-                      <div className="card-body text-center">
-                        <h3>Student Management</h3>
-                        <p>Manage student accounts</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-success text-white">
-                      <div className="card-body text-center">
-                        <h3>Course Management</h3>
-                        <p>Manage courses and programs</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-info text-white">
-                      <div className="card-body text-center">
-                        <h3>Analytics</h3>
-                        <p>View basic analytics</p>
-                      </div>
-                    </div>
+                <h6 className='mb-3'>Overall Institute Progress</h6>
+                <div className='row'>
+                  <div className='col-12'>
+                    <WebAnalyticsChart data={qecData.overallProgress} />
                   </div>
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
+
+          {/* Top Faculty and Departments */}
+          <div className='col-md-6 mt-4'>
+            <div className='card'>
+              <div className='card-header'>
+                <h5 className='card-title'>Top 10 Faculty</h5>
+              </div>
+              <div className='card-body'>
+                <div className='table-responsive'>
+                  <table className='table table-hover'>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {qecData.topFaculty.map((faculty, index) => (
+                        <tr key={faculty.faculty_id}>
+                          <td>{index + 1}</td>
+                          <td>{faculty.name}</td>
+                          <td>{faculty.designation}</td>
+                          <td>
+                            <div className='d-flex align-items-center'>
+                              <span className='me-2'>{faculty.score_percentage}%</span>
+                              <div className='progress flex-grow-1' style={{ height: '5px' }}>
+                                <div 
+                                  className='progress-bar bg-success' 
+                                  role='progressbar' 
+                                  style={{ width: `${faculty.score_percentage}%` }} 
+                                  aria-valuenow={faculty.score_percentage} 
+                                  aria-valuemin='0' 
+                                  aria-valuemax='100'
+                                ></div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='col-md-6 mt-4'>
+            <div className='card'>
+              <div className='card-header'>
+                <h5 className='card-title'>Top 10 Departments</h5>
+              </div>
+              <div className='card-body'>
+                <div className='table-responsive'>
+                  <table className='table table-hover'>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Department</th>
+                        <th>Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {qecData.topDepartments.map((dept, index) => (
+                        <tr key={dept.department_id}>
+                          <td>{index + 1}</td>
+                          <td>{dept.name}</td>
+                          <td>
+                            <div className='d-flex align-items-center'>
+                              <span className='me-2'>{dept.score_percentage}%</span>
+                              <div className='progress flex-grow-1' style={{ height: '5px' }}>
+                                <div 
+                                  className='progress-bar bg-primary' 
+                                  role='progressbar' 
+                                  style={{ width: `${dept.score_percentage}%` }} 
+                                  aria-valuenow={dept.score_percentage} 
+                                  aria-valuemin='0' 
+                                  aria-valuemax='100'
+                                ></div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Department-wise Scores */}
+          <div className='col-12 mt-4'>
+            <div className='card'>
+              <div className='card-header'>
+                <h5 className='card-title'>Department-wise Scores</h5>
+              </div>
+              <div className='card-body'>
+                <div className='table-responsive'>
+                  <table className='table table-hover'>
+                    <thead>
+                      <tr>
+                        <th>Department</th>
+                        <th colSpan="5" className="text-center">Score</th>
+                        <th>Average</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {qecData.departmentWiseScores.map((dept, index) => {
+                        return (
+                          <tr key={dept.department_id}>
+                            <td>{dept.department_name}</td>
+                            <td colSpan="5" className="text-center">{dept.score_percentage}%</td>
+                            <td>
+                              <div className='d-flex align-items-center'>
+                                <span className='me-2'>{dept.score_percentage}%</span>
+                                <div className='progress flex-grow-1' style={{ height: '5px' }}>
+                                  <div 
+                                    className='progress-bar bg-info' 
+                                    role='progressbar' 
+                                    style={{ width: `${dept.score_percentage}%` }} 
+                                    aria-valuenow={dept.score_percentage} 
+                                    aria-valuemin='0' 
+                                    aria-valuemax='100'
+                                  ></div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

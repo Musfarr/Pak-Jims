@@ -232,7 +232,7 @@ const QECAssignmentDetails = () => {
                                 <td>{assignment.survey_id}</td>
                               </tr>
                               <tr>
-                                <td className="fw-medium">Term:</td>
+                                <td className="fw-medium">Semester/Module:</td>
                                 <td>{assignment.term}</td>
                               </tr>
                               {/* <tr>

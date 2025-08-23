@@ -309,7 +309,7 @@ const QecReports = () => {
         )}
         {reports?.data?.term && (
           <div className="col-md-6 mb-2">
-            <strong>Term:</strong> {reports.data.term}
+            <strong>Semester/Module:</strong> {reports.data.term}
           </div>
         )}
         {reports?.data?.total_submissions && (

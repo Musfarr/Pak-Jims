@@ -104,7 +104,7 @@ const StudentQECTable = ({ title }) => {
                       <th scope="col">#</th>
                       <th scope="col">Title</th>
                       <th scope="col">Description</th>
-                      <th scope="col">Term</th>
+                      <th scope="col">Semester/Module</th>
                       <th scope="col">Assigned Date</th>
                       {/* <th scope="col">Due Date</th> */}
                       <th scope="col">Status</th>
