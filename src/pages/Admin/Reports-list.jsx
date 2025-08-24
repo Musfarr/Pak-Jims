@@ -9,14 +9,31 @@ const ReportsList = () => {
     const location = useLocation();
     const { setSurveyData } = useSurvey();
     
-    const isProforma1 = location.pathname.includes('proforma1');
-    const isProforma3 = location.pathname.includes('proforma3');
-    const isProforma5 = location.pathname.includes('proforma5');
-    const isProforma7 = location.pathname.includes('proforma7');
+    // Use regex with word boundaries to avoid conflicts between proforma1 and proforma10
+    const isProforma1 = /\/proforma1($|\/)/i.test(location.pathname);
+    const isProforma2 = /\/proforma2($|\/)/i.test(location.pathname);
+    const isProforma3 = /\/proforma3($|\/)/i.test(location.pathname);
+    const isProforma4 = /\/proforma4($|\/)/i.test(location.pathname);
+    const isProforma5 = /\/proforma5($|\/)/i.test(location.pathname);
+    const isProforma6 = /\/proforma6($|\/)/i.test(location.pathname);
+    const isProforma7 = /\/proforma7($|\/)/i.test(location.pathname);
+    const isProforma8 = /\/proforma8($|\/)/i.test(location.pathname);
+    const isProforma9 = /\/proforma9($|\/)/i.test(location.pathname);
+    const isProforma10 = /\/proforma10($|\/)/i.test(location.pathname);
 
     const { data: reportsList } = useQuery({
-        queryKey: ['reportsList', isProforma1, isProforma3, isProforma5, isProforma7],
-        queryFn: () => GetApi(isProforma1 ? 'report/student-evaluation' : isProforma3 ? 'report/performa3-evaluation' : isProforma5 ? 'report/performa5-evaluation' : 'report/performa7-evaluation')
+        queryKey: ['reportsList', isProforma1, isProforma2, isProforma3, isProforma4, isProforma5, isProforma6, isProforma7, isProforma8, isProforma9, isProforma10],
+        queryFn: () => GetApi(isProforma1 ? 'report/student-evaluation' :
+                                isProforma2 ? 'report/performa2-evaluation' :
+                                isProforma3 ? 'report/performa3-evaluation' :
+                                isProforma4 ? 'report/performa4-evaluation' :
+                                isProforma5 ? 'report/performa5-evaluation' :
+                                isProforma6 ? 'report/performa6-evaluation' :
+                                isProforma7 ? 'report/performa7-evaluation' :
+                                isProforma8 ? 'report/performa8-evaluation' :
+                                isProforma9 ? 'report/performa9-evaluation' :
+                                isProforma10 ? 'report/performa10-evaluation' :
+                                'report/performa1-evaluation')
     });
 
     const handleViewReport = (id, survey_assignment_ids) => {
@@ -27,9 +44,15 @@ const ReportsList = () => {
     // PerformaType: '1' | '3' | '5' | '7'
     const getPerformaType = () => {
         if (isProforma1) return '1';
+        if (isProforma2) return '2';
         if (isProforma3) return '3';
+        if (isProforma4) return '4';
         if (isProforma5) return '5';
+        if (isProforma6) return '6';
         if (isProforma7) return '7';
+        if (isProforma8) return '8';
+        if (isProforma9) return '9';
+        if (isProforma10) return '10';
         return '1'; // fallback
     };
     const handleViewSubmissions = (id) => {

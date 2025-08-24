@@ -240,20 +240,56 @@ export function getAdminMenuList(permissions = []) {
             },
             {
                 id: 2,
-                name: "Faculty Course Evaluation Questionnaire",
-                path: "/reports/list/proforma3",
+                name: "Faculty Course Review Report",
+                path: "/reports/list/proforma2",
                 subdropdownMenu: []
             },
             {
                 id: 3,
+                name: "Survey of Graduating Students",
+                path: "/reports/list/proforma3",
+                subdropdownMenu: []
+            },
+            {
+                id: 4,
+                name: "RESEARCH STUDENT PROGRESS REVIEW FORM",
+                path: "/reports/list/proforma4",
+                subdropdownMenu: []
+            },
+            {
+                id: 5,
                 name: "Faculty Survey",
                 path: "/reports/list/proforma5",
                 subdropdownMenu: []
             },
             {
-                id: 4,
+                id: 6,
+                name: "Survey of department offering PhD. Programs",
+                path: "/reports/list/proforma6",
+                subdropdownMenu: []
+            },
+            {
+                id: 7,
                 name: "Alumni Survey",
                 path: "/reports/list/proforma7",
+                subdropdownMenu: []
+            },
+            {
+                id: 8,
+                name: "Employer Survey",
+                path: "/reports/list/proforma8",
+                subdropdownMenu: []
+            },
+            {
+                id:9,
+                name: "proforma9 Survey",
+                path: "/reports/list/proforma9",
+                subdropdownMenu: []
+            },
+            {
+                id: 10,
+                name: "Teacher Evaluation Form",
+                path: "/reports/list/proforma10",
                 subdropdownMenu: []
             }
         ]

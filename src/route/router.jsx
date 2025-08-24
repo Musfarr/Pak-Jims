@@ -574,7 +574,25 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/reports/list/proforma2",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/reports/list/proforma3",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma4",
                 
                 element: (
                     <ProtectedRoute requiredRole="admin">
@@ -592,7 +610,43 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/reports/list/proforma6",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/reports/list/proforma7",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma8",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma9",
+                
+                element: (
+                    <ProtectedRoute requiredRole="admin">
+                        <ReportsList />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/reports/list/proforma10",
                 
                 element: (
                     <ProtectedRoute requiredRole="admin">

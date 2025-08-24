@@ -6,9 +6,15 @@ import Footer from '@/components/shared/Footer';
 
 const apiMap = {
   '1': '/report/performa1-ind-evaluation',
+  '2': '/report/performa2-ind-evaluation',
   '3': '/report/performa3-ind-evaluation',
+  '4': '/report/performa4-ind-evaluation',
   '5': '/report/performa5-ind-evaluation',
+  '6': '/report/performa6-ind-evaluation',
   '7': '/report/performa7-ind-evaluation',
+  '8': '/report/performa8-ind-evaluation',
+  '9': '/report/performa9-ind-evaluation',
+  '10': '/report/performa10-ind-evaluation',
 };
 
 const QECSubmissionsList = () => {
