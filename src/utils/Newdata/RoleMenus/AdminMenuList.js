@@ -199,7 +199,8 @@ export function getAdminMenuList(permissions = []) {
         ].filter(Boolean)
     },
 
-    {
+    permissions.includes("view_QEC") && {
+    
         id: 12,
         name: "QEC",
         path: "#",
@@ -225,7 +226,7 @@ export function getAdminMenuList(permissions = []) {
             }
         ].filter(Boolean)
     },
-    permissions.includes("view_Batches") && {
+    permissions.includes("view_Reporting") && {
     
         id: 13,
         name: "Reporting",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { GetApi, PostApi } from '../../utils/Api/ApiServices';
 import { toast } from 'react-toastify';
 
@@ -35,6 +35,18 @@ const CreateRole = () => {
     fetchModules();
     fetchPermissions();
   }, []);
+
+  // Merge modules from both endpoints to ensure all modules with permissions are rendered
+  const modulesForRender = useMemo(() => {
+    const permsModules = permissions.map(p => ({ id: Number(p.module_id), name: p.module_name }));
+    const mapById = new Map(modules.map(m => [Number(m.id), { ...m, id: Number(m.id) }]));
+    permsModules.forEach(pm => {
+      if (!mapById.has(pm.id)) {
+        mapById.set(pm.id, pm);
+      }
+    });
+    return Array.from(mapById.values());
+  }, [modules, permissions]);
 
   const handlePermissionChange = (moduleId, permissionId, checked) => {
     setSelectedModules(prev => {
@@ -87,7 +99,7 @@ const CreateRole = () => {
   };
 
   const getPermissionsForModule = (moduleId) => {
-    const moduleData = permissions.find(p => p.module_id === moduleId);
+    const moduleData = permissions.find(p => Number(p.module_id) === Number(moduleId));
     return moduleData ? moduleData.permissions : [];
   };
 
@@ -134,10 +146,10 @@ const CreateRole = () => {
                 <div className="row">
                   <div className="col-12">
                     <h5>Select Permissions</h5>
-                    {modules.length === 0 ? (
+                    {modulesForRender.length === 0 ? (
                       <p>Loading modules...</p>
                     ) : (
-                      modules.map((module) => {
+                      modulesForRender.map((module) => {
                         const modulePermissions = getPermissionsForModule(module.id);
                         return (
                           <div key={module.id} className="card mb-3">
