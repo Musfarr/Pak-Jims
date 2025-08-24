@@ -21,7 +21,7 @@ const PageHeader = ({ children }) => {
                     <h5 className="m-b-10 text-capitalize">{folderName}</h5>
                 </div>
                 <ul className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                    <li className="breadcrumb-item"><Link >Home</Link></li>
                     <li className="breadcrumb-item text-capitalize">{fileName}</li>
                 </ul>
             </div>

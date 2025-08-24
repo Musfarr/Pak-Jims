@@ -170,7 +170,7 @@ const AdminDashboard = () => {
                     <thead>
                       <tr>
                         <th>Department</th>
-                        <th colSpan="5" className="text-center">Score</th>
+                        {/* <th colSpan="5" className="text-center">Score</th> */}
                         <th>Average</th>
                       </tr>
                     </thead>
@@ -179,7 +179,7 @@ const AdminDashboard = () => {
                         return (
                           <tr key={dept.department_id}>
                             <td>{dept.department_name}</td>
-                            <td colSpan="5" className="text-center">{dept.score_percentage}%</td>
+                            {/* <td colSpan="5" className="text-center">{dept.score_percentage}%</td> */}
                             <td>
                               <div className='d-flex align-items-center'>
                                 <span className='me-2'>{dept.score_percentage}%</span>

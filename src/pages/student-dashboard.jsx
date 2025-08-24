@@ -2,11 +2,29 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import RoleNavigation from '../components/RoleNavigation';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
+import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
+
 
 
 const StudentDashboard = () => {
   const { user } = useAuth();
 
+  const { data: response, isLoading, isError } = useQuery({
+    queryKey: ['studentDashboard'],
+    queryFn: () => GetApi('student/dashboard')
+  });
+
+  const studentDashboard = response?.data || [];
+  
+
+  const statisticsData = [
+    { amount: studentDashboard?.summary?.completion_rate + '%' || '0', description: 'Completion Rate', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: studentDashboard?.summary?.total_assigned || '0', description: 'Total Assigned', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: studentDashboard?.summary?.total_pending || '0', description: 'Total Pending', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: studentDashboard?.summary?.total_submitted || '0', description: 'Total Submitted', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+  ];  
   return (
     <>
       <PageHeader>
@@ -14,7 +32,9 @@ const StudentDashboard = () => {
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
+          <EstimateStatistics statisticsData={statisticsData} />
           <div className='col-12'>
+
             {/* <RoleNavigation /> */}
             
             {/* <div className='card'>

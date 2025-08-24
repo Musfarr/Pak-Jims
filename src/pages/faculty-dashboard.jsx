@@ -2,10 +2,30 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import RoleNavigation from '../components/RoleNavigation';
+import EstimateStatistics from '@/components/widgetsStatistics/EstimateStatistics';
+import { useQuery } from '@tanstack/react-query';
+import { GetApi } from '@/utils/Api/ApiServices';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();
 
+  const { data: response, isLoading, isError } = useQuery({
+    queryKey: ['facultyDashboard'],
+    queryFn: () => GetApi('faculty/dashboard')
+  });
+
+  const facultyDashboard = response?.data || [];
+  
+  
+
+  const statisticsData = [
+    { amount: facultyDashboard?.summary?.completion_rate + '%' || '0', description: 'Completion Rate', icon: 'feather-users', bgColor: 'bg-primary' },
+    { amount: facultyDashboard?.summary?.total_assigned || '0', description: 'Total Assigned', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: facultyDashboard?.summary?.total_pending || '0', description: 'Total Pending', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: facultyDashboard?.summary?.total_submitted || '0', description: 'Total Submitted', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' },
+    { amount: facultyDashboard?.average_score_submitted + '%' || '0', description: 'Average Score Submitted', icon: 'feather-bar-chart-2', bgColor: 'bg-success' },
+    { amount: facultyDashboard?.average_score_engaged  + '%' || '0', description: 'Average Score Engaged', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+  ];  
   return (
     <>
       <PageHeader>
@@ -13,42 +33,11 @@ const FacultyDashboard = () => {
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
+          <EstimateStatistics statisticsData={statisticsData} />
           <div className='col-12'>
             {/* <RoleNavigation /> */}
             
-            <div className='card'>
-              <div className='card-body'>
-                <h5 className="card-title">Welcome, {user?.name || 'Faculty Member'}</h5>
-                <p className="card-text">This is the Faculty dashboard with teaching staff access.</p>
-                
-                <div className="row mt-4">
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-primary text-white">
-                      <div className="card-body text-center">
-                        <h3>My Courses</h3>
-                        <p>View and manage your courses</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-success text-white">
-                      <div className="card-body text-center">
-                        <h3>Grades</h3>
-                        <p>Manage student grades</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4 mb-3">
-                    <div className="card bg-info text-white">
-                      <div className="card-body text-center">
-                        <h3>Attendance</h3>
-                        <p>Track student attendance</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
