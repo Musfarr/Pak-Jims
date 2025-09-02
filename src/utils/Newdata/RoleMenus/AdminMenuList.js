@@ -218,7 +218,7 @@ export function getAdminMenuList(permissions = []) {
                 path: "/qec/add",
                 subdropdownMenu: []
             },
-            {
+            permissions.includes("add_QEC") && {
                 id: 3,
                 name: "Templates",
                 path: "/templates",
@@ -281,12 +281,12 @@ export function getAdminMenuList(permissions = []) {
                 path: "/reports/list/proforma8",
                 subdropdownMenu: []
             },
-            {
-                id:9,
-                name: "proforma9 Survey",
-                path: "/reports/list/proforma9",
-                subdropdownMenu: []
-            },
+            // {
+            //     id:9,
+            //     name: "proforma9 Survey",
+            //     path: "/reports/list/proforma9",
+            //     subdropdownMenu: []
+            // },
             {
                 id: 10,
                 name: "Teacher Evaluation Form",

@@ -35,11 +35,14 @@ const AdminDashboard = () => {
     departmentWiseScores: institutes.department_wise_scores || []
   };
 
+ 
+
   const statisticsData = [
-    { amount: institutes.overall_institute_progress?.total_qec_surveys || '0', description: 'Total QEC Surveys', icon: 'feather-users', bgColor: 'bg-primary' },
-    { amount: institutes.overall_institute_progress?.total_unique_surveys || '0', description: 'Unique Surveys', icon: 'feather-users', bgColor: 'bg-success' },
-    { amount: institutes.overall_institute_progress?.overall_score + '%' || '0%', description: 'Overall Score', icon: 'feather-users', bgColor: 'bg-warning' },
-    { amount: institutes.totalUsers || '0', description: 'Total ', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' }
+    // { amount: institutes.overall_institute_progress?.total_qec_surveys || '0', description: 'Total QEC Surveys', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: institutes.survey_statistics?.total_assigned || '0', description: 'Total Assigned', icon: 'feather-users', bgColor: 'bg-success' },
+    { amount: institutes.survey_statistics?.total_pending || '0', description: 'Total Pending', icon: 'feather-users', bgColor: 'bg-warning' },
+    { amount: institutes.survey_statistics?.total_submitted || '0', description: 'Total Submitted', icon: 'feather-bar-chart-2', bgColor: 'bg-teal' },
+    { amount: institutes.survey_statistics?.completion_rate + '%' || '0', description: 'Completion Rate', icon: 'feather-users', bgColor: 'bg-primary' },
   ];  
   return (
     <>
