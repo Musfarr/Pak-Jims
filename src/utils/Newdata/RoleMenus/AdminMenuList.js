@@ -25,7 +25,7 @@ export function getAdminMenuList(permissions = []) {
         ]
     },
 
-    {
+    permissions.includes("view_Programs") && {
         id: 7,
         name: "programs",
         path: "#",
@@ -46,10 +46,7 @@ export function getAdminMenuList(permissions = []) {
         ].filter(Boolean)
     },
 
-
-
-
-    {
+    permissions.includes("view_Courses") && {
         id: 6,
         name: "courses",
         path: "#",
@@ -70,7 +67,7 @@ export function getAdminMenuList(permissions = []) {
         ].filter(Boolean)
     },
 
-    {
+    permissions.includes("view_Departments") && {
         id: 8,
         name: "departments",
         path: "#",
@@ -91,7 +88,7 @@ export function getAdminMenuList(permissions = []) {
         ].filter(Boolean)
     },
 
-    {
+    permissions.includes("view_Batches") && {
         id: 11,
         name: "batches",
         path: "#",
@@ -133,7 +130,7 @@ export function getAdminMenuList(permissions = []) {
         ].filter(Boolean)
     },
     
-    {
+    permissions.includes("view_Classes") && {
         id: 9,
         name: "classes",
         path: "#",
@@ -156,7 +153,7 @@ export function getAdminMenuList(permissions = []) {
 
 
 
-    {
+    permissions.includes("view_Students") && {
         id: 14,
         name: "Students",
         path: "#",
@@ -178,7 +175,7 @@ export function getAdminMenuList(permissions = []) {
     },
 
 
-    {
+    permissions.includes("view_Faculty") && {
         id: 5,
         name: "Faculty",
         path: "#",
