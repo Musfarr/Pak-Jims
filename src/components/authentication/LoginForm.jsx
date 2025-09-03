@@ -50,8 +50,8 @@ const LoginForm = () => {
 
     return (
         <>
-            <h3 className="fs-40 text-primary fw-bold my-4 text-center">PAQSJIMS QEC Portal</h3>        
-            <h2 className="fs-40 fw-bold my-4 ">Login</h2>
+            <h3 className="fs-40 text-primary fw-bold my-4 text-center">Pir Abdul Qadir Shah Jeelani Institute of Medical Sciences </h3>        
+            <h3 className=" fw-bold my-4 ">Login</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
                     <input 
