@@ -11,6 +11,7 @@ import SelectDropdown from '@/components/shared/SelectDropdown';
 import Dropdown from '@/components/shared/Dropdown';
 import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
 import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../context/AuthContext';
 
 
 const QECTable = ({ title }) => {
@@ -20,6 +21,8 @@ const QECTable = ({ title }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [isDeleting, setIsDeleting] = useState(false);
+      const { permissions = [] } = useAuth();
+    
 
     // Fetch QEC data using React Query
     const { 
@@ -258,6 +261,8 @@ const QECTable = ({ title }) => {
                                                     >
                                                         <FiEye />
                                                     </button>
+
+                                                    {permissions.includes("edit_QEC") && (
                                                     <button 
                                                         className="btn btn-sm btn-outline-warning" 
                                                         onClick={() => handleEditQEC(qec.id)}
@@ -265,6 +270,9 @@ const QECTable = ({ title }) => {
                                                     >
                                                         <FiEdit />
                                                     </button>
+                                                    )}
+
+                                                    {permissions.includes("delete_QEC") && (
                                                     <button 
                                             className='btn btn-sm btn-danger'
                                             onClick={() => handleDeleteQEC(qec.id)}
@@ -272,6 +280,7 @@ const QECTable = ({ title }) => {
                                             >
                                             <FiTrash size={16} />
                                             </button>
+                                                    )}
                                                     {/* <button 
                                                         className="btn btn-sm btn-outline-info" 
                                                         onClick={() => HandleQecPrint(qec.id)}
