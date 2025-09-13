@@ -101,7 +101,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
             {/* Father Name, Surname, Gender */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-4">
-                    <label htmlFor="fatherNameInput" className="form-label">Father Name</label>
+                    <label htmlFor="fatherNameInput" className="form-label">Father Name <span className="text-danger">*</span></label>
                     <div className="input-group">
                         <div className="input-group-text"><FiUser /></div>
                         <input
@@ -109,7 +109,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.father_name ? 'is-invalid' : ''}`}
                             id="fatherNameInput"
                             placeholder="Father Name"
-                            {...register('father_name')}
+                            {...register('father_name', { required: 'Father Name is required' })}
                         />
                         {errors?.father_name && <div className="invalid-feedback">{errors.father_name.message}</div>}
                     </div>
@@ -129,74 +129,77 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label className="form-label">Gender <span className="text-danger">*</span></label>
+                    <label className="form-label">Gender</label>
                     <div className="d-flex gap-3 align-items-center mt-1">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="male" value="Male" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="male" value="Male" {...register('gender')} />
                             <label className="form-check-label" htmlFor="male">Male</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="female" value="Female" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="female" value="Female" {...register('gender')} />
                             <label className="form-check-label" htmlFor="female">Female</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="other" value="Other" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="other" value="Other" {...register('gender')} />
                             <label className="form-check-label" htmlFor="other">Other</label>
                         </div>
                     </div>
-                    {errors?.gender && <div className="invalid-feedback d-block">{errors.gender.message}</div>}
                 </div>
             </div>
 
             {/* Designation, Grade, Joining Date */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-4">
-                    <label htmlFor="designationInput" className="form-label">Designation <span className="text-danger">*</span></label>
+                    <label htmlFor="designationInput" className="form-label">Designation</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiBriefcase /></div>
                         <select
                             className={`form-select ${errors?.designation ? 'is-invalid' : ''}`}
                             id="designationInput"
-                            {...register('designation', { required: 'Designation is required' })}
+                            {...register('designation')}
                         >
                             <option value="">Select Designation</option>
-                            <option value="registrar">REGISTRAR</option>
-                            <option value="dean">DEAN</option>
-                            <option value="professor">PROFESSOR</option>
-                            <option value="lecturer">LECTURER</option>
+                            <option value="Assistant Demonstrator">Assistant Demonstrator</option>
+                            <option value="Demonstrator">Demonstrator</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Senior Lecturer">Senior Lecturer</option>
+                            <option value="Senior Registrar">Senior Registrar</option>
+                            <option value="Registrar">Registrar</option>
+                            <option value="Administrator">Administrator</option>
                         </select>
-                        {errors?.designation && <div className="invalid-feedback">{errors.designation.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label htmlFor="gradeInput" className="form-label">Grade <span className="text-danger">*</span></label>
+                    <label htmlFor="gradeInput" className="form-label">Grade</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiAward /></div>
                         <select
                             className={`form-select ${errors?.grade ? 'is-invalid' : ''}`}
                             id="gradeInput"
-                            {...register('grade', { required: 'Grade is required' })}
+                            {...register('grade')}
                         >
                             <option value="">Select Grade</option>
-                            <option value="bps18">BPS 18</option>
-                            <option value="bps19">BPS 19</option>
-                            <option value="bps20">BPS 20</option>
-                            <option value="bps21">BPS 21</option>
+                            <option value="BPS 17">BPS 17</option>
+                            <option value="BPS 18">BPS 18</option>
+                            <option value="BPS 19">BPS 19</option>
+                            <option value="BPS 20">BPS 20</option>
+                            <option value="BPS 21">BPS 21</option>
                         </select>
-                        {errors?.grade && <div className="invalid-feedback">{errors.grade.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label htmlFor="joiningDate" className="form-label">Joining Date <span className="text-danger">*</span></label>
+                    <label htmlFor="joiningDate" className="form-label">Joining Date</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiCalendar size={16} /></div>
                         <input
                             type="date"
                             className={`form-control ${errors?.joining_date ? 'is-invalid' : ''}`}
                             id="joiningDate"
-                            {...register('joining_date', { required: 'Joining Date is required' })}
+                            {...register('joining_date')}
                         />
-                        {errors?.joining_date && <div className="invalid-feedback">{errors.joining_date.message}</div>}
                     </div>
                 </div>
             </div>
@@ -204,13 +207,13 @@ const ProfileTab = ({ register, errors, setValue }) => {
             {/* Marital Status, Nationality, Religion */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-4">
-                    <label htmlFor="maritalStatus" className="form-label">Marital Status <span className="text-danger">*</span></label>
+                    <label htmlFor="maritalStatus" className="form-label">Marital Status</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiHeart /></div>
                         <select
                             className={`form-select ${errors?.marital_status ? 'is-invalid' : ''}`}
                             id="maritalStatus"
-                            {...register('marital_status', { required: 'Marital Status is required' })}
+                            {...register('marital_status')}
                         >
                             <option value="">Select Marital Status</option>
                             <option value="Married">MARRIED</option>
@@ -218,7 +221,6 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             <option value="Divorced">DIVORCED</option>
                             <option value="Widowed">WIDOWED</option>
                         </select>
-                        {errors?.marital_status && <div className="invalid-feedback">{errors.marital_status.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-4">
@@ -256,13 +258,13 @@ const ProfileTab = ({ register, errors, setValue }) => {
             {/* Blood Group, Identity Mark */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-6">
-                    <label htmlFor="bloodGroupInput" className="form-label">Blood Group <span className="text-danger">*</span></label>
+                    <label htmlFor="bloodGroupInput" className="form-label">Blood Group</label>
                     <div className="input-group">
                         <div className="input-group-text"><FaTint /></div>
                         <select
                             className={`form-select ${errors?.blood_group ? 'is-invalid' : ''}`}
                             id="bloodGroupInput"
-                            {...register('blood_group', { required: 'Blood Group is required' })}
+                            {...register('blood_group')}
                         >
                             <option value="">Select Blood Group</option>
                             <option value="A+">A+</option>
@@ -274,11 +276,10 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             <option value="AB+">AB+</option>
                             <option value="AB-">AB-</option>
                         </select>
-                        {errors?.blood_group && <div className="invalid-feedback">{errors.blood_group.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <label htmlFor="identityMarkInput" className="form-label">Identity Mark <span className="text-danger">*</span></label>
+                    <label htmlFor="identityMarkInput" className="form-label">Identity Mark</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiTag /></div>
                         <input
@@ -286,9 +287,8 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.identity_mark ? 'is-invalid' : ''}`}
                             id="identityMarkInput"
                             placeholder="Identity Mark"
-                            {...register('identity_mark', { required: 'Identity Mark is required' })}
+                            {...register('identity_mark')}
                         />
-                        {errors?.identity_mark && <div className="invalid-feedback">{errors.identity_mark.message}</div>}
                     </div>
                 </div>
             </div>
@@ -296,24 +296,23 @@ const ProfileTab = ({ register, errors, setValue }) => {
             {/* Domicile, Province */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-6">
-                    <label htmlFor="domicileInput" className="form-label">Domicile <span className="text-danger">*</span></label>
+                    <label htmlFor="domicileInput" className="form-label">Domicile</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiMap /></div>
                         <select
                             className={`form-select ${errors?.domicile_id ? 'is-invalid' : ''}`}
                             id="domicileInput"
-                            {...register('domicile_id', { required: 'Domicile is required' })}
+                            {...register('domicile_id')}
                         >
                             <option value="">Select Domicile</option>
                             {domiciles.map((domicile) => (
                                 <option key={domicile.id} value={domicile.id}>{domicile.name}</option>
                             ))}
                         </select>
-                        {errors?.domicile_id && <div className="invalid-feedback">{errors.domicile_id.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <label htmlFor="provinceInput" className="form-label">Province <span className="text-danger">*</span></label>
+                    <label htmlFor="provinceInput" className="form-label">Province</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiMapPin /></div>
                         <input
@@ -321,9 +320,8 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.province ? 'is-invalid' : ''}`}
                             id="provinceInput"
                             placeholder="Province"
-                            {...register('province', { required: 'Province is required' })}
+                            {...register('province')}
                         />
-                        {errors?.province && <div className="invalid-feedback">{errors.province.message}</div>}
                     </div>
                 </div>
             </div>
@@ -333,15 +331,14 @@ const ProfileTab = ({ register, errors, setValue }) => {
             <div className="row g-3 mb-4">
             {/* Date of Birth */}
             <div className="col-lg-6 mb-4 align-items-center">
-            <label htmlFor="provinceInput" className="form-label">Date of Birth <span className="text-danger">*</span></label>
+            <label htmlFor="provinceInput" className="form-label">Date of Birth</label>
                 <div className="">
                     <input
                         type="date"
                         className={`form-control ${errors?.dob ? 'is-invalid' : ''}`}
                         id="dobInput"
-                        {...register('dob', { required: 'Date of Birth is required' })}
+                        {...register('dob')}
                     />
-                    {errors?.dob && <div className="invalid-feedback">{errors.dob.message}</div>}
                 </div>
             </div>
                 <div className="col-lg-6">
@@ -367,13 +364,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.cnic_no ? 'is-invalid' : ''}`}
                             id="cnicNoInput"
                             placeholder="41303-2343143224-4"
-                            {...register('cnic_no', { 
-                                required: 'CNIC No is required',
-                                pattern: {
-                                    value: cnicRegex,
-                                    message: 'CNIC format should be 41303-2343143224-4'
-                                }
-                            })}
+                            {...register('cnic_no')}
                             onChange={(e) => handleCNICInput(e, setValue, 'cnic_no')}
                             maxLength={15}
                         />
@@ -410,7 +401,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     {errors?.birth_place && <div className="invalid-feedback">{errors.birth_place.message}</div>}
                 </div>
                 <div className="col-lg-4">
-                    <label htmlFor="presentAddressInput" className="form-label">Present Address <span className="text-danger">*</span></label>
+                    <label htmlFor="presentAddressInput" className="form-label">Present Address</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiMapPin /></div>
                         <input
@@ -450,12 +441,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.phone ? 'is-invalid' : ''}`}
                             id="phoneInput"
                             placeholder="Phone"
-                            {...register('phone' , {
-                                pattern: {
-                                    value: /^[0-9]{11}$/, 
-                                    message: 'Phone No must be 11 digits'
-                                }
-                            })}
+                            {...register('phone')}
                         />
                         {errors?.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                     </div>
@@ -469,12 +455,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.mobile_no ? 'is-invalid' : ''}`}
                             id="mobileNoInput"
                             placeholder="Mobile No"
-                            {...register('mobile_no' , {
-                                pattern: {
-                                    value: /^[0-9]{11}$/, 
-                                    message: 'Mobile No must be 11 digits'
-                                }
-                            })}
+                            {...register('mobile_no')}
                         />
                         {errors?.mobile_no && <div className="invalid-feedback">{errors.mobile_no.message}</div>}
                     </div>
@@ -488,12 +469,7 @@ const ProfileTab = ({ register, errors, setValue }) => {
                             className={`form-control ${errors?.emergency_no ? 'is-invalid' : ''}`}
                             id="emergencyNoInput"
                             placeholder="Emergency No"
-                            {...register('emergency_no', { required: 'Emergency contact phone is required' 
-                                , pattern: {
-                                    value: /^[0-9]{11}$/, 
-                                    message: 'Emergency contact phone must be 11 digits'
-                                }
-                            })}
+                            {...register('emergency_no')}
                         />
                         {errors?.emergency_no && <div className="invalid-feedback">{errors.emergency_no.message}</div>}
                     </div>
@@ -549,35 +525,33 @@ const ProfileTab = ({ register, errors, setValue }) => {
             {/* Status, Currently, Date of Relieving, Reason for Leaving */}
             <div className="row g-3 mb-4">
                 <div className="col-lg-4">
-                    <label htmlFor="statusInput" className="form-label">Status <span className="text-danger">*</span></label>
+                    <label htmlFor="statusInput" className="form-label">Status</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiActivity /></div>
                         <select
                             className={`form-select ${errors?.status ? 'is-invalid' : ''}`}
                             id="statusInput"
-                            {...register('status', { required: 'Status is required' })}
+                            {...register('status')}
                         >
                             <option value="">Select Status</option>
                             <option value="permanent">PERMANENT</option>
                             <option value="contract">CONTRACT</option>
                             <option value="adhoc">ADHOC</option>
                         </select>
-                        {errors?.status && <div className="invalid-feedback">{errors.status.message}</div>}
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label className="form-label">Currently <span className="text-danger">*</span></label>
+                    <label className="form-label">Currently</label>
                     <div className="d-flex gap-3 align-items-center mt-1">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="currentlyPresent" value="present" {...register('currently', { required: 'Currently is required' })} />
+                            <input className="form-check-input" type="radio" id="currentlyPresent" value="present" {...register('currently')} />
                             <label className="form-check-label" htmlFor="currentlyPresent">Present</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="currentlyRelieved" value="relieved" {...register('currently', { required: 'Currently is required' })} />
+                            <input className="form-check-input" type="radio" id="currentlyRelieved" value="relieved" {...register('currently')} />
                             <label className="form-check-label" htmlFor="currentlyRelieved">Relieved</label>
                         </div>
                     </div>
-                    {errors?.currently && <div className="invalid-feedback d-block">{errors.currently.message}</div>}
                 </div>
                 <div className="col-lg-2">
                     <label htmlFor="dateOfRelievingInput" className="form-label">Date of Relieving</label>

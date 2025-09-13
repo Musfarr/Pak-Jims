@@ -12,7 +12,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <input 
                                 type="text" 
                                 className={`form-control ${errors.emergency_name ? 'is-invalid' : ''}`}
-                                {...register('emergency_name', { required: 'Emergency contact name is required' })}
+                                {...register('emergency_name')}
                             />
                             {errors.emergency_name && <div className="invalid-feedback">{errors.emergency_name.message}</div>}
                         </div>
@@ -25,12 +25,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <input 
                                 type="tel" 
                                 className={`form-control ${errors.emergency_phone ? 'is-invalid' : ''}`}
-                                {...register('emergency_phone', { required: 'Emergency contact phone is required' 
-                                    , pattern: {
-                                        value: /^[0-9]{11}$/, 
-                                        message: 'Emergency contact phone must be 11 digits'
-                                    }
-                                })}
+                                {...register('emergency_phone')}
                             />
                             {errors.emergency_phone && <div className="invalid-feedback">{errors.emergency_phone.message}</div>}
                         </div>
@@ -43,13 +38,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <input 
                                 type="email" 
                                 className={`form-control ${errors.emergency_email ? 'is-invalid' : ''}`}
-                                {...register('emergency_email', { 
-                                    required: 'Emergency contact email is required',
-                                    pattern: {
-                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                        message: "Invalid email address"
-                                    }
-                                })}
+                                {...register('emergency_email')}
                             />
                             {errors.emergency_email && <div className="invalid-feedback">{errors.emergency_email.message}</div>}
                         </div>
@@ -62,7 +51,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <input 
                                 type="text" 
                                 className={`form-control ${errors.emergency_relation ? 'is-invalid' : ''}`}
-                                {...register('emergency_relation', { required: 'Relationship is required' })}
+                                {...register('emergency_relation')}
                             />
                             {errors.emergency_relation && <div className="invalid-feedback">{errors.emergency_relation.message}</div>}
                         </div>
@@ -74,7 +63,7 @@ const EmergencyContactTab = ({ register, errors, watch, setValue }) => {
                             <div className="input-group-text"><FiMail /></div>
                             <textarea 
                                 className={`form-control ${errors.emergency_address ? 'is-invalid' : ''}`}
-                                {...register('emergency_address', { required: 'Emergency contact address is required' })}
+                                {...register('emergency_address')}
                             ></textarea>
                             {errors.emergency_address && <div className="invalid-feedback">{errors.emergency_address.message}</div>}
                         </div>

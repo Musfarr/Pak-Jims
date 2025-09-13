@@ -55,7 +55,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                     className={`form-control ${errors?.workExperiences?.[index]?.designation ? 'is-invalid' : ''}`}
                                     id={`work-${index}-post`}
                                     placeholder="e.g., Senior Lecturer, Professor"
-                                    {...register(`workExperiences.${index}.designation`, { required: 'Position is required' })}
+                                    {...register(`workExperiences.${index}.designation`)}
                                 />
                                 {errors?.workExperiences?.[index]?.designation && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].designation.message}</div>
@@ -71,7 +71,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                     className={`form-control ${errors?.workExperiences?.[index]?.organization_name ? 'is-invalid' : ''}`}
                                     id={`work-${index}-institute`}
                                     placeholder="e.g., University of Health Sciences"
-                                    {...register(`workExperiences.${index}.organization_name`, { required: 'Institute name is required' })}
+                                    {...register(`workExperiences.${index}.organization_name`)}
                                 />
                                 {errors?.workExperiences?.[index]?.organization_name && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].organization_name.message}</div>
@@ -89,7 +89,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                     className={`form-control ${errors?.workExperiences?.[index]?.grade ? 'is-invalid' : ''}`}
                                     id={`work-${index}-scale`}
                                     placeholder="e.g., BPS-18, Level 5"
-                                    {...register(`workExperiences.${index}.grade`, { required: 'Scale/Grade is required' })}
+                                    {...register(`workExperiences.${index}.grade`)}
                                 />
                                 {errors?.workExperiences?.[index]?.grade && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].grade.message}</div>
@@ -104,7 +104,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                     type="date"
                                     className={`form-control ${errors?.workExperiences?.[index]?.start_date ? 'is-invalid' : ''}`}
                                     id={`work-${index}-joiningDate`}
-                                    {...register(`workExperiences.${index}.start_date`, { required: 'Joining date is required' })}
+                                    {...register(`workExperiences.${index}.start_date`)}
                                 />
                                 {errors?.workExperiences?.[index]?.start_date && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].start_date.message}</div>
@@ -136,7 +136,7 @@ const WorkExperiencesTab = ({ register, errors, watch, setValue, control }) => {
                                     id={`work-${index}-responsibilities`}
                                     placeholder="Describe responsibilities, e.g., teaching, research, admin"
                                     rows={2}
-                                    {...register(`workExperiences.${index}.jobResponsibilities`, { required: 'Job responsibilities are required' })}
+                                    {...register(`workExperiences.${index}.jobResponsibilities`)}
                                 />
                                 {errors?.workExperiences?.[index]?.jobResponsibilities && (
                                     <div className="invalid-feedback">{errors.workExperiences[index].jobResponsibilities.message}</div>

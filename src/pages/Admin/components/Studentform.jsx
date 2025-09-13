@@ -137,10 +137,10 @@ const Studentform = () => {
 
 
     const stepFields = [
-        ['name', 'surname', 'father_name', 'gender', 'dob', 'cnic', 'mobile_1', 'mobile_2', 'father_mobile', 'email', 'religion', 'nationality', 'domicile_id', 'category_id', 'current_address', 'permanent_address'],
-        ['enrollment_no', 'admission_date', 'rf_id', 'enroll_no_ii', 'shift_id', 'course_id', 'depart_id', 'batch_id'],
-        ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_email', 'emergency_contact_relationship'],
-        ['username', 'password', 'confirmPassword', 'role_id'],
+        ['name', 'father_name'],
+        [],
+        [],
+        ['username', 'password', 'confirmPassword'],
     ];
      
     
@@ -329,7 +329,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="dobInput">Date of Birth</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiCalendar /></div>
-                                        <input type="date" className={`form-control ${errors.dob ? 'is-invalid' : ''}`} id="dobInput" {...register('dob', { required: 'Date of Birth is required' })} />
+                                        <input type="date" className={`form-control ${errors.dob ? 'is-invalid' : ''}`} id="dobInput" {...register('dob')} />
                                         {errors.dob && <div className="invalid-feedback">{errors.dob.message}</div>}
                                     </div>
                                 </div>
@@ -339,11 +339,11 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="genderInput">Gender</label>
                                     <div className="d-flex gap-3">
                                         <div className="form-check">
-                                            <input className="form-check-input" type="radio" id="maleRadio" value="male" {...register('gender', { required: 'Gender is required' })} />
+                                            <input className="form-check-input" type="radio" id="maleRadio" value="male" {...register('gender')} />
                                             <label className="form-check-label" htmlFor="maleRadio">Male</label>
                                         </div>
                                         <div className="form-check">
-                                            <input className="form-check-input" type="radio" id="femaleRadio" value="female" {...register('gender', { required: 'Gender is required' })} />
+                                            <input className="form-check-input" type="radio" id="femaleRadio" value="female" {...register('gender')} />
                                             <label className="form-check-label" htmlFor="femaleRadio">Female</label>
                                         </div>
                                     </div>
@@ -358,13 +358,7 @@ const Studentform = () => {
                                             className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} 
                                             id="cnicInput" 
                                             placeholder="41303-2343143224-4" 
-                                            {...register('cnic', { 
-                                                required: 'CNIC is required', 
-                                                pattern: { 
-                                                    value: cnicRegex, 
-                                                    message: 'CNIC format should be 41303-2343143224-4' 
-                                                } 
-                                            })} 
+                                            {...register('cnic')}
                                             onChange={(e) => handleCNICInput(e, setValue, 'cnic')}
                                             maxLength={15}
                                         />
@@ -377,7 +371,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="mobileInput">Mobile No</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', maxLength: { value: 11, message: 'Mobile number must be 11 digits' } })} />
+                                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1')} />
                                         {errors.mobile_1 && <div className="invalid-feedback">{errors.mobile_1.message}</div>}
                                     </div>
                                 </div>
@@ -436,7 +430,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="domicileInput">Domicile</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <select className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`} id="domicileInput" {...register('domicile_id', { required: 'Domicile is required' })}>
+                                        <select className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`} id="domicileInput" {...register('domicile_id')}>
                                             <option value="">Select Domicile</option>
                                             {domiciles.map((domicile) => (
                                                 <option key={domicile.id} value={domicile.id}>{domicile.name}</option>
@@ -450,7 +444,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="categoryInput">Category</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <select className={`form-select ${errors.category_id ? 'is-invalid' : ''}`} id="categoryInput" {...register('category_id', { required: 'Category is required' })}>
+                                        <select className={`form-select ${errors.category_id ? 'is-invalid' : ''}`} id="categoryInput" {...register('category_id')}>
                                             <option value="">Select Category</option>
                                             {categories.map((category) => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
@@ -466,7 +460,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="currentAddressInput">Current Address</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <textarea className={`form-control ${errors.current_address ? 'is-invalid' : ''}`} id="currentAddressInput" rows="3" {...register('current_address', { required: 'Current address is required' })}></textarea>
+                                        <textarea className={`form-control ${errors.current_address ? 'is-invalid' : ''}`} id="currentAddressInput" rows="3" {...register('current_address')}></textarea>
                                         {errors.current_address && <div className="invalid-feedback">{errors.current_address.message}</div>}
                                     </div>
                                 </div>
@@ -474,7 +468,7 @@ const Studentform = () => {
                                     <label className="form-label" htmlFor="permanentAddressInput">Permanent Address</label>
                                     <div className="input-group">
                                         <div className="input-group-text"><FiUser /></div>
-                                        <textarea className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`} id="permanentAddressInput" rows="3" {...register('permanent_address', { required: 'Permanent address is required' })}></textarea>
+                                        <textarea className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`} id="permanentAddressInput" rows="3" {...register('permanent_address')}></textarea>
                                         {errors.permanent_address && <div className="invalid-feedback">{errors.permanent_address.message}</div>}
                                     </div>
                                 </div>
@@ -500,7 +494,7 @@ const Studentform = () => {
                                                 type="radio" 
                                                 id="firstEnrollmentRadio" 
                                                 value="first_enrollment"
-                                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                                {...register('enrollment_type')}
                                                 onChange={() => setEnrollmentType("1")}
                                             />
                                             <label className="form-check-label" htmlFor="firstEnrollmentRadio">
@@ -513,7 +507,7 @@ const Studentform = () => {
                                                 type="radio" 
                                                 id="larkanaRadio" 
                                                 value="larkana_board"
-                                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                                {...register('enrollment_type')}
                                                 onChange={() => setEnrollmentType("2")}
                                             />
                                             <label className="form-check-label" htmlFor="larkanaRadio">
@@ -526,7 +520,7 @@ const Studentform = () => {
                                                 type="radio" 
                                                 id="otherUniversityRadio" 
                                                 value="other_university"
-                                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                                {...register('enrollment_type')}
                                                 onChange={() => setEnrollmentType("3")}
                                             />
                                             <label className="form-check-label" htmlFor="otherUniversityRadio">
@@ -840,7 +834,7 @@ const Studentform = () => {
                                             className={`form-control ${errors.student_id ? 'is-invalid' : ''}`}
                                             id="studentIdInput" 
                                             defaultValue="001110"
-                                            {...register('student_id', { required: 'Student ID is required' })}
+                                            {...register('student_id', { // required: 'Student ID is required' })}
                                         />
                                         {errors.student_id && <div className="invalid-feedback">{errors.student_id.message}</div>}
                                     </div>
@@ -858,7 +852,7 @@ const Studentform = () => {
                                             type='text' 
                                             className={`form-control ${errors.enrollment_no ? 'is-invalid' : ''}`}
                                             id="enrollmentNoInput"
-                                            {...register('enrollment_no', { required: 'Enrollment No is required' })}
+                                            {...register('enrollment_no')}
                                         />
                                         {errors.enrollment_no && <div className="invalid-feedback">{errors.enrollment_no.message}</div>}
                                     </div>
@@ -877,7 +871,7 @@ const Studentform = () => {
                                             className={`form-control ${errors.admission_date ? 'is-invalid' : ''}`}
                                             id="admissionDateInput"
                                             defaultValue="2025-01-29"
-                                            {...register('admission_date', { required: 'Admission Date is required' })}
+                                            {...register('admission_date')}
                                         />
                                         {errors.admission_date && <div className="invalid-feedback">{errors.admission_date.message}</div>}
                                     </div>
@@ -928,7 +922,7 @@ const Studentform = () => {
                                     <select 
                                         className={`form-select ${errors.shift_id ? 'is-invalid' : ''}`}
                                         id="shiftInput"
-                                        {...register('shift_id', { required: 'Shift is required' })}
+                                        {...register('shift_id')}
                                         disabled={isShiftsLoading}
                                     >
                                         <option value="">{isShiftsLoading ? 'Loading...' : 'Select Shift'}</option>
@@ -948,7 +942,7 @@ const Studentform = () => {
                                     <select 
                                         className={`form-select ${errors.course_id ? 'is-invalid' : ''}`}
                                         id="courseInput"
-                                        {...register('course_id', { required: 'Course is required' })}
+                                        {...register('course_id')}
                                     >
                                         <option value="">Select Course</option>
                                         {coursesData && Array.isArray(coursesData) && coursesData.map((course) => (
@@ -968,7 +962,7 @@ const Studentform = () => {
                                     <select 
                                         className={`form-select ${errors.depart_id ? 'is-invalid' : ''}`}
                                         id="departmentInput"
-                                        {...register('depart_id', { required: 'Department is required' })}
+                                        {...register('depart_id')}
                                         disabled={isDepartmentsLoading}
                                     >
                                         <option value="">{isDepartmentsLoading ? 'Loading...' : 'Select Department'}</option>
@@ -989,7 +983,7 @@ const Studentform = () => {
                                     <select 
                                         className={`form-select ${errors.batch_id ? 'is-invalid' : ''}`}
                                         id="batchInput"
-                                        {...register('batch_id', { required: 'Batch is required' })}
+                                        {...register('batch_id')}
                                         disabled={isBatchesLoading}
                                     >
                                         <option value="">{isBatchesLoading ? 'Loading...' : 'Select Batch'}</option>
@@ -1031,7 +1025,7 @@ const Studentform = () => {
                                             className={`form-control ${errors.emergency_contact_name ? 'is-invalid' : ''}`}
                                             id="emergencyNameInput"
                                             placeholder="Emergency Contact Name"
-                                            {...register('emergency_contact_name', { required: 'Emergency contact name is required' })}
+                                            {...register('emergency_contact_name')}
                                         />
                                         {errors.emergency_contact_name && <div className="invalid-feedback">{errors.emergency_contact_name.message}</div>}
                                     </div>
@@ -1050,34 +1044,9 @@ const Studentform = () => {
                                             className={`form-control ${errors.emergency_contact_phone ? 'is-invalid' : ''}`}
                                             id="emergencyPhoneInput"
                                             placeholder="Emergency Contact Phone"
-                                            {...register('emergency_contact_phone', { required: 'Emergency contact phone is required' })}
+                                            {...register('emergency_contact_phone')}
                                         />
                                         {errors.emergency_contact_phone && <div className="invalid-feedback">{errors.emergency_contact_phone.message}</div>}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor="emergencyEmailInput" className="fw-semibold">Contact Email: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group">
-                                        <div className="input-group-text"><FiMail /></div>
-                                        <input
-                                            type='email'
-                                            className={`form-control ${errors.emergency_contact_email ? 'is-invalid' : ''}`}
-                                            id="emergencyEmailInput"
-                                            placeholder="Emergency Contact Email"
-                                            {...register('emergency_contact_email', {
-                                                required: 'Emergency contact email is required',
-                                                pattern: {
-                                                    value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
-                                                    message: 'Invalid email address'
-                                                }
-                                            })}
-                                        />
-                                        {errors.emergency_contact_email && <div className="invalid-feedback">{errors.emergency_contact_email.message}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -1089,7 +1058,7 @@ const Studentform = () => {
                                 <div className="col-lg-8">
                                     <select
                                         className={`form-select ${errors.emergency_contact_relationship ? 'is-invalid' : ''}`}
-                                        {...register('emergency_contact_relationship', { required: 'Relationship is required' })}
+                                        {...register('emergency_contact_relationship')}
                                     >
                                         <option value="">Select Relationship</option>
                                         <option value="parent">Parent</option>
@@ -1101,79 +1070,8 @@ const Studentform = () => {
                                     {errors.emergency_contact_relationship && <div className="invalid-feedback">{errors.emergency_contact_relationship.message}</div>}
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    }       
 
-                    {/* Password Tab */}
-
-                    {currentStep === 3 &&
-                    <div className="tab-pane fade show active" id="passwordTab" role="tabpanel">
-                        <div className="card-body password-info">
-                            <div className="mb-4 d-flex align-items-center justify-content-between">
-                                <h5 className="fw-bold mb-0 me-4">
-                                    <span className="d-block mb-2">Login Credentials:</span>
-                                    <span className="fs-12 fw-normal text-muted text-truncate-1-line">Set student login credentials</span>
-                                </h5>
-                                {/* <button type="button" className="btn btn-sm btn-primary">Save</button> */}
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor="usernameInput" className="fw-semibold">Username: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group">
-                                        <div className="input-group-text"><FiUser /></div>
-                                        <input 
-                                            type='email' 
-                                            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-                                            id="usernameInput"
-                                            {...register('username', { required: 'Username is required' })}
-                                        />
-                                        {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor="passwordInput" className="fw-semibold">Password: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group">
-                                        <div className="input-group-text"><FiLock /></div>
-                                        <input 
-                                            type='password' 
-                                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                                            id="passwordInput"
-                                            {...register('password', { required: 'Password is required' })}
-                                        />
-                                        {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row mb-4 align-items-center">
-                                <div className="col-lg-4">
-                                    <label htmlFor="confirmPasswordInput" className="fw-semibold">Confirm Password: </label>
-                                </div>
-                                <div className="col-lg-8">
-                                    <div className="input-group">
-                                        <div className="input-group-text"><FiLock /></div>
-                                        <input 
-                                            type='password' 
-                                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                                            id="confirmPasswordInput"
-                                            {...register('confirmPassword', { 
-                                                required: 'Confirm Password is required',
-                                                validate: (value) => value === password || 'Passwords do not match'
-                                            })}
-                                        />
-                                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
-                                    </div>
-                                </div>
-                            </div>
+                            
 
                             {/* Role Dropdown */}
                             {/* <div className="row mb-4 align-items-center">
@@ -1186,7 +1084,7 @@ const Studentform = () => {
                                         <select
                                             className={`form-select ${errors.role_id ? 'is-invalid' : ''}`}
                                             id="roleInput"
-                                            {...register('role_id', { required: 'Role is required' })}
+                                            {...register('role_id', { // required: 'Role is required' })}
                                             disabled={isRolesLoading}
                                         >
                                             <option value="">Select Role</option>
@@ -1220,7 +1118,77 @@ const Studentform = () => {
 
                         </div>
                     </div>
-                    }       
+                    } 
+
+                    {/* Password Tab */}
+
+
+                    
+
+                    {currentStep === 3 &&
+
+                    <div className="card-body">
+                        <div className="row mb-4 align-items-center">
+                        <div className="col-lg-4">
+                            <label htmlFor="usernameInput" className="fw-semibold">Username: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiUser /></div>
+                                <input 
+                                    type='email' 
+                                    className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                                    id="usernameInput"
+                                    {...register('username', { required: 'Username is required' })}
+                                />
+                                {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row mb-4 align-items-center">
+                        <div className="col-lg-4">
+                            <label htmlFor="passwordInput" className="fw-semibold">Password: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiLock /></div>
+                                <input 
+                                    type='password' 
+                                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                    id="passwordInput"
+                                    {...register('password', { required: 'Password is required' })}
+                                />
+                                {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row mb-4 align-items-center">
+                        <div className="col-lg-4">
+                            <label htmlFor="confirmPasswordInput" className="fw-semibold">Confirm Password: </label>
+                        </div>
+                        <div className="col-lg-8">
+                            <div className="input-group">
+                                <div className="input-group-text"><FiLock /></div>
+                                <input 
+                                    type='password' 
+                                    className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                                    id="confirmPasswordInput"
+                                    {...register('confirmPassword', { 
+                                        required: 'Confirm Password is required',
+                                        validate: (value) => value === password || 'Passwords do not match'
+                                    })}
+                                />
+                                {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    }
+
+
+
                 </div>
 
 

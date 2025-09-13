@@ -32,7 +32,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             className={`form-control ${errors.working_in ? 'is-invalid' : ''}`}
                             id="workingInInput"
                             placeholder="Working In"
-                            {...register('working_in', { required: 'Working In is required' })}
+                            {...register('working_in')}
                         />
                         {errors.working_in && <div className="invalid-feedback">{errors.working_in.message}</div>}
                     </div>
@@ -46,7 +46,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             className={`form-control ${errors.current_post ? 'is-invalid' : ''}`}
                             id="currentPostInput"
                             placeholder="Current Post"
-                            {...register('current_post', { required: 'Current Post is required' })}
+                            {...register('current_post')}
                         />
                         {errors.current_post && <div className="invalid-feedback">{errors.current_post.message}</div>}
                     </div>
@@ -63,7 +63,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             className={`form-control ${errors.scale ? 'is-invalid' : ''}`}
                             id="scaleGradeInput"
                             placeholder="Scale/Grade"
-                            {...register('scale', { required: 'Scale/Grade is required' })}
+                            {...register('scale')}
                         />
                         {errors.scale && <div className="invalid-feedback">{errors.scale.message}</div>}
                     </div>
@@ -76,7 +76,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             type="date"
                             className={`form-control ${errors.date_of_joining_current_post ? 'is-invalid' : ''}`}
                             id="dateOfJoiningCurrentPost"
-                            {...register('date_of_joining_current_post', { required: 'Date is required' })}
+                            {...register('date_of_joining_current_post')}
                         />
                         {errors.date_of_joining_current_post && <div className="invalid-feedback">{errors.date_of_joining_current_post.message}</div>}
                     </div>
@@ -91,7 +91,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <select
                             className={`form-select ${errors.department ? 'is-invalid' : ''}`}
                             id="departmentInput"
-                            {...register('department', { required: 'Department is required' })}
+                            {...register('department')}
                         >
                             <option value="">Select Department</option>
                             {/* Department options from API */}
@@ -111,7 +111,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             className={`form-control ${errors.supervisory_officer ? 'is-invalid' : ''}`}
                             id="supervisorNameInput"
                             placeholder="Name of Supervisory Officer"
-                            {...register('supervisory_officer', { required: 'Name of Supervisory Officer is required' })}
+                            {...register('supervisory_officer')}
                         />
                         {errors.supervisory_officer && <div className="invalid-feedback">{errors.supervisory_officer.message}</div>}
                     </div>
@@ -128,7 +128,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                             className={`form-control ${errors.designation_supervisory_officer ? 'is-invalid' : ''}`}
                             id="supervisorDesignationInput"
                             placeholder="Designation of Supervisory Officer"
-                            {...register('designation_supervisory_officer', { required: 'Designation of Supervisory Officer is required' })}
+                            {...register('designation_supervisory_officer')}
                         />
                         {errors.designation_supervisory_officer && <div className="invalid-feedback">{errors.designation_supervisory_officer.message}</div>}
                     </div>
@@ -266,7 +266,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
                         <select
                             className={`form-select ${errors.faculty_type ? 'is-invalid' : ''}`}
                             id="facultyTypeInput"
-                            {...register('faculty_type', { required: 'Faculty Type is required' })}
+                            {...register('faculty_type')}
                         >
                             <option value="">Select Faculty Type</option>
                             <option value="Full Time">Full Time</option>

@@ -74,7 +74,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.education?.[index]?.institute_name ? 'is-invalid' : ''}`}
                                     id={`education-${index}-institute`}
                                     placeholder="e.g., University of Health Sciences"
-                                    {...register(`education.${index}.institute_name`, { required: 'Institute name is required' })}
+                                    {...register(`education.${index}.institute_name`)}
                                 />
                                 {errors?.education?.[index]?.institute_name && (
                                     <div className="invalid-feedback">{errors.education[index].institute_name.message}</div>
@@ -88,7 +88,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                 <select
                                     className={`form-select ${errors?.education?.[index]?.degree ? 'is-invalid' : ''}`}
                                     id={`education-${index}-degree`}
-                                    {...register(`education.${index}.degree`, { required: 'Degree is required' })}
+                                    {...register(`education.${index}.degree`)}
                                 >
                                     <option value="">Select Degree</option>
                                     <option value="PhD">Ph.D</option>
@@ -115,7 +115,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.education?.[index]?.subject ? 'is-invalid' : ''}`}
                                     id={`education-${index}-subject`}
                                     placeholder="e.g., Medicine, Computer Science"
-                                    {...register(`education.${index}.subject`, { required: 'Subject is required' })}
+                                    {...register(`education.${index}.subject`)}
                                 />
                                 {errors?.education?.[index]?.subject && (
                                     <div className="invalid-feedback">{errors.education[index].subject.message}</div>
@@ -131,12 +131,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.education?.[index]?.grade ? 'is-invalid' : ''}`}
                                     id={`education-${index}-grade`}
                                     placeholder="e.g., A+"
-                                    {...register(`education.${index}.grade`, { required: 'Grade is required' ,
-                                        pattern: {
-                                            value: /^[A-F][+-]?$|^[0-9](\.\d{1,2})?$/i,
-                                            message: 'Please enter a valid grade (e.g., A, B+, C-, 3.5)'
-                                        }
-                                     })}
+                                    {...register(`education.${index}.grade`)}
                                 />
                                 {errors?.education?.[index]?.grade && (
                                     <div className="invalid-feedback">{errors.education[index].grade.message}</div>
@@ -155,7 +150,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.education?.[index]?.city ? 'is-invalid' : ''}`}
                                     id={`education-${index}-city`}
                                     placeholder="e.g., Lahore, Karachi"
-                                    {...register(`education.${index}.city`, { required: 'City is required' })}
+                                    {...register(`education.${index}.city`)}
                                 />
                                 {errors?.education?.[index]?.city && (
                                     <div className="invalid-feedback">{errors.education[index].city.message}</div>
@@ -169,7 +164,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                 <select
                                     className={`form-select ${errors?.education?.[index]?.country ? 'is-invalid' : ''}`}
                                     id={`education-${index}-country`}
-                                    {...register(`education.${index}.country`, { required: 'Country is required' })}
+                                    {...register(`education.${index}.country`)}
                                 >
                                     <option value="">Select Country</option>
                                     {countryOptions.map(option => (
@@ -192,7 +187,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     type="date"
                                     className={`form-control ${errors?.education?.[index]?.start_date ? 'is-invalid' : ''}`}
                                     id={`education-${index}-start_date`}
-                                    {...register(`education.${index}.start_date`, { required: 'Start date is required' })}
+                                    {...register(`education.${index}.start_date`)}
                                 />
                                 {errors?.education?.[index]?.start_date && (
                                     <div className="invalid-feedback">{errors.education[index].start_date.message}</div>
@@ -207,7 +202,7 @@ const EducationHistoryTab = ({ register, errors, watch, setValue, control }) => 
                                     type="date"
                                     className={`form-control ${errors?.education?.[index]?.end_date ? 'is-invalid' : ''}`}
                                     id={`education-${index}-end_date`}
-                                    {...register(`education.${index}.end_date`, { required: 'End date is required' })}
+                                    {...register(`education.${index}.end_date`)}
                                 />
                                 {errors?.education?.[index]?.end_date && (
                                     <div className="invalid-feedback">{errors.education[index].end_date.message}</div>

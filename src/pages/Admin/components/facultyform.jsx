@@ -147,50 +147,44 @@ const Facultyform = () => {
     });
 
     const stepFields = [
-        ['name', 'gender', 'designation', 'grade', 'joining_date', 'marital_status', 
-         'nationality', 'religion', 'blood_group', 'identity_mark', 'domicile_id', 
-         'province', 'dob', 'pmdc_no', 'cnic_no', 'passport_no', 'birth_place', 
-         'father_name', 'surname', 'present_address', 'permanent_address', 'phone', 
-         'mobile_no', 'emergency_no', 'official_email', 'personal_email', 'remarks', 
-         'status', 'currently', 'date_of_relieving', 'reason_of_relieving'],
+        ['name', 'father_name'], // Only validate name and father_name in step 1
         
-        ['working_in', 'current_post', 'scale', 'date_of_joining_current_post', 
-         'department', 'supervisory_officer', 'designation_supervisory_officer', 
-         'mobile', 'spouse_paqsjims', 'spouse_name', 'spouse_designation', 
-         'place_of_posting', 'size_of_family', 'no_of_sons', 'no_of_daugther',
-         'faculty_type', 'additional_charge', 'relieving_retirement_date'],
+        [], // No required fields in step 2
         
-        ['education'], 
+        [], // No required fields in step 3
         
-        ['workExperiences'],
+        [], // No required fields in step 4
         
-        ['trainings'],
+        [], // No required fields in step 5
         
-        ['foreignVisits'],
+        [], // No required fields in step 6
         
-        ['emergency_name', 'emergency_phone', 'emergency_email', 'emergency_relation', 'emergency_address'],
+        [], // No required fields in step 7
         
-        ['username', 'password', 'confirmPassword']
+        ['username', 'password', 'confirmPassword'] // Validate password fields in step 8
       ];
 
     const handleNext = async () => {
         const fieldsToValidate = stepFields[currentStep];
-        const isValid = await trigger(fieldsToValidate);
         
-
-        
-        if (isValid) {
-            if (currentStep < steps.length - 1) {
-                setCurrentStep(currentStep + 1);
+        // Only validate if there are fields to validate
+        if (fieldsToValidate.length > 0) {
+            const isValid = await trigger(fieldsToValidate);
+            
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Failed',
+                    text: 'Please fill in all required fields.',
+                    confirmButtonText: 'OK'
+                });
+                return;
             }
-        } else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Validation Failed',
-                text: 'Please fill in all required fields.',
-                confirmButtonText: 'OK'
-            });
-            // Optionally, focus on the first invalid field
+        }
+        
+        // Move to next step
+        if (currentStep < steps.length - 1) {
+            setCurrentStep(currentStep + 1);
         }
     };
 

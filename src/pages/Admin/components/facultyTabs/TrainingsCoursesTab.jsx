@@ -57,7 +57,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.trainings?.[index]?.course_detail ? 'is-invalid' : ''}`}
                                     id={`training-${index}-detail`}
                                     placeholder="e.g., Advanced Medical Research Methods"
-                                    {...register(`trainings.${index}.course_detail`, { required: 'Training detail is required' })}
+                                    {...register(`trainings.${index}.course_detail`)}
                                 />
                                 {errors?.trainings?.[index]?.course_detail && (
                                     <div className="invalid-feedback">{errors.trainings[index].course_detail.message}</div>
@@ -73,7 +73,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.trainings?.[index]?.institute_name ? 'is-invalid' : ''}`}
                                     id={`training-${index}-institute`}
                                     placeholder="e.g., Medical Research Institute"
-                                    {...register(`trainings.${index}.institute_name`, { required: 'Institute is required' })}
+                                    {...register(`trainings.${index}.institute_name`)}
                                 />
                                 {errors?.trainings?.[index]?.institute_name && (
                                     <div className="invalid-feedback">{errors.trainings[index].institute_name.message}</div>
@@ -91,7 +91,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.trainings?.[index]?.grade ? 'is-invalid' : ''}`}
                                     id={`training-${index}-grade`}
                                     placeholder="e.g., A, Distinction"
-                                    {...register(`trainings.${index}.grade`, { required: 'Grade is required' })}
+                                    {...register(`trainings.${index}.grade`)}
                                 />
                                 {errors?.trainings?.[index]?.grade && (
                                     <div className="invalid-feedback">{errors.trainings[index].grade.message}</div>
@@ -105,7 +105,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                 <select
                                     className={`form-select ${errors?.trainings?.[index]?.country ? 'is-invalid' : ''}`}
                                     id={`training-${index}-country`}
-                                    {...register(`trainings.${index}.country`, { required: 'Country/Station is required' })}
+                                    {...register(`trainings.${index}.country`)}
                                 >
                                     <option value="">Select Country/Station</option>
                                     {countryOptions.map(option => (
@@ -127,7 +127,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     type="date"
                                     className={`form-control ${errors?.trainings?.[index]?.start_date ? 'is-invalid' : ''}`}
                                     id={`training-${index}-start_date`}
-                                    {...register(`trainings.${index}.start_date`, { required: 'Start date is required' })}
+                                    {...register(`trainings.${index}.start_date`)}
                                 />
                                 {errors?.trainings?.[index]?.start_date && (
                                     <div className="invalid-feedback">{errors.trainings[index].start_date.message}</div>
@@ -142,7 +142,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     type="date"
                                     className={`form-control ${errors?.trainings?.[index]?.end_date ? 'is-invalid' : ''}`}
                                     id={`training-${index}-end_date`}
-                                    {...register(`trainings.${index}.end_date`, { required: 'End date is required' })}
+                                    {...register(`trainings.${index}.end_date`)}
                                 />
                                 {errors?.trainings?.[index]?.end_date && (
                                     <div className="invalid-feedback">{errors.trainings[index].end_date.message}</div>
@@ -160,7 +160,7 @@ const TrainingsCoursesTab = ({ register, errors, watch, setValue, control }) => 
                                     className={`form-control ${errors?.trainings?.[index]?.year ? 'is-invalid' : ''}`}
                                     id={`training-${index}-year`}
                                     placeholder="Year"
-                                    {...register(`trainings.${index}.year`, { required: 'Year is required' })}
+                                    {...register(`trainings.${index}.year`)}
                                 />
                                 {errors?.trainings?.[index]?.year && (
                                     <div className="invalid-feedback">{errors.trainings[index].year.message}</div>
