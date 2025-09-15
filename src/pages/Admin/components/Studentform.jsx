@@ -201,9 +201,10 @@ const Studentform = () => {
         // Build FormData for file upload
         const formData = new FormData();
         Object.keys(data).forEach((key) => {
-            if (key === 'photo' && data[key]) {
+
+            if (key === 'photo' && data[key] !== null ) {
                 formData.append(key, data[key]);
-            } else {
+            } else if (data[key]) {
                 formData.append(key, data[key]);
             }
         });
@@ -227,7 +228,7 @@ const Studentform = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'Failed to create student. Please try again.',
+                        text: error.response.data.message,
                         confirmButtonColor: '#3085d6'
                     });
                 }

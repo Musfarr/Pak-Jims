@@ -8,9 +8,9 @@ import {
   FiBook, FiBookOpen, FiCalendar, FiMapPin, FiAward, FiHome, 
   FiPhoneCall, FiInfo, FiUsers, FiBookmark, FiLayers, FiMap, 
   FiCreditCard, FiFileText, FiBookmark as FiGraduation, FiPackage, 
-  FiGlobe, FiFlag, FiHeart, FiDollarSign, FiGift, FiTool, FiCpu 
+  FiGlobe, FiFlag, FiHeart, FiDollarSign, FiGift, FiTool, FiCpu, FiEdit 
 } from 'react-icons/fi';
-
+import { useNavigate } from 'react-router-dom';
 // Helper function to format date
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A';
@@ -27,9 +27,11 @@ const capitalize = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
+
+
 const MyProfile = () => {
   const { user } = useAuth();
-  
+  const navigate = useNavigate();
   // Fetch profile data based on user type
   const { 
     data: profileResponse, 
@@ -430,6 +432,21 @@ const MyProfile = () => {
           </span>
         </div>
         <div className="card-body p-0">
+          <div className="d-flex justify-content-center p-3 bg-light border-bottom">
+            <button 
+              onClick={() => {
+                user.user_type === 'student' ?
+                navigate(`/edit/user/student/${user?.reference_id}`)
+                : user.user_type === 'faculty' ? 
+                navigate(`/edit/user/faculty/${user?.reference_id}`)
+                :''
+              }} 
+              className="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center gap-2"
+            >
+              <FiEdit size={20} />
+              Edit Profile
+            </button>
+          </div>
           <ul className="list-group list-group-flush">
             {renderCommonInfo()}
             {renderRoleSpecificInfo()}

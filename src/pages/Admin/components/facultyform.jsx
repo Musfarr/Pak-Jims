@@ -202,55 +202,65 @@ const Facultyform = () => {
 
         var formdata = new FormData();
 
+
         Object.keys(data).forEach(key => {
-            formdata.append(key, data[key]);
+            if(key === "education" || key === "workExperiences" || key === "trainings" || key === "foreignVisits") {
+                return;   
+            }
+            if(data[key]) {
+                formdata.append(key, data[key]);
+            }
         });
 
+
         for (let index = 0; index < data.education.length; index++) {
-            const element = data.education[index];
-            formdata.append(`education[${index}][institute_name]`, element.institute_name);
-            formdata.append(`education[${index}][degree]`, element.degree);
-            formdata.append(`education[${index}][start_date]`, element.start_date);
-            formdata.append(`education[${index}][end_date]`, element.end_date);
-            formdata.append(`education[${index}][grade]`, element.grade);
-            formdata.append(`education[${index}][city]`, element.city);
-            formdata.append(`education[${index}][country]`, element.country);
-            formdata.append(`education[${index}][subject]`, element.subject);
+            data.education[index].institute_name && formdata.append(`education[${index}][institute_name]`, data.education[index].institute_name);
+            data.education[index].degree && formdata.append(`education[${index}][degree]`, data.education[index].degree);
+            data.education[index].start_date && formdata.append(`education[${index}][start_date]`, data.education[index].start_date);
+            data.education[index].end_date && formdata.append(`education[${index}][end_date]`, data.education[index].end_date);
+            data.education[index].grade && formdata.append(`education[${index}][grade]`, data.education[index].grade);
+            data.education[index].city && formdata.append(`education[${index}][city]`, element.city);
+            data.education[index].country && formdata.append(`education[${index}][country]`, element.country);
+            data.education[index].subject && formdata.append(`education[${index}][subject]`, element.subject);
         }
+        
+
 
 
         for(let i = 0 ; i<data.trainings.length ; i++ ) {
-
-            formdata.append(`trainings[${i}][course_detail]`, data.trainings[i].course_detail);
-            formdata.append(`trainings[${i}][institute_name]`, data.trainings[i].institute_name);
-            formdata.append(`trainings[${i}][start_date]`, data.trainings[i].start_date);
-            formdata.append(`trainings[${i}][end_date]`, data.trainings[i].end_date);
-            formdata.append(`trainings[${i}][location]`, data.trainings[i].location);
-            formdata.append(`trainings[${i}][country]`, data.trainings[i].country);
-            formdata.append(`trainings[${i}][grade]`, data.trainings[i].grade);
-            formdata.append(`trainings[${i}][year]`, data.trainings[i].year);
+            data.trainings[i].course_detail && formdata.append(`trainings[${i}][course_detail]`, data.trainings[i].course_detail);
+            data.trainings[i].institute_name && formdata.append(`trainings[${i}][institute_name]`, data.trainings[i].institute_name);
+            data.trainings[i].start_date && formdata.append(`trainings[${i}][start_date]`, data.trainings[i].start_date);
+            data.trainings[i].end_date && formdata.append(`trainings[${i}][end_date]`, data.trainings[i].end_date);
+            data.trainings[i].location && formdata.append(`trainings[${i}][location]`, data.trainings[i].location);
+            data.trainings[i].country && formdata.append(`trainings[${i}][country]`, data.trainings[i].country);
+            data.trainings[i].grade && formdata.append(`trainings[${i}][grade]`, data.trainings[i].grade);
+            data.trainings[i].year && formdata.append(`trainings[${i}][year]`, data.trainings[i].year);
         }
         
+        
+       
         for(let i = 0 ; i<data.foreignVisits.length ; i++ ) {
-            formdata.append(`foreignVisits[${i}][country]`, data.foreignVisits[i].country);
-            formdata.append(`foreignVisits[${i}][city]`, data.foreignVisits[i].city);
-            formdata.append(`foreignVisits[${i}][start_date]`, data.foreignVisits[i].start_date);
-            formdata.append(`foreignVisits[${i}][end_date]`, data.foreignVisits[i].end_date);
-            formdata.append(`foreignVisits[${i}][purpose]`, data.foreignVisits[i].purpose);
-            formdata.append(`foreignVisits[${i}][sponsor]`, data.foreignVisits[i].sponsor);
+            data.foreignVisits[i].country && formdata.append(`foreignVisits[${i}][country]`, data.foreignVisits[i].country);
+            data.foreignVisits[i].city && formdata.append(`foreignVisits[${i}][city]`, data.foreignVisits[i].city);
+            data.foreignVisits[i].start_date && formdata.append(`foreignVisits[${i}][start_date]`, data.foreignVisits[i].start_date);
+            data.foreignVisits[i].end_date && formdata.append(`foreignVisits[${i}][end_date]`, data.foreignVisits[i].end_date);
+            data.foreignVisits[i].purpose && formdata.append(`foreignVisits[${i}][purpose]`, data.foreignVisits[i].purpose);
+            data.foreignVisits[i].sponsor && formdata.append(`foreignVisits[${i}][sponsor]`, data.foreignVisits[i].sponsor);
         }
-
+        
 
         for(let i = 0 ; i<data.workExperiences.length ; i++ ) {
-            formdata.append(`workExperience[${i}][organization_name]`, data.workExperiences[i].organization_name);
-            formdata.append(`workExperience[${i}][designation]`, data.workExperiences[i].designation);
-            formdata.append(`workExperience[${i}][joining_date]`, data.workExperiences[i].start_date);
-            formdata.append(`workExperience[${i}][leaving_date]`, data.workExperiences[i].end_date);
-            formdata.append(`workExperience[${i}][job_description]`, data.workExperiences[i].jobDescription);
-            formdata.append(`workExperience[${i}][scale]`, data.workExperiences[i].grade);
+            data.workExperiences[i].organization_name && formdata.append(`workExperience[${i}][organization_name]`, data.workExperiences[i].organization_name);
+            data.workExperiences[i].designation && formdata.append(`workExperience[${i}][designation]`, data.workExperiences[i].designation);
+            data.workExperiences[i].start_date && formdata.append(`workExperience[${i}][joining_date]`, data.workExperiences[i].start_date);
+            data.workExperiences[i].end_date && formdata.append(`workExperience[${i}][leaving_date]`, data.workExperiences[i].end_date);
+            data.workExperiences[i].jobDescription && formdata.append(`workExperience[${i}][job_description]`, data.workExperiences[i].jobDescription);
+            data.workExperiences[i].grade && formdata.append(`workExperience[${i}][scale]`, data.workExperiences[i].grade);
         }
+
+
         
-        console.log(formdata , ' dasdasd ')
         
         
         PostApi('/faculties', formdata).then((res) => {
@@ -266,7 +276,7 @@ const Facultyform = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to add faculty',
+                text: error.response.data.message,
                 confirmButtonText: 'OK'
             });
             setIsSubmitting(false);

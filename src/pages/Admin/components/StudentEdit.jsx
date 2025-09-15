@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, PostApi, DeleteApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../../context/AuthContext';     
+import { useAuth } from '../../../context/AuthContext';
 
 const tabfields = [ 'profileTab', 'academicTab', 'emergencyTab', 'passwordTab' ];
 const stepFields = [
@@ -15,7 +15,7 @@ const stepFields = [
     // Emergency Tab
     ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_email', 'emergency_contact_relationship'],
     // Password Tab
-    ['username', 'password', 'confirmPassword']
+    []
 ];
 
 const getTabLabel = (step) => {
@@ -31,6 +31,7 @@ const getTabLabel = (step) => {
 const StudentEdit = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    // const history = useHistory();
     const [currentStep, setCurrentStep] = useState(0);
     const [imagePreview, setImagePreview] = useState('/images/avatar/default.png');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -204,7 +205,12 @@ const StudentEdit = () => {
             if (key === 'photo' && data[key]) {
                 formData.append(key, data[key]);
             } else {
-                formData.append(key, data[key]);
+                if (data[key]) {
+                    formData.append(key, data[key]);
+
+                } 
+                    
+                
             }
         });
         PostApi(`/students/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
@@ -215,7 +221,7 @@ const StudentEdit = () => {
                     text: 'Student updated successfully',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
-                    navigate('/student-list');
+                    navigate(`/my-profile`);
                 });
             })
             .catch(error => {
@@ -367,7 +373,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="dobInput">Date of Birth</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiCalendar /> */}</div>
-                        <input type="date" className={`form-control ${errors.dob ? 'is-invalid' : ''}`} id="dobInput" {...register('dob', { required: 'Date of Birth is required' })} />
+                        <input type="date" className={`form-control ${errors.dob ? 'is-invalid' : ''}`} id="dobInput" {...register('dob')} />
                         {errors.dob && <div className="invalid-feedback">{errors.dob.message}</div>}
                     </div>
                 </div>
@@ -378,11 +384,11 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="genderInput">Gender</label>
                     <div className="d-flex gap-3">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="maleRadio" value="male" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="maleRadio" value="male" {...register('gender')} />
                             <label className="form-check-label" htmlFor="maleRadio">Male</label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" id="femaleRadio" value="female" {...register('gender', { required: 'Gender is required' })} />
+                            <input className="form-check-input" type="radio" id="femaleRadio" value="female" {...register('gender')} />
                             <label className="form-check-label" htmlFor="femaleRadio">Female</label>
                         </div>
                     </div>
@@ -392,7 +398,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="cnicInput">C.N.I.C NO</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <input type="text" className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} id="cnicInput" placeholder="00000-0000000-0" {...register('cnic', { required: 'CNIC is required', pattern: { value: /^\d{5}-\d{7}-\d{1}$/, message: 'CNIC must be in format: 00000-0000000-0' } })} />
+                        <input type="text" className={`form-control ${errors.cnic ? 'is-invalid' : ''}`} id="cnicInput" placeholder="00000-0000000-0" {...register('cnic')} />
                         {errors.cnic && <div className="invalid-feedback">{errors.cnic.message}</div>}
                     </div>
                 </div>
@@ -403,7 +409,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="mobileInput">Mobile No</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1', { required: 'Mobile number is required', maxLength: { value: 11, message: 'Mobile number must be 11 digits' } })} />
+                        <input type="number" className={`form-control ${errors.mobile_1 ? 'is-invalid' : ''}`} id="mobileInput" placeholder="0XXXXXXXXXX" {...register('mobile_1')} />
                         {errors.mobile_1 && <div className="invalid-feedback">{errors.mobile_1.message}</div>}
                     </div>
                 </div>
@@ -465,7 +471,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="domicileInput">Domicile</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <select className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`} id="domicileInput" {...register('domicile_id', { required: 'Domicile is required' })}>
+                        <select className={`form-select ${errors.domicile_id ? 'is-invalid' : ''}`} id="domicileInput" {...register('domicile_id')}>
                             <option value="">Select Domicile</option>
                             {domiciles.map((domicile) => (
                                 <option key={domicile.id} value={domicile.id}>{domicile.name}</option>
@@ -478,7 +484,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="categoryInput">Category</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <select className={`form-select ${errors.category_id ? 'is-invalid' : ''}`} id="categoryInput" {...register('category_id', { required: 'Category is required' })}>
+                        <select className={`form-select ${errors.category_id ? 'is-invalid' : ''}`} id="categoryInput" {...register('category_id')}>
                             <option value="">Select Category</option>
                             {categories.map((category) => (
                                 <option key={category.id} value={category.id}>{category.name}</option>
@@ -494,7 +500,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="currentAddressInput">Current Address</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <textarea className={`form-control ${errors.current_address ? 'is-invalid' : ''}`} id="currentAddressInput" rows="3" {...register('current_address', { required: 'Current address is required' })}></textarea>
+                        <textarea className={`form-control ${errors.current_address ? 'is-invalid' : ''}`} id="currentAddressInput" rows="3" {...register('current_address')}></textarea>
                         {errors.current_address && <div className="invalid-feedback">{errors.current_address.message}</div>}
                     </div>
                 </div>
@@ -502,7 +508,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="permanentAddressInput">Permanent Address</label>
                     <div className="input-group">
                         <div className="input-group-text">{/* <FiUser /> */}</div>
-                        <textarea className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`} id="permanentAddressInput" rows="3" {...register('permanent_address', { required: 'Permanent address is required' })}></textarea>
+                        <textarea className={`form-control ${errors.permanent_address ? 'is-invalid' : ''}`} id="permanentAddressInput" rows="3" {...register('permanent_address')}></textarea>
                         {errors.permanent_address && <div className="invalid-feedback">{errors.permanent_address.message}</div>}
                     </div>
                 </div>
@@ -530,7 +536,7 @@ const StudentEdit = () => {
                                 type="radio" 
                                 id="firstEnrollmentRadio" 
                                 value="first_enrollment"
-                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                {...register('enrollment_type')}
                                 onChange={() => setEnrollmentType("1")}
                             />
                             <label className="form-check-label" htmlFor="firstEnrollmentRadio">
@@ -543,7 +549,7 @@ const StudentEdit = () => {
                                 type="radio" 
                                 id="larkanaRadio" 
                                 value="larkana_board"
-                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                {...register('enrollment_type')}
                                 onChange={() => setEnrollmentType("2")}
                             />
                             <label className="form-check-label" htmlFor="larkanaRadio">
@@ -556,7 +562,7 @@ const StudentEdit = () => {
                                 type="radio" 
                                 id="otherUniversityRadio" 
                                 value="other_university"
-                                {...register('enrollment_type', { required: 'Enrollment type is required' })}
+                                {...register('enrollment_type')}
                                 onChange={() => setEnrollmentType("3")}
                             />
                             <label className="form-check-label" htmlFor="otherUniversityRadio">
@@ -863,7 +869,7 @@ const StudentEdit = () => {
                             type='text' 
                             className={`form-control ${errors.enrollment_no ? 'is-invalid' : ''}`}
                             id="enrollmentNoInput"
-                            {...register('enrollment_no', { required: 'Enrollment No is required' })}
+                            {...register('enrollment_no')}
                         />
                         {errors.enrollment_no && <div className="invalid-feedback">{errors.enrollment_no.message}</div>}
                     </div>
@@ -880,7 +886,7 @@ const StudentEdit = () => {
                             type='date' 
                             className={`form-control ${errors.admission_date ? 'is-invalid' : ''}`}
                             id="admissionDateInput"
-                            {...register('admission_date', { required: 'Admission Date is required' })}
+                            {...register('admission_date')}
                         />
                         {errors.admission_date && <div className="invalid-feedback">{errors.admission_date.message}</div>}
                     </div>
@@ -929,7 +935,7 @@ const StudentEdit = () => {
                     <select 
                         className={`form-select ${errors.shift_id ? 'is-invalid' : ''}`}
                         id="shiftInput"
-                        {...register('shift_id', { required: 'Shift is required' })}
+                        {...register('shift_id')}
                     >
                         <option value="">Select Shift</option>
                         {shiftsData && Array.isArray(shiftsData) && shiftsData.map((shift) => (
@@ -948,7 +954,7 @@ const StudentEdit = () => {
                     <select 
                         className={`form-select ${errors.course_id ? 'is-invalid' : ''}`}
                         id="courseInput"
-                        {...register('course_id', { required: 'Course is required' })}
+                        {...register('course_id')}
                     >
                         <option value="">Select Course</option>
                         {coursesData && Array.isArray(coursesData) && coursesData.map((course) => (
@@ -967,7 +973,7 @@ const StudentEdit = () => {
                     <select 
                         className={`form-select ${errors.depart_id ? 'is-invalid' : ''}`}
                         id="departmentInput"
-                        {...register('depart_id', { required: 'Department is required' })}
+                        {...register('depart_id')}
                     >
                         <option value="">Select Department</option>
                         {departmentsData && Array.isArray(departmentsData) && departmentsData.map((dept) => (
@@ -986,7 +992,7 @@ const StudentEdit = () => {
                     <select 
                         className={`form-select ${errors.batch_id ? 'is-invalid' : ''}`}
                         id="batchInput"
-                        {...register('batch_id', { required: 'Batch is required' })}
+                        {...register('batch_id')}
                     >
                         <option value="">Select Batch</option>
                         {batchesData && Array.isArray(batchesData) && batchesData.map((batch) => (
@@ -1007,12 +1013,12 @@ const StudentEdit = () => {
             <div className="row g-3 mb-4">
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="emergencyContactNameInput">Contact Name</label>
-                    <input type="text" className={`form-control ${errors.emergency_contact_name ? 'is-invalid' : ''}`} id="emergencyContactNameInput" {...register('emergency_contact_name', { required: 'Contact name is required' })} />
+                    <input type="text" className={`form-control ${errors.emergency_contact_name ? 'is-invalid' : ''}`} id="emergencyContactNameInput" {...register('emergency_contact_name')} />
                     {errors.emergency_contact_name && <div className="invalid-feedback">{errors.emergency_contact_name.message}</div>}
                 </div>
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="emergencyContactPhoneInput">Contact Phone</label>
-                    <input type="text" className={`form-control ${errors.emergency_contact_phone ? 'is-invalid' : ''}`} id="emergencyContactPhoneInput" {...register('emergency_contact_phone', { required: 'Contact phone is required' })} />
+                    <input type="text" className={`form-control ${errors.emergency_contact_phone ? 'is-invalid' : ''}`} id="emergencyContactPhoneInput" {...register('emergency_contact_phone')} />
                     {errors.emergency_contact_phone && <div className="invalid-feedback">{errors.emergency_contact_phone.message}</div>}
                 </div>
             </div>
@@ -1039,8 +1045,9 @@ const StudentEdit = () => {
             <div className="row g-3 mb-4">
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="usernameInput">Username</label>
-                    <input type="text" className={`form-control ${errors.username ? 'is-invalid' : ''}`} id="usernameInput" {...register('username', { required: 'Username is required' })} />
+                    <input type="text" className={`form-control ${errors.username ? 'is-invalid' : ''}`} id="usernameInput" {...register('username')} />
                     {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+                    <small className="text-muted">Leave empty to keep current username</small>
                 </div>
 
                 {/* <div className="col-lg-6">
@@ -1064,6 +1071,7 @@ const StudentEdit = () => {
                     <label className="form-label" htmlFor="passwordInput">Password</label>
                     <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="passwordInput" {...register('password', { minLength: { value: 6, message: 'Password must be at least 6 characters' } })} />
                     {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                    <small className="text-muted">Leave empty to keep current password</small>
                 </div>
                 <div className="col-lg-6">
                     <label className="form-label" htmlFor="confirmPasswordInput">Confirm Password</label>
@@ -1071,6 +1079,7 @@ const StudentEdit = () => {
                         validate: value => value === watch('password') || 'Passwords do not match'
                     })} />
                     {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
+                    <small className="text-muted">Leave empty to keep current password</small>
                 </div>
             </div>
             <div className="row g-3 mb-4">
@@ -1115,7 +1124,7 @@ const StudentEdit = () => {
         {currentStep < tabfields.length - 1 ? (
             <button type="button" className="btn btn-primary" onClick={handlenextStep}>Next</button>
         ) : (
-            <button type="submit" className="btn btn-success" disabled={isSubmitting}>Update Student</button>
+            <button type="button" className="btn btn-success" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>Update Student</button>
         )}
     </div>
 </div>

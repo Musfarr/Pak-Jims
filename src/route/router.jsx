@@ -402,7 +402,25 @@ export const router = createBrowserRouter([
                 )
             },
 
+            {
+                path: "/edit/user/student/:id",
+                element: (
+                    <ProtectedRoute requiredRole = {["student"]}  >
+                        <StudentEdit />
+                    </ProtectedRoute>
+                )
+            },
+
             // Faculty Routes
+
+            {
+                path: "/edit/user/faculty/:id",
+                element: (
+                    <ProtectedRoute requiredRole = {["faculty"]}  >
+                        <FacultyEdit />
+                    </ProtectedRoute>
+                )
+            },
 
             {
                 path: "/create-faculty",
