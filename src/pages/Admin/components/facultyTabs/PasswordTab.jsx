@@ -32,7 +32,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                             className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                             id="usernameInput"
                             placeholder="Username"
-                            {...register('username')}
+                            {...register('username' , {required: 'Username is required'})}
                         />
                         {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                     </div>
@@ -61,7 +61,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                             className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                             id="passwordInput"
                             placeholder="Password"
-                            {...register('password')}
+                            {...register('password' , {required: 'Password is required'})}
                         />
                         {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                     </div>
@@ -76,6 +76,7 @@ const PasswordTab = ({ register, errors, watch }) => {
                             id="confirmPasswordInput"
                             placeholder="Confirm Password"
                             {...register('confirmPassword', {
+                                required: 'Confirm Password is required',
                                 
                                 validate: value => value === watch('password') || 'Passwords do not match'
                             })}
