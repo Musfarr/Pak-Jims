@@ -129,21 +129,19 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label className="form-label">Gender</label>
-                    <div className="d-flex gap-3 align-items-center mt-1">
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" id="male" value="Male" {...register('gender')} />
-                            <label className="form-check-label" htmlFor="male">Male</label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" id="female" value="Female" {...register('gender')} />
-                            <label className="form-check-label" htmlFor="female">Female</label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" id="other" value="Other" {...register('gender')} />
-                            <label className="form-check-label" htmlFor="other">Other</label>
-                        </div>
-                    </div>
+                    <label className="form-label" htmlFor="genderSelect">Gender</label>
+                    <select
+                        id="genderSelect"
+                        className={`form-select ${errors?.gender ? 'is-invalid' : ''}`}
+                        {...register('gender')}
+                    >
+                        <option value="">Select Gender</option>
+                        <option value="100">MALE</option>
+                        <option value="110">FEMALE</option>
+                        <option value="120">TRANSGENDER</option>
+                        <option value="130">UNSPECIFIED</option>
+                    </select>
+                    {errors?.gender && <div className="invalid-feedback">{errors.gender.message}</div>}
                 </div>
             </div>
 
@@ -239,17 +237,22 @@ const ProfileTab = ({ register, errors, setValue }) => {
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <label htmlFor="religionInput" className="form-label">Religion</label>
+                    <label htmlFor="religionSelect" className="form-label">Religion</label>
                     <div className="input-group">
                         <div className="input-group-text"><FiBook /></div>
-                        <input
-                            type="text"
-                            className={`form-control ${errors?.religion ? 'is-invalid' : ''}`}
-                            id="religionInput"
-                            placeholder="Religion"
-                            defaultValue="ISLAM"
+                        <select
+                            className={`form-select ${errors?.religion ? 'is-invalid' : ''}`}
+                            id="religionSelect"
                             {...register('religion')}
-                        />
+                        >
+                            <option value="">Select Religion</option>
+                            <option value="100">ISLAM</option>
+                            <option value="110">CHRISTIANITY</option>
+                            <option value="120">HINDUISM</option>
+                            <option value="130">SIKHISM</option>
+                            <option value="140">BUDDHISM</option>
+                            <option value="150">UNSPECIFIED</option>
+                        </select>
                         {errors?.religion && <div className="invalid-feedback">{errors.religion.message}</div>}
                     </div>
                 </div>
