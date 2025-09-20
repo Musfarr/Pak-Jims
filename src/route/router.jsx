@@ -25,9 +25,9 @@ import AcademicYearList from "../pages/Admin/Academic-year-list";
 import CreateAcademicYear from "../pages/Admin/Create-academic-year";
 import BatchList from "../pages/Admin/Batch-list";
 import CreateBatch from "../pages/Admin/Create-batch";
-import StudentView from "../pages/Admin/Student-view";
 import FacultyView from "../pages/Admin/Faculty-view";
 import StudentSimpleView from "../pages/Admin/StudentSimpleView";
+import StudentPrintView from "../pages/Admin/components/StudentPrintView";
 import FacultySimpleView from "../pages/Admin/FacultySimpleView";
 import CreateQEC from "../pages/Admin/Create-QEC";
 import EditQEC from "../pages/Admin/Edit-QEC";
@@ -390,6 +390,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="admin" requiredPermission="view_Students">
                         <StudentSimpleView />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/students/print/:id",
+                element: (
+                    <ProtectedRoute requiredRole="admin" requiredPermission="view_Students">
+                        <StudentPrintView />
                     </ProtectedRoute>
                 )
             },

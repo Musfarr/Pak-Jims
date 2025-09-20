@@ -7,8 +7,9 @@ import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Pagination from '@/components/shared/Pagination';
 import Dropdown from '@/components/shared/Dropdown';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
+import { FiEye, FiEdit, FiTrash, FiSearch, FiPrinter } from 'react-icons/fi';
 import Swal from 'sweetalert2';
+
 
 const StudentsTable = ({ title }) => {
     const navigate = useNavigate();
@@ -61,6 +62,11 @@ const StudentsTable = ({ title }) => {
 
     const handleEditStudent = (id) => {
         navigate(`/students/edit/${id}`);
+    };
+
+    // Navigate to print preview page
+    const handleStudentPreviewandPrint = (id) => {
+        navigate(`/students/print/${id}`);
     };
 
     const handleDeleteStudent = (id) => {
@@ -222,12 +228,12 @@ const StudentsTable = ({ title }) => {
                                                         <Link to={`/students/edit/${student.id}`} className="btn btn-sm btn-warning">
                                                             <FiEdit size={16} />
                                                         </Link>
-                                                        {/* <button 
-                                                            className="btn btn-sm btn-danger"
-                                                            onClick={() => handleDeleteStudent(student.id)}
+                                                        <button 
+                                                            className="btn btn-sm btn-primary"
+                                                            onClick={() => handleStudentPreviewandPrint(student.id)}
                                                         >
-                                                            <FiTrash size={16} />
-                                                        </button> */}
+                                                            <FiPrinter size={16} />
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>

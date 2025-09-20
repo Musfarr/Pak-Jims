@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FiCalendar, FiCamera, FiUser, FiBookOpen, FiPhone, FiMail, FiLock } from 'react-icons/fi'
+import { FiCalendar, FiCamera, FiUser, FiBookOpen, FiPhone, FiMail, FiLock, FiPrinter } from 'react-icons/fi'
 
 import { useQuery } from '@tanstack/react-query'
 import { GetApi, PostApi } from '@/utils/Api/ApiServices'
@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { formatCNIC, cnicRegex, handleCNICInput } from '@/utils/cnicFormatter'
-
 const Studentform = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
