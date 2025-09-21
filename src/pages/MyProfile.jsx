@@ -433,6 +433,7 @@ const MyProfile = () => {
         </div>
         <div className="card-body p-0">
           <div className="d-flex justify-content-center p-3 bg-light border-bottom">
+            {user.user_type !== 'admin' && (
             <button 
               onClick={() => {
                 user.user_type === 'student' ?
@@ -446,6 +447,7 @@ const MyProfile = () => {
               <FiEdit size={20} />
               Edit Profile
             </button>
+            )}
           </div>
           <ul className="list-group list-group-flush">
             {renderCommonInfo()}
