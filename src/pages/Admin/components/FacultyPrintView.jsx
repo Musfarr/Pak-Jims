@@ -333,7 +333,7 @@ const FacultyPrintView = () => {
 
                 {/* Footer note */}
                 <div className="mt-2 text-muted" style={{ fontSize: 10 }}>
-                  Generated on {new Date().toLocaleDateString()} • Powered by PAQ
+                  Generated on {new Date().toLocaleDateString()} • Powered by <a href="https://www.digilitesolutions.net" target="_blank" rel="noopener noreferrer">www.digilitesolutions.net</a>
                 </div>
               </div>
             </div>
