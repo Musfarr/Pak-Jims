@@ -4,7 +4,7 @@ import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Pagination from '@/components/shared/Pagination';
 import { Link } from 'react-router-dom';
-import { FiEye, FiEdit, FiTrash, FiSearch } from 'react-icons/fi';
+import { FiEye, FiEdit, FiTrash, FiSearch, FiPrinter } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
 import { useQuery } from '@tanstack/react-query';
@@ -152,6 +152,9 @@ const FacultyTable = ({ title }) => {
                                                     </Link>
                                                     <Link to={`/faculty/edit/${faculty.id}`} className="btn btn-sm btn-warning">
                                                         <FiEdit size={16} />
+                                                    </Link>
+                                                    <Link to={`/faculties/print/${faculty.id}`} className="btn btn-sm btn-primary" title="Print">
+                                                        <FiPrinter size={16} />
                                                     </Link>
                                                     {/* <button 
                                                         className="btn btn-sm btn-danger"
