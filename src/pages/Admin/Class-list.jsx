@@ -11,14 +11,23 @@ import { useAuth } from '../../context/AuthContext';
 
 
 const ClassList = () => {
-  // Fetch classes data using React Query
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
+  // Fetch classes data using React Query with pagination
   const { data: classesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['classes'],
-    queryFn: () => GetApi('/classes')
+    queryKey: ['classes', page, perPage],
+    queryFn: () => GetApi(`/classes?per_page=${perPage}&page=${page}`)
   });
 
-  // Extract classes data from the response
+  // Extract classes data and pagination info from the response
   const classesData = classesResponse?.data || [];
+  const pagination = classesResponse?.pagination || {};
+  const currentPage = pagination.current_page || page;
+  const lastPage = pagination.total_pages || 1;
+  const total = pagination.total || 0;
+  const perPageFromApi = pagination.per_page || perPage;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
@@ -33,6 +42,12 @@ const ClassList = () => {
     
     return matchesSearch;
   });
+
+  // Handle per page change
+  const handlePerPageChange = (e) => {
+    setPerPage(Number(e.target.value));
+    setPage(1);
+  };
 
   // Handle class deletion
   const handleDeleteClass = (id) => {
@@ -207,6 +222,34 @@ const ClassList = () => {
                     </table>
                   </div>
                 )}
+
+                {/* Pagination Controls */}
+                <div className='d-flex justify-content-between align-items-center mt-3 gap-3 flex-wrap'>
+                  <div className='text-muted small'>
+                    Page {currentPage} of {lastPage}
+                  </div>
+                  <div className='d-flex align-items-center gap-2 mx-auto'>
+                    <button
+                      className='btn btn-outline-primary btn-sm'
+                      disabled={currentPage === 1}
+                      onClick={() => setPage(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className='btn btn-outline-primary btn-sm'
+                      disabled={currentPage === lastPage}
+                      onClick={() => setPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div>
+                    <select value={perPage} onChange={handlePerPageChange} className='form-select form-select-sm w-auto d-inline-block'>
+                      {[10, 20, 50, 100].map(n => <option key={n} value={n}>{n} per page</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
