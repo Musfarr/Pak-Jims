@@ -23,8 +23,8 @@ const CourseList = () => {
     queryFn: () => GetApi(`/courses?per_page=${perPage}&page=${page}`)
   });
 
-  const courses = coursesResponse?.data?.data || [];
-  const pagination = coursesResponse?.data?.pagination || {};
+  const courses = coursesResponse?.data || [];
+  const pagination = coursesResponse?.pagination || {};
   const currentPage = pagination.current_page || page;
   const lastPage = pagination.total_pages || 1;
   const total = pagination.total || 0;

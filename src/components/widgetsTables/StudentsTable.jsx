@@ -28,8 +28,10 @@ const StudentsTable = ({ title }) => {
     });
 
     // Extract students data and pagination info from the response
-    const studentsData = studentsResponse?.data?.data || [];
-    const pagination = studentsResponse?.data?.pagination || {};
+
+    console.log(studentsResponse , "studentsResponse");
+    const studentsData = studentsResponse?.data || [];
+    const pagination = studentsResponse?.pagination || {};
     const currentPage = pagination.current_page || page;
     const lastPage = pagination.total_pages || 1;
     const total = pagination.total || 0;

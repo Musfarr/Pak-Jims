@@ -25,8 +25,8 @@ const FacultyTable = ({ title }) => {
         queryKey : ['faculty', page, perPage] ,
         queryFn : () => GetApi(`/faculties?per_page=${perPage}&page=${page}`)
     })
-    const faculty = facultyresponse?.data?.data || [];
-    const pagination = facultyresponse?.data?.pagination || {};
+    const faculty = facultyresponse?.data || [];
+    const pagination = facultyresponse?.pagination || {};
     const currentPage = pagination.current_page || page;
     const lastPage = pagination.total_pages || 1;
     const perPageFromApi = pagination.per_page || perPage;
