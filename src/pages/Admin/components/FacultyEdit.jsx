@@ -68,6 +68,7 @@ const FacultyEdit = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { permissions } = useAuth();
+    const [imagePreview, setImagePreview] = useState("/images/avatar/default.png");
 
     // Fetch faculty data by id
     const { data: facultyResponse, isLoading } = useQuery({
@@ -232,7 +233,14 @@ const FacultyEdit = () => {
                 workExperiences: workExperiences.length > 0 ? workExperiences : [{organization_name:'',designation:'',start_date:null,end_date:null,jobDescription:'',grade:''}],
                 trainings: trainings.length > 0 ? trainings : [{course_detail:'',institute_name:'',start_date:null,end_date:null,location:'',country:'',grade:'',year:''}],
                 foreignVisits: foreignVisits.length > 0 ? foreignVisits : [{country:'',city:'',start_date:null,end_date:null,purpose:'',sponsor:''}],
-            });
+            }); 
+
+            if (faculty?.profile?.photo) {
+                setImagePreview(faculty?.profile?.photo);
+            }
+
+            
+            
         }
     }, [faculty, id, reset]);
 
@@ -267,6 +275,15 @@ const FacultyEdit = () => {
             if(key === "education" || key === "workExperiences" || key === "trainings" || key === "foreignVisits") {
                 return;   
             }
+            
+            if (key === 'photo') {
+                // Only append if a new file was selected
+                if (data.photo instanceof File) {
+                    formdata.append('photo', data.photo);
+                }
+                return;
+            }
+
             if(data[key]) {
                 formdata.append(key, data[key]);
             }
@@ -369,6 +386,8 @@ const FacultyEdit = () => {
     };
 
     const props = {
+        imagePreview,
+        setImagePreview,
         register,
         errors,
         watch,
@@ -394,14 +413,14 @@ const FacultyEdit = () => {
                     </button>
                     )}
                     {permissions.includes('delete_Faculty') && (
-    <button
-        type="button"
-        className="btn btn-danger btn-sm"
-        onClick={handleDelete}
-    >
-        Delete
-    </button>
-)}
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm"
+                                    onClick={handleDelete}
+                                >
+                                    Delete
+                                </button>
+                            )}
                 </div>
                 <div className="card-header p-0">
                     <ul className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs" id="myTab" role="tablist">

@@ -5,8 +5,7 @@ import { FaTint } from 'react-icons/fa';
 import { FiCalendar, FiCamera, FiUserCheck, FiUser, FiBriefcase, FiAward, FiHeart, FiFlag, FiBook, FiPhone, FiSmartphone, FiAlertCircle, FiMail, FiMapPin, FiHome, FiEdit, FiMap, FiHash, FiCreditCard, FiGlobe, FiTag, FiActivity, FiAlertTriangle } from 'react-icons/fi';
 import { formatCNIC, cnicRegex, handleCNICInput } from '@/utils/cnicFormatter';
 
-const ProfileTab = ({ register, errors, setValue }) => {
-    const [imagePreview, setImagePreview] = useState("/images/avatar/default.png");
+const ProfileTab = ({ register, errors, setValue ,imagePreview ,setImagePreview }) => {
 
     const { data: domicilesResponse } = useQuery({
         queryKey: ['domiciles'],

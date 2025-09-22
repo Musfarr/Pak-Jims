@@ -202,8 +202,10 @@ const StudentEdit = () => {
         setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(data).forEach((key) => {
-            if (key === 'photo' && data[key]) {
-                formData.append(key, data[key]);
+            if (key === 'photo') {
+                if (data.photo instanceof File) {
+                    formData.append(key, data.photo);
+                }
             } else {
                 if (data[key]) {
                     formData.append(key, data[key]);
