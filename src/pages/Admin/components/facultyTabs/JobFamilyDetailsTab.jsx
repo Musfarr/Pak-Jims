@@ -10,7 +10,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
         queryFn: () => GetApi('departments-listing')
     });
     // Support both possible API shapes
-    const departmentsData = departmentsResponse?.data?.data || departmentsResponse?.data || [];
+    const departmentsData = departmentsResponse?.data || [];
 
     return (
         <div className="card-body job-family-info">

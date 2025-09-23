@@ -20,7 +20,7 @@ const QECAssign = () => {
     queryKey: ['departments'],
     queryFn: () => GetApi('/departments-listing')
   });
-  const departmentsData = departmentsResponse?.data?.data || [];
+  const departmentsData = departmentsResponse?.data || [];
   const departmentOptions = [
     // { value: 'all', label: 'All Departments' },
     ...departmentsData.map(dep => ({ value: dep.id, label: dep.name }))

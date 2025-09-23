@@ -15,7 +15,7 @@ const QECView = () => {
     queryKey: ['departments'],
     queryFn: () => GetApi('/departments-listing')
   });
-  const departments = departmentResponse?.data?.data || [];
+  const departments = departmentResponse?.data || [];
 
   // Fetch programs using React Query
   const { data: programResponse, isLoading: isProgramLoading, error: programError } = useQuery({

@@ -61,7 +61,7 @@ const StudentEdit = () => {
         queryKey: ['departments'],
         queryFn: () => GetApi('/departments-listing')
     });
-    const departmentsData = departmentsResponse?.data?.data || [];
+    const departmentsData = departmentsResponse?.data || [];
 
     const { data: batchesResponse } = useQuery({
         queryKey: ['batches'],

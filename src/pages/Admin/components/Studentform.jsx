@@ -43,7 +43,7 @@ const Studentform = () => {
         queryKey: ['departments'],
         queryFn: () => GetApi('/departments-listing')
     });
-    const departmentsData = departmentsResponse?.data?.data || [];
+    const departmentsData = departmentsResponse?.data || [];
 
     // Fetch batches using React Query
     const { data: batchesResponse, isLoading: isBatchesLoading } = useQuery({
