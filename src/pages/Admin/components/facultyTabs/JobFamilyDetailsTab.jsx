@@ -7,7 +7,7 @@ const JobFamilyDetailsTab = ({ register, errors, watch, setValue }) => {
     // Fetch departments using React Query (same as in Studentform)
     const { data: departmentsResponse, isLoading: isDepartmentsLoading } = useQuery({
         queryKey: ['departments'],
-        queryFn: () => GetApi('/departments-list')
+        queryFn: () => GetApi('departments-listing')
     });
     // Support both possible API shapes
     const departmentsData = departmentsResponse?.data?.data || departmentsResponse?.data || [];
