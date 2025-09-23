@@ -41,7 +41,7 @@ const Studentform = () => {
     // Fetch departments using React Query
     const { data: departmentsResponse, isLoading: isDepartmentsLoading } = useQuery({
         queryKey: ['departments'],
-        queryFn: () => GetApi('/departments-list')
+        queryFn: () => GetApi('/departments-listing')
     });
     const departmentsData = departmentsResponse?.data?.data || [];
 

@@ -33,7 +33,7 @@ const QECAssignmentDetails = () => {
   // Fetch departments
   const { data: departmentsResponse, isLoading: isDepartmentsLoading } = useQuery({
     queryKey: ['departments'],
-    queryFn: () => GetApi('/departments-list')
+    queryFn: () => GetApi('/departments-listing')
   });
   const departmentsData = departmentsResponse?.data?.data || [];
 
