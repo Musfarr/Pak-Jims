@@ -168,6 +168,11 @@ const StudentPrintView = () => {
           <div className="alert alert-danger" role="alert">
             Error loading student: {error?.message || 'Unknown error'}
           </div>
+
+
+
+
+
         ) : (
           <div className="card">
             <div className="card-body">
