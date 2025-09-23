@@ -29,7 +29,7 @@ const BatchList = () => {
 
   const { data: programsResponse, isLoading: programsLoading } = useQuery({
     queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
+    queryFn: () => GetApi('/programs-listing')
   });
 
   // Extract paginated batches and pagination info

@@ -16,7 +16,7 @@ const CreateBatch = () => {
   // Fetch programs for dropdown
   const { data: programsResponse, isLoading: programsLoading } = useQuery({
     queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
+    queryFn: () => GetApi('/programs-listing')
   });
   
   const programs = programsResponse?.data || [];

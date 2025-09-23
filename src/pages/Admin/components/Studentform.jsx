@@ -48,16 +48,16 @@ const Studentform = () => {
     // Fetch batches using React Query
     const { data: batchesResponse, isLoading: isBatchesLoading } = useQuery({
         queryKey: ['batches'],
-        queryFn: () => GetApi('/batches')
+        queryFn: () => GetApi('/batches-listing')
     });
     const batchesData = batchesResponse?.data || [];
 
 
     const { data: coursesResponse, isLoading: isCoursesLoading } = useQuery({
         queryKey: ['courses'],
-        queryFn: () => GetApi('/courses')
+        queryFn: () => GetApi('/courses-listing')
     });
-    const coursesData = coursesResponse?.data?.data || [];
+    const coursesData = coursesResponse?.data || [];
 
     // Fetch roles using React Query
     const { data: rolesResponse, isLoading: isRolesLoading } = useQuery({

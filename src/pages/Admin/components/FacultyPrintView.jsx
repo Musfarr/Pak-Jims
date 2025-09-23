@@ -186,7 +186,7 @@ const FacultyPrintView = () => {
                   <div className="d-flex align-items-center gap-2">
                     <img src={'/images/logo1.jpg'} alt="Institute Logo" style={{ height: 50 }} onError={(e)=>{ e.currentTarget.style.visibility='hidden'; }} />
                     <div>
-                      <div className="fw-bold" style={{ fontSize: 18   }}></div>
+                      <div className="fw-bold" style={{ fontSize: 18   }}>{profile?.institute?.name || 'Unknown'}</div>
                       <div className="text-muted" style={{ fontSize: 14 }}>Faculty Profile</div>
                     </div>
                   </div>

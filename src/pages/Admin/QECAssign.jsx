@@ -28,7 +28,7 @@ const QECAssign = () => {
   // Fetch batches
   const { data: batchesResponse, isLoading: isBatchesLoading } = useQuery({
     queryKey: ['batches'],
-    queryFn: () => GetApi('/batches')
+    queryFn: () => GetApi('/batches-listing')
   });
   const batchesData = batchesResponse?.data || [];
   const batchOptions = [
@@ -38,9 +38,9 @@ const QECAssign = () => {
   // Fetch courses
   const { data: coursesResponse, isLoading: isCoursesLoading } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => GetApi('/courses')
+    queryFn: () => GetApi('/courses-listing')
   });
-  const coursesData = coursesResponse?.data?.data || [];
+  const coursesData = coursesResponse?.data || [];
   const courseOptions = [
     // { value: 'all', label: 'All Courses' },
     ...coursesData.map(course => ({ value: course.id, label: course.name }))

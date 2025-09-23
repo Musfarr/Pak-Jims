@@ -16,10 +16,10 @@ const CreateDepartment = () => {
   // Fetch courses for dropdown
   const { data: coursesResponse, isLoading: coursesLoading } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => GetApi('/courses')
+    queryFn: () => GetApi('/courses-listing')
   });
   
-  const courses = coursesResponse?.data?.data || [];
+  const courses = coursesResponse?.data || [];
   
   // React Hook Form setup
   const { register, handleSubmit, formState: { errors } } = useForm({

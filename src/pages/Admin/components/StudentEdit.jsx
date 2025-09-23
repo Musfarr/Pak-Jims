@@ -65,15 +65,15 @@ const StudentEdit = () => {
 
     const { data: batchesResponse } = useQuery({
         queryKey: ['batches'],
-        queryFn: () => GetApi('/batches')
+        queryFn: () => GetApi('/batches-listing')
     });
     const batchesData = batchesResponse?.data || [];
 
     const { data: coursesResponse } = useQuery({
         queryKey: ['courses'],
-        queryFn: () => GetApi('/courses')
+        queryFn: () => GetApi('/courses-listing')
     });
-    const coursesData = coursesResponse?.data?.data || [];
+    const coursesData = coursesResponse?.data || [];
 
     // Fetch student data by id
     const { data: studentResponse, isLoading } = useQuery({

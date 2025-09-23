@@ -20,16 +20,16 @@ const QECView = () => {
   // Fetch programs using React Query
   const { data: programResponse, isLoading: isProgramLoading, error: programError } = useQuery({
     queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
+    queryFn: () => GetApi('/programs-listing')
   });
   const programs = programResponse?.data || [];
 
   // Fetch courses using React Query
   const { data: courseResponse, isLoading: isCourseLoading, error: courseError } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => GetApi('/courses')
+    queryFn: () => GetApi('/courses-listing')
   });
-  const courses = courseResponse?.data?.data || [];
+  const courses = courseResponse?.data || [];
 
   // Fetch survey details using React Query
   const { 

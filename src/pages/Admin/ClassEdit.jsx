@@ -27,7 +27,7 @@ const ClassEdit = () => {
   });
   const { data: programsRes, isLoading: programsLoading } = useQuery({
     queryKey: ['programs'],
-    queryFn: () => GetApi('/programs')
+    queryFn: () => GetApi('/programs-listing')
   });
   const { data: sectionsRes, isLoading: sectionsLoading } = useQuery({
     queryKey: ['sections'],

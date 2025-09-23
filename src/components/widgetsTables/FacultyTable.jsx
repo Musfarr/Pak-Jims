@@ -142,7 +142,7 @@ const FacultyTable = ({ title }) => {
                                                 </div>
                                             </td>
                                             <td>{faculty.personal_email}</td>
-                                            <td>{faculty.department}</td>
+                                            <td>{faculty.department?.name || '-'}</td>
                                             <td>{faculty.designation}</td>
                                             
                                             <td>
