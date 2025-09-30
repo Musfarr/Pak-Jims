@@ -184,7 +184,7 @@ const StudentsTable = ({ title }) => {
                                         <th>Student ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Program</th>
+                                        <th>Department</th>
                                         <th>Batch</th>
                                         {/* <th>Status</th> */}
                                         <th>Actions</th>
@@ -215,8 +215,8 @@ const StudentsTable = ({ title }) => {
                                                     </div>
                                                 </td>
                                                 <td>{student.email || 'N/A'}</td>
-                                                <td>{student.course?.name || student.course_id || 'N/A'}</td>
-                                                <td>{student.batch?.name || student.batch_id || 'N/A'}</td>
+                                                <td>{student.department?.name  || '-'}</td>
+                                                <td>{student.batch?.name || '-'}</td>
                                                 {/* <td>
                                                     <span className={`badge ${student.status === 'active' ? 'bg-success' : 'bg-secondary'}`}>
                                                         {student.status || 'N/A'}
