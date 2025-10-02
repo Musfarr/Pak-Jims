@@ -372,9 +372,10 @@ const Facultyform = () => {
                             </button>
                         ) : (
                             <button 
-                                type="submit" 
+                                type="button" 
                                 className="btn btn-success"
                                 disabled={isSubmitting}
+                                onClick={handleSubmit(onSubmit)}
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit'}
                             </button>
