@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
@@ -8,19 +8,25 @@ import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext';
+import useDebounce from '@/hooks/useDebounce';
 
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [isDeleting, setIsDeleting] = useState(false);
   const { permissions } = useAuth();
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
+
   const { data: coursesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['courses', page, perPage],
-    queryFn: () => GetApi(`/courses?per_page=${perPage}&page=${page}`)
+    queryKey: ['courses', page, perPage, debouncedSearch],
+    queryFn: () => GetApi(`/courses?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
   });
 
   const courses = coursesResponse?.data || [];
@@ -30,13 +36,8 @@ const CourseList = () => {
   const total = pagination.total || 0;
   const perPageFromApi = pagination.per_page || perPage;
 
-  // Client-side search on current page only
-  const filteredCourses = courses.filter(course => {
-    return (
-      (course.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-       course.prefix?.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  });
+  // Server-side search used, direct assignment
+  const filteredCourses = courses;
 
   // Handle course deletion
   const handleDeleteCourse = (id) => {

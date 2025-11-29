@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardHeader from '@/components/shared/CardHeader';
 import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
@@ -8,33 +8,37 @@ import { FiEye, FiEdit, FiTrash, FiSearch, FiPrinter } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { DeleteApi, GetApi } from '@/utils/Api/ApiServices';
 import { useQuery } from '@tanstack/react-query';
+import useDebounce from '@/hooks/useDebounce';
 
 
 
 const FacultyTable = ({ title }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
     const [searchTerm, setSearchTerm] = useState('');
+    const debouncedSearch = useDebounce(searchTerm, 500);
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [departmentFilter, setDepartmentFilter] = useState('');
     const [designationFilter, setDesignationFilter] = useState('');
 
 
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearch]);
 
     const { data :facultyresponse , isLoading , isError , error , refetch } = useQuery({
-        queryKey : ['faculty', page, perPage] ,
-        queryFn : () => GetApi(`/faculties?per_page=${perPage}&page=${page}`)
+        queryKey : ['faculty', page, perPage, debouncedSearch] ,
+        queryFn : () => GetApi(`/faculties?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
     })
     const faculty = facultyresponse?.data || [];
     const pagination = facultyresponse?.pagination || {};
     const currentPage = pagination.current_page || page;
     const lastPage = pagination.total_pages || 1;
     const perPageFromApi = pagination.per_page || perPage;
+    const total = pagination.total || 0;
 
-    const filteredfaculty = faculty.filter((faculty) => 
-    faculty.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    faculty.pmdc_no?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    faculty.personal_email?.toLowerCase().includes(searchTerm.toLowerCase()))
+    // Client-side filtering removed in favor of server-side search
+    const filteredfaculty = faculty;
 
     
     const { data :departmentresponse , isLoading : isDepartmentLoading , isError : isDepartmentError , error : departmentError , refetch : departmentRefetch } = useQuery({
@@ -106,7 +110,7 @@ const FacultyTable = ({ title }) => {
                     </div>
 
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h6 className="mb-0">Total Faculty: {filteredfaculty.length}</h6>
+                        <h6 className="mb-0">Total Faculty: {total || filteredfaculty.length}</h6>
                         <Link to="/create-faculty" className="btn btn-primary btn-sm">
                             Add New Faculty
                         </Link>

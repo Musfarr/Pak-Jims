@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi } from '@/utils/Api/ApiServices';
 import Footer from '@/components/shared/Footer';
+import useDebounce from '@/hooks/useDebounce';
 
 const apiMap = {
   '1': '/report/performa1-ind-evaluation',
@@ -23,12 +24,17 @@ const QECSubmissionsList = () => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
 
   // Compose API endpoint
-  const endpoint = `${apiMap[performa]}?per_page=${perPage}&page=${page}`;
+  const endpoint = `${apiMap[performa]}?per_page=${perPage}&page=${page}&search=${debouncedSearch}`;
 
   const { data: response, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['qec-submissions', performa, id, page, perPage],
+    queryKey: ['qec-submissions', performa, id, page, perPage, debouncedSearch],
     queryFn: () => GetApi(endpoint),
     enabled: !!apiMap[performa],
   });
@@ -40,10 +46,8 @@ const QECSubmissionsList = () => {
   const perPageFromApi = pagination.per_page || perPage;
   const total = pagination.total || 0;
 
-  // Client-side filter by name
-  const filteredSubmissions = submissions.filter(item =>
-    item.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Server-side search used, direct assignment
+  const filteredSubmissions = submissions;
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
@@ -8,17 +8,27 @@ import { Link } from 'react-router-dom';
 import { FiEdit, FiEye, FiTrash, FiSearch } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext';
+import useDebounce from '@/hooks/useDebounce';
 
 
 const ClassList = () => {
   // Pagination state
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
+  const [filterProgram, setFilterProgram] = useState('');
+  const [filterShift, setFilterShift] = useState('');
+  const { permissions } = useAuth();
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
 
   // Fetch classes data using React Query with pagination
   const { data: classesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['classes', page, perPage],
-    queryFn: () => GetApi(`/classes?per_page=${perPage}&page=${page}`)
+    queryKey: ['classes', page, perPage, debouncedSearch],
+    queryFn: () => GetApi(`/classes?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
   });
 
   // Extract classes data and pagination info from the response
@@ -29,19 +39,8 @@ const ClassList = () => {
   const total = pagination.total || 0;
   const perPageFromApi = pagination.per_page || perPage;
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterProgram, setFilterProgram] = useState('');
-  const [filterShift, setFilterShift] = useState('');
-  const { permissions } = useAuth();
-
-  // Filter classes based on search term
-  const filteredClasses = classesData.filter(classItem => {
-    const matchesSearch = 
-      (classItem.name && classItem.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
-      (classItem.code && classItem.code.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    return matchesSearch;
-  });
+  // Server-side search used, direct assignment
+  const filteredClasses = classesData;
 
   // Handle per page change
   const handlePerPageChange = (e) => {

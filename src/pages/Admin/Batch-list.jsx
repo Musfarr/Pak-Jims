@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
@@ -8,9 +8,12 @@ import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext';
+import useDebounce from '@/hooks/useDebounce';
+
 
 const BatchList = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [filterProgram, setFilterProgram] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   
@@ -21,10 +24,14 @@ const BatchList = () => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
+
   // Fetch batches and programs data
   const { data: batchesResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['batches', page, perPage],
-    queryFn: () => GetApi(`/batches?per_page=${perPage}&page=${page}`)
+    queryKey: ['batches', page, perPage, debouncedSearch],
+    queryFn: () => GetApi(`/batches?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
   });
 
   const { data: programsResponse, isLoading: programsLoading } = useQuery({
@@ -51,13 +58,10 @@ const BatchList = () => {
 
   // Filter batches based on search term and program filter (current page only)
   const filteredBatches = batches.filter(batch => {
-    const matchesSearch = 
-      batch.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      batch.prefix?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    // Search is handled by server
     const matchesProgram = filterProgram === '' || batch.program_id?.toString() === filterProgram.toString();
     
-    return matchesSearch && matchesProgram;
+    return matchesProgram;
   });
 
   // Handle batch deletion

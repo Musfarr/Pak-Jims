@@ -57,7 +57,7 @@ const LoginForm = () => {
                     <input 
                         type="text" 
                         className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-                        placeholder="Enter email" 
+                        placeholder="Enter Student ID" 
                         {...register('username', { 
                             required: 'Email is required',
                             // pattern: {

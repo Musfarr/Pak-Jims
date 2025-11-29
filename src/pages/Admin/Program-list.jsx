@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
@@ -7,6 +7,7 @@ import { FiEdit, FiPlus, FiTrash, FiSearch } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
+import useDebounce from '@/hooks/useDebounce';
 
 
 import { useAuth } from '../../context/AuthContext';
@@ -14,15 +15,20 @@ import { useAuth } from '../../context/AuthContext';
 const ProgramList = () => {
   const { permissions = [] } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
+
   // Fetch programs from API with pagination
   const { data: response, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['programs', page, perPage],
-    queryFn: () => GetApi(`/programs?per_page=${perPage}&page=${page}`)
+    queryKey: ['programs', page, perPage, debouncedSearch],
+    queryFn: () => GetApi(`/programs?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
   });
 
   // Extract programs and pagination info from response
@@ -33,13 +39,8 @@ const ProgramList = () => {
   const total = pagination.total || 0;
   const perPageFromApi = pagination.per_page || perPage;
 
-  // Client-side search on current page only
-  const filteredPrograms = programs.filter(program => {
-    return (
-      program.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      program.prefix?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  // Server-side search used, direct assignment
+  const filteredPrograms = programs;
 
   // Handle program deletion
   const handleDeleteProgram = (id) => {

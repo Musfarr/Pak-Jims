@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets'
 import Footer from '@/components/shared/Footer'
@@ -7,11 +7,15 @@ import { FiCalendar, FiCheck, FiEye, FiFileText, FiList, FiSearch, FiTarget, FiU
 import { GetApi } from '@/utils/Api/ApiServices'
 import { useQuery } from '@tanstack/react-query'
 import Swal from 'sweetalert2'
+import useDebounce from '@/hooks/useDebounce'
+
 
 const QECAssignments = ({ title }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
+
 
   // Fetch assignments list
   const { 
@@ -20,20 +24,16 @@ const QECAssignments = ({ title }) => {
     error,
     refetch
   } = useQuery({
-    queryKey: ['survey-assignments', id],
-    queryFn: () => GetApi(`/survey-assign/${id}`)
+    queryKey: ['survey-assignments', id, debouncedSearch],
+    queryFn: () => GetApi(`/survey-assign/${id}?search=${debouncedSearch}`)
   });
 
   // Get assignments from API response or use static data
   const assignments = assignmentsResponse?.data ||[]
 
 
-  // Filter assignments based on search term
-  const filteredAssignments = assignments.filter(assignment => {
-    return (
-      assignment.term?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  // Server-side search used, direct assignment
+  const filteredAssignments = assignments;
 
 
   

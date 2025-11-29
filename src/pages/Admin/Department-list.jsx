@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
 import PageHeaderWidgets from '@/components/shared/pageHeader/PageHeaderWidgets';
 import Footer from '@/components/shared/Footer';
@@ -8,19 +8,25 @@ import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi, PostApi } from '@/utils/Api/ApiServices';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext';
+import useDebounce from '@/hooks/useDebounce';
 
 
 const DepartmentList = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [isDeleting, setIsDeleting] = useState(false);
   const { permissions } = useAuth();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
+
   // Fetch departments from API with pagination
   const { data: departmentsResponse, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['departments', page, perPage],
-    queryFn: () => GetApi(`/departments?per_page=${perPage}&page=${page}`)
+    queryKey: ['departments', page, perPage, debouncedSearch],
+    queryFn: () => GetApi(`/departments?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
   });
 
   // Extract departments and pagination info from response
@@ -31,13 +37,8 @@ const DepartmentList = () => {
   const total = pagination.total || 0;
   const perPageFromApi = pagination.per_page || perPage;
 
-  // Client-side filtering for search (current page only)
-  const filteredDepartments = departments.filter(department => {
-    return (
-      department.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      department.prefix?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  // Server-side filtering used, direct assignment
+  const filteredDepartments = departments;
 
 
   // Handle department deletion

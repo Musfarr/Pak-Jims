@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi, DeleteApi } from '@/utils/Api/ApiServices';
 import CardHeader from '@/components/shared/CardHeader';
@@ -9,22 +9,28 @@ import Dropdown from '@/components/shared/Dropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEdit, FiTrash, FiSearch, FiPrinter } from 'react-icons/fi';
 import Swal from 'sweetalert2';
+import useDebounce from '@/hooks/useDebounce';
 
 
 const StudentsTable = ({ title }) => {
     const navigate = useNavigate();
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
     const [searchTerm, setSearchTerm] = useState('');
+    const debouncedSearch = useDebounce(searchTerm, 500);
     const [programFilter, setProgramFilter] = useState('');
     const [batchFilter, setBatchFilter] = useState('');
     // Pagination state
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearch]);
+
     // Fetch students data using React Query with pagination
     const { data: studentsResponse, isLoading, isError, error, refetch } = useQuery({
-        queryKey: ['students', page, perPage],
-        queryFn: () => GetApi(`/students?per_page=${perPage}&page=${page}`)
+        queryKey: ['students', page, perPage, debouncedSearch],
+        queryFn: () => GetApi(`/students?per_page=${perPage}&page=${page}&search=${debouncedSearch}`)
     });
 
     // Extract students data and pagination info from the response
@@ -37,14 +43,8 @@ const StudentsTable = ({ title }) => {
     const total = pagination.total || 0;
     const perPageFromApi = pagination.per_page || perPage;
 
-    // Filter students based on search term (client-side, current page only)
-    const filteredStudents = studentsData.filter(student => {
-        const matchesSearch =
-            (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (student.enrollment_no && student.enrollment_no.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase()));
-        return matchesSearch;
-    });
+    // Server-side search used, directly assign studentsData
+    const filteredStudents = studentsData;
 
     // Handle page change
     const handlePageChange = (pageNumber) => {
@@ -159,7 +159,7 @@ const StudentsTable = ({ title }) => {
                     </div>
 
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h6 className="mb-0">Total Students: {filteredStudents.length}</h6>
+                        <h6 className="mb-0">Total Students: {total || filteredStudents.length}</h6>
                         <Link to="/create-student" className="btn btn-primary btn-sm">
                             Add New Student
                         </Link>
