@@ -151,7 +151,7 @@ const QECTable = ({ title }) => {
 
                 {(refreshKey || isLoading) && <CardLoader />}
 
-                <div className="card-body  ">
+                <div className="card-body   ">
                     <div className="row mb-3">
                         <div className="col-md-4">
                             <div className="input-group">

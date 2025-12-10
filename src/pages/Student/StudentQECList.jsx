@@ -11,7 +11,7 @@ const StudentQECList = () => {
           <PageHeaderWidgets />
       </PageHeader> */}
       <div className='main-content'>
-          <div className='row'>
+          <div className='row '>
               <StudentQECTable title={"My QEC Surveys"} />
           </div>
       </div>

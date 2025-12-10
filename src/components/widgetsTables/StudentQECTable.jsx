@@ -97,7 +97,7 @@ const StudentQECTable = ({ title }) => {
             </div>
           ) : (
             <>
-              <div className="table-resonsive">
+              <div className="table-resonsive overflow-scroll">
                 <table className="table table-hover table-striped">
                   <thead>
                     <tr>

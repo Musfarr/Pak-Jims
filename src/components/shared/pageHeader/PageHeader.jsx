@@ -25,7 +25,7 @@ const PageHeader = ({ children }) => {
                     <li className="breadcrumb-item text-capitalize">{fileName}</li>
                 </ul>
             </div>
-            <div className="page-header-right ms-auto">
+            {/* <div className="page-header-right ms-auto">
                 <div className={`page-header-right-items ${openSidebar ? "page-header-right-open" : ""}`}>
                     <div className="d-flex d-md-none">
                         <Link to="#" onClick={() => setOpenSidebar(false)} className="page-header-right-close-toggle">
@@ -40,7 +40,7 @@ const PageHeader = ({ children }) => {
                         <FiAlignRight className="fs-20" />
                     </Link>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
