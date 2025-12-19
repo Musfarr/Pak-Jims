@@ -22,8 +22,9 @@ const ReportsList = () => {
     const isProforma10 = /\/proforma10($|\/)/i.test(location.pathname);
 
     const { data: reportsList } = useQuery({
+
         queryKey: ['reportsList', isProforma1, isProforma2, isProforma3, isProforma4, isProforma5, isProforma6, isProforma7, isProforma8, isProforma9, isProforma10],
-        queryFn: () => GetApi(isProforma1 ? 'report/student-evaluation' :
+        queryFn: () => GetApi((isProforma1 ? 'report/student-evaluation' :
                                 isProforma2 ? 'report/performa2-evaluation' :
                                 isProforma3 ? 'report/performa3-evaluation' :
                                 isProforma4 ? 'report/performa4-evaluation' :
@@ -33,7 +34,7 @@ const ReportsList = () => {
                                 isProforma8 ? 'report/performa8-evaluation' :
                                 isProforma9 ? 'report/performa9-evaluation' :
                                 isProforma10 ? 'report/performa10-evaluation' :
-                                'report/performa1-evaluation')
+                                'report/performa1-evaluation') , {per_page : 1000})
     });
 
     const handleViewReport = (id, survey_assignment_ids) => {
