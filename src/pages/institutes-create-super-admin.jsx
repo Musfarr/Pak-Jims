@@ -183,7 +183,6 @@ const InstitutesCreateSuperAdmin = () => {
     }
     
     // Here you would typically send the data to your API
-    console.log('Form submitted:', formData);
     
     // Show success message and redirect
     alert(`Super Admin ${institute.hasSuperAdmin ? 'updated' : 'created'} successfully!`);

@@ -21,7 +21,6 @@ const Menus = () => {
     const pathName = useLocation().pathname;
     const { role, permissions } = useAuth();
     
-    console.log("Current user role:", role);
 
     // Get the appropriate menu list based on user role
     const getMenuListByRole = () => {
@@ -44,7 +43,6 @@ const Menus = () => {
     };
 
     const menuList = getMenuListByRole();
-    console.log("Menu list items count:", menuList.length);
 
     const handleMainMenu = (e, name) => {
         if (openDropdown === name) {

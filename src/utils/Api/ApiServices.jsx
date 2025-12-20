@@ -16,7 +16,6 @@ axios.interceptors.response.use(
 
 
         (error) => {
-            console.log( 'err : ' ,  error)
             if(error.response) {
                 if(error.response.status === 401) {
                     // Clear token and redirect to login page

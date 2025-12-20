@@ -197,7 +197,6 @@ const Facultyform = () => {
 
     const onSubmit = (data) => {
         setIsSubmitting(true);
-        console.log('Form Submitted:', data);
 
 
 

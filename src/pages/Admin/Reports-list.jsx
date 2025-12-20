@@ -56,9 +56,9 @@ const ReportsList = () => {
         if (isProforma10) return '10';
         return '1'; // fallback
     };
-    const handleViewSubmissions = (id) => {
+    const handleViewSubmissions = (id,survey_assgnment_ids) => {
         const performa = getPerformaType();
-        navigate(`/qec/submissions/${performa}/${id}`);
+        navigate(`/qec/submissions/${performa}/${id}` , {state : {survey_assgnment_ids}});
     };
 
   return (
@@ -92,7 +92,7 @@ const ReportsList = () => {
                                                 </button>
                                             </td>
                                             <td>
-                                                <button className="btn btn-outline-success btn-sm" onClick={() => handleViewSubmissions(report.id)}>
+                                                <button className="btn btn-outline-success btn-sm" onClick={() => handleViewSubmissions(report.id , report.survey_assignment_ids)}>
                                                     View Submissions
                                                 </button>
                                             </td>

@@ -12,7 +12,6 @@ import { useSurvey } from '../../context/SurveyContext';
 
 const QecReports = () => {
     const { id } = useParams();
-    console.log(id, 'id')
     const navigate = useNavigate();
     const { surveyAssignmentIds, currentReportId, setSurveyData } = useSurvey();
 

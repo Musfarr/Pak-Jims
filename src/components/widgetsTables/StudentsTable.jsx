@@ -35,7 +35,6 @@ const StudentsTable = ({ title }) => {
 
     // Extract students data and pagination info from the response
 
-    console.log(studentsResponse , "studentsResponse");
     const studentsData = studentsResponse?.data || [];
     const pagination = studentsResponse?.pagination || {};
     const currentPage = pagination.current_page || page;

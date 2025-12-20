@@ -26,7 +26,6 @@ const QECFill = () => {
     enabled: !!id
   });
 
-  console.log(surveyResponse ,"surveyResponse");
   // Extract survey assignment and survey object from API response
   const surveyAssignment = surveyResponse?.data?.[0] || null;
   const survey = surveyAssignment?.survey || null;

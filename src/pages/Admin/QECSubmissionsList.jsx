@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { GetApi } from '@/utils/Api/ApiServices';
 import Footer from '@/components/shared/Footer';
@@ -26,15 +26,24 @@ const QECSubmissionsList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearch = useDebounce(searchTerm, 500);
 
+  const location = useLocation();  
+  const {survey_assgnment_ids} = location?.state
+
+  //arry to single
+  const surveyAssignmentId = Array.isArray(survey_assgnment_ids)
+  ? survey_assgnment_ids[0]
+  : survey_assgnment_ids;
+
+
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch]);
 
   // Compose API endpoint
-  const endpoint = `${apiMap[performa]}?per_page=${perPage}&page=${page}&search=${debouncedSearch}`;
+  const endpoint = `${apiMap[performa]}?per_page=${perPage}&page=${page}&search=${debouncedSearch}&survey_assignment_id=${survey_assgnment_ids[0]}`;
 
   const { data: response, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['qec-submissions', performa, id, page, perPage, debouncedSearch],
+    queryKey: ['qec-submissions', performa, id, page, perPage, debouncedSearch , surveyAssignmentId ],
     queryFn: () => GetApi(endpoint),
     enabled: !!apiMap[performa],
   });

@@ -25,7 +25,6 @@ const InstituteCreateSuperAdmin = () => {
   
   const roles = rolesResponse?.data || [];
 
-  console.log(instituteID)
   // React Hook Form setup
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     defaultValues: {

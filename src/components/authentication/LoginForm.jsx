@@ -24,7 +24,6 @@ const LoginForm = () => {
         PostApi('auth/login', data)
         .then(
             (response) => {
-                console.log("API response:", response);
                 setIsLoading(false);                
                 if (response.code === 200) {
 
@@ -42,7 +41,6 @@ const LoginForm = () => {
                 }
             }
         ).catch((error) => {
-            console.log(error)
             // toast.error(error.response.data.message);
             setIsLoading(false);
         });

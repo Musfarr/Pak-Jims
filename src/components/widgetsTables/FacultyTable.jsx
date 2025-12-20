@@ -50,7 +50,6 @@ const FacultyTable = ({ title }) => {
 
     const handleDeleteFaculty = (id) => {
         if (window.confirm('Are you sure you want to delete this faculty member?')) {
-            console.log('Deleting faculty with ID:', id);
             // Delete logic would go here
         }
     };

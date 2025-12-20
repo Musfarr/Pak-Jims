@@ -97,13 +97,7 @@ const QECAssignmentDetails = () => {
   
 
   useEffect(() => {
-    console.log("departmentsData", departmentsData);
-    console.log("batchesData", batchesData);
-    console.log("coursesData", coursesData);
-    console.log("assignment", assignment);
-    console.log("selectedDepartments", selectedDepartments);
-    console.log("selectedBatches", selectedBatches);
-    console.log("selectedCourses", selectedCourses);
+   
   }, []);
 
   useEffect(() => {

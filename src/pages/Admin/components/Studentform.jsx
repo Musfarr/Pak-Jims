@@ -158,7 +158,6 @@ const Studentform = () => {
 
 
     const handlenextStep = async () => {
-        console.log(currentStep)
         const fieldstovalidate = stepFields[currentStep];
         const isValid =  await trigger(fieldstovalidate);
 
