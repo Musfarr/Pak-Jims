@@ -489,7 +489,7 @@ const QECSubmissionView = () => {
                           <FiFileText className="me-1" /> Total Questions: {getTotalQuestions()}
                         </div>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body" style={{ overflowX: 'auto' }}>
                         {isLoading ? (
                           <div className="text-center py-5">
                             <div className="spinner-border text-primary" role="status">

@@ -98,8 +98,8 @@ const QECSubmissionsList = () => {
                     {error?.message || 'Error loading submissions'}
                   </div>
                 ) : (
-                  <div className="table-responsive">
-                    <table className="table table-hover">
+                  <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                    <table className="table table-hover" style={{ minWidth: '700px' }}>
                       <thead>
                         <tr>
                           <th>#</th>

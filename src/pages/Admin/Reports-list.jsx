@@ -67,7 +67,8 @@ const ReportsList = () => {
             <div className="col-12">
                 <div className="card">
                     <div className="card-body">
-                        <table className="table">
+                        <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                            <table className="table" style={{ minWidth: '700px' }}>
                             <thead className="table-light">
                                 <tr>
                                     {isProforma1 && <th>Faculty</th>}
@@ -109,7 +110,8 @@ const ReportsList = () => {
                                     </tr>
                                 )}
                             </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
