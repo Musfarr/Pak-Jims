@@ -97,8 +97,8 @@ const QECAssignments = ({ title }) => {
                     </div>
                   </div>
                 ) : (
-                  <div className="table-rponsive">
-                    <table className="table table-hover">
+                  <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                    <table className="table table-hover" style={{ minWidth: '600px' }}>
                       <thead>
                         <tr>
                           <th>#</th>

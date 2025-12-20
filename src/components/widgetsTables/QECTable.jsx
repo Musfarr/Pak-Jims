@@ -176,8 +176,8 @@ const QECTable = ({ title }) => {
                         </Link>
                     </div> */}
 
-                    <div className="table-responsie  ">
-                        <table className="table table-hover ">
+                    <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                        <table className="table table-hover " style={{ minWidth: '700px' }}>
                             <thead>
                                 <tr>
                                     <th>ID</th>
