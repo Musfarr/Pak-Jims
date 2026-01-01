@@ -10,9 +10,9 @@ const QECAssign = () => {
   const navigate = useNavigate();
   const [term, setTerm] = useState('');
   const [userType, setUserType] = useState('student'); // New state for type
-  const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const [selectedBatches, setSelectedBatches] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedBatch, setSelectedBatch] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch departments
@@ -48,7 +48,7 @@ const QECAssign = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!term || selectedDepartments.length === 0) {
+    if (!term) {
       Swal.fire({
         icon: 'error',
         title: 'Incomplete!',
@@ -61,9 +61,9 @@ const QECAssign = () => {
     const payload = {
       survey_id: id,
       term,
-      ...(userType !== 'student' ? {} : { course_ids: selectedCourses.map(opt => opt.value) }),
-      depart_ids: selectedDepartments.map(opt => opt.value),
-      ...(userType !== 'student' ? {} : { batch_ids: selectedBatches.map(opt => opt.value) })
+      ...(userType !== 'student' ? {} : { course_ids: coursesData.map(c => c.id) }),
+      depart_ids: userType === 'faculty' && selectedDepartment ? [selectedDepartment.value] : departmentsData.map(d => d.id),
+      ...(userType !== 'student' ? {} : { batch_ids: selectedBatch ? [selectedBatch.value] : batchesData.map(b => b.id) })
     };
     PostApi('/survey-assign', payload)
       .then(() => {
@@ -112,48 +112,34 @@ const QECAssign = () => {
               <label className="form-label">Semester/Module</label>
               <input type="text" className="form-control" value={term} onChange={e => setTerm(e.target.value)} placeholder="e.g., 2024-spring" required />
             </div>
+
+            {userType === 'faculty' && (
             <div className="mb-3">
-              <label className="form-label">Departments</label>
+              <label className="form-label">Department (Optional - Default All)</label>
               <Select
-                isMulti
                 isClearable
                 options={departmentOptions}
-                value={selectedDepartments}
-                onChange={setSelectedDepartments}
+                value={selectedDepartment}
+                onChange={setSelectedDepartment}
                 isLoading={isDepartmentsLoading}
-                placeholder="Select departments..."
+                placeholder="Select a department..."
               />
             </div>
+            )}
             {userType === 'student' && (
               <>
                 <div className="mb-3">
-                  <label className="form-label">Batches (Select Only For Students)</label>
+                  <label className="form-label">Batch (Optional - Default All)</label>
                   <Select
-                    isMulti
                     isClearable
                     options={batchOptions}
-                    value={selectedBatches}
-                    onChange={setSelectedBatches}
+                    value={selectedBatch}
+                    onChange={setSelectedBatch}
                     isLoading={isBatchesLoading}
-                    placeholder="Select batches..."
+                    placeholder="Select a batch..."
                   />
                 </div>
               </>
-            )}
-            {userType === 'student' && (
-
-                <div className="mb-3">
-                  <label className="form-label">Courses (Select Only For Students)</label>
-                  <Select
-                    isMulti
-                    isClearable
-                    options={courseOptions}
-                    value={selectedCourses}
-                    onChange={setSelectedCourses}
-                    isLoading={isCoursesLoading}
-                    placeholder="Select courses..."
-                  />
-                </div>
             )}
             <button type="submit" className="btn btn-primary float-end" disabled={isSubmitting}>{isSubmitting ? 'Assigning...' : 'Assign Survey'}</button>
           </form>

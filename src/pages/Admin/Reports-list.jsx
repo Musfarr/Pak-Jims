@@ -71,10 +71,12 @@ const ReportsList = () => {
                             <table className="table" style={{ minWidth: '700px' }}>
                             <thead className="table-light">
                                 <tr>
-                                    {isProforma1 && <th>Faculty</th>}
+                                    {/* {isProforma1 && <th>Faculty</th>} */}
                                     <th>Department</th>
                                     <th>Semester/Module</th>
+                                    <th>Batch</th>
                                     <th>Total Submissions</th>
+
                                     <th>Actions</th>
                                     <th>Submissions</th>
                                 </tr>
@@ -83,9 +85,10 @@ const ReportsList = () => {
                                 {reportsList?.data?.length > 0 ? (
                                     reportsList.data.map((report, index) => (
                                         <tr key={index}>
-                                            {isProforma1 && <td>{report.faculty}</td>}
+                                            {/* {isProforma1 && <td>{report.faculty}</td>} */}
                                             <td>{report.department}</td>
                                             <td>{report.term}</td>
+                                            <td>{report.batch}</td>
                                             <td>{report.total_submissions}</td>
                                             <td>
                                                 <button className="btn btn-outline-primary btn-sm" onClick={() => handleViewReport(report.id, report.survey_assignment_ids)}>

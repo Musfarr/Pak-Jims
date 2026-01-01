@@ -17,7 +17,7 @@ const NavigationManu = () => {
         <nav className={`nxl-navigation ${navigationOpen ? "mob-navigation-active" : ""}`}>
             <div className="navbar-wrapper">
                 <div className="m-header">
-                    <Link to="/" className="b-brand">
+                    <Link to="/my-profile" className="b-brand">
                         {/* <!-- ========   change your logo hear   ============ --> */}
 
                         <img src="/images/logo1.jpg" alt="logo" className="logo logo-lg" style={{ width: "30%" }} />
