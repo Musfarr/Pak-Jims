@@ -13,7 +13,7 @@ const AdminList = () => {
     // Fetch admins data
     const { data: adminsResponse, isLoading: adminsLoading, isError: adminsError } = useQuery({
         queryKey: ['users'],
-        queryFn: () => GetApi('/users')
+        queryFn: () => GetApi('/users' ,{per_page : 1000})
     });
     
     const admins = adminsResponse?.data || [];

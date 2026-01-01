@@ -76,7 +76,7 @@ const QECAssignmentDetails = () => {
 
   // Mutation for updating assignment
   const updateAssignmentMutation = useMutation({
-    mutationFn: (data) => PutApi(`/survey-assign-update`, data),
+    mutationFn: (data) => PostApi(`/survey-assign-update`, data),
     onSuccess: () => {
       Swal.fire('Success', 'Assignment updated successfully', 'success');
       queryClient.invalidateQueries(['assignment-details', id, assignmentTerm]);
