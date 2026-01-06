@@ -19,9 +19,15 @@ const QECSubmissionView = () => {
   // Compose payload for API
   const surveyNameMap = {
     '1': 'Performa 1',
+    '2': 'Performa 2',
     '3': 'Performa 3',
+    '4': 'Performa 4',
     '5': 'Performa 5',
+    '6': 'Performa 6',
     '7': 'Performa 7',
+    '8': 'Performa 8',
+    '9': 'Performa 9',
+    '10': 'Performa 10',
   };
   const payload = {
     survey_name: surveyNameMap[performa] || 'Performa 1',
