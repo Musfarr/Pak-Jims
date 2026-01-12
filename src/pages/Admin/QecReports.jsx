@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GetApi, PostApi } from '@/utils/Api/ApiServices';
 import ReactApexChart from 'react-apexcharts';
@@ -22,6 +22,7 @@ const QecReports = () => {
     //     }
     // }, [surveyAssignmentIds, currentReportId]);
 
+  const [isStudentCourseEvaluation, setIsStudentCourseEvaluation] = useState(false);
 
 
     const { data: reports, isLoading, isError, error, refetch } = useQuery({
@@ -301,11 +302,13 @@ const QecReports = () => {
             <strong>Course Title:</strong> {reports.data.course_title}
           </div>
         )}
-        {reports?.data?.teacher_name && (
+        
+        { id != 39 && reports?.data?.teacher_name && (
           <div className="col-md-6 mb-2">
             <strong>Teacher Name:</strong> {reports.data.teacher_name}
           </div>
         )}
+
         {reports?.data?.term && (
           <div className="col-md-6 mb-2">
             <strong>Semester/Module:</strong> {reports.data.term}
