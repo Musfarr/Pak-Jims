@@ -104,6 +104,7 @@ const QECAssignments = ({ title }) => {
                           <th>#</th>
                           <th>Semester/Module</th>
                           <th>Survey Name</th>
+                          <th>Batch</th>
                           <th>Assigned Details</th>
                           {/* <th>Action</th> */}
                           
@@ -115,6 +116,7 @@ const QECAssignments = ({ title }) => {
                             <td>{index + 1}</td>
                             <td>{assignment.term}</td>
                             <td>{assignment.survey.title}</td>
+                            <td>{assignment?.batch?.name}</td>
                             <td>
                               <button 
                                 className="btn btn-sm btn-outline-primary" 
