@@ -24,6 +24,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
         // { value: "masteradmin", label: "Master Admin" },
         { value: "superadmin", label: "Super Admin" },
         { value: "admin", label: "Admin" },
+        { value: "erp", label: "ERP Prototype" },
         { value: "faculty", label: "Faculty" },
         { value: "student", label: "Student" }
     ];

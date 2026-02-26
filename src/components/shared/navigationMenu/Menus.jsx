@@ -9,7 +9,8 @@ import {
     SuperAdminMenuList, 
     AdminMenuList, 
     FacultyMenuList, 
-    StudentMenuList 
+    StudentMenuList,
+    ErpAdminMenuList
 } from "@/utils/Newdata/RoleMenus";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -46,6 +47,9 @@ const Menus = () => {
             case "student":
                 console.log("Using Student menu list");
                 return StudentMenuList;
+            case "erp":
+                console.log("Using ERP Admin menu list");
+                return ErpAdminMenuList;
             default:
                 console.log("Using default Student menu list, role not recognized:", roleLC);
                 return StudentMenuList; // Default to student menu if role not recognized

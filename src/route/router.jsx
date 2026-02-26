@@ -51,6 +51,13 @@ import RegisterMinimal from "../pages/register-minimal";
 import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
 
+// ERP Prototype Pages
+import RetailPOS from "../pages/ERP-Prototype/RetailPOS";
+import InventorySync from "../pages/ERP-Prototype/InventorySync";
+import PricingTiers from "../pages/ERP-Prototype/PricingTiers";
+import PurchaseVendors from "../pages/ERP-Prototype/PurchaseVendors";
+import FinancialReports from "../pages/ERP-Prototype/FinancialReports";
+
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
     return (
@@ -363,13 +370,53 @@ export const router = createBrowserRouter([
                 path: "/widgets/miscellaneous",
                 element: <WidgetsMiscellaneous/>
             },
+            // ERP Prototype Routes
+            {
+                path: "/erp/pos",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <RetailPOS />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/inventory",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <InventorySync />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/pricing",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <PricingTiers />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/purchases",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <PurchaseVendors />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/accounting",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <FinancialReports />
+                    </ProtectedRoute>
+                )
+            },
             {
                 path: "/help/knowledgebase",
                 element: <HelpKnowledgebase />
-            },
+            }
         ]
     },
-
     {
         path: "/authentication",
         element: (
