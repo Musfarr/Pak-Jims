@@ -7,6 +7,7 @@ const PurchaseVendors = () => {
     const [activeTab, setActiveTab] = useState('pos'); // pos or vendors
 
     return (
+        <div className='main-content'> 
         <div className="row">
             {/* Header Controls */}
             <div className="col-12 mb-4">
@@ -139,6 +140,7 @@ const PurchaseVendors = () => {
                     </div>
                 </div>
             )}
+        </div>
         </div>
     );
 };
