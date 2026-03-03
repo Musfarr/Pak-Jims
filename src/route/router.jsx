@@ -60,21 +60,14 @@ import RegisterMinimal from "../pages/register-minimal";
 import MyProfile from '../pages/MyProfile';
 import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
-import StudentEdit from "../pages/Admin/components/StudentEdit";
-import FacultyEdit from "../pages/Admin/components/FacultyEdit";
-import ClassSimpleView from "../pages/Admin/ClassSimpleView";
-import ClassEdit from "../pages/Admin/ClassEdit";
-import TemplatesList from "../pages/Admin/Templates/TemplatesList";
-import TemplateForm from "../pages/Admin/Templates/TemplateForm";
-import ReportsList from "../pages/Admin/Reports-list";
-import QecReports from "../pages/Admin/QecReports";
-import QECSubmissionsList from "../pages/Admin/QECSubmissionsList";
-import QECSubmissionView from "../pages/Admin/QECSubmissionView";
 
-// Roles & Permissions Management
-import Modules from "../pages/SuperAdmin/Modules";
-import Roles from "../pages/SuperAdmin/Roles";
-import CreateRole from "../pages/SuperAdmin/CreateRole";
+// ERP Prototype Pages
+import RetailPOS from "../pages/ERP-Prototype/RetailPOS";
+import InventorySync from "../pages/ERP-Prototype/InventorySync";
+import PricingTiers from "../pages/ERP-Prototype/PricingTiers";
+import PurchaseVendors from "../pages/ERP-Prototype/PurchaseVendors";
+import FinancialReports from "../pages/ERP-Prototype/FinancialReports";
+import SalesOrders from "../pages/ERP-Prototype/SalesOrders";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -486,112 +479,7 @@ export const router = createBrowserRouter([
 
             // QEC Routes
             {
-                path: "/qec-list",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/general-qec-list",
-                element: (
-                    <ProtectedRoute requiredRole={["student", "faculty"]}>
-                        <StudentQECList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec-fill/:id",
-                element: (
-                    <ProtectedRoute requiredRole={["student", "faculty"]}>
-                        <QECFill />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec-filled-view/:survey_id/:assignment_id",
-                element: (
-                    <ProtectedRoute requiredRole={["student", "faculty"]}>
-                        <QECFilledView />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/add",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <CreateQEC />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/view/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECView />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/edit/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <EditQEC />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/report/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECReport />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/assignments/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECAssignments />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/assign/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECAssign />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/qec/assignment-details/:id",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECAssignmentDetails />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/templates",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <TemplatesList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/templates/add",
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <TemplateForm />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list",
-                
+                path: "/faculty-dashboard",
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <ReportsList />
@@ -599,8 +487,7 @@ export const router = createBrowserRouter([
                 )
             },
             {
-                path: "/reports/list/proforma1",
-                
+                path: "/student-dashboard",
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <ReportsList />
@@ -608,67 +495,17 @@ export const router = createBrowserRouter([
                 )
             },
             {
-                path: "/reports/list/proforma2",
-                
+                path: "/admin-area",
                 element: (
                     <ProtectedRoute requiredRole="admin">
                         <ReportsList />
                     </ProtectedRoute>
                 )
             },
+            // Unauthorized page
             {
-                path: "/reports/list/proforma3",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list/proforma4",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list/proforma5",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list/proforma6",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list/proforma7",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "/reports/list/proforma8",
-                
-                element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <ReportsList />
-                    </ProtectedRoute>
-                )
+                path: "/unauthorized",
+                element: <Unauthorized />
             },
             {
                 path: "/reports/list/proforma9",
@@ -705,49 +542,64 @@ export const router = createBrowserRouter([
                 )
             },
             {
-                path: "/qec/submission-view/:performa/:survey_assignment_id/:userid",
+                path: "/widgets/miscellaneous",
+                element: <WidgetsMiscellaneous/>
+            },
+            // ERP Prototype Routes
+            {
+                path: "/erp/pos",
                 element: (
-                    <ProtectedRoute requiredRole="admin">
-                        <QECSubmissionView />
+                    <ProtectedRoute minimumRole="erp">
+                        <RetailPOS />
                     </ProtectedRoute>
                 )
             },
-            
-
-{
-    path: "/faculty-dashboard",
-    element: (
-        <ProtectedRoute requiredRole="faculty">
-            <FacultyDashboard />
-        </ProtectedRoute>
-    )
-},
-{
-    path: "/student-dashboard",
-    element: (
-        <ProtectedRoute requiredRole="student">
-            <StudentDashboard />
-        </ProtectedRoute>
-    )
-},
-
-// Example of a route that requires minimum role level
-// {
-//     path: "/admin-area",
-//     element: (
-//         <ProtectedRoute minimumRole="admin">
-//             <Analytics />
-//         </ProtectedRoute>
-//     )
-// },
-// Unauthorized page
-{
-    path: "/unauthorized",
-    element: <Unauthorized />
-},
-]
-},
-
+            {
+                path: "/erp/inventory",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <InventorySync />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/pricing",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <PricingTiers />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/purchases",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <PurchaseVendors />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/sales-orders",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <SalesOrders />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/accounting",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <FinancialReports />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/help/knowledgebase",
+                element: <HelpKnowledgebase />
+            }
+        ]
+    },
     {
         path: "/authentication",
         element: (
@@ -762,7 +614,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/authentication/login",
-                element: <LoginCover />
+                // element: <LoginCover />
+                element: <LoginMinimal />
             },
             {
                 path: "/authentication/login/minimal",

@@ -1,6 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
+const roleHierarchy = {
+  masteradmin: 6,
+  superadmin: 5,
+  admin: 4,
+  erp: 3,
+  faculty: 2,
+  student: 1
+};
+
+const roleHomepages = {
+  masteradmin: '/master-admin-dashboard',
+  superadmin: '/super-admin-dashboard',
+  admin: '/admin-dashboard',
+  erp: '/erp/pos',
+  faculty: '/faculty-dashboard',
+  student: '/student-dashboard'
+};
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);

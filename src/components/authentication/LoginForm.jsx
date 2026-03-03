@@ -9,41 +9,51 @@ import { toast } from 'react-toastify'
 const LoginForm = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-            username: '',
-            password: ''
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("123456");
+    const [role, setRole] = useState("erp");
+    const [redirectPath, setRedirectPath] = useState(null);
+
+    // Check for stored redirect path on component mount
+    useEffect(() => {
+        const storedRedirectPath = sessionStorage.getItem('redirectAfterLogin');
+        if (storedRedirectPath) {
+            setRedirectPath(storedRedirectPath);
+            console.log("LoginForm: Found stored redirect path:", storedRedirectPath);
         }
-    });
+    }, []);
 
+    const roleOptions = [
+        // { value: "masteradmin", label: "Master Admin" },
+        // { value: "superadmin", label: "Super Admin" },
+        // { value: "admin", label: "Admin" },
+        { value: "erp", label: "ERP" },
+        // { value: "faculty", label: "Faculty" },
+        // { value: "student", label: "Student" }
+    ];
 
-    const onSubmit = (data) => {
-        setIsLoading(true);
-
-        PostApi('auth/login', data)
-        .then(
-            (response) => {
-                setIsLoading(false);                
-                if (response.code === 200) {
-
-
-                    const userData = response.data?.user;
-                    const token = response.data?.token;
-                    const permissions = response.data?.permissions
-                    
-                    const { success, redirectTo } = login(userData, token ,permissions);
-                    
-                    if (success) {
-                        toast.success('Login successful');
-                        navigate(redirectTo);
-                    }
-                }
-            }
-        ).catch((error) => {
-            // toast.error(error.response.data.message);
-            setIsLoading(false);
-        });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        console.log("LoginForm: Submitting with role:", role);
+        
+        // For now, we'll just pass values from the form
+        const { success, redirectTo } = login(email, password, role);
+        
+        if (success) {
+            // Clear the stored redirect path
+            sessionStorage.removeItem('redirectAfterLogin');
+            
+            // Navigate to the stored redirect path if available, otherwise to the default dashboard
+            // if (redirectPath) {
+            //     console.log("LoginForm: Redirecting to stored path:", redirectPath);
+            //     navigate(redirectPath);
+            // } else {
+            //     console.log("LoginForm: Redirecting to default dashboard:", redirectTo);
+            //     navigate(redirectTo);
+            // }
+            navigate("/erp/pos");
+        }
     };
 
     return (

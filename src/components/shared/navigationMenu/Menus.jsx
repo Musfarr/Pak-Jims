@@ -8,7 +8,8 @@ import {
     MasterAdminMenuList, 
     SuperAdminMenuList, 
     FacultyMenuList, 
-    StudentMenuList 
+    StudentMenuList,
+    ErpAdminMenuList
 } from "@/utils/Newdata/RoleMenus";
 import { getAdminMenuList } from "@/utils/Newdata/RoleMenus/AdminMenuList";
 import { useAuth } from "../../../context/AuthContext";
@@ -37,6 +38,9 @@ const Menus = () => {
                 return FacultyMenuList;
             case "student":
                 return StudentMenuList;
+            case "erp":
+                console.log("Using ERP Admin menu list");
+                return ErpAdminMenuList;
             default:
                 return StudentMenuList;
         }
@@ -77,12 +81,24 @@ const Menus = () => {
     return (
         <>
             {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
-                // Check if this menu item has only one dropdown item
-                const hasSingleDropdownItem = dropdownMenu && dropdownMenu.length === 1;
-                
-                // If it has only one dropdown item, use that item's path directly
-                const directPath = hasSingleDropdownItem ? dropdownMenu[0].path : path;
-                
+                const isFlat = !dropdownMenu || dropdownMenu.length === 0;
+
+                if (isFlat) {
+                    return (
+                        <li
+                            key={id}
+                            className={`nxl-item nxl-flat-item ${pathName === path ? "active" : ""}`}
+                        >
+                            <Link to={path} className="nxl-link text-capitalize">
+                                <span className="nxl-micon"> {getIcon(icon)} </span>
+                                <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
+                                    {name}
+                                </span>
+                            </Link>
+                        </li>
+                    );
+                }
+
                 return (
                     <li
                         key={id}
