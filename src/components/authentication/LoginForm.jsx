@@ -8,7 +8,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("123456");
-    const [role, setRole] = useState("student");
+    const [role, setRole] = useState("erp");
     const [redirectPath, setRedirectPath] = useState(null);
 
     // Check for stored redirect path on component mount
@@ -22,11 +22,11 @@ const LoginForm = ({ registerPath, resetPath }) => {
 
     const roleOptions = [
         // { value: "masteradmin", label: "Master Admin" },
-        { value: "superadmin", label: "Super Admin" },
-        { value: "admin", label: "Admin" },
-        { value: "erp", label: "ERP Prototype" },
-        { value: "faculty", label: "Faculty" },
-        { value: "student", label: "Student" }
+        // { value: "superadmin", label: "Super Admin" },
+        // { value: "admin", label: "Admin" },
+        { value: "erp", label: "ERP" },
+        // { value: "faculty", label: "Faculty" },
+        // { value: "student", label: "Student" }
     ];
 
     const handleSubmit = (e) => {
@@ -42,13 +42,14 @@ const LoginForm = ({ registerPath, resetPath }) => {
             sessionStorage.removeItem('redirectAfterLogin');
             
             // Navigate to the stored redirect path if available, otherwise to the default dashboard
-            if (redirectPath) {
-                console.log("LoginForm: Redirecting to stored path:", redirectPath);
-                navigate(redirectPath);
-            } else {
-                console.log("LoginForm: Redirecting to default dashboard:", redirectTo);
-                navigate(redirectTo);
-            }
+            // if (redirectPath) {
+            //     console.log("LoginForm: Redirecting to stored path:", redirectPath);
+            //     navigate(redirectPath);
+            // } else {
+            //     console.log("LoginForm: Redirecting to default dashboard:", redirectTo);
+            //     navigate(redirectTo);
+            // }
+            navigate("/erp/pos");
         }
     };
 

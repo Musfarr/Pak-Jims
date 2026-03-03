@@ -1,40 +1,44 @@
 export const ErpAdminMenuList = [
     {
-        id: 0,
-        name: "ERP Prototype",
-        path: "#",
-        icon: 'feather-box',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Retail POS",
-                path: "/erp/pos",
-                subdropdownMenu: []
-            },
-            {
-                id: 2,
-                name: "Inventory Sync",
-                path: "/erp/inventory",
-                subdropdownMenu: []
-            },
-            {
-                id: 3,
-                name: "Pricing Tiers",
-                path: "/erp/pricing",
-                subdropdownMenu: []
-            },
-            {
-                id: 4,
-                name: "Purchase & Vendors",
-                path: "/erp/purchases",
-                subdropdownMenu: []
-            },
-            {
-                id: 5,
-                name: "Financial Reports",
-                path: "/erp/accounting",
-                subdropdownMenu: []
-            }
-        ]
-    }
+        id: 1,
+        name: "Retail POS",
+        path: "/erp/pos",
+        icon: 'feather-shopping-cart',
+        dropdownMenu: []
+    },
+    {
+        id: 2,
+        name: "Sales Orders",
+        path: "/erp/sales-orders",
+        icon: 'feather-file-text',
+        dropdownMenu: []
+    },
+    {
+        id: 3,
+        name: "Inventory Sync",
+        path: "/erp/inventory",
+        icon: 'feather-shopping-cart',
+        dropdownMenu: []
+    },
+    {
+        id: 4,
+        name: "Pricing Tiers",
+        path: "/erp/pricing",
+        icon: 'feather-tag',
+        dropdownMenu: []
+    },
+    {
+        id: 5,
+        name: "Purchase & Vendors",
+        path: "/erp/purchases",
+        icon: 'feather-shopping-cart',
+        dropdownMenu: []
+    },
+    {
+        id: 6,
+        name: "Financial Reports",
+        path: "/erp/accounting",
+        icon: 'feather-bar-chart-2',
+        dropdownMenu: []
+    },
 ];

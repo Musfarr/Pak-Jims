@@ -1,0 +1,141 @@
+/*
+ * ================================================================
+ *  ERP THEME OVERRIDE — Dark Grey / White
+ *  To re-theme: change the variables in :root below ONLY.
+ *  All component colors will cascade automatically.
+ * ================================================================
+ */
+
+:root {
+  /* ── Primary accent (was green #2e9758) ── */
+  --erp-primary:        #4a5568;   /* dark slate grey   */
+  --erp-primary-hover:  #2d3748;   /* darker on hover   */
+  --erp-primary-light:  #718096;   /* muted/secondary   */
+  --erp-primary-soft:   #edf2f7;   /* light bg tint     */
+  --erp-primary-soft2:  #e2e8f0;   /* border tint       */
+
+  /* ── Success / positive ── */
+  --erp-success:        #38a169;
+
+  /* ── Sidebar ── */
+  --erp-sidebar-bg:     #1a202c;
+  --erp-sidebar-text:   #a0aec0;
+  --erp-sidebar-active: #4a5568;
+}
+
+/* ── Text ── */
+.text-primary                              { color: var(--erp-primary) !important; }
+.text-soft-primary                         { color: var(--erp-primary-light) !important; }
+
+/* ── Backgrounds ── */
+.bg-primary                                { background-color: var(--erp-primary) !important; }
+.bg-soft-primary                           { background-color: var(--erp-primary-soft) !important; }
+
+/* ── Borders ── */
+.border-primary                            { border-color: var(--erp-primary) !important; }
+.border-soft-primary                       { border-color: var(--erp-primary-soft2) !important; }
+
+/* ── Solid Button ── */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:not(:disabled):not(.disabled).active {
+  color: #ffffff !important;
+  background-color: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--erp-primary-hover) !important;
+  border-color: var(--erp-primary-hover) !important;
+}
+
+/* ── Outline Button ── */
+.btn-outline-primary {
+  color: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  color: #fff !important;
+  background-color: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+}
+
+/* ── Light Button ── */
+.btn-light-primary {
+  color: var(--erp-primary) !important;
+  background: var(--erp-primary-soft) !important;
+  border-color: var(--erp-primary-soft) !important;
+}
+.btn-light-primary:hover,
+.btn-light-primary:focus,
+.btn-light-primary:active,
+.btn-light-primary:not(:disabled):not(.disabled).active {
+  color: #fff !important;
+  background: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+}
+.btn-check:active + .btn-light-primary,
+.btn-check:checked + .btn-light-primary {
+  background: var(--erp-primary) !important;
+  color: #fff !important;
+  border-color: var(--erp-primary) !important;
+}
+
+/* ── Avatar ── */
+.avatar.bg-light-primary {
+  background: var(--erp-primary-soft) !important;
+  color: var(--erp-primary) !important;
+}
+
+/* ── Badge ── */
+.badge.bg-light-primary {
+  color: var(--erp-primary) !important;
+  background: var(--erp-primary-soft) !important;
+  border-color: var(--erp-primary-soft) !important;
+}
+.badge.bg-primary {
+  background-color: var(--erp-primary) !important;
+}
+
+/* ── Card shadow ── */
+.card.bg-primary {
+  box-shadow: 0 10px 10px -1px rgba(74, 85, 104, 0.25) !important;
+}
+
+/* ── Links ── */
+.link-primary                              { color: var(--erp-primary) !important; }
+.link-primary:hover,
+.link-primary:focus                        { color: var(--erp-primary-hover) !important; }
+
+/* ── Nav pills ── */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link              { background-color: var(--erp-primary) !important; }
+
+/* ── Bootstrap CSS-var override (for components that use rgb()) ── */
+:root {
+  --bs-primary: var(--erp-primary);
+  --bs-primary-rgb: 74, 85, 104;
+}
+
+/* ── Sidebar flat menu item styling ── */
+.nxl-navigation .nxl-item.nxl-flat-item > .nxl-link {
+  border-radius: 8px;
+  margin: 2px 8px;
+  padding: 10px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+.nxl-navigation .nxl-item.nxl-flat-item > .nxl-link:hover {
+  background: var(--erp-primary-soft);
+  color: var(--erp-primary);
+}
+.nxl-navigation .nxl-item.nxl-flat-item.active > .nxl-link {
+  background: var(--erp-primary);
+  color: #fff !important;
+}
+.nxl-navigation .nxl-item.nxl-flat-item.active > .nxl-link .nxl-micon,
+.nxl-navigation .nxl-item.nxl-flat-item.active > .nxl-link .nxl-mtext {
+  color: #fff !important;
+}

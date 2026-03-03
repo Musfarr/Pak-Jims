@@ -13,15 +13,16 @@ const PricingTiers = () => {
     };
 
     return (
+        <div className='main-content'>
         <div className="row">
             {/* Tabs & Controls */}
             <div className="col-12 mb-4">
                 <div className="card">
-                    <div className="card-header d-flex justify-content-between align-items-center bg-light">
+                    <div className="card-header d-flex justify-content-between align-items-center bg-liht">
                         <ul className="nav nav-pills card-header-pills">
                             <li className="nav-item">
                                 <button 
-                                    className={`nav-link ${activeTab === 'retail' ? 'active' : ''}`}
+                                    className={`nav-link btn btn-outline-primary ${activeTab === 'retail' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('retail')}
                                 >
                                     <FiDollarSign className="me-2"/> Retail Pricing
@@ -29,7 +30,7 @@ const PricingTiers = () => {
                             </li>
                             <li className="nav-item ms-2">
                                 <button 
-                                    className={`nav-link ${activeTab === 'wholesale' ? 'active' : ''}`}
+                                    className={`nav-link btn btn-outline-primary ${activeTab === 'wholesale' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('wholesale')}
                                 >
                                     <FiUsers className="me-2"/> Wholesale Tiers
@@ -144,6 +145,7 @@ const PricingTiers = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

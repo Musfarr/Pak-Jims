@@ -4,6 +4,7 @@ import { FiDollarSign, FiTrendingUp, FiTrendingDown, FiPieChart, FiDownload } fr
 
 const FinancialReports = () => {
     return (
+        <div className='main-content'>
         <div className="row">
             {/* Header */}
             <div className="col-12 mb-4 d-flex justify-content-between align-items-center">
@@ -164,6 +165,7 @@ const FinancialReports = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

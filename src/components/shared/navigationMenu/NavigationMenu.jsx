@@ -19,7 +19,8 @@ const NavigationManu = () => {
                 <div className="m-header">
                     <Link to="/" className="b-brand">
                         {/* <!-- ========   change your logo hear   ============ --> */}
-                        <img src="/images/logo1.jpg" alt="logo" className="logo logo-lg" />
+                        {/* <img src="/images/logo1.jpg" alt="logo" className="logo logo-lg" /> */}
+                        <h1 className='logo logo-lg' >Flair</h1>
                         <img src="/images/logo1.jpg" alt="logo" className="logo logo-sm" />
                     </Link>
                 </div>

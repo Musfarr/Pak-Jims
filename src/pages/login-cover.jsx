@@ -12,6 +12,7 @@ const LoginCover = () => {
     className="w-100 h-100 object-fit-cover position-absolute top-0 start-0"
     style={{ objectFit: 'cover' }}
   />
+  {/* <h1>dsdsd</h1> */}
 </div>
 
 

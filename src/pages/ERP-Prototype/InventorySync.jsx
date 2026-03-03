@@ -34,6 +34,7 @@ const InventorySync = () => {
     };
 
     return (
+        <div className='main-content'>
         <div className="row">
             {/* Channel Sync Status */}
             <div className="col-12 mb-4">
@@ -149,6 +150,7 @@ const InventorySync = () => {
                 .spin { animation: spin 1s linear infinite; }
                 @keyframes spin { 100% { transform: rotate(360deg); } }
             `}} />
+        </div>
         </div>
     );
 };

@@ -1,9 +1,9 @@
 export const dummyProducts = [
-  { id: 1, sku: "FRG-001", name: "Oud Wood Intense", category: "Arabian", stock: 145, basePrice: 85.00, retailPrice: 150.00, wholesalePrice: 100.00 },
-  { id: 2, sku: "FRG-002", name: "Blue de Chanel", category: "Designer", stock: 32, basePrice: 90.00, retailPrice: 165.00, wholesalePrice: 120.00 },
-  { id: 3, sku: "FRG-003", name: "Baccarat Rouge 540", category: "Designer", stock: 15, basePrice: 150.00, retailPrice: 325.00, wholesalePrice: 250.00 },
-  { id: 4, sku: "FRG-004", name: "Musk Tahira", category: "Arabian", stock: 400, basePrice: 12.00, retailPrice: 35.00, wholesalePrice: 20.00 },
-  { id: 5, sku: "FRG-005", name: "Creed Aventus", category: "Designer", stock: 8, basePrice: 180.00, retailPrice: 435.00, wholesalePrice: 310.00 },
+  { id: 1, sku: "FRG-001", name: "Oud Wood Intense",   category: "Arabian",  stock: 145, basePrice: 85.00,  retailPrice: 150.00, wholesalePrice: 100.00, vipPrice: 125.00 },
+  { id: 2, sku: "FRG-002", name: "Blue de Chanel",     category: "Designer", stock: 32,  basePrice: 90.00,  retailPrice: 165.00, wholesalePrice: 120.00, vipPrice: 140.00 },
+  { id: 3, sku: "FRG-003", name: "Baccarat Rouge 540", category: "Designer", stock: 15,  basePrice: 150.00, retailPrice: 325.00, wholesalePrice: 250.00, vipPrice: 280.00 },
+  { id: 4, sku: "FRG-004", name: "Musk Tahira",        category: "Arabian",  stock: 400, basePrice: 12.00,  retailPrice: 35.00,  wholesalePrice: 20.00,  vipPrice: 28.00  },
+  { id: 5, sku: "FRG-005", name: "Creed Aventus",      category: "Designer", stock: 8,   basePrice: 180.00, retailPrice: 435.00, wholesalePrice: 310.00, vipPrice: 370.00 },
 ];
 
 export const dummyVendors = [

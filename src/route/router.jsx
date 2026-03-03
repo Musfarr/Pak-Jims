@@ -57,6 +57,7 @@ import InventorySync from "../pages/ERP-Prototype/InventorySync";
 import PricingTiers from "../pages/ERP-Prototype/PricingTiers";
 import PurchaseVendors from "../pages/ERP-Prototype/PurchaseVendors";
 import FinancialReports from "../pages/ERP-Prototype/FinancialReports";
+import SalesOrders from "../pages/ERP-Prototype/SalesOrders";
 
 // Create a layout component that wraps children with AuthProvider
 const AuthLayout = ({ children }) => {
@@ -404,6 +405,14 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/erp/sales-orders",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <SalesOrders />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/erp/accounting",
                 element: (
                     <ProtectedRoute minimumRole="erp">
@@ -431,7 +440,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/authentication/login",
-                element: <LoginCover />
+                // element: <LoginCover />
+                element: <LoginMinimal />
             },
             {
                 path: "/authentication/login/minimal",

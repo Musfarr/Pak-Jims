@@ -92,6 +92,24 @@ const Menus = () => {
     return (
         <>
             {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
+                const isFlat = !dropdownMenu || dropdownMenu.length === 0;
+
+                if (isFlat) {
+                    return (
+                        <li
+                            key={id}
+                            className={`nxl-item nxl-flat-item ${pathName === path ? "active" : ""}`}
+                        >
+                            <Link to={path} className="nxl-link text-capitalize">
+                                <span className="nxl-micon"> {getIcon(icon)} </span>
+                                <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
+                                    {name}
+                                </span>
+                            </Link>
+                        </li>
+                    );
+                }
+
                 return (
                     <li
                         key={id}
