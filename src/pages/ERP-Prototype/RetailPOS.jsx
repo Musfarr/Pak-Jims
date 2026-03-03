@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { dummyProducts } from './data/dummyData';
 import {
     FiSearch, FiShoppingCart, FiTrash2, FiPrinter, FiCheckCircle,
-    FiDollarSign, FiCreditCard, FiSmartphone, FiTag, FiFileText, FiX
+    FiDollarSign, FiCreditCard, FiSmartphone, FiTag, FiFileText, FiX, FiMaximize, FiMinimize, FiMonitor
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,6 +22,7 @@ const PAYMENT_METHODS = [
 
 const RetailPOS = () => {
     const navigate = useNavigate();
+    const [fullscreenMode, setFullscreenMode] = useState('normal'); // 'normal', 'card-expand', 'native'
 
     const [barcode, setBarcode]           = useState('');
     const [cart, setCart]                 = useState([]);
@@ -42,6 +43,45 @@ const RetailPOS = () => {
 
     const tier      = PRICING_TIERS[activeTier];
     const priceOf   = (item) => item[tier.priceField] ?? item.retailPrice;
+
+    /* ── Fullscreen handlers ── */
+    const toggleFullscreen = () => {
+        if (fullscreenMode === 'normal') {
+            // Step 1: Normal → Card Expand (hides sidebar/header)
+            document.body.classList.add('card-expand');
+            setFullscreenMode('card-expand');
+        } else if (fullscreenMode === 'card-expand') {
+            // Step 2: Card Expand → Native Fullscreen (covers entire screen)
+            document.body.classList.remove('card-expand');
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            document.documentElement.classList.add("fsh-infullscreen");
+            document.querySelector("body").classList.add("full-screen-helper");
+            setFullscreenMode('native');
+        } else {
+            // Step 3: Native Fullscreen → Normal
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            document.documentElement.classList.remove("fsh-infullscreen");
+            document.querySelector("body").classList.remove("full-screen-helper");
+            setFullscreenMode('normal');
+        }
+    };
 
     /* ── Cart helpers ── */
     const handleScan = (e) => {
@@ -135,213 +175,250 @@ const RetailPOS = () => {
     /* ── Render ── */
     return (
         <div className="main-content">
-            <div className="row g-3">
+            <div className={`card stretch stretch-full ${fullscreenMode === 'card-expand' ? 'card-expand' : ''}`}>
+                <div className="card-header d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 className="mb-0 fw-bold">Retail POS</h4>
+                        <small className="text-muted">Point of sale workspace</small>
+                    </div>
+                    <button
+                        type="button"
+                        className={`btn btn-sm ${fullscreenMode !== 'normal' ? 'btn-primary' : 'btn-outline-primary'}`}
+                        onClick={toggleFullscreen}
+                        title={fullscreenMode === 'normal' ? 'Card Full Screen' : fullscreenMode === 'card-expand' ? 'Browser Full Screen' : 'Exit Full Screen'}
+                    >
+                        {fullscreenMode === 'normal' && (
+                            <><FiMaximize size={14} className="me-1" />Full Screen</>
+                        )}
+                        {fullscreenMode === 'card-expand' && (
+                            <><FiMonitor size={14} className="me-1" />Browser Full</>
+                        )}
+                        {fullscreenMode === 'native' && (
+                            <><FiMinimize size={14} className="me-1" />Exit</>
+                        )}
+                    </button>
+                </div>
 
-                {/* ── LEFT: Products ── */}
-                <div className="col-lg-8">
-                    <div className="card mb-3">
-                        <div className="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
-                            <div className="d-flex align-items-center gap-2">
-                                <h5 className="mb-0">Retail POS — Houston</h5>
-                                <span className="badge bg-success">Register: Open</span>
-                            </div>
-                            {/* Pricing Tier Selector */}
-                            <div className="d-flex align-items-center gap-2">
-                                <FiTag className="text-muted" />
-                                <span className="text-muted small fw-semibold">Pricing Tier:</span>
-                                {Object.entries(PRICING_TIERS).map(([key, t]) => (
-                                    <button
-                                        key={key}
-                                        onClick={() => setActiveTier(key)}
-                                        className={`btn btn-sm ${activeTier === key ? t.btnClass : 'btn-outline-secondary'}`}
-                                        style={{ minWidth: 80 }}
-                                    >
-                                        {t.label}
-                                    </button>
-                                ))}
+                <div className="card-body p-3">
+                    <div className="row g-3">
+                        {/* ── LEFT: Products ── */}
+                        <div className="col-lg-8">
+                            <div className="card mb-3">
+                                <div className="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <h5 className="mb-0">Retail POS — Houston</h5>
+                                        <span className="badge bg-success">Register: Open</span>
+                                    </div>
+                                    {/* Pricing Tier Selector */}
+                                    <div className="d-flex align-items-center gap-2">
+                                        <FiTag className="text-muted" />
+                                        <span className="text-muted small fw-semibold">Pricing Tier:</span>
+                                        {Object.entries(PRICING_TIERS).map(([key, t]) => (
+                                            <button
+                                                key={key}
+                                                onClick={() => setActiveTier(key)}
+                                                className={`btn btn-sm ${activeTier === key ? t.btnClass : 'btn-outline-secondary'}`}
+                                                style={{ minWidth: 80 }}
+                                            >
+                                                {t.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="card-body">
+                                    <form onSubmit={handleScan} className="mb-4">
+                                        <div className="input-group" style={{ height: 56 }}>
+                                            <span className="input-group-text bg-light" style={{ fontSize: 20 }}><FiSearch size={22} /></span>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Scan Barcode or Enter SKU (e.g. FRG-001)"
+                                                value={barcode}
+                                                onChange={(e) => setBarcode(e.target.value)}
+                                                autoFocus
+                                                style={{ fontSize: 16 }}
+                                            />
+                                            <button type="submit" className="btn btn-primary px-4" style={{ fontSize: 16, fontWeight: 600, minWidth: 100 }}>ADD</button>
+                                        </div>
+                                    </form>
+
+                                    <div className="d-flex align-items-center justify-content-between mb-3">
+                                        <h5 className="mb-0 text-dark fw-bold">Quick Add Products</h5>
+                                        <span className={`badge ${tier.btnClass}`} style={{ fontSize: 13, padding: '6px 12px' }}>{tier.label} Prices Active</span>
+                                    </div>
+                                    <div className="row g-3">
+                                        {dummyProducts.map(product => (
+                                            <div key={product.id} className="col-md-4 col-sm-6">
+                                                <div
+                                                    className="card h-100 border-2"
+                                                    onClick={() => addToCart(product)}
+                                                    style={{ 
+                                                        cursor: 'pointer', 
+                                                        transition: 'all 0.2s',
+                                                        borderRadius: 12,
+                                                        minHeight: 180
+                                                    }}
+                                                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a5568'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                                                    onMouseLeave={e => { e.currentTarget.style.borderColor = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
+                                                >
+                                                    <div className="card-body text-center p-3 d-flex flex-column justify-content-between">
+                                                        <div className="mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                                            style={{ width: 70, height: 70, background: '#f1f5f9', borderRadius: 12, overflow: 'hidden' }}>
+                                                            <img src="/images/bottle.jpg" alt="img" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="mb-1 fw-bold" style={{ fontSize: 15, lineHeight: 1.3 }} title={product.name}>{product.name}</h6>
+                                                            <p className="text-muted mb-2" style={{ fontSize: 12 }}>{product.sku}</p>
+                                                            <h4 className="mb-1 text-primary fw-bold">${priceOf(product).toFixed(2)}</h4>
+                                                            <small className="text-muted" style={{ fontSize: 12 }}>Stock: {product.stock}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="card-body">
-                            <form onSubmit={handleScan} className="mb-4">
-                                <div className="input-group input-group-lg">
-                                    <span className="input-group-text bg-light"><FiSearch /></span>
+                        {/* ── RIGHT: Cart & Checkout ── */}
+                        <div className="col-lg-4">
+                            <div className="card" style={{ position: 'sticky', top: 16 }}>
+                                <div className="card-header d-flex justify-content-between align-items-center" style={{ padding: '16px 20px' }}>
+                                    <h4 className="mb-0 fw-bold">Current Order</h4>
+                                    {cart.length > 0 && (
+                                        <span className="badge bg-primary" style={{ fontSize: 14, padding: '6px 12px' }}>{cart.reduce((s, i) => s + i.qty, 0)} items</span>
+                                    )}
+                                </div>
+
+                                {/* Customer */}
+                                <div className="px-3 pt-3 pb-1">
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Scan Barcode or Enter SKU (e.g. FRG-001)"
-                                        value={barcode}
-                                        onChange={(e) => setBarcode(e.target.value)}
-                                        autoFocus
+                                        placeholder="Customer Name (optional)"
+                                        value={customerName}
+                                        onChange={e => setCustomerName(e.target.value)}
+                                        style={{ fontSize: 15, height: 44 }}
                                     />
-                                    <button type="submit" className="btn btn-primary">Add</button>
                                 </div>
-                            </form>
 
-                            <div className="d-flex align-items-center justify-content-between mb-3">
-                                <h6 className="mb-0 text-muted">Quick Add Products</h6>
-                                <span className={`badge ${tier.btnClass}`}>{tier.label} Prices Active</span>
-                            </div>
-
-                            <div className="row g-2">
-                                {dummyProducts.map(product => (
-                                    <div key={product.id} className="col-md-4 col-sm-6">
-                                        <div
-                                            className="card h-100 border"
-                                            onClick={() => addToCart(product)}
-                                            style={{ cursor: 'pointer', transition: 'all 0.15s' }}
-                                            onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a5568'; e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.1)'; }}
-                                            onMouseLeave={e => { e.currentTarget.style.borderColor = ''; e.currentTarget.style.boxShadow = ''; }}
-                                        >
-                                            <div className="card-body text-center p-3">
-                                                <div className="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
-                                                    style={{ width: 40, height: 40, background: '#f1f5f9' }}>
-                                                    <FiShoppingCart size={16} className="text-primary" />
-                                                </div>
-                                                <h6 className="mb-1 text-truncate small fw-semibold" title={product.name}>{product.name}</h6>
-                                                <p className="text-muted mb-1" style={{ fontSize: 11 }}>{product.sku} · {product.category}</p>
-                                                <h5 className="mb-0 text-primary">${priceOf(product).toFixed(2)}</h5>
-                                                <small className="text-muted">Stock: {product.stock}</small>
+                                <div className="card-body p-0">
+                                    {/* Cart Items */}
+                                    <div className="overflow-auto px-3 py-2" style={{ maxHeight: 280, minHeight: 140 }}>
+                                        {cart.length === 0 ? (
+                                            <div className="text-center text-muted py-5">
+                                                <FiShoppingCart size={42} className="mb-3 opacity-25" />
+                                                <p className="mb-0" style={{ fontSize: 15 }}>Cart is empty — scan or click a product</p>
                                             </div>
+                                        ) : (
+                                            <ul className="list-group list-group-flush">
+                                                {cart.map(item => (
+                                                    <li key={item.id} className="list-group-item px-0 py-3">
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <div className="flex-grow-1" style={{ minWidth: 0 }}>
+                                                                <div className="fw-bold text-truncate" style={{ fontSize: 15 }}>{item.name}</div>
+                                                                <div className="text-muted" style={{ fontSize: 13 }}>${priceOf(item).toFixed(2)} ea</div>
+                                                            </div>
+                                                            <input
+                                                                type="number"
+                                                                className="form-control text-center fw-bold"
+                                                                style={{ width: 60, height: 42, fontSize: 15 }}
+                                                                value={item.qty}
+                                                                onChange={e => updateQty(item.id, e.target.value)}
+                                                                min="1"
+                                                            />
+                                                            <span className="fw-bold text-end" style={{ minWidth: 65, fontSize: 15 }}>
+                                                                ${(priceOf(item) * item.qty).toFixed(2)}
+                                                            </span>
+                                                            <button className="btn btn-danger" style={{ width: 42, height: 42, padding: 0 }} onClick={() => removeFromCart(item.id)}>
+                                                                <FiTrash2 size={16} />
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
+                                    {/* Totals */}
+                                    <div className="bg-light border-top p-3">
+                                        {/* Discount row */}
+                                        <div className="d-flex align-items-center gap-2 mb-3">
+                                            <span className="text-muted fw-semibold" style={{ whiteSpace: 'nowrap', fontSize: 14 }}>Discount %</span>
+                                            <input
+                                                type="number"
+                                                className="form-control text-center fw-bold"
+                                                style={{ width: 70, height: 40, fontSize: 15 }}
+                                                value={discount}
+                                                min="0" max="100"
+                                                onChange={e => setDiscount(Math.min(100, Math.max(0, parseFloat(e.target.value) || 0)))}
+                                            />
+                                            {discount > 0 && <span className="badge bg-warning text-dark" style={{ fontSize: 13, padding: '6px 10px' }}>-${discountAmt.toFixed(2)}</span>}
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                {/* ── RIGHT: Cart & Checkout ── */}
-                <div className="col-lg-4">
-                    <div className="card" style={{ position: 'sticky', top: 16 }}>
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Current Order</h5>
-                            {cart.length > 0 && (
-                                <span className="badge bg-primary">{cart.reduce((s, i) => s + i.qty, 0)} items</span>
-                            )}
-                        </div>
+                                        <div className="d-flex justify-content-between text-muted mb-2" style={{ fontSize: 14 }}>
+                                            <span>Subtotal</span><span className="fw-semibold">${subtotal.toFixed(2)}</span>
+                                        </div>
+                                        {discount > 0 && (
+                                            <div className="d-flex justify-content-between mb-2" style={{ color: '#d97706', fontSize: 14 }}>
+                                                <span>Discount ({discount}%)</span><span className="fw-semibold">-${discountAmt.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                        <div className="d-flex justify-content-between text-muted mb-3" style={{ fontSize: 14 }}>
+                                            <span>Tax (8.25%)</span><span className="fw-semibold">${tax.toFixed(2)}</span>
+                                        </div>
+                                        <hr className="my-2" />
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <span className="fw-bold" style={{ fontSize: 18 }}>Total</span>
+                                            <span className="fw-bold text-primary" style={{ fontSize: 28 }}>${total.toFixed(2)}</span>
+                                        </div>
 
-                        {/* Customer */}
-                        <div className="px-3 pt-3 pb-1">
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                                placeholder="Customer Name (optional)"
-                                value={customerName}
-                                onChange={e => setCustomerName(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="card-body p-0">
-                            {/* Cart Items */}
-                            <div className="overflow-auto px-3 py-2" style={{ maxHeight: 260, minHeight: 120 }}>
-                                {cart.length === 0 ? (
-                                    <div className="text-center text-muted py-4">
-                                        <FiShoppingCart size={32} className="mb-2 opacity-25" />
-                                        <p className="small mb-0">Cart is empty — scan or click a product</p>
-                                    </div>
-                                ) : (
-                                    <ul className="list-group list-group-flush">
-                                        {cart.map(item => (
-                                            <li key={item.id} className="list-group-item px-0 py-2">
-                                                <div className="d-flex align-items-center gap-2">
-                                                    <div className="flex-grow-1" style={{ minWidth: 0 }}>
-                                                        <div className="fw-semibold small text-truncate">{item.name}</div>
-                                                        <small className="text-muted">${priceOf(item).toFixed(2)} ea</small>
-                                                    </div>
-                                                    <input
-                                                        type="number"
-                                                        className="form-control form-control-sm text-center"
-                                                        style={{ width: 50 }}
-                                                        value={item.qty}
-                                                        onChange={e => updateQty(item.id, e.target.value)}
-                                                        min="1"
-                                                    />
-                                                    <span className="small fw-bold text-end" style={{ minWidth: 52 }}>
-                                                        ${(priceOf(item) * item.qty).toFixed(2)}
-                                                    </span>
-                                                    <button className="btn btn-sm btn-light-danger p-1" onClick={() => removeFromCart(item.id)}>
-                                                        <FiTrash2 size={13} />
+                                        {/* ── Payment Method Buttons ── */}
+                                        <p className="text-dark fw-bold mb-2" style={{ fontSize: 15 }}>Pay With:</p>
+                                        <div className="row g-2 mb-3">
+                                            {PAYMENT_METHODS.map(m => (
+                                                <div key={m.id} className="col-6">
+                                                    <button
+                                                        className="btn w-100 fw-bold"
+                                                        disabled={cart.length === 0}
+                                                        onClick={() => openPayModal(m)}
+                                                        style={{
+                                                            background:   cart.length === 0 ? '#f9fafb' : m.bg,
+                                                            color:        cart.length === 0 ? '#9ca3af' : m.color,
+                                                            border:       `2px solid ${cart.length === 0 ? '#e5e7eb' : m.border}`,
+                                                            borderRadius: 10,
+                                                            fontSize:     14,
+                                                            height:       50,
+                                                            transition:   'all 0.2s',
+                                                        }}
+                                                    >
+                                                        <m.Icon size={16} className="me-1" />{m.label}
                                                     </button>
                                                 </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
+                                            ))}
+                                        </div>
 
-                            {/* Totals */}
-                            <div className="bg-light border-top p-3">
-                                {/* Discount row */}
-                                <div className="d-flex align-items-center gap-2 mb-2">
-                                    <small className="text-muted" style={{ whiteSpace: 'nowrap' }}>Discount %</small>
-                                    <input
-                                        type="number"
-                                        className="form-control form-control-sm"
-                                        style={{ width: 65 }}
-                                        value={discount}
-                                        min="0" max="100"
-                                        onChange={e => setDiscount(Math.min(100, Math.max(0, parseFloat(e.target.value) || 0)))}
-                                    />
-                                    {discount > 0 && <span className="badge bg-warning text-dark">-${discountAmt.toFixed(2)}</span>}
-                                </div>
-
-                                <div className="d-flex justify-content-between small text-muted mb-1">
-                                    <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
-                                </div>
-                                {discount > 0 && (
-                                    <div className="d-flex justify-content-between small mb-1" style={{ color: '#d97706' }}>
-                                        <span>Discount ({discount}%)</span><span>-${discountAmt.toFixed(2)}</span>
-                                    </div>
-                                )}
-                                <div className="d-flex justify-content-between small text-muted mb-2">
-                                    <span>Tax (8.25%)</span><span>${tax.toFixed(2)}</span>
-                                </div>
-                                <hr className="my-2" />
-                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                    <span className="fw-bold">Total</span>
-                                    <span className="h4 mb-0 fw-bold text-primary">${total.toFixed(2)}</span>
-                                </div>
-
-                                {/* ── Payment Method Buttons ── */}
-                                <p className="text-muted small fw-semibold mb-2">Pay With:</p>
-                                <div className="row g-2 mb-3">
-                                    {PAYMENT_METHODS.map(m => (
-                                        <div key={m.id} className="col-6">
+                                        {/* Bottom actions */}
+                                        <div className="d-flex gap-2">
                                             <button
-                                                className="btn w-100 btn-sm py-2 fw-semibold"
+                                                className="btn btn-outline-secondary w-50 fw-semibold"
                                                 disabled={cart.length === 0}
-                                                onClick={() => openPayModal(m)}
-                                                style={{
-                                                    background:   cart.length === 0 ? '#f9fafb' : m.bg,
-                                                    color:        cart.length === 0 ? '#9ca3af' : m.color,
-                                                    border:       `1.5px solid ${cart.length === 0 ? '#e5e7eb' : m.border}`,
-                                                    borderRadius: 8,
-                                                    fontSize:     12,
-                                                    transition:   'all 0.15s',
-                                                }}
+                                                onClick={saveAsOrder}
+                                                style={{ height: 48, fontSize: 14, borderRadius: 8 }}
                                             >
-                                                <m.Icon size={13} className="me-1" />{m.label}
+                                                <FiFileText size={16} className="me-1" />Save Order
+                                            </button>
+                                            <button
+                                                className="btn btn-outline-danger w-50 fw-semibold"
+                                                onClick={() => { setCart([]); setDiscount(0); setCustomerName(''); }}
+                                                style={{ height: 48, fontSize: 14, borderRadius: 8 }}
+                                            >
+                                                <FiX size={16} className="me-1" />Clear
                                             </button>
                                         </div>
-                                    ))}
-                                </div>
-
-                                {/* Bottom actions */}
-                                <div className="d-flex gap-2">
-                                    <button
-                                        className="btn btn-outline-secondary w-50 btn-sm"
-                                        disabled={cart.length === 0}
-                                        onClick={saveAsOrder}
-                                    >
-                                        <FiFileText size={13} className="me-1" />Save Order
-                                    </button>
-                                    <button
-                                        className="btn btn-outline-danger w-50 btn-sm"
-                                        onClick={() => { setCart([]); setDiscount(0); setCustomerName(''); }}
-                                    >
-                                        <FiX size={13} className="me-1" />Clear
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -353,7 +430,11 @@ const RetailPOS = () => {
                 Payment Modal
             ════════════════════════════════════ */}
             {showPayModal && selectedPay && (
-                <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.55)', zIndex: 1055 }}>
+                <div className="modal show d-block" style={{ 
+                    background: 'rgba(0,0,0,0.55)', 
+                    zIndex: 99999, 
+                    animation: 'fadeIn 0.3s ease-in-out' 
+                }}>
                     <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: 440 }}>
                         <div className="modal-content">
                             <div className="modal-header py-3"
@@ -490,7 +571,11 @@ const RetailPOS = () => {
                 Receipt Modal
             ════════════════════════════════════ */}
             {showReceipt && lastOrder && (
-                <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.55)', zIndex: 1055 }}>
+                <div className="modal show d-block" style={{ 
+                    background: 'rgba(0,0,0,0.55)', 
+                    zIndex: 99999, 
+                    animation: 'fadeIn 0.3s ease-in-out' 
+                }}>
                     <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: 380 }}>
                         <div className="modal-content">
                             <div className="modal-body text-center p-4">
@@ -570,7 +655,11 @@ const RetailPOS = () => {
                 Save Order Success Modal
             ════════════════════════════════════ */}
             {showSaveSuccess && (
-                <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.55)', zIndex: 1055 }}>
+                <div className="modal show d-block" style={{ 
+                    background: 'rgba(0,0,0,0.55)', 
+                    zIndex: 99999, 
+                    animation: 'fadeIn 0.3s ease-in-out' 
+                }}>
                     <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: 360 }}>
                         <div className="modal-content">
                             <div className="modal-body text-center p-4">
