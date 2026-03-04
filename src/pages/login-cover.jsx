@@ -21,7 +21,7 @@ const LoginCover = () => {
         <div className="auth-cover-card-wrapper">
           <div className="auth-cover-card p-sm-5">
             <div className="w-100 mb-2 text-center">
-              <img src="/images/logo1.jpg" alt='img' className="img-fluid wd-100" />
+              <img src="/images/logo2.png" alt='img' className="img-fluid wd-100" />
             </div>
             <LoginForm registerPath={"/authentication/register/cover"} resetPath={"/authentication/reset/cover"}/>
           </div>

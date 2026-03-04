@@ -247,16 +247,16 @@ const RetailPOS = () => {
                                         <h5 className="mb-0 text-dark fw-bold">Quick Add Products</h5>
                                         <span className={`badge ${tier.btnClass}`} style={{ fontSize: 13, padding: '6px 12px' }}>{tier.label} Prices Active</span>
                                     </div>
-                                    <div className="row g-3">
+                                    <div className="row g-2">
                                         {dummyProducts.map(product => (
-                                            <div key={product.id} className="col-md-4 col-sm-6">
+                                            <div key={product.id} className="col-md-3 col-sm-6">
                                                 <div
-                                                    className="card h-100 border-2"
+                                                    className="card h-100 "
                                                     onClick={() => addToCart(product)}
                                                     style={{ 
                                                         cursor: 'pointer', 
                                                         transition: 'all 0.2s',
-                                                        borderRadius: 12,
+                                                        borderRadius: 4,
                                                         minHeight: 180
                                                     }}
                                                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a5568'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
@@ -264,7 +264,7 @@ const RetailPOS = () => {
                                                 >
                                                     <div className="card-body text-center p-3 d-flex flex-column justify-content-between">
                                                         <div className="mx-auto mb-2 d-flex align-items-center justify-content-center"
-                                                            style={{ width: 70, height: 70, background: '#f1f5f9', borderRadius: 12, overflow: 'hidden' }}>
+                                                            style={{ width: 70, height: 70, background: '#f1f5f9', borderRadius: 4, overflow: 'hidden' }}>
                                                             <img src="/images/bottle.jpg" alt="img" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                         </div>
                                                         <div>
@@ -388,7 +388,7 @@ const RetailPOS = () => {
                                                             background:   cart.length === 0 ? '#f9fafb' : m.bg,
                                                             color:        cart.length === 0 ? '#9ca3af' : m.color,
                                                             border:       `2px solid ${cart.length === 0 ? '#e5e7eb' : m.border}`,
-                                                            borderRadius: 10,
+                                                            borderRadius: 4,
                                                             fontSize:     14,
                                                             height:       50,
                                                             transition:   'all 0.2s',
@@ -406,14 +406,14 @@ const RetailPOS = () => {
                                                 className="btn btn-outline-secondary w-50 fw-semibold"
                                                 disabled={cart.length === 0}
                                                 onClick={saveAsOrder}
-                                                style={{ height: 48, fontSize: 14, borderRadius: 8 }}
+                                                style={{ height: 48, fontSize: 14, borderRadius: 4 }}
                                             >
                                                 <FiFileText size={16} className="me-1" />Save Order
                                             </button>
                                             <button
                                                 className="btn btn-outline-danger w-50 fw-semibold"
                                                 onClick={() => { setCart([]); setDiscount(0); setCustomerName(''); }}
-                                                style={{ height: 48, fontSize: 14, borderRadius: 8 }}
+                                                style={{ height: 48, fontSize: 14, borderRadius: 4 }}
                                             >
                                                 <FiX size={16} className="me-1" />Clear
                                             </button>
