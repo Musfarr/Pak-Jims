@@ -50,13 +50,19 @@ import LoginMinimal from "../pages/login-minimal";
 import RegisterMinimal from "../pages/register-minimal";
 import OtpMinimal from "../pages/otp-minimal";
 import MaintenanceMinimal from "../pages/maintenance-minimal";
+import WelcomeLoader from "../pages/WelcomeLoader";
 
 // ERP Prototype Pages
+import Dashboard from "../pages/ERP-Prototype/Dashboard";
+import Customers from "../pages/ERP-Prototype/Customers";
+import InventoryAdjustments from "../pages/ERP-Prototype/InventoryAdjustments";
 import RetailPOS from "../pages/ERP-Prototype/RetailPOS";
 import InventorySync from "../pages/ERP-Prototype/InventorySync";
 import PricingTiers from "../pages/ERP-Prototype/PricingTiers";
 import PurchaseVendors from "../pages/ERP-Prototype/PurchaseVendors";
 import FinancialReports from "../pages/ERP-Prototype/FinancialReports";
+import ReturnsExchanges from "../pages/ERP-Prototype/ReturnsExchanges";
+import SalesHistory from "../pages/ERP-Prototype/SalesHistory";
 import SalesOrders from "../pages/ERP-Prototype/SalesOrders";
 
 // Create a layout component that wraps children with AuthProvider
@@ -371,7 +377,14 @@ export const router = createBrowserRouter([
                 path: "/widgets/miscellaneous",
                 element: <WidgetsMiscellaneous/>
             },
-            // ERP Prototype Routes
+            {
+                path: "/erp/dashboard",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <Dashboard />
+                    </ProtectedRoute>
+                )
+            },
             {
                 path: "/erp/pos",
                 element: (
@@ -381,10 +394,26 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/erp/customers",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <Customers />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/erp/inventory",
                 element: (
                     <ProtectedRoute minimumRole="erp">
                         <InventorySync />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/inventory-adjustments",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <InventoryAdjustments />
                     </ProtectedRoute>
                 )
             },
@@ -413,6 +442,22 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path: "/erp/sales-history",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <SalesHistory />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/erp/returns",
+                element: (
+                    <ProtectedRoute minimumRole="erp">
+                        <ReturnsExchanges />
+                    </ProtectedRoute>
+                )
+            },
+            {
                 path: "/erp/accounting",
                 element: (
                     <ProtectedRoute minimumRole="erp">
@@ -423,6 +468,10 @@ export const router = createBrowserRouter([
             {
                 path: "/help/knowledgebase",
                 element: <HelpKnowledgebase />
+            },
+            {
+                path: "/welcome",
+                element: <WelcomeLoader />
             }
         ]
     },

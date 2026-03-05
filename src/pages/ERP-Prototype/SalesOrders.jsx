@@ -4,6 +4,13 @@ import {
     FiFileText, FiCheckCircle, FiXCircle, FiEye, FiShoppingCart,
     FiDollarSign, FiCreditCard, FiSmartphone, FiX, FiRefreshCw, FiPrinter
 } from 'react-icons/fi';
+import {
+    getErpInventoryProducts,
+    getErpSalesOrders,
+    initializeErpDemoData,
+    recordCompletedSale,
+    saveErpSalesOrders,
+} from './data/erpDemoStore';
 
 const PAYMENT_METHODS = [
     { id: 'cash',   label: 'Cash',        Icon: FiDollarSign,  color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
@@ -37,7 +44,8 @@ const SalesOrders = () => {
     const [cancelTarget, setCancelTarget]   = useState(null);
 
     const loadOrders = () => {
-        const data = JSON.parse(localStorage.getItem('erpSalesOrders') || '[]');
+        initializeErpDemoData();
+        const data = getErpSalesOrders();
         setOrders(data);
     };
 
@@ -45,7 +53,7 @@ const SalesOrders = () => {
 
     const saveOrders = (updated) => {
         setOrders(updated);
-        localStorage.setItem('erpSalesOrders', JSON.stringify(updated));
+        saveErpSalesOrders(updated);
     };
 
     /* ── Filtering ── */
@@ -82,13 +90,24 @@ const SalesOrders = () => {
     const splitCard  = payingOrder ? payingOrder.total - (parseFloat(splitCash) || 0) : 0;
 
     const confirmComplete = () => {
+        const inventoryProducts = getErpInventoryProducts();
+        const insufficientItem = payingOrder.items.find((item) => {
+            const inventoryItem = inventoryProducts.find((product) => product.id === item.id);
+            return !inventoryItem || inventoryItem.stock < item.qty;
+        });
+
+        if (insufficientItem) {
+            alert(`Insufficient stock to complete ${insufficientItem.name}. Please update inventory first.`);
+            return;
+        }
+
         const updated = orders.map(o =>
             o.orderId === payingOrder.orderId
                 ? { ...o, status: 'completed', paymentMethod: selectedPay.label, completedAt: new Date().toLocaleString() }
                 : o
         );
         saveOrders(updated);
-        setLastReceipt({
+        const completedSale = recordCompletedSale({
             ...payingOrder,
             paymentMethod: selectedPay.label,
             cashTendered: selectedPay.id === 'cash'  ? parseFloat(cashTendered) : null,
@@ -96,6 +115,7 @@ const SalesOrders = () => {
             cardSplit:    selectedPay.id === 'split' ? splitCard                : null,
             completedAt: new Date().toLocaleString(),
         });
+        setLastReceipt(completedSale);
         setShowPayModal(false);
         setShowReceipt(true);
     };

@@ -7,8 +7,7 @@ import { FiEdit, FiEye, FiTrash2 } from 'react-icons/fi'
 import Pagination from '@/components/shared/Pagination'
 
 
-
-const Orders = ({ title }) => {
+const Orders = ({ title, wrapperClassName = "col-xxl-12" }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
     if (isRemoved) {
@@ -16,7 +15,7 @@ const Orders = ({ title }) => {
     }
 
     return (
-        <div className="col-xxl-12">
+        <div className={wrapperClassName}>
             <div className={`card stretch stretch-full widget-tasks-content ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
 

@@ -10,14 +10,14 @@ const actionOptions = [
     { label: "Delete User" },
 ]
 const customerData = [
-    { name: 'Alexandra Della', email: 'alex.della@email.com', avatar: '/images/avatar/1.png', flag: '/images/flags/1x1/us.svg', country: 'United States', cardNumber: '****6231', date: '21 Sep, 2023' },
-    { name: 'Valentine Maton', email: 'valentine.maton@email.com', avatar: '/images/avatar/2.png', flag: '/images/flags/1x1/gb.svg', country: 'United Kingdom', cardNumber: '****8563', date: '25 Sep, 2023' },
-    { name: 'Kenneth Hune', email: 'kenneth.hune@email.com', avatar: '/images/avatar/3.png', flag: '/images/flags/1x1/fr.svg', country: 'France', cardNumber: '****4524', date: '16 Sep, 2023' },
-    { name: 'Malanie Hanvey', email: 'malanie.hanvey@email.com', avatar: '/images/avatar/4.png', flag: '/images/flags/1x1/de.svg', country: 'Germany', cardNumber: '****3486', date: '20 Sep, 2023' },
-    { name: 'Archie Cantones', email: 'archie.cantones@email.com', avatar: '/images/avatar/5.png', flag: '/images/flags/1x1/bd.svg', country: 'Bangladesh', cardNumber: '****7896', date: '20 Sep, 2023' },
+    { name: 'Ali Raza', email: 'ali.raza@pakjims.com', phone: '+92 300 1112233', joinedDate: '21 Sep, 2023' },
+    { name: 'Hira Khan', email: 'hira.khan@pakjims.com', phone: '+92 301 4455667', joinedDate: '25 Sep, 2023' },
+    { name: 'Usman Tariq', email: 'usman.tariq@pakjims.com', phone: '+92 302 7788990', joinedDate: '16 Sep, 2023' },
+    { name: 'Areeba Noor', email: 'areeba.noor@pakjims.com', phone: '+92 333 1029384', joinedDate: '20 Sep, 2023' },
+    { name: 'Hamza Ahmed', email: 'hamza.ahmed@pakjims.com', phone: '+92 321 5647382', joinedDate: '20 Sep, 2023' },
 ];
 
-const Customers = ({ title }) => {
+const Customers = ({ title, wrapperClassName = "col-xxl-12" }) => {
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
     if (isRemoved) {
@@ -25,7 +25,7 @@ const Customers = ({ title }) => {
     }
 
     return (
-        <div className="col-xxl-12">
+        <div className={wrapperClassName}>
             <div className={`card stretch stretch-full widget-tasks-content ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
 
@@ -36,8 +36,7 @@ const Customers = ({ title }) => {
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Country</th>
-                                    <th>Payment method</th>
+                                    <th>Number</th>
                                     <th>Created Date</th>
                                     <th className="text-end">Action</th>
                                 </tr>
@@ -45,27 +44,10 @@ const Customers = ({ title }) => {
                             <tbody>
                                 {customerData.map((customer, index) => (
                                     <tr key={index}>
-                                        <td>
-                                            <div className="d-flex align-items-center gap-3">
-                                                <div className="avatar-image">
-                                                    <img src={customer.avatar} className="img-fluid" alt="Customer" />
-                                                </div>
-                                                <div>
-                                                    <a href="#">{customer.name}</a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td><a href="#">{customer.name}</a></td>
                                         <td>{customer.email}</td>
-                                        <td>
-                                            <div className="hstack gap-2">
-                                                <div className="avatar-image avatar-sm">
-                                                    <img src={customer.flag} className="img-fluid" alt="img" />
-                                                </div>
-                                                <span className="d-inline-block align-middle">{customer.country}</span>
-                                            </div>
-                                        </td>
-                                        <td><span>{customer.cardNumber}</span></td>
-                                        <td>{customer.date}</td>
+                                        <td>{customer.phone}</td>
+                                        <td>{customer.joinedDate}</td>
                                         <td className="text-end">
                                             <Dropdown dropdownItems={actionOptions} triggerClass='avatar-md ms-auto' />
                                         </td>
@@ -75,7 +57,6 @@ const Customers = ({ title }) => {
                         </table>
                     </div>
                 </div>
-
 
                 <div className="card-footer"> <Pagination /></div>
                 <CardLoader refreshKey={refreshKey} />

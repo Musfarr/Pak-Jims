@@ -17,9 +17,9 @@ const NavigationManu = () => {
         <nav className={`nxl-navigation ${navigationOpen ? "mob-navigation-active" : ""}`}>
             <div className="navbar-wrapper">
                 <div className="m-header flex items-center justify-center">
-                    <Link to="/" className="b-brand">
+                    <Link to="/" className="b-brad flex items-center " style={{justifyContent:'center'}}>
                         {/* <!-- ========   change your logo hear   ============ --> */}
-                        <img src="/images/logolarge.webp" alt="logo" className="logo logo-lg w-20" />
+                        <img src="/images/logolarge.webp" alt="logo" style={{height:'65px'}} className="logo logo-lg w-20" />
                         {/* <h1 className='logo logo-lg' >Flair</h1> */}
                         <img src="/images/logo2.png" alt="logo" className="logo logo-sm" />
                     </Link>

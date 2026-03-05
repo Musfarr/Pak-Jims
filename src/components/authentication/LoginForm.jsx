@@ -49,7 +49,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
             //     console.log("LoginForm: Redirecting to default dashboard:", redirectTo);
             //     navigate(redirectTo);
             // }
-            navigate("/erp/pos");
+            navigate("/welcome");
         }
     };
 

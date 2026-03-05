@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { dummyProducts } from './data/dummyData';
+import React, { useEffect, useState } from 'react';
 import {
     FiSearch, FiShoppingCart, FiTrash2, FiPrinter, FiCheckCircle,
     FiDollarSign, FiCreditCard, FiSmartphone, FiTag, FiFileText, FiX, FiMaximize, FiMinimize, FiMonitor
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import {
+    getErpCustomers,
+    getErpInventoryProducts,
+    getErpSalesOrders,
+    initializeErpDemoData,
+    recordCompletedSale,
+    saveErpSalesOrders,
+    upsertErpCustomer,
+} from './data/erpDemoStore';
 
 const PRICING_TIERS = {
     retail:    { label: 'Retail',     priceField: 'retailPrice',    btnClass: 'btn-primary'         },
@@ -29,6 +37,8 @@ const RetailPOS = () => {
     const [activeTier, setActiveTier]     = useState('retail');
     const [discount, setDiscount]         = useState(0);
     const [customerName, setCustomerName] = useState('');
+    const [products, setProducts]         = useState([]);
+    const [customers, setCustomers]       = useState([]);
 
     const [showPayModal, setShowPayModal]       = useState(false);
     const [selectedPay, setSelectedPay]         = useState(null);
@@ -43,6 +53,12 @@ const RetailPOS = () => {
 
     const tier      = PRICING_TIERS[activeTier];
     const priceOf   = (item) => item[tier.priceField] ?? item.retailPrice;
+
+    useEffect(() => {
+        initializeErpDemoData();
+        setProducts(getErpInventoryProducts());
+        setCustomers(getErpCustomers());
+    }, []);
 
     /* ── Fullscreen handlers ── */
     const toggleFullscreen = () => {
@@ -86,8 +102,9 @@ const RetailPOS = () => {
     /* ── Cart helpers ── */
     const handleScan = (e) => {
         e.preventDefault();
-        const product = dummyProducts.find(p => p.sku === barcode.toUpperCase());
-        if (product) addToCart(product);
+        const product = products.find(p => p.sku === barcode.toUpperCase());
+        if (product && product.stock > 0) addToCart(product);
+        else if (product && product.stock < 1) alert('This product is out of stock.');
         else alert('Product not found!');
         setBarcode('');
     };
@@ -95,6 +112,13 @@ const RetailPOS = () => {
     const addToCart = (product) => {
         setCart(prev => {
             const existing = prev.find(i => i.id === product.id);
+            if (product.stock < 1) {
+                return prev;
+            }
+            if (existing && existing.qty >= product.stock) {
+                alert(`Only ${product.stock} units are available for ${product.name}.`);
+                return prev;
+            }
             return existing
                 ? prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i)
                 : [...prev, { ...product, qty: 1 }];
@@ -105,7 +129,12 @@ const RetailPOS = () => {
 
     const updateQty = (id, val) => {
         const n = parseInt(val);
-        if (n < 1 || isNaN(n)) return;
+        const product = products.find(item => item.id === id);
+        if (n < 1 || isNaN(n) || !product) return;
+        if (n > product.stock) {
+            alert(`Only ${product.stock} units are available for ${product.name}.`);
+            return;
+        }
         setCart(c => c.map(i => i.id === id ? { ...i, qty: n } : i));
     };
 
@@ -129,7 +158,7 @@ const RetailPOS = () => {
 
     const confirmPayment = () => {
         const orderId = 'POS-' + Math.floor(Math.random() * 90000 + 10000);
-        setLastOrder({
+        const completedOrder = recordCompletedSale({
             orderId,
             items: [...cart],
             priceField: tier.priceField,
@@ -142,6 +171,14 @@ const RetailPOS = () => {
             date: new Date().toLocaleString(),
             customerName: customerName || 'Walk-in',
         });
+        if (!completedOrder) {
+            alert('Unable to complete sale because one or more items do not have enough stock.');
+            setProducts(getErpInventoryProducts());
+            return;
+        }
+        setLastOrder(completedOrder);
+        setProducts(getErpInventoryProducts());
+        setCustomers(getErpCustomers());
         setCart([]);
         setDiscount(0);
         setCustomerName('');
@@ -163,8 +200,12 @@ const RetailPOS = () => {
             customerName: customerName || 'Walk-in Customer',
             status: 'pending',
         };
-        const existing = JSON.parse(localStorage.getItem('erpSalesOrders') || '[]');
-        localStorage.setItem('erpSalesOrders', JSON.stringify([order, ...existing]));
+        if (customerName.trim()) {
+            upsertErpCustomer({ name: customerName.trim(), tier: activeTier });
+        }
+        const existing = getErpSalesOrders();
+        saveErpSalesOrders([order, ...existing]);
+        setCustomers(getErpCustomers());
         setCart([]);
         setDiscount(0);
         setCustomerName('');
@@ -248,24 +289,25 @@ const RetailPOS = () => {
                                         <span className={`badge ${tier.btnClass}`} style={{ fontSize: 13, padding: '6px 12px' }}>{tier.label} Prices Active</span>
                                     </div>
                                     <div className="row g-2">
-                                        {dummyProducts.map(product => (
+                                        {products.map(product => (
                                             <div key={product.id} className="col-md-3 col-sm-6">
                                                 <div
                                                     className="card h-100 "
-                                                    onClick={() => addToCart(product)}
+                                                    onClick={() => product.stock > 0 && addToCart(product)}
                                                     style={{ 
-                                                        cursor: 'pointer', 
+                                                        cursor: product.stock > 0 ? 'pointer' : 'not-allowed', 
                                                         transition: 'all 0.2s',
                                                         borderRadius: 4,
-                                                        minHeight: 180
+                                                        minHeight: 180,
+                                                        opacity: product.stock > 0 ? 1 : 0.65,
                                                     }}
                                                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a5568'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                                                     onMouseLeave={e => { e.currentTarget.style.borderColor = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
                                                 >
                                                     <div className="card-body text-center p-3 d-flex flex-column justify-content-between">
                                                         <div className="mx-auto mb-2 d-flex align-items-center justify-content-center"
-                                                            style={{ width: 70, height: 70, background: '#f1f5f9', borderRadius: 4, overflow: 'hidden' }}>
-                                                            <img src="/images/bottle.jpg" alt="img" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                            style={{ width: 70, background: '#f1f5f9', borderRadius: 4, overflow: 'hidden' }}>
+                                                            <img src={product.img } alt={product.name} style={{ width: '100%', height: '100px', objectFit: 'cover' }} onError={(e) => { e.target.src = '/images/placeholder.png'; }} />
                                                         </div>
                                                         <div>
                                                             <h6 className="mb-1 fw-bold" style={{ fontSize: 15, lineHeight: 1.3 }} title={product.name}>{product.name}</h6>
@@ -297,11 +339,17 @@ const RetailPOS = () => {
                                     <input
                                         type="text"
                                         className="form-control"
+                                        list="erp-pos-customers"
                                         placeholder="Customer Name (optional)"
                                         value={customerName}
                                         onChange={e => setCustomerName(e.target.value)}
                                         style={{ fontSize: 15, height: 44 }}
                                     />
+                                    <datalist id="erp-pos-customers">
+                                        {customers.map(customer => (
+                                            <option key={customer.id} value={customer.name}>{customer.phone}</option>
+                                        ))}
+                                    </datalist>
                                 </div>
 
                                 <div className="card-body p-0">

@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { dummyChannels, dummyProducts } from './data/dummyData';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { dummyChannels } from './data/dummyData';
 import { FiRefreshCw, FiUploadCloud, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import { getErpInventoryProducts, initializeErpDemoData } from './data/erpDemoStore';
 
 const InventorySync = () => {
+    const navigate = useNavigate();
     const [isSyncing, setIsSyncing] = useState(false);
     const [channels, setChannels] = useState(dummyChannels);
-    const [products, setProducts] = useState(dummyProducts);
+    const [products, setProducts] = useState([]);
     const [uploading, setUploading] = useState(false);
+
+    useEffect(() => {
+        initializeErpDemoData();
+        setProducts(getErpInventoryProducts());
+    }, []);
 
     const handleSyncAll = () => {
         setIsSyncing(true);
@@ -100,7 +108,9 @@ const InventorySync = () => {
                                     <><FiUploadCloud className="me-2" /> Bulk Import CSV/Excel</>
                                 )}
                             </label>
-                            <button className="btn btn-primary">Add Product</button>
+                            <button className="btn btn-primary" onClick={() => navigate('/erp/inventory-adjustments?mode=new-product')}>
+                                Add Product
+                            </button>
                         </div>
                     </div>
                     <div className="card-body p-0">
@@ -131,7 +141,9 @@ const InventorySync = () => {
                                             <td>${product.basePrice.toFixed(2)}</td>
                                             <td>${product.retailPrice.toFixed(2)}</td>
                                             <td>
-                                                <button className="btn btn-sm btn-light">Edit</button>
+                                                <button className="btn btn-sm btn-light" onClick={() => navigate(`/erp/inventory-adjustments?productId=${product.id}`)}>
+                                                    Edit
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}

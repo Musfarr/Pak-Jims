@@ -4,7 +4,7 @@ import useCardTitleActions from '@/hooks/useCardTitleActions';
 import CardLoader from '@/components/shared/CardLoader';
 import { productsData } from '@/utils/fackData/productsData';
 
-const TopSelling = ({ title }) => {
+const TopSelling = ({ title, wrapperClassName = "col-xxl-4 col-lg-6" }) => {
 
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
@@ -12,7 +12,7 @@ const TopSelling = ({ title }) => {
         return null;
     }
     return (
-        <div className="col-xxl-4 col-lg-6">
+        <div className={wrapperClassName}>
             <div className={`card stretch stretch-full ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
                 <div className="card-body p-0">
