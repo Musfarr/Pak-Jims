@@ -222,10 +222,10 @@ const PurchaseVendors = () => {
 
     return (
         <div className='main-content'> 
-        <div className="row">
+        <div className="row card">
             {/* Header Controls */}
-            <div className="col-12 mb-4">
-                <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div className="col-12 mb-4 card">
+                <div className="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <h4 className="mb-1 fw-bold">Purchase & Vendor Management</h4>
                         <p className="text-muted mb-0 small">Manage suppliers, create purchase orders, and receive stock into shared ERP inventory.</p>
@@ -243,7 +243,7 @@ const PurchaseVendors = () => {
             </div>
 
             {/* Navigation Tabs */}
-            <div className="col-12 mb-4">
+            <div className="  col-12 mb-4">
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
                         <button 

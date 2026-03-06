@@ -23,10 +23,12 @@ const PRICING_TIERS = {
 const PAYMENT_METHODS = [
     { id: 'cash',   label: 'Cash',         Icon: FiDollarSign,  color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
     { id: 'card',   label: 'Card',         Icon: FiCreditCard,  color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
-    { id: 'split',  label: 'Half & Half',  Icon: FiDollarSign,  color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+    { id: 'split',  label: 'Split Payment', Icon: FiDollarSign,  color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
     { id: 'zelle',  label: 'Zelle',        Icon: FiSmartphone,  color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe' },
     { id: 'paypal', label: 'PayPal',       Icon: FiSmartphone,  color: '#0369a1', bg: '#f0f9ff', border: '#bae6fd' },
 ];
+
+const SPLIT_PAYMENT_OPTIONS = PAYMENT_METHODS.filter((method) => !['cash', 'split'].includes(method.id));
 
 const RetailPOS = () => {
     const navigate = useNavigate();
@@ -44,6 +46,7 @@ const RetailPOS = () => {
     const [selectedPay, setSelectedPay]         = useState(null);
     const [cashTendered, setCashTendered]       = useState('');
     const [splitCash, setSplitCash]             = useState('');
+    const [splitMethodId, setSplitMethodId]     = useState('card');
 
     const [showReceipt, setShowReceipt] = useState(false);
     const [lastOrder, setLastOrder]     = useState(null);
@@ -150,13 +153,22 @@ const RetailPOS = () => {
         setSelectedPay(method);
         setCashTendered(total.toFixed(2));
         setSplitCash((total / 2).toFixed(2));
+        setSplitMethodId('card');
         setShowPayModal(true);
     };
 
     const cashChange = parseFloat(cashTendered) - total;
-    const splitCard  = total - (parseFloat(splitCash) || 0);
+    const splitMethod = SPLIT_PAYMENT_OPTIONS.find((method) => method.id === splitMethodId) || SPLIT_PAYMENT_OPTIONS[0];
+    const splitCashValue = parseFloat(splitCash) || 0;
+    const splitOtherAmount = total - splitCashValue;
+    const splitOtherDisplayAmount = splitOtherAmount < 0 ? 0 : splitOtherAmount;
+    const splitInvalid = selectedPay?.id === 'split' && (splitCashValue <= 0 || splitCashValue >= total || splitOtherAmount <= 0);
 
     const confirmPayment = () => {
+        if (selectedPay.id === 'split' && splitInvalid) {
+            alert('Split payment must include a cash amount and a second payment method amount greater than zero.');
+            return;
+        }
         const orderId = 'POS-' + Math.floor(Math.random() * 90000 + 10000);
         const completedOrder = recordCompletedSale({
             orderId,
@@ -164,10 +176,13 @@ const RetailPOS = () => {
             priceField: tier.priceField,
             tierLabel: tier.label,
             subtotal, discountAmt, tax, total,
-            paymentMethod: selectedPay.label,
+            paymentMethod: selectedPay.id === 'split' ? `Split: Cash + ${splitMethod.label}` : selectedPay.label,
             cashTendered: selectedPay.id === 'cash'  ? parseFloat(cashTendered) : null,
-            cashSplit:    selectedPay.id === 'split' ? parseFloat(splitCash)    : null,
-            cardSplit:    selectedPay.id === 'split' ? splitCard                : null,
+            cashSplit:    selectedPay.id === 'split' ? splitCashValue           : null,
+            cardSplit:    selectedPay.id === 'split' && splitMethod.id === 'card' ? splitOtherAmount : null,
+            otherSplit:   selectedPay.id === 'split' ? splitOtherAmount         : null,
+            splitMethodId: selectedPay.id === 'split' ? splitMethod.id          : null,
+            splitMethodLabel: selectedPay.id === 'split' ? splitMethod.label    : null,
             date: new Date().toLocaleString(),
             customerName: customerName || 'Walk-in',
         });
@@ -549,6 +564,27 @@ const RetailPOS = () => {
                                 {/* Half & Half */}
                                 {selectedPay.id === 'split' && (
                                     <div>
+                                        <div className="mb-3">
+                                            <label className="form-label fw-semibold">Second Payment Method</label>
+                                            <div className="row g-2">
+                                                {SPLIT_PAYMENT_OPTIONS.map((method) => (
+                                                    <div key={method.id} className="col-4">
+                                                        <button
+                                                            type="button"
+                                                            className={`btn w-100 py-2 fw-semibold ${splitMethodId === method.id ? '' : 'btn-light'}`}
+                                                            onClick={() => setSplitMethodId(method.id)}
+                                                            style={splitMethodId === method.id ? {
+                                                                background: method.bg,
+                                                                color: method.color,
+                                                                border: `1.5px solid ${method.border}`,
+                                                            } : undefined}
+                                                        >
+                                                            {method.label}
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                         <label className="form-label fw-semibold">Cash Portion</label>
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">$</span>
@@ -560,19 +596,36 @@ const RetailPOS = () => {
                                                 step="0.01"
                                             />
                                         </div>
+                                        <div className="d-flex gap-2 flex-wrap mb-3">
+                                            {[25, 50, 75].map((percent) => (
+                                                <button
+                                                    key={percent}
+                                                    type="button"
+                                                    className="btn btn-sm btn-outline-secondary"
+                                                    onClick={() => setSplitCash(((total * percent) / 100).toFixed(2))}
+                                                >
+                                                    {percent}% Cash
+                                                </button>
+                                            ))}
+                                        </div>
                                         <div className="row g-2">
                                             <div className="col-6">
                                                 <div className="rounded p-2 text-center" style={{ background: '#f0fdf4' }}>
                                                     <small className="text-muted d-block">Cash</small>
-                                                    <strong style={{ color: '#16a34a' }}>${(parseFloat(splitCash) || 0).toFixed(2)}</strong>
+                                                    <strong style={{ color: '#16a34a' }}>${splitCashValue.toFixed(2)}</strong>
                                                 </div>
                                             </div>
                                             <div className="col-6">
-                                                <div className="rounded p-2 text-center" style={{ background: '#eff6ff' }}>
-                                                    <small className="text-muted d-block">Card</small>
-                                                    <strong style={{ color: '#2563eb' }}>${splitCard < 0 ? '0.00' : splitCard.toFixed(2)}</strong>
+                                                <div className="rounded p-2 text-center" style={{ background: splitMethod.bg }}>
+                                                    <small className="text-muted d-block">{splitMethod.label}</small>
+                                                    <strong style={{ color: splitMethod.color }}>${splitOtherDisplayAmount.toFixed(2)}</strong>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div className={`alert py-2 mt-3 mb-0 ${splitInvalid ? 'alert-danger' : 'alert-success'}`}>
+                                            {splitInvalid
+                                                ? 'Enter a cash amount between $0.01 and the total so both payment parts are valid.'
+                                                : `${splitMethod.label} will cover the remaining $${splitOtherDisplayAmount.toFixed(2)}.`}
                                         </div>
                                     </div>
                                 )}
@@ -605,7 +658,7 @@ const RetailPOS = () => {
                                 <button
                                     className="btn btn-success btn-lg fw-bold flex-grow-1"
                                     onClick={confirmPayment}
-                                    disabled={selectedPay.id === 'cash' && cashChange < 0}
+                                    disabled={(selectedPay.id === 'cash' && cashChange < 0) || splitInvalid}
                                 >
                                     <FiCheckCircle className="me-2" />Confirm Payment — ${total.toFixed(2)}
                                 </button>
@@ -678,7 +731,7 @@ const RetailPOS = () => {
                                                 <span>Cash</span><span>${lastOrder.cashSplit.toFixed(2)}</span>
                                             </div>
                                             <div className="d-flex justify-content-between">
-                                                <span>Card</span><span>${lastOrder.cardSplit.toFixed(2)}</span>
+                                                <span>{lastOrder.splitMethodLabel || 'Card'}</span><span>${(lastOrder.otherSplit ?? lastOrder.cardSplit ?? 0).toFixed(2)}</span>
                                             </div>
                                         </>
                                     )}

@@ -122,7 +122,7 @@ const PricingTiers = () => {
                         </div>
                         </div>
                         <div className="row g-3 mt-1 align-items-center">
-                            <div className="col-lg-6">
+                            <div className="">
                                 <div className="input-group">
                                     <span className="input-group-text bg-white"><FiSearch /></span>
                                     <input
@@ -135,7 +135,7 @@ const PricingTiers = () => {
                             </div>
                             <div className="col-lg-6 text-lg-end">
                                 <div className="small text-muted">
-                                    Changes here update shared ERP inventory pricing used by POS and future completed sales.
+                                    {/* Changes here update shared ERP inventory pricing used by POS and future completed sales. */}
                                     {lastSavedAt ? ` Last saved: ${lastSavedAt}` : ''}
                                 </div>
                             </div>
