@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
     adjustments: 'erpInventoryAdjustments',
     vendors: 'erpVendors',
     purchaseOrders: 'erpPurchaseOrders',
+    expenses: 'erpExpenses',
     channels: 'erpChannels',
 };
 
@@ -98,6 +99,64 @@ const seedChannels = dummyChannels.map((channel, index) => ({
     safetyBuffer: [3, 4, 2, 0][index] ?? 2,
     isActive: channel.id !== 'ebay',
 }));
+
+const seedExpenses = [
+    {
+        id: 'EXP-1001',
+        date: '03/01/2026',
+        category: 'Rent',
+        description: 'March showroom rent for Houston location',
+        vendorName: 'Westheimer Plaza',
+        paymentAccount: 'bank',
+        status: 'paid',
+        amount: 6800,
+        notes: '',
+    },
+    {
+        id: 'EXP-1002',
+        date: '03/02/2026',
+        category: 'Payroll',
+        description: 'Front-of-house payroll allocation',
+        vendorName: 'Store Staff',
+        paymentAccount: 'bank',
+        status: 'paid',
+        amount: 4250,
+        notes: '',
+    },
+    {
+        id: 'EXP-1003',
+        date: '03/04/2026',
+        category: 'Marketing',
+        description: 'TikTok and Meta campaign spend',
+        vendorName: 'Digital Ads',
+        paymentAccount: 'card',
+        status: 'paid',
+        amount: 950,
+        notes: '',
+    },
+    {
+        id: 'EXP-1004',
+        date: '03/05/2026',
+        category: 'Utilities',
+        description: 'Electricity and internet services',
+        vendorName: 'Utility Providers',
+        paymentAccount: 'bank',
+        status: 'pending',
+        amount: 540,
+        notes: 'Due within 7 days',
+    },
+    {
+        id: 'EXP-1005',
+        date: '03/06/2026',
+        category: 'Packaging',
+        description: 'Gift boxes, testers, and packing material',
+        vendorName: 'Packaging Hub',
+        paymentAccount: 'cash',
+        status: 'paid',
+        amount: 320,
+        notes: '',
+    },
+];
 
 const buildPurchaseOrderItems = (items = []) => items.map(({ productId, qty, unitCost }) => {
     const product = seedInventory.find((entry) => entry.id === productId);
@@ -213,6 +272,9 @@ export const initializeErpDemoData = () => {
     if (!localStorage.getItem(STORAGE_KEYS.purchaseOrders)) {
         writeStorage(STORAGE_KEYS.purchaseOrders, seedPurchaseOrders);
     }
+    if (!localStorage.getItem(STORAGE_KEYS.expenses)) {
+        writeStorage(STORAGE_KEYS.expenses, seedExpenses);
+    }
     if (!localStorage.getItem(STORAGE_KEYS.channels)) {
         writeStorage(STORAGE_KEYS.channels, seedChannels);
     }
@@ -296,6 +358,40 @@ export const getErpPurchaseOrders = () => {
 export const saveErpPurchaseOrders = (purchaseOrders) => {
     writeStorage(STORAGE_KEYS.purchaseOrders, purchaseOrders);
     return purchaseOrders;
+};
+
+export const getErpExpenses = () => {
+    initializeErpDemoData();
+    return readStorage(STORAGE_KEYS.expenses, seedExpenses);
+};
+
+export const saveErpExpenses = (expenses) => {
+    writeStorage(STORAGE_KEYS.expenses, expenses);
+    return expenses;
+};
+
+export const createErpExpense = (payload = {}) => {
+    initializeErpDemoData();
+    const description = (payload.description || '').trim();
+    const amount = toNumber(payload.amount, 0);
+    if (!description || amount <= 0) {
+        return null;
+    }
+
+    const expense = {
+        id: createErpId('EXP'),
+        date: payload.date || new Date().toLocaleDateString(),
+        category: payload.category || 'General',
+        description,
+        vendorName: (payload.vendorName || '').trim(),
+        paymentAccount: normalizeText(payload.paymentAccount) || 'bank',
+        status: normalizeText(payload.status) || 'paid',
+        amount,
+        notes: (payload.notes || '').trim(),
+    };
+
+    saveErpExpenses([expense, ...getErpExpenses()]);
+    return expense;
 };
 
 export const getErpChannels = () => {

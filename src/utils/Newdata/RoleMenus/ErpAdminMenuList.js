@@ -71,7 +71,7 @@ export const ErpAdminMenuList = [
     },
     {
         id: 11,
-        name: "Financial Reports",
+        name: "Accounting",
         path: "/erp/accounting",
         icon: 'feather-bar-chart-2',
         dropdownMenu: []
