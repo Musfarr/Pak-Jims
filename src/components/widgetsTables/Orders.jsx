@@ -30,7 +30,7 @@ const Orders = ({ title, wrapperClassName = "col-xxl-12" }) => {
                                     <th>Company</th>
                                     <th>Total</th>
                                     <th>Status</th>
-                                    <th className="text-end">Actions</th>
+                                    {/* <th className="text-end">Actions</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,7 +63,7 @@ const Orders = ({ title, wrapperClassName = "col-xxl-12" }) => {
                                         <td>
                                             <span className={`badge bg-soft-${product.color} text-${product.color}`}>{product.status}</span>
                                         </td>
-                                        <td className="text-end">
+                                        {/* <td className="text-end">
                                             <div className="hstack gap-2 justify-content-end">
                                                 <a href="#" className="avatar-text avatar-md">
                                                     <FiEye />
@@ -75,7 +75,7 @@ const Orders = ({ title, wrapperClassName = "col-xxl-12" }) => {
                                                     <FiTrash2 />
                                                 </a>
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>

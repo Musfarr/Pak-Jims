@@ -51,7 +51,7 @@ const weeklySalesOptions = {
     colors: ['#4f46e5', '#c7c9ef'],
     plotOptions: {
         bar: {
-            borderRadius: 4,
+            borderRadius: 0,
             columnWidth: '42%',
         },
     },
@@ -135,7 +135,7 @@ const Dashboard = () => {
             </PageHeader>
             <div className="main-content">
                 <div className="row g-4">
-                    <div className="col-12">
+                    {/* <div className="col-12">
                         <div className="row g-3">
                             {quickLinks.map((link) => (
                                 <div key={link.title} className="col-md-6 col-xl-3">
@@ -158,7 +158,7 @@ const Dashboard = () => {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
 
                     <EstimateStatisticsThree />
 

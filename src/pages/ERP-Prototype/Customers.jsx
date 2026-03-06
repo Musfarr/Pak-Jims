@@ -170,7 +170,7 @@ const Customers = () => {
             <div className="card">
                 <div className="card-header">
                     <div className="row g-2 align-items-center">
-                        <div className="col-lg-6">
+                        <div className="col-lg-4">
                             <input
                                 type="text"
                                 className="form-control"
@@ -179,7 +179,7 @@ const Customers = () => {
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <div className="col-sm-6 col-lg-3">
+                        <div className="col-sm-6 col-lg-4">
                             <select className="form-select" value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}>
                                 <option value="all">All Tiers</option>
                                 <option value="retail">Retail</option>
@@ -187,7 +187,7 @@ const Customers = () => {
                                 <option value="vip">VIP</option>
                             </select>
                         </div>
-                        <div className="col-sm-6 col-lg-3">
+                        <div className="col-sm-6 col-lg-4">
                             <select className="form-select" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                                 <option value="all">All Statuses</option>
                                 <option value="active">Active</option>

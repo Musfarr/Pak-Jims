@@ -30,6 +30,7 @@ const SalesOrders = () => {
     const navigate = useNavigate();
 
     const [orders, setOrders]               = useState([]);
+    const [search, setSearch]               = useState('');
     const [filterStatus, setFilterStatus]   = useState('all');
     const [viewOrder, setViewOrder]         = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
@@ -57,9 +58,19 @@ const SalesOrders = () => {
     };
 
     /* ── Filtering ── */
-    const filtered = filterStatus === 'all'
-        ? orders
-        : orders.filter(o => o.status === filterStatus);
+    const filtered = orders.filter((order) => {
+        const matchesStatus = filterStatus === 'all' || order.status === filterStatus;
+        if (!matchesStatus) {
+            return false;
+        }
+        const query = search.trim().toLowerCase();
+        if (!query) {
+            return true;
+        }
+        return [order.orderId, order.customerName, order.tierLabel, order.paymentMethod, order.date].some((value) =>
+            value?.toString().toLowerCase().includes(query)
+        );
+    });
 
     const counts = {
         all:       orders.length,
@@ -115,6 +126,12 @@ const SalesOrders = () => {
             cardSplit:    selectedPay.id === 'split' ? splitCard                : null,
             completedAt: new Date().toLocaleString(),
         });
+        if (!completedSale) {
+            alert('Unable to complete this order because stock changed before payment was confirmed. Refresh inventory and try again.');
+            loadOrders();
+            setShowPayModal(false);
+            return;
+        }
         setLastReceipt(completedSale);
         setShowPayModal(false);
         setShowReceipt(true);
@@ -199,6 +216,14 @@ const SalesOrders = () => {
                             {s.charAt(0).toUpperCase() + s.slice(1)} ({counts[s]})
                         </button>
                     ))}
+                    <div className="ms-auto" style={{ minWidth: 260 }}>
+                        <input
+                            className="form-control form-control-sm"
+                            placeholder="Search order, customer, tier, payment"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <div className="card-body p-0">

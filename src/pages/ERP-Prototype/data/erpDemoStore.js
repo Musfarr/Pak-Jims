@@ -1,4 +1,4 @@
-import { dummyProducts } from './dummyData';
+import { dummyChannels, dummyProducts, dummyVendors } from './dummyData';
 
 const STORAGE_KEYS = {
     customers: 'erpCustomers',
@@ -7,6 +7,16 @@ const STORAGE_KEYS = {
     salesOrders: 'erpSalesOrders',
     returns: 'erpReturns',
     adjustments: 'erpInventoryAdjustments',
+    vendors: 'erpVendors',
+    purchaseOrders: 'erpPurchaseOrders',
+    channels: 'erpChannels',
+};
+
+const normalizeText = (value) => (value || '').toString().trim().toLowerCase();
+
+const toNumber = (value, fallback = 0) => {
+    const parsed = parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
 };
 
 const seedCustomers = [
@@ -57,6 +67,112 @@ const seedInventory = dummyProducts.map((product, index) => ({
     location: 'Houston Main Store',
 }));
 
+const seedVendors = dummyVendors.map((vendor, index) => ({
+    id: `VEN-${1001 + index}`,
+    name: vendor.name,
+    contact: vendor.contact,
+    email: vendor.email,
+    phone: [
+        '+971 4 555 2211',
+        '+33 1 80 55 2200',
+        '+1 (212) 555-0190',
+    ][index] ?? '+1 (713) 555-0100',
+    status: vendor.status.toLowerCase(),
+    leadTimeDays: [7, 12, 5][index] ?? 7,
+    paymentTerms: ['Net 15', 'Net 30', 'COD'][index] ?? 'Net 15',
+    suppliedCategories: [
+        ['Arabian', 'Fresh'],
+        ['Designer', 'Niche'],
+        ['Bundles', 'Testers'],
+    ][index] ?? ['General'],
+    notes: [
+        'Primary supplier for Arabian fragrances and attar restocks.',
+        'Used for premium designer launches and seasonal gift sets.',
+        'Backup wholesale source for testers, bundles, and clearance lots.',
+    ][index] ?? '',
+}));
+
+const seedChannels = dummyChannels.map((channel, index) => ({
+    ...channel,
+    status: channel.status === 'Syncing...' ? 'Syncing' : channel.status,
+    safetyBuffer: [3, 4, 2, 0][index] ?? 2,
+    isActive: channel.id !== 'ebay',
+}));
+
+const buildPurchaseOrderItems = (items = []) => items.map(({ productId, qty, unitCost }) => {
+    const product = seedInventory.find((entry) => entry.id === productId);
+    const cost = toNumber(unitCost ?? product?.basePrice, 0);
+    const quantity = parseInt(qty, 10) || 0;
+    return {
+        productId,
+        sku: product?.sku || 'UNKNOWN',
+        name: product?.name || 'Unknown Product',
+        qty: quantity,
+        unitCost: cost,
+        lineTotal: quantity * cost,
+    };
+});
+
+const calculatePurchaseTotals = (items = []) => {
+    const subtotal = items.reduce((sum, item) => sum + toNumber(item.lineTotal, 0), 0);
+    return {
+        subtotal,
+        total: subtotal,
+    };
+};
+
+const seedPurchaseOrders = [
+    {
+        id: 'PO-1001',
+        poNumber: 'PO-2026-101',
+        vendorId: 'VEN-1001',
+        vendorName: 'Dubai Fragrance Co.',
+        orderDate: '02/20/2026',
+        expectedDelivery: '03/05/2026',
+        status: 'ordered',
+        items: buildPurchaseOrderItems([
+            { productId: 1, qty: 24, unitCost: 82 },
+            { productId: 4, qty: 60, unitCost: 11 },
+        ]),
+        notes: 'Ramadan promo replenishment for Arabian best sellers.',
+        inventoryPosted: false,
+    },
+    {
+        id: 'PO-1002',
+        poNumber: 'PO-2026-102',
+        vendorId: 'VEN-1002',
+        vendorName: 'Paris Parfums Ltd',
+        orderDate: '02/15/2026',
+        expectedDelivery: '02/22/2026',
+        status: 'received',
+        items: buildPurchaseOrderItems([
+            { productId: 2, qty: 10, unitCost: 88 },
+            { productId: 5, qty: 6, unitCost: 175 },
+        ]),
+        notes: 'Premium designer replenishment already booked into demo stock.',
+        inventoryPosted: true,
+        receivedAt: '02/22/2026, 02:15 PM',
+    },
+    {
+        id: 'PO-1003',
+        poNumber: 'PO-2026-103',
+        vendorId: 'VEN-1003',
+        vendorName: 'Wholesale Beauty NY',
+        orderDate: '02/10/2026',
+        expectedDelivery: '02/18/2026',
+        status: 'in_transit',
+        items: buildPurchaseOrderItems([
+            { productId: 3, qty: 4, unitCost: 148 },
+            { productId: 4, qty: 30, unitCost: 12 },
+        ]),
+        notes: 'Tester refill plus fresh moving units for store shelves.',
+        inventoryPosted: false,
+    },
+].map((order) => ({
+    ...order,
+    ...calculatePurchaseTotals(order.items),
+}));
+
 const readStorage = (key, fallback) => {
     try {
         const raw = localStorage.getItem(key);
@@ -68,13 +184,6 @@ const readStorage = (key, fallback) => {
 
 const writeStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
-};
-
-const normalizeText = (value) => (value || '').toString().trim().toLowerCase();
-
-const toNumber = (value, fallback = 0) => {
-    const parsed = parseFloat(value);
-    return Number.isFinite(parsed) ? parsed : fallback;
 };
 
 export const createErpId = (prefix) => `${prefix}-${Math.floor(Math.random() * 90000 + 10000)}`;
@@ -97,6 +206,15 @@ export const initializeErpDemoData = () => {
     }
     if (!localStorage.getItem(STORAGE_KEYS.adjustments)) {
         writeStorage(STORAGE_KEYS.adjustments, []);
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.vendors)) {
+        writeStorage(STORAGE_KEYS.vendors, seedVendors);
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.purchaseOrders)) {
+        writeStorage(STORAGE_KEYS.purchaseOrders, seedPurchaseOrders);
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.channels)) {
+        writeStorage(STORAGE_KEYS.channels, seedChannels);
     }
 };
 
@@ -158,6 +276,166 @@ export const getErpInventoryAdjustments = () => {
 export const saveErpInventoryAdjustments = (adjustments) => {
     writeStorage(STORAGE_KEYS.adjustments, adjustments);
     return adjustments;
+};
+
+export const getErpVendors = () => {
+    initializeErpDemoData();
+    return readStorage(STORAGE_KEYS.vendors, seedVendors);
+};
+
+export const saveErpVendors = (vendors) => {
+    writeStorage(STORAGE_KEYS.vendors, vendors);
+    return vendors;
+};
+
+export const getErpPurchaseOrders = () => {
+    initializeErpDemoData();
+    return readStorage(STORAGE_KEYS.purchaseOrders, seedPurchaseOrders);
+};
+
+export const saveErpPurchaseOrders = (purchaseOrders) => {
+    writeStorage(STORAGE_KEYS.purchaseOrders, purchaseOrders);
+    return purchaseOrders;
+};
+
+export const getErpChannels = () => {
+    initializeErpDemoData();
+    return readStorage(STORAGE_KEYS.channels, seedChannels);
+};
+
+export const saveErpChannels = (channels) => {
+    writeStorage(STORAGE_KEYS.channels, channels);
+    return channels;
+};
+
+export const upsertErpVendor = (payload = {}) => {
+    initializeErpDemoData();
+    const name = (payload.name || '').trim();
+    if (!name) {
+        return null;
+    }
+
+    const vendors = getErpVendors();
+    const existingIndex = vendors.findIndex((vendor) => vendor.id === payload.id);
+    const nextVendor = {
+        id: payload.id || createErpId('VEN'),
+        contact: '',
+        email: '',
+        phone: '',
+        status: 'active',
+        leadTimeDays: 7,
+        paymentTerms: 'Net 15',
+        suppliedCategories: [],
+        notes: '',
+        ...(existingIndex >= 0 ? vendors[existingIndex] : {}),
+        ...payload,
+        name,
+        leadTimeDays: parseInt(payload.leadTimeDays ?? vendors[existingIndex]?.leadTimeDays ?? 7, 10) || 0,
+        status: normalizeText(payload.status || vendors[existingIndex]?.status || 'active') || 'active',
+    };
+
+    const nextVendors = existingIndex >= 0
+        ? vendors.map((vendor, index) => index === existingIndex ? nextVendor : vendor)
+        : [nextVendor, ...vendors];
+
+    saveErpVendors(nextVendors);
+    return nextVendor;
+};
+
+const buildPurchaseOrderNumber = () => {
+    const orders = getErpPurchaseOrders();
+    const year = new Date().getFullYear();
+    const nextSerial = orders.length + 101;
+    return `PO-${year}-${nextSerial.toString().padStart(3, '0')}`;
+};
+
+export const createErpPurchaseOrder = ({ vendorId, items = [], expectedDelivery = '', notes = '', status = 'ordered' }) => {
+    initializeErpDemoData();
+    const vendor = getErpVendors().find((entry) => entry.id === vendorId);
+    if (!vendor) {
+        return null;
+    }
+
+    const inventory = getErpInventoryProducts();
+    const processedItems = items
+        .filter((item) => item.productId && (parseInt(item.qty, 10) || 0) > 0)
+        .map((item) => {
+            const product = inventory.find((entry) => entry.id === item.productId);
+            if (!product) {
+                return null;
+            }
+            const qty = parseInt(item.qty, 10) || 0;
+            const unitCost = toNumber(item.unitCost ?? product.basePrice, 0);
+            return {
+                productId: product.id,
+                sku: product.sku,
+                name: product.name,
+                qty,
+                unitCost,
+                lineTotal: qty * unitCost,
+            };
+        })
+        .filter(Boolean);
+
+    if (processedItems.length === 0) {
+        return null;
+    }
+
+    const order = {
+        id: createErpId('PO'),
+        poNumber: buildPurchaseOrderNumber(),
+        vendorId: vendor.id,
+        vendorName: vendor.name,
+        orderDate: new Date().toLocaleDateString(),
+        expectedDelivery: expectedDelivery || new Date().toLocaleDateString(),
+        status,
+        items: processedItems,
+        notes,
+        inventoryPosted: false,
+        ...calculatePurchaseTotals(processedItems),
+    };
+
+    saveErpPurchaseOrders([order, ...getErpPurchaseOrders()]);
+    return order;
+};
+
+export const updateErpPurchaseOrderStatus = (purchaseOrderId, status) => {
+    const purchaseOrders = getErpPurchaseOrders();
+    const nextPurchaseOrders = purchaseOrders.map((order) =>
+        order.id === purchaseOrderId ? { ...order, status } : order
+    );
+    saveErpPurchaseOrders(nextPurchaseOrders);
+    return nextPurchaseOrders.find((order) => order.id === purchaseOrderId) || null;
+};
+
+export const receiveErpPurchaseOrder = (purchaseOrderId) => {
+    initializeErpDemoData();
+    const purchaseOrders = getErpPurchaseOrders();
+    const purchaseOrder = purchaseOrders.find((order) => order.id === purchaseOrderId);
+
+    if (!purchaseOrder || purchaseOrder.inventoryPosted || purchaseOrder.status === 'cancelled') {
+        return null;
+    }
+
+    purchaseOrder.items.forEach((item) => {
+        applyInventoryAdjustment({
+            productId: item.productId,
+            type: 'received',
+            quantity: item.qty,
+            reason: `Purchase order received from ${purchaseOrder.vendorName}`,
+            referenceId: purchaseOrder.poNumber,
+            notes: purchaseOrder.notes,
+        });
+    });
+
+    const updatedOrder = {
+        ...purchaseOrder,
+        status: 'received',
+        inventoryPosted: true,
+        receivedAt: new Date().toLocaleString(),
+    };
+    saveErpPurchaseOrders(purchaseOrders.map((order) => order.id === purchaseOrderId ? updatedOrder : order));
+    return updatedOrder;
 };
 
 export const upsertErpCustomer = (payload = {}) => {
